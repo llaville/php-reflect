@@ -1,0 +1,649 @@
+<?php
+/**
+ * Tokens for PHP_Reflect parser
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
+
+abstract class PHP_Reflect_Token
+{
+    /**
+     * @var string
+     */
+    protected $text;
+
+    /**
+     * @var integer
+     */
+    protected $line;
+
+    /**
+     * @var integer
+     */
+    protected $id;
+
+    /**
+     * @var array
+     */
+    protected $tokenStream;
+
+    /**
+     * Constructor.
+     *
+     * @param string  $text
+     * @param integer $line
+     * @param integer $id
+     * @param array   $tokenStream
+     */
+    public function __construct($text, $line, $id, $tokens)
+    {
+        $this->text        = $text;
+        $this->line        = $line;
+        $this->id          = $id;
+        $this->tokenStream = $tokens;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->text;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getLine()
+    {
+        return $this->line;
+    }
+    
+}
+
+abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
+{
+    protected $endTokenId;
+
+    /**
+     * Get the docblock for this token
+     *
+     * This method will fetch the docblock belonging to the current token. The
+     * docblock must be placed on the line directly above the token to be
+     * recognized.
+     *
+     * @return string|null Returns the docblock as a string if found
+     */
+    public function getDocblock()
+    {
+        $currentLineNumber = $this->tokenStream[$this->id][2];
+        $prevLineNumber    = $currentLineNumber - 1;
+
+        for ($i = $this->id - 1; $i > 0; $i--) {
+
+            if ('T_FUNCTION' == $this->tokenStream[$i][0] 
+                || 'T_CLASS' == $this->tokenStream[$i][0]
+            ) {
+                // Some other class or function, 
+                // no docblock can be used for the current token
+                break;
+            }
+
+            $line = $this->tokenStream[$i][2];
+
+            if ($line == $currentLineNumber 
+                || (($line == $prevLineNumber) && ('T_WHITESPACE' == $this->tokenStream[$i][0]))
+            ) {
+                continue;
+            }
+
+            if (($line < $currentLineNumber) 
+                && ('T_DOC_COMMENT' !== $this->tokenStream[$i][0])
+                && ('T_COMMENT' !== $this->tokenStream[$i][0])
+            ) {
+                break;
+            }
+
+            return $this->tokenStream[$i][1];
+        }
+    }
+
+    public function getVisibility()
+    {
+        for ($i = $this->id - 2; $i > $this->id - 7; $i -= 2) {
+            if ($i < 0) {
+                break;
+            }
+
+            if (true === ($this->tokenStream[$i][0] == 'T_PRIVATE' ||
+                $this->tokenStream[$i][0] == 'T_PROTECTED' ||
+                $this->tokenStream[$i][0] == 'T_PUBLIC')
+            ) {
+                return strtolower(
+                    str_replace('T_', '', $this->tokenStream[$i][0])
+                );
+            }
+            if (false === ($this->tokenStream[$i][0] == 'T_STATIC' ||
+                $this->tokenStream[$i][0] == 'T_FINAL' ||
+                $this->tokenStream[$i][0] == 'T_ABSTRACT')
+            ) {
+                // no keywords; stop visibility search
+                break;
+            }
+        }
+    }
+
+    public function getKeywords()
+    {
+        $keywords = array();
+
+        for ($i = $this->id - 2; $i > $this->id - 7; $i -= 2) {
+            if ($i < 0) {
+                break;
+            }
+
+            if (true === ($this->tokenStream[$i][0] == 'T_PRIVATE' ||
+                $this->tokenStream[$i][0] == 'T_PROTECTED' ||
+                $this->tokenStream[$i][0] == 'T_PUBLIC')
+            ) {
+                continue;
+            }
+
+            if (true === ($this->tokenStream[$i][0] == 'T_STATIC' ||
+                $this->tokenStream[$i][0] == 'T_FINAL' ||
+                $this->tokenStream[$i][0] == 'T_ABSTRACT')
+            ) {
+                $keywords[] = strtolower(
+                    str_replace('T_', '', $this->tokenStream[$i][0])
+                );
+            }
+        }
+
+        return implode(',', $keywords);
+    }
+
+    public function getEndTokenId()
+    {
+        $block  = 0;
+        $i      = $this->id;
+
+        while ($this->endTokenId === NULL && isset($this->tokenStream[$i])) {
+            
+            $tokenName = $this->tokenStream[$i][0];
+            
+            if ($tokenName == 'T_OPEN_CURLY' ||
+                $tokenName == 'T_CURLY_OPEN'
+            ) {
+                $block++;
+            }
+            elseif ($tokenName == 'T_CLOSE_CURLY') {
+                $block--;
+
+                if ($block === 0) {
+                    $this->endTokenId = $i;
+                }
+            }
+            elseif ($this->tokenStream[$i][0] == 'T_SEMICOLON'
+                && ($this instanceof PHP_Reflect_Token_FUNCTION ||
+                $this instanceof PHP_Reflect_Token_REQUIRE_ONCE ||
+                $this instanceof PHP_Reflect_Token_REQUIRE ||
+                $this instanceof PHP_Reflect_Token_INCLUDE_ONCE ||
+                $this instanceof PHP_Reflect_Token_INCLUDE)) {
+                
+                if ($block === 0) {
+                    $this->endTokenId = $i;
+                }
+            }
+
+            $i++;
+        }
+
+        if ($this->endTokenId === NULL) {
+            $this->endTokenId = $this->id;
+        }
+
+        return $this->endTokenId;
+    }
+
+    public function getEndLine()
+    {
+        return $this->tokenStream[$this->getEndTokenId()][2];
+    }
+}
+
+abstract class PHP_Reflect_Token_Includes extends PHP_Reflect_TokenWithScope
+{
+    protected $name;
+    protected $type;
+
+    public function getName()
+    {
+        if ($this->name !== NULL) {
+            return $this->name;
+        }
+
+        $i = $this->id + 2;
+        if ($this->tokenStream[$i][0] == 'T_CONSTANT_ENCAPSED_STRING') {
+            $this->name = trim($this->tokenStream[$i][1], "'\"");
+            $this->type = strtolower(
+                str_replace('T_', '', $this->tokenStream[$this->id][0])
+            );
+        }
+
+        return $this->name;
+    }
+
+    public function getType()
+    {
+        $this->getName();
+        return $this->type;
+    }
+}
+
+class PHP_Reflect_Token_REQUIRE_ONCE extends PHP_Reflect_Token_Includes {}
+class PHP_Reflect_Token_REQUIRE extends PHP_Reflect_Token_Includes {}
+class PHP_Reflect_Token_EVAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_INCLUDE_ONCE extends PHP_Reflect_Token_Includes {}
+class PHP_Reflect_Token_INCLUDE extends PHP_Reflect_Token_Includes {}
+class PHP_Reflect_Token_LOGICAL_OR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_LOGICAL_XOR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_LOGICAL_AND extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_PRINT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_SR_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_SL_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_XOR_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_OR_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_AND_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_MOD_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CONCAT_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DIV_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_MUL_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_MINUS_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_PLUS_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_BOOLEAN_OR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_BOOLEAN_AND extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_IS_NOT_IDENTICAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_IS_IDENTICAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_IS_NOT_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_IS_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_IS_GREATER_OR_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_IS_SMALLER_OR_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_SR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_SL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_INSTANCEOF extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_UNSET_CAST extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_BOOL_CAST extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_OBJECT_CAST extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ARRAY_CAST extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_STRING_CAST extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DOUBLE_CAST extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_INT_CAST extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DEC extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_INC extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CLONE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_NEW extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_EXIT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_IF extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ELSEIF extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ELSE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ENDIF extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_LNUMBER extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DNUMBER extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_STRING extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_STRING_VARNAME extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_VARIABLE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_NUM_STRING extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_INLINE_HTML extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CHARACTER extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_BAD_CHARACTER extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ENCAPSED_AND_WHITESPACE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CONSTANT_ENCAPSED_STRING extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ECHO extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DO extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_WHILE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ENDWHILE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_FOR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ENDFOR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_FOREACH extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ENDFOREACH extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DECLARE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ENDDECLARE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_AS extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_SWITCH extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ENDSWITCH extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CASE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DEFAULT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_BREAK extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CONTINUE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_GOTO extends PHP_Reflect_Token {}
+
+class PHP_Reflect_Token_FUNCTION extends PHP_Reflect_TokenWithScope
+{
+    protected $arguments;
+    protected $ccn;
+    protected $name;
+    protected $signature;
+
+    public function getArguments()
+    {
+        if ($this->arguments !== NULL) {
+            return $this->arguments;
+        }
+
+        $this->arguments = array();
+        $i               = $this->id + 3;
+        $typeHint        = NULL;
+
+        while (!$this->tokenStream[$i][0] == 'T_CLOSE_BRACKET') {
+            if ($this->tokenStream[$i][0] == 'T_STRING') {
+                $typeHint = $this->tokenStream[$i][1];
+            }
+
+            else if ($this->tokenStream[$i][0] == 'T_VARIABLE') {
+                $this->arguments[$this->tokenStream[$i][1]] = $typeHint;
+                $typeHint                                   = NULL;
+            }
+
+            $i++;
+        }
+
+        return $this->arguments;
+    }
+
+    public function getName()
+    {
+        if ($this->name !== NULL) {
+            return $this->name;
+        }
+
+        if ($this->tokenStream[$this->id+2][0] == 'T_STRING') {
+            $this->name = $this->tokenStream[$this->id+2][1];
+        }
+
+        else if ($this->tokenStream[$this->id+2][0] == 'T_AMPERSAND' &&
+                 $this->tokenStream[$this->id+3][0] == 'T_STRING') {
+            $this->name = $this->tokenStream[$this->id+3][1];
+        }
+
+        else {
+            $this->name = 'anonymous function';
+        }
+
+        return $this->name;
+    }
+
+    public function getCCN()
+    {
+        if ($this->ccn !== NULL) {
+            return $this->ccn;
+        }
+
+        $this->ccn = 1;
+        $end       = $this->getEndTokenId();
+
+        for ($i = $this->id; $i <= $end; $i++) {
+            switch ($this->tokenStream[$i][0]) {
+                case 'T_IF':
+                case 'T_ELSEIF':
+                case 'T_FOR':
+                case 'T_FOREACH':
+                case 'T_WHILE':
+                case 'T_CASE':
+                case 'T_CATCH':
+                case 'T_BOOLEAN_AND':
+                case 'T_LOGICAL_AND':
+                case 'T_BOOLEAN_OR':
+                case 'T_LOGICAL_OR':
+                case 'T_QUESTION_MARK': 
+                    $this->ccn++;
+                    break;
+            }
+        }
+
+        return $this->ccn;
+    }
+
+    public function getSignature()
+    {
+        if ($this->signature !== NULL) {
+            return $this->signature;
+        }
+
+        $this->signature = '';
+
+        $i      = $this->id + 2;
+
+        while ($this->tokenStream[$i][0] != 'T_CLOSE_BRACKET') {
+            $this->signature .= $this->tokenStream[$i++][1];
+        }
+
+        $this->signature .= ')';
+
+        return $this->signature;
+    }
+}
+
+class PHP_Reflect_Token_CONST extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_RETURN extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_TRY extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CATCH extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_THROW extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_USE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_GLOBAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_PUBLIC extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_PROTECTED extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_PRIVATE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_FINAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ABSTRACT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_STATIC extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_VAR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_UNSET extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ISSET extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_EMPTY extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_HALT_COMPILER extends PHP_Reflect_Token {}
+
+class PHP_Reflect_Token_INTERFACE extends PHP_Reflect_TokenWithScope
+{
+    protected $interfaces;
+
+    public function getName()
+    {
+        $token = $this->tokenStream[$this->id + 2];
+        $text  = $token[1];
+        return $text;
+    }
+
+    public function hasParent()
+    {
+        return 
+            (isset($this->tokenStream[$this->id + 4]) && 
+            $this->tokenStream[$this->id + 4][0] == 'T_EXTENDS');
+    }
+
+    public function getParent()
+    {
+        if (!$this->hasParent()) {
+            return FALSE;
+        }
+
+        $i         = $this->id + 6;
+        $className = $this->tokenStream[$i][1];
+
+        while (isset($this->tokenStream[$i+1]) && 
+            $this->tokenStream[$i+1][0] != 'T_WHITESPACE'
+        ) {
+            $className .= $this->tokenStream[++$i][1];
+        }
+
+        return $className;
+    }
+    
+    public function getPackage()
+    {
+        $className  = $this->getName();
+        $docComment = $this->getDocblock();
+
+        $result = array(
+            'namespace'   => '',
+            'fullPackage' => '',
+            'category'    => '',
+            'package'     => '',
+            'subpackage'  => ''
+        );
+
+        if (strpos($className, '\\') !== FALSE) {
+            $result['namespace'] = $this->arrayToName(
+              explode('\\', $className)
+            );
+        }
+
+        if (preg_match('/@category[\s]+([\.\w]+)/', $docComment, $matches)) {
+            $result['category'] = $matches[1];
+        }
+
+        if (preg_match('/@package[\s]+([\.\w]+)/', $docComment, $matches)) {
+            $result['package']     = $matches[1];
+            $result['fullPackage'] = $matches[1];
+        }
+
+        if (preg_match('/@subpackage[\s]+([\.\w]+)/', $docComment, $matches)) {
+            $result['subpackage']   = $matches[1];
+            $result['fullPackage'] .= '.' . $matches[1];
+        }
+
+        if (empty($result['fullPackage'])) {
+            $result['fullPackage'] = $this->arrayToName(
+              explode('_', str_replace('\\', '_', $className)), '.'
+            );
+        }
+
+        return $result;
+    }
+
+    protected function arrayToName(array $parts, $join = '\\')
+    {
+        $result = '';
+
+        if (count($parts) > 1) {
+            array_pop($parts);
+
+            $result = join($join, $parts);
+        }
+
+        return $result;
+    }
+
+    public function hasInterfaces()
+    {
+        return 
+            ($this->tokenStream[$this->id + 4][0] == 'T_IMPLEMENTS' ||
+            $this->tokenStream[$this->id + 8][0] == 'T_IMPLEMENTS');
+    }
+
+    public function getInterfaces()
+    {
+        if ($this->interfaces !== NULL) {
+            return $this->interfaces;
+        }
+
+        if (!$this->hasInterfaces()) {
+            return ($this->interfaces = FALSE);
+        }
+
+        if ($this->tokenStream[$this->id + 4][0] == 'T_IMPLEMENTS') {
+            $i = $this->id + 3;
+        } else {
+            $i = $this->id + 7;
+        }
+
+        while ($this->tokenStream[$i+1][0] != 'T_OPEN_CURLY') {
+            $i++;
+            if ($this->tokenStream[$i][0] == 'T_STRING') {
+                $this->interfaces[] = $this->tokenStream[$i][1];
+            }
+        }
+        return $this->interfaces;
+    }
+}
+
+class PHP_Reflect_Token_CLASS extends PHP_Reflect_Token_INTERFACE {}
+class PHP_Reflect_Token_TRAIT extends PHP_Reflect_Token_INTERFACE {}
+class PHP_Reflect_Token_EXTENDS extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_IMPLEMENTS extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_OBJECT_OPERATOR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DOUBLE_ARROW extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_LIST extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_ARRAY extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CLASS_C extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_METHOD_C extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_FUNC_C extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_LINE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_FILE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_COMMENT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DOC_COMMENT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_OPEN_TAG extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_OPEN_TAG_WITH_ECHO extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CLOSE_TAG extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_WHITESPACE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_START_HEREDOC extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_END_HEREDOC extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DOLLAR_OPEN_CURLY_BRACES extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CURLY_OPEN extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_PAAMAYIM_NEKUDOTAYIM extends PHP_Reflect_Token {}
+
+class PHP_Reflect_Token_NAMESPACE extends PHP_Reflect_Token
+{
+    public function getName()
+    {
+        $namespace = $this->tokenStream[$this->id+2][1];
+
+        for ($i = $this->id + 3; ; $i += 2) {
+            if (isset($this->tokenStream[$i]) &&
+                $this->tokenStream[$i][0] == 'T_NS_SEPARATOR') {
+                $namespace .= '\\' . $tokens[$i+1][1];
+            } else {
+                break;
+            }
+        }
+
+        return $namespace;
+    }
+}
+
+class PHP_Reflect_Token_NS_C extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DIR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_NS_SEPARATOR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DOUBLE_COLON extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_OPEN_BRACKET extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CLOSE_BRACKET extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_OPEN_SQUARE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CLOSE_SQUARE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_OPEN_CURLY extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CLOSE_CURLY extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_SEMICOLON extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DOT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_COMMA extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_EQUAL extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_LT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_GT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_PLUS extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_MINUS extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_MULT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DIV extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_QUESTION_MARK extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_EXCLAMATION_MARK extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_COLON extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DOUBLE_QUOTES extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_AT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_AMPERSAND extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_PERCENT extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_PIPE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_DOLLAR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CARET extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_TILDE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_BACKTICK extends PHP_Reflect_Token {}
