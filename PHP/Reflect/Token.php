@@ -339,7 +339,7 @@ class PHP_Reflect_Token_FUNCTION extends PHP_Reflect_TokenWithScope
         $i               = $this->id + 3;
         $typeHint        = NULL;
 
-        while (!$this->tokenStream[$i][0] == 'T_CLOSE_BRACKET') {
+        while ($this->tokenStream[$i][0] != 'T_CLOSE_BRACKET') {
             if ($this->tokenStream[$i][0] == 'T_STRING') {
                 $typeHint = $this->tokenStream[$i][1];
             }
