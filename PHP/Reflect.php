@@ -297,9 +297,9 @@ class PHP_Reflect implements ArrayAccess
                 $tokenName = self::$customTokens[$token];
                 $this->tokens[$id] = array(1 => $text);
             }
-            $line += substr_count($text, "\n");
             $this->tokens[$id][2] = $line;
             $this->tokens[$id][0] = $tokenName;
+            $line += substr_count($text, "\n");
         }
 
         $this->parse();
