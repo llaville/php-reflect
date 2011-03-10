@@ -99,7 +99,7 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
             if ($line == $currentLineNumber 
                 || (($line == $prevLineNumber) && ('T_WHITESPACE' == $this->tokenStream[$i][0]))
             ) {
-                continue;
+                break;
             }
 
             if (($line < $currentLineNumber) 
@@ -540,9 +540,13 @@ class PHP_Reflect_Token_INTERFACE extends PHP_Reflect_TokenWithScope
 
     public function hasInterfaces()
     {
-        return 
-            ($this->tokenStream[$this->id + 4][0] == 'T_IMPLEMENTS' ||
-            $this->tokenStream[$this->id + 8][0] == 'T_IMPLEMENTS');
+        if ((isset($this->tokenStream[$this->id + 4]) 
+            && $this->tokenStream[$this->id + 4][0] == 'T_IMPLEMENTS') ||
+           (isset($this->tokenStream[$this->id + 8]) 
+            && $this->tokenStream[$this->id + 8][0] == 'T_IMPLEMENTS')){
+            return true;
+        }
+        return false;
     }
 
     public function getInterfaces()
@@ -605,7 +609,7 @@ class PHP_Reflect_Token_NAMESPACE extends PHP_Reflect_Token
         for ($i = $this->id + 3; ; $i += 2) {
             if (isset($this->tokenStream[$i]) &&
                 $this->tokenStream[$i][0] == 'T_NS_SEPARATOR') {
-                $namespace .= '\\' . $tokens[$i+1][1];
+                $namespace .= '\\' . $this->tokenStream[$i+1][1];
             } else {
                 break;
             }
