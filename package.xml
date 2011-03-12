@@ -15,11 +15,11 @@ and more, by connecting php callbacks to other tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2011-03-10</date>
- <time>23:47:27</time>
+ <date>2011-03-12</date>
+ <time>17:52:02</time>
  <version>
-  <release>0.1.0</release>
-  <api>0.1.0</api>
+  <release>0.2.0</release>
+  <api>0.2.0</api>
  </version>
  <stability>
   <release>beta</release>
@@ -27,10 +27,11 @@ and more, by connecting php callbacks to other tokens.
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
-First public release
+Additions and changes:
+- change base install directory
  </notes>
  <contents>
-  <dir baseinstalldir="PHP_Reflect" name="/">
+  <dir baseinstalldir="Bartlett" name="/">
    <dir name="PHP">
     <dir name="Reflect">
      <file name="Token.php" role="php">
@@ -107,6 +108,22 @@ First public release
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>0.2.0</release>
+    <api>0.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2011-03-12</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- change base install directory
+   </notes>
+  </release>
   <release>
    <version>
     <release>0.1.0</release>
