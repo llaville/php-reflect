@@ -47,7 +47,15 @@ if (!defined('TEST_FILES_PATH')) {
     );
 }
 
-require_once dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'PHP/Reflect.php';
+$dir = dirname(dirname(dirname(__FILE__)));
+
+if (file_exists($dir . DIRECTORY_SEPARATOR . 'PHP/Reflect.php')) {
+    // running from repository 
+    include_once $dir . DIRECTORY_SEPARATOR . 'PHP/Reflect.php';
+} else {
+    // package installed
+    include_once 'Bartlett/PHP/Reflect.php';
+}
 
 spl_autoload_register('PHP_Reflect::autoload');
 
