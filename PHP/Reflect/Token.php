@@ -99,12 +99,17 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
             if ($line == $currentLineNumber 
                 || (($line == $prevLineNumber) && ('T_WHITESPACE' == $this->tokenStream[$i][0]))
             ) {
-                break;
+                continue;
             }
 
+            if ($line == $prevLineNumber 
+                && ('T_COMMENT' == $this->tokenStream[$i][0])
+            ) {
+                return $this->tokenStream[$i][1];
+            }
+            
             if (($line < $currentLineNumber) 
                 && ('T_DOC_COMMENT' !== $this->tokenStream[$i][0])
-                && ('T_COMMENT' !== $this->tokenStream[$i][0])
             ) {
                 break;
             }
