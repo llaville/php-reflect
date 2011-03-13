@@ -15,11 +15,11 @@ and more, by connecting php callbacks to other tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2011-03-12</date>
- <time>17:52:02</time>
+ <date>2011-03-13</date>
+ <time>17:09:19</time>
  <version>
-  <release>0.2.0</release>
-  <api>0.2.0</api>
+  <release>0.3.0</release>
+  <api>0.3.0</api>
  </version>
  <stability>
   <release>beta</release>
@@ -28,7 +28,9 @@ and more, by connecting php callbacks to other tokens.
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
 Additions and changes:
-- change base install directory
+- improved options handler 
+- getDocblock method accept more than just phpdoc comment style 
+- add docblock in each test units
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -108,6 +110,24 @@ Additions and changes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>0.3.0</release>
+    <api>0.3.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2011-03-13</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- improved options handler 
+- getDocblock method accept more than just phpdoc comment style 
+- add docblock in each test units
+   </notes>
+  </release>
   <release>
    <version>
     <release>0.2.0</release>
