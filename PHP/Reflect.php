@@ -204,12 +204,11 @@ class PHP_Reflect implements ArrayAccess
             ),
         );
 
-        if (!isset($options)) {
-            $this->options = $defaultOptions;
-
-        } elseif (is_array($options)) {
-            $this->options = array_merge($defaultOptions, $options);
-
+        $this->options = $defaultOptions;
+        if (is_array($options)) {
+            foreach ($options as $key => $values) {
+                $this->options[$key] = array_merge($defaultOptions[$key], $values);
+            }
         } else {
             throw new RuntimeException('Invalid options');
         }
