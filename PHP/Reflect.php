@@ -40,8 +40,8 @@
  */
 
 /**
- * PHP_Reflect adds the ability to reverse-engineer 
- * classes, interfaces, functions, constants and more. 
+ * PHP_Reflect adds the ability to reverse-engineer
+ * classes, interfaces, functions, constants and more.
  *
  * @category PHP
  * @package  PHP_Reflect
@@ -178,15 +178,15 @@ class PHP_Reflect implements ArrayAccess
             // properties for each component to provide on final result
             'properties' => array(
                 'interface' => array(
-                    'file', 'startEndLines', 'docblock', 
+                    'file', 'startEndLines', 'docblock',
                     'keywords', 'parent', 'methods'
                 ),
                 'class' => array(
-                    'file', 'startEndLines', 'docblock', 
+                    'file', 'startEndLines', 'docblock',
                     'keywords', 'parent', 'methods', 'interfaces', 'package'
                 ),
                 'function' => array(
-                    'file', 'startEndLines', 'docblock', 
+                    'file', 'startEndLines', 'docblock',
                     'keywords', 'signature', 'ccn'
                 ),
                 'require_once' => array(
@@ -331,13 +331,6 @@ class PHP_Reflect implements ArrayAccess
         if (preg_match($pattern, $name, $matches)) {
             $container = strtolower($matches[1]{0}) . substr($matches[1], 1);
 
-            $values = $this->offsetGet($container);
-            if ($values !== NULL) {
-                return $values;
-            }
-
-            $this->parse();
-
             return $this->offsetGet($container);
 
         } else {
@@ -366,20 +359,14 @@ class PHP_Reflect implements ArrayAccess
     public function getIncludes($categorize = FALSE, $category = NULL)
     {
         $includes = $this->offsetGet('includes');
-        if ($includes === NULL) {
 
-            $includes = array(
-                'require_once' => array(),
-                'require'      => array(),
-                'include_once' => array(),
-                'include'      => array()
-            );
-            $this->offsetSet('includes', $includes);
+        foreach (array('require_once', 'require', 'include_once', 'include')
+            as $key) {
 
-            $this->parse();
+            if (!isset($includes[$key])) {
+                $includes[$key] = array();
+            }
         }
-
-        $includes = $this->offsetGet('includes');
 
         if (isset($includes[$category])) {
             $includes = $includes[$category];
@@ -471,7 +458,6 @@ class PHP_Reflect implements ArrayAccess
     protected function parseToken()
     {
         list($subject, $context, $token) = func_get_args();
-
         extract($context);
 
         $name = $token->getName();
@@ -486,7 +472,7 @@ class PHP_Reflect implements ArrayAccess
         } else {
             $properties = array();
         }
-        
+
         switch ($context) {
         case 'interface':
         case 'class':
@@ -519,7 +505,7 @@ class PHP_Reflect implements ArrayAccess
 
         if ($context == 'function') {
             $properties = $subject->options['properties'];
-            
+
             if ($class === FALSE && $interface === FALSE) {
                 // update user functions
                 $subject->offsetSet(array($container => $name), $tmp);
@@ -561,7 +547,7 @@ class PHP_Reflect implements ArrayAccess
             $_inc = $subject->offsetGet($container);
             $_inc[$type][$name] = $tmp;
             $subject->offsetSet($container, $_inc);
-            
+
         } else {
             $subject->offsetSet(array($container => $name), $tmp);
         }
