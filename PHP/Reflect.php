@@ -205,12 +205,16 @@ class PHP_Reflect implements ArrayAccess
         );
 
         $this->options = $defaultOptions;
-        if (is_array($options)) {
-            foreach ($options as $key => $values) {
-                $this->options[$key] = array_merge($defaultOptions[$key], $values);
+        if (NULL !== $options) {
+            if (is_array($options)) {
+                foreach ($options as $key => $values) {
+                    $this->options[$key] = array_merge(
+                        $defaultOptions[$key], $values
+                    );
+                }
+            } else {
+                throw new RuntimeException('Invalid options');
             }
-        } else {
-            throw new RuntimeException('Invalid options');
         }
 
         // default parsers for interfaces, classes, functions, includes
