@@ -39,6 +39,8 @@
  * @link     http://php5.laurent-laville.org/reflect/
  */
 
+require_once dirname(__FILE__) . '/Reflect/Autoload.php';
+ 
 /**
  * PHP_Reflect adds the ability to reverse-engineer
  * classes, interfaces, functions, constants and more.
@@ -112,48 +114,6 @@ class PHP_Reflect implements ArrayAccess
      * @var string
      */
     protected $filename;
-
-    /**
-     * Autoloader
-     *
-     * @param string $className Name of the class being instantiated
-     *
-     * @return void
-     */
-    public static function autoload($className)
-    {
-        static $classes = NULL;
-        static $path    = NULL;
-
-        if ($classes === NULL) {
-
-            $classes = array(
-                'PHP_Reflect_Token'
-                    => 'PHP/Reflect/Token.php',
-                'PHP_Reflect_TokenWithScope'
-                    => 'PHP/Reflect/Token.php',
-                'PHP_Reflect_Token_INTERFACE'
-                    => 'PHP/Reflect/Token.php',
-                'PHP_Reflect_Token_CLASS'
-                    => 'PHP/Reflect/Token.php',
-                'PHP_Reflect_Token_FUNCTION'
-                    => 'PHP/Reflect/Token.php',
-                'PHP_Reflect_Token_REQUIRE_ONCE'
-                    => 'PHP/Reflect/Token.php',
-                'PHP_Reflect_Token_REQUIRE'
-                    => 'PHP/Reflect/Token.php',
-                'PHP_Reflect_Token_INCLUDE_ONCE'
-                    => 'PHP/Reflect/Token.php',
-                'PHP_Reflect_Token_INCLUDE'
-                    => 'PHP/Reflect/Token.php',
-            );
-            $path = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR;
-        }
-
-        if (isset($classes[$className])) {
-            include $path . $classes[$className];
-        }
-    }
 
     /**
      * Class constructor

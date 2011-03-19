@@ -57,8 +57,6 @@ if (file_exists($dir . DIRECTORY_SEPARATOR . 'PHP/Reflect.php')) {
     include_once 'Bartlett/PHP/Reflect.php';
 }
 
-spl_autoload_register('PHP_Reflect::autoload');
-
 /**
  * Tests for the PHP_Reflect_Token_FUNCTION class.
  *
