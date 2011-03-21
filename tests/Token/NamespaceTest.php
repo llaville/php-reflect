@@ -47,16 +47,6 @@ if (!defined('TEST_FILES_PATH')) {
     );
 }
 
-$dir = dirname(dirname(dirname(__FILE__)));
-
-if (file_exists($dir . DIRECTORY_SEPARATOR . 'PHP/Reflect.php')) {
-    // running from repository 
-    include_once $dir . DIRECTORY_SEPARATOR . 'PHP/Reflect.php';
-} else {
-    // package installed
-    include_once 'Bartlett/PHP/Reflect.php';
-}
-
 /**
  * Tests for the PHP_Reflect_Token_NAMESPACE class.
  *
@@ -71,20 +61,32 @@ if (file_exists($dir . DIRECTORY_SEPARATOR . 'PHP/Reflect.php')) {
 class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
 {
     protected $ns;
+    protected $namespaces;
 
     protected function setUp()
     {
         $reflect = new PHP_Reflect();
         $tokens  = $reflect->scan(TEST_FILES_PATH . 'source5.php');
-        $i       = 0;
 
         foreach ($tokens as $id => $token) {
-            if (($token[0] == 'T_STRING' && $token[1] == 'namespace') 
+            if (($token[0] == 'T_STRING' && $token[1] == 'namespace')
                 || ($token[0] == 'T_NAMESPACE')
             ) {
-                $this->ns = new PHP_Reflect_Token_NAMESPACE($token[1], $token[2], $id, $tokens);
+                $this->ns[] = new PHP_Reflect_Token_NAMESPACE($token[1], $token[2], $id, $tokens);
             }
         }
+
+        $tokens  = $reflect->scan(TEST_FILES_PATH . 'source6.php');
+
+        foreach ($tokens as $id => $token) {
+            if (($token[0] == 'T_STRING' && $token[1] == 'namespace')
+                || ($token[0] == 'T_NAMESPACE')
+            ) {
+                $this->ns[] = new PHP_Reflect_Token_NAMESPACE($token[1], $token[2], $id, $tokens);
+            }
+        }
+
+        $this->namespaces = $reflect->getNamespaces();
     }
 
     /**
@@ -94,11 +96,58 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
     {
         if (version_compare(PHP_VERSION, '5.3.0', '<')) {
             $this->assertEquals(
-                'A', $this->ns->getName()
+                'A', $this->ns[0]->getName()
             );
         } else {
             $this->assertEquals(
-                'A\B', $this->ns->getName()
+                'A\B', $this->ns[0]->getName()
+            );
+        }
+    }
+
+    /**
+     * Defining multiple namespaces in the same file
+     *
+     * @link   http://www.php.net/manual/en/language.namespaces.definitionmultiple.php
+     * @covers PHP_Reflect_Token_NAMESPACE::getName
+     */
+    public function testGetMultipleNamespaceInSameFile()
+    {
+        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+            $this->markTestSkipped(
+                'NAMESPACE is fully supported only with PHP 5.3.0 or greater'
+            );
+        } else {
+            $this->assertEquals(
+                'MyProject', $this->ns[1]->getName()
+            );
+            $this->assertEquals(
+                'AnotherProject', $this->ns[2]->getName()
+            );
+
+            $expected = array(
+                'A\B' => array(
+                    'startLine' => 2,
+                    'endLine'   => 5,
+                    'file'      => TEST_FILES_PATH . 'source5.php',
+                    'docblock'  => null
+                ),
+                'MyProject' => array(
+                    'startLine' => 2,
+                    'endLine'   => 9,
+                    'file'      => TEST_FILES_PATH . 'source6.php',
+                    'docblock'  => null
+                ),
+                'AnotherProject' => array(
+                    'startLine' => 11,
+                    'endLine'   => 16,
+                    'file'      => TEST_FILES_PATH . 'source6.php',
+                    'docblock'  => null
+                ),
+            );
+
+            $this->assertSame(
+                $expected, $this->namespaces
             );
         }
     }

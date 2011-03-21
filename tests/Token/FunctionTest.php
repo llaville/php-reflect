@@ -47,16 +47,6 @@ if (!defined('TEST_FILES_PATH')) {
     );
 }
 
-$dir = dirname(dirname(dirname(__FILE__)));
-
-if (file_exists($dir . DIRECTORY_SEPARATOR . 'PHP/Reflect.php')) {
-    // running from repository 
-    include_once $dir . DIRECTORY_SEPARATOR . 'PHP/Reflect.php';
-} else {
-    // package installed
-    include_once 'Bartlett/PHP/Reflect.php';
-}
-
 /**
  * Tests for the PHP_Reflect_Token_FUNCTION class.
  *

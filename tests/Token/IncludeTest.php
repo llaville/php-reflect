@@ -47,16 +47,6 @@ if (!defined('TEST_FILES_PATH')) {
     );
 }
 
-$dir = dirname(dirname(dirname(__FILE__)));
-
-if (file_exists($dir . DIRECTORY_SEPARATOR . 'PHP/Reflect.php')) {
-    // running from repository 
-    include_once $dir . DIRECTORY_SEPARATOR . 'PHP/Reflect.php';
-} else {
-    // package installed
-    include_once 'Bartlett/PHP/Reflect.php';
-}
-
 /**
  * Tests for the PHP_Reflect_Token_REQUIRE_ONCE, PHP_Reflect_Token_REQUIRE
  * PHP_Reflect_Token_INCLUDE_ONCE and PHP_Reflect_Token_INCLUDE_ONCE classes.
@@ -103,16 +93,32 @@ class PHP_Reflect_Token_IncludeTest extends PHPUnit_Framework_TestCase
         $this->assertSame(
             array(
                 'include'      => array(
-                    'test1.php' => array('startLine' => 5, 'endLine' => 5, 'file' => $this->filename, 'docblock' => null)
+                    'test1.php' => array(
+                        'startLine' => 5, 'endLine' => 5, 'file' => $this->filename,
+                        'namespace' => '',
+                        'docblock' => null
+                    )
                 ),
                 'include_once' => array(
-                    'test2.php' => array('startLine' => 6, 'endLine' => 6, 'file' => $this->filename, 'docblock' => null)
+                    'test2.php' => array(
+                        'startLine' => 6, 'endLine' => 6, 'file' => $this->filename,
+                        'namespace' => '',
+                        'docblock' => null
+                    )
                 ),
                 'require'      => array(
-                    'test3.php' => array('startLine' => 7, 'endLine' => 7, 'file' => $this->filename, 'docblock' => null)
+                    'test3.php' => array(
+                        'startLine' => 7, 'endLine' => 7, 'file' => $this->filename,
+                        'namespace' => '',
+                        'docblock' => null
+                    )
                 ),
                 'require_once' => array(
-                    'test4.php' => array('startLine' => 9, 'endLine' => 10, 'file' => $this->filename, 'docblock' => "// test four\n")
+                    'test4.php' => array(
+                        'startLine' => 9, 'endLine' => 10, 'file' => $this->filename,
+                        'namespace' => '',
+                        'docblock' => "// test four\n"
+                    )
                 ),
             ),
             $this->reflect->getIncludes(true)
@@ -126,8 +132,12 @@ class PHP_Reflect_Token_IncludeTest extends PHPUnit_Framework_TestCase
     public function testGetIncludesCategory()
     {
         $this->assertSame(
-            array('test4.php' => 
-                array('startLine' => 9, 'endLine' => 10, 'file' => $this->filename, 'docblock' => "// test four\n")
+            array('test4.php' =>
+                array(
+                    'startLine' => 9, 'endLine' => 10, 'file' => $this->filename,
+                    'namespace' => '',
+                    'docblock' => "// test four\n"
+                )
             ),
             $this->reflect->getIncludes(true, 'require_once')
         );
