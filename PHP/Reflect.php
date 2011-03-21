@@ -40,7 +40,7 @@
  */
 
 require_once dirname(__FILE__) . '/Reflect/Autoload.php';
- 
+
 /**
  * PHP_Reflect adds the ability to reverse-engineer
  * classes, interfaces, functions, constants and more.
@@ -127,6 +127,7 @@ class PHP_Reflect implements ArrayAccess
         $defaultOptions = array(
             // default containers to store results from parsing
             'containers' => array(
+                'namespace'    => 'namespaces',
                 'interface'    => 'interfaces',
                 'class'        => 'classes',
                 'function'     => 'functions',
@@ -137,29 +138,32 @@ class PHP_Reflect implements ArrayAccess
             ),
             // properties for each component to provide on final result
             'properties' => array(
+                'namespace' => array(
+                    'file', 'startEndLines', 'docblock'
+                ),
                 'interface' => array(
-                    'file', 'startEndLines', 'docblock',
+                    'file', 'startEndLines', 'docblock', 'namespace',
                     'keywords', 'parent', 'methods'
                 ),
                 'class' => array(
-                    'file', 'startEndLines', 'docblock',
+                    'file', 'startEndLines', 'docblock', 'namespace',
                     'keywords', 'parent', 'methods', 'interfaces', 'package'
                 ),
                 'function' => array(
-                    'file', 'startEndLines', 'docblock',
+                    'file', 'startEndLines', 'docblock', 'namespace',
                     'keywords', 'signature', 'ccn'
                 ),
                 'require_once' => array(
-                    'file', 'startEndLines', 'docblock'
+                    'file', 'startEndLines', 'docblock', 'namespace',
                 ),
                 'require' => array(
-                    'file', 'startEndLines', 'docblock'
+                    'file', 'startEndLines', 'docblock', 'namespace',
                 ),
                 'include_once' => array(
-                    'file', 'startEndLines', 'docblock'
+                    'file', 'startEndLines', 'docblock', 'namespace',
                 ),
                 'include' => array(
-                    'file', 'startEndLines', 'docblock'
+                    'file', 'startEndLines', 'docblock', 'namespace',
                 ),
             ),
         );
@@ -179,6 +183,9 @@ class PHP_Reflect implements ArrayAccess
 
         // default parsers for interfaces, classes, functions, includes
         $this->parserToken = array(
+            'T_NAMESPACE'    => array(
+                'PHP_Reflect_Token_NAMESPACE', array($this, 'parseToken')
+            ),
             'T_INTERFACE'    => array(
                 'PHP_Reflect_Token_INTERFACE', array($this, 'parseToken')
             ),
@@ -350,6 +357,8 @@ class PHP_Reflect implements ArrayAccess
      */
     protected function parse()
     {
+        $namespace        = FALSE;
+        $namespaceEndLine = FALSE;
         $class            = FALSE;
         $classEndLine     = FALSE;
         $interface        = FALSE;
@@ -366,6 +375,7 @@ class PHP_Reflect implements ArrayAccess
             $line       = $token[2];
 
             $context = array(
+                'namespace' => $namespace,
                 'class'     => $class,
                 'interface' => $interface,
                 'context'   => strtolower(str_replace('T_', '', $tokenName))
@@ -373,6 +383,12 @@ class PHP_Reflect implements ArrayAccess
 
             switch ($tokenName) {
             case 'T_CLOSE_CURLY':
+                if ($namespaceEndLine !== FALSE
+                    && $namespaceEndLine == $line
+                ) {
+                    $namespace        = FALSE;
+                    $namespaceEndLine = FALSE;
+                }
                 if ($classEndLine !== FALSE
                     && $classEndLine == $line
                 ) {
@@ -399,7 +415,11 @@ class PHP_Reflect implements ArrayAccess
                 break;
             }
 
-            if ($tokenName == 'T_INTERFACE') {
+            if ($tokenName == 'T_NAMESPACE') {
+                $namespace        = $token->getName();
+                $namespaceEndLine = $token->getEndLine();
+
+            } elseif ($tokenName == 'T_INTERFACE') {
                 $interface        = $token->getName();
                 $interfaceEndLine = $token->getEndLine();
 
@@ -411,7 +431,9 @@ class PHP_Reflect implements ArrayAccess
     }
 
     /**
-     * Default parser for tokens T_INTERFACE, T_CLASS, T_FUNCTION
+     * Default parser for tokens
+     * T_NAMESPACE, T_INTERFACE, T_CLASS, T_FUNCTION,
+     * T_REQUIRE_ONCE, T_REQUIRE, T_INCLUDE_ONCE, T_INCLUDE,
      *
      * @return void
      */
@@ -434,6 +456,7 @@ class PHP_Reflect implements ArrayAccess
         }
 
         switch ($context) {
+        case 'namespace':
         case 'interface':
         case 'class':
         case 'function':
@@ -447,6 +470,9 @@ class PHP_Reflect implements ArrayAccess
             }
             if (in_array('file', $properties)) {
                 $tmp['file'] = $subject->filename;
+            }
+            if (in_array('namespace', $properties)) {
+                $tmp['namespace'] = (($namespace === FALSE) ? '' : $namespace);
             }
             break;
         }
@@ -468,7 +494,13 @@ class PHP_Reflect implements ArrayAccess
 
             if ($class === FALSE && $interface === FALSE) {
                 // update user functions
-                $subject->offsetSet(array($container => $name), $tmp);
+                if ($namespace === FALSE) {
+                    $subject->offsetSet(array($container => $name), $tmp);
+                } else {
+                    $_ns = $subject->offsetGet(array($container => $namespace));
+                    $_ns[$name] = $tmp;
+                    $subject->offsetSet(array($container => $namespace), $_ns);
+                }
 
             } elseif ($interface === FALSE) {
                 if (!in_array('methods', $properties['class'])) {
@@ -478,9 +510,19 @@ class PHP_Reflect implements ArrayAccess
 
                 if ($container !== NULL) {
                     // update class methods
-                    $_class = $subject->offsetGet(array($container => $class));
-                    $_class['methods'][$name] = $tmp;
-                    $subject->offsetSet(array($container => $class), $_class);
+                    if (isset($tmp['namespace'])) {
+                        unset($tmp['namespace']);
+                    }
+
+                    if ($namespace === FALSE) {
+                        $_class = $subject->offsetGet(array($container => $class));
+                        $_class['methods'][$name] = $tmp;
+                        $subject->offsetSet(array($container => $class), $_class);
+                    } else {
+                        $_ns = $subject->offsetGet(array($container => $namespace));
+                        $_ns[$class]['methods'][$name] = $tmp;
+                        $subject->offsetSet(array($container => $namespace), $_ns);
+                    }
                 }
 
             } else {
@@ -491,25 +533,48 @@ class PHP_Reflect implements ArrayAccess
 
                 if ($container !== NULL) {
                     // update interface methods
-                    $_interface = $subject->offsetGet(
-                        array($container => $interface)
-                    );
-                    $_interface['methods'][$name] = $tmp;
-                    $subject->offsetSet(
-                        array($container => $interface), $_interface
-                    );
+                    if (isset($tmp['namespace'])) {
+                        unset($tmp['namespace']);
+                    }
+
+                    if ($namespace === FALSE) {
+                        $_interface = $subject->offsetGet(
+                            array($container => $interface)
+                        );
+                        $_interface['methods'][$name] = $tmp;
+                        $subject->offsetSet(
+                            array($container => $interface), $_interface
+                        );
+                    } else {
+                        $_ns = $subject->offsetGet(array($container => $namespace));
+                        $_ns[$interface]['methods'][$name] = $tmp;
+                        $subject->offsetSet(array($container => $namespace), $_ns);
+                    }
                 }
             }
 
         } elseif ($inc === TRUE) {
             $type = $token->getType();
             // update includes
-            $_inc = $subject->offsetGet($container);
-            $_inc[$type][$name] = $tmp;
-            $subject->offsetSet($container, $_inc);
+            if ($namespace === FALSE) {
+                $_inc = $subject->offsetGet($container);
+                $_inc[$type][$name] = $tmp;
+                $subject->offsetSet($container, $_inc);
+            } else {
+                $_ns = $subject->offsetGet(array($container => $namespace));
+                $_ns[$type][$name] = $tmp;
+                $subject->offsetSet(array($container => $namespace), $_ns);
+            }
 
         } else {
-            $subject->offsetSet(array($container => $name), $tmp);
+
+            if ($namespace === FALSE) {
+                $subject->offsetSet(array($container => $name), $tmp);
+            } else {
+                $_ns = $subject->offsetGet(array($container => $namespace));
+                $_ns[$name] = $tmp;
+                $subject->offsetSet(array($container => $namespace), $_ns);
+            }
         }
     }
 

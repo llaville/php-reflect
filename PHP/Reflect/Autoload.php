@@ -19,6 +19,8 @@ function phpReflect_autoload($className)
 
     if ($classes === null) {
 
+        $classes['PHP_Reflect'] = 'PHP/Reflect.php';
+
         $classNames = array(
             'PHP_Reflect_Token',
             'PHP_Reflect_TokenWithScope',

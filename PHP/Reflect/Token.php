@@ -63,7 +63,7 @@ abstract class PHP_Reflect_Token
     {
         return $this->line;
     }
-    
+
 }
 
 abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
@@ -86,29 +86,29 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
 
         for ($i = $this->id - 1; $i > 0; $i--) {
 
-            if ('T_FUNCTION' == $this->tokenStream[$i][0] 
+            if ('T_FUNCTION' == $this->tokenStream[$i][0]
                 || 'T_CLASS' == $this->tokenStream[$i][0]
             ) {
-                // Some other class or function, 
+                // Some other class or function,
                 // no docblock can be used for the current token
                 break;
             }
 
             $line = $this->tokenStream[$i][2];
 
-            if ($line == $currentLineNumber 
+            if ($line == $currentLineNumber
                 || (($line == $prevLineNumber) && ('T_WHITESPACE' == $this->tokenStream[$i][0]))
             ) {
                 continue;
             }
 
-            if ($line == $prevLineNumber 
+            if ($line == $prevLineNumber
                 && ('T_COMMENT' == $this->tokenStream[$i][0])
             ) {
                 return $this->tokenStream[$i][1];
             }
-            
-            if (($line < $currentLineNumber) 
+
+            if (($line < $currentLineNumber)
                 && ('T_DOC_COMMENT' !== $this->tokenStream[$i][0])
             ) {
                 break;
@@ -174,13 +174,29 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
 
     public function getEndTokenId()
     {
-        $block  = 0;
-        $i      = $this->id;
+        $block = 0;
+        $i     = $this->id + 1;
+
+        if ($this instanceof PHP_Reflect_Token_NAMESPACE) {
+            for ($j = $this->id + 3; ; $j += 1) {
+                if (isset($this->tokenStream[$j])) {
+                    if ($this->tokenStream[$j][0] == 'T_OPEN_CURLY') {
+                        $t_ns_open = 'ns_open_curly';
+                        break;
+                    } elseif ($this->tokenStream[$j][0] == 'T_SEMICOLON') {
+                        $t_ns_open = 'ns_open_semicolon';
+                        break;
+                    }
+                }
+            }
+        } else {
+            $t_ns_open = false;
+        }
 
         while ($this->endTokenId === NULL && isset($this->tokenStream[$i])) {
-            
+
             $tokenName = $this->tokenStream[$i][0];
-            
+
             if ($tokenName == 'T_OPEN_CURLY' ||
                 $tokenName == 'T_CURLY_OPEN'
             ) {
@@ -189,27 +205,40 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
             elseif ($tokenName == 'T_CLOSE_CURLY') {
                 $block--;
 
-                if ($block === 0) {
+                if ($block === 0
+                    && (!$t_ns_open || $t_ns_open == 'ns_open_curly')
+                ) {
                     $this->endTokenId = $i;
                 }
             }
-            elseif ($this->tokenStream[$i][0] == 'T_SEMICOLON'
+            elseif ($tokenName == 'T_SEMICOLON'
                 && ($this instanceof PHP_Reflect_Token_FUNCTION ||
                 $this instanceof PHP_Reflect_Token_REQUIRE_ONCE ||
                 $this instanceof PHP_Reflect_Token_REQUIRE ||
                 $this instanceof PHP_Reflect_Token_INCLUDE_ONCE ||
                 $this instanceof PHP_Reflect_Token_INCLUDE)) {
-                
+
                 if ($block === 0) {
                     $this->endTokenId = $i;
                 }
+            }
+
+            elseif ($tokenName == 'T_NAMESPACE'
+                && $t_ns_open = 'ns_open_semicolon') {
+                // multiple namespace without bracketed syntax ending
+                $this->endTokenId = $i - 1;
             }
 
             $i++;
         }
 
         if ($this->endTokenId === NULL) {
-            $this->endTokenId = $this->id;
+            if ($t_ns_open = 'ns_open_semicolon') {
+                // simple namespace without bracketed syntax ending
+                $this->endTokenId = $i - 1;
+            } else {
+                $this->endTokenId = $this->id;
+            }
         }
 
         return $this->endTokenId;
@@ -404,7 +433,7 @@ class PHP_Reflect_Token_FUNCTION extends PHP_Reflect_TokenWithScope
                 case 'T_LOGICAL_AND':
                 case 'T_BOOLEAN_OR':
                 case 'T_LOGICAL_OR':
-                case 'T_QUESTION_MARK': 
+                case 'T_QUESTION_MARK':
                     $this->ccn++;
                     break;
             }
@@ -465,8 +494,8 @@ class PHP_Reflect_Token_INTERFACE extends PHP_Reflect_TokenWithScope
 
     public function hasParent()
     {
-        return 
-            (isset($this->tokenStream[$this->id + 4]) && 
+        return
+            (isset($this->tokenStream[$this->id + 4]) &&
             $this->tokenStream[$this->id + 4][0] == 'T_EXTENDS');
     }
 
@@ -479,7 +508,7 @@ class PHP_Reflect_Token_INTERFACE extends PHP_Reflect_TokenWithScope
         $i         = $this->id + 6;
         $className = $this->tokenStream[$i][1];
 
-        while (isset($this->tokenStream[$i+1]) && 
+        while (isset($this->tokenStream[$i+1]) &&
             $this->tokenStream[$i+1][0] != 'T_WHITESPACE'
         ) {
             $className .= $this->tokenStream[++$i][1];
@@ -487,7 +516,7 @@ class PHP_Reflect_Token_INTERFACE extends PHP_Reflect_TokenWithScope
 
         return $className;
     }
-    
+
     public function getPackage()
     {
         $className  = $this->getName();
@@ -545,9 +574,9 @@ class PHP_Reflect_Token_INTERFACE extends PHP_Reflect_TokenWithScope
 
     public function hasInterfaces()
     {
-        if ((isset($this->tokenStream[$this->id + 4]) 
+        if ((isset($this->tokenStream[$this->id + 4])
             && $this->tokenStream[$this->id + 4][0] == 'T_IMPLEMENTS') ||
-           (isset($this->tokenStream[$this->id + 8]) 
+           (isset($this->tokenStream[$this->id + 8])
             && $this->tokenStream[$this->id + 8][0] == 'T_IMPLEMENTS')){
             return true;
         }
@@ -605,7 +634,7 @@ class PHP_Reflect_Token_DOLLAR_OPEN_CURLY_BRACES extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_CURLY_OPEN extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_PAAMAYIM_NEKUDOTAYIM extends PHP_Reflect_Token {}
 
-class PHP_Reflect_Token_NAMESPACE extends PHP_Reflect_Token
+class PHP_Reflect_Token_NAMESPACE extends PHP_Reflect_TokenWithScope
 {
     public function getName()
     {
