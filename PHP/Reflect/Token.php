@@ -2,6 +2,8 @@
 /**
  * Tokens for PHP_Reflect parser
  *
+ * Credits for Sebastian Bergmann on base concept from phpunit/PHP_Token_Stream
+ *
  * @category PHP
  * @package  PHP_Reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
