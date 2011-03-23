@@ -3,7 +3,7 @@
  * Copyright (c) 2011, Laurent Laville <pear@laurent-laville.org>
  *
  * Credits for Sebastian Bergmann on base concept from phpunit/PHP_Token_Stream
- * 
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -116,6 +116,11 @@ class PHP_Reflect implements ArrayAccess
      * @var string
      */
     protected $filename;
+
+    /**
+     * @var array
+     */
+    protected $linesOfCode = array('loc' => 0, 'cloc' => 0, 'ncloc' => 0);
 
     /**
      * Class constructor
@@ -271,8 +276,22 @@ class PHP_Reflect implements ArrayAccess
             }
             $this->tokens[$id][2] = $line;
             $this->tokens[$id][0] = $tokenName;
-            $line += substr_count($text, "\n");
+            $lines = substr_count($text, "\n");
+            $line += $lines;
+
+            if ('T_HALT_COMPILER' == $tokenName) {
+                break;
+
+            } elseif ($tokenName == 'T_COMMENT'
+                || $tokenName == 'T_DOC_COMMENT'
+            ) {
+                $this->linesOfCode['cloc'] += $lines + 1;
+            }
         }
+
+        $this->linesOfCode['loc'] = substr_count($sourceCode, "\n");
+        $this->linesOfCode['ncloc']
+            = $this->linesOfCode['loc'] - $this->linesOfCode['cloc'];
 
         $this->parse();
 
@@ -350,6 +369,16 @@ class PHP_Reflect implements ArrayAccess
         }
 
         return $includes;
+    }
+
+    /**
+     * Returns number of lines (code, comment, total) in source code parsed
+     *
+     * @return array
+     */
+    public function getLinesOfCode()
+    {
+        return $this->linesOfCode;
     }
 
     /**
