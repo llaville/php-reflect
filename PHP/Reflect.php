@@ -2,7 +2,7 @@
 /**
  * Copyright (c) 2011, Laurent Laville <pear@laurent-laville.org>
  *
- * Credits for Sebastian Bergmann on base concept from phpunit/PHP_Token_Stream
+ * Credits to Sebastian Bergmann on base concept from phpunit/PHP_Token_Stream
  *
  * All rights reserved.
  *
