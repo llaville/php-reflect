@@ -409,7 +409,9 @@ class PHP_Reflect implements ArrayAccess
                 'namespace' => $namespace,
                 'class'     => $class,
                 'interface' => $interface,
-                'context'   => strtolower(str_replace('T_', '', $tokenName))
+                'context'   => ($namespace === FALSE)  
+                    ? strtolower(str_replace('T_', '', $tokenName)) 
+                    : 'namespace'
             );
 
             switch ($tokenName) {
