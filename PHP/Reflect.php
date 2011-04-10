@@ -319,8 +319,23 @@ class PHP_Reflect implements ArrayAccess
         if (preg_match($pattern, $name, $matches)) {
             $container = strtolower($matches[1]{0}) . substr($matches[1], 1);
 
-            return $this->offsetGet($container);
-
+            if ($container == 'namespaces') {
+                return $this->offsetGet($container);
+            } else {
+                $namespace = (isset($args[0]) && is_string($args[0]))
+                    ? $args[0] : false;
+                if ($namespace === FALSE) {
+                    // get data from all namespaces
+                    return $this->offsetGet($container);
+                } else {
+                    // get data from specified namespace
+                    if ($this->offsetExists(array($container => $namespace))) {
+                        return $this->offsetGet(array($container => $namespace));
+                    } else {
+                        return array();
+                    }
+                }
+            }
         } else {
             throw new RuntimeException(
                 "Invalid method. Given '$name'"
@@ -341,12 +356,21 @@ class PHP_Reflect implements ArrayAccess
      * @param bool   $categorize OPTIONAL
      * @param string $category   OPTIONAL Either 'require_once', 'require',
      *                                           'include_once', 'include'
+     * @param string $namespace  OPTIONAL Default is global namespace
      *
      * @return array
      */
-    public function getIncludes($categorize = FALSE, $category = NULL)
+    public function getIncludes($categorize = FALSE, $category = NULL,
+        $namespace = FALSE)
     {
-        $includes = $this->offsetGet('includes');
+        if ($namespace === FALSE) {
+            // global namespace
+            $ns = '\\';
+        } else {
+            $ns = $namespace;
+        }
+
+        $includes = $this->offsetGet(array('includes' => $ns));
 
         foreach (array('require_once', 'require', 'include_once', 'include')
             as $key) {
@@ -409,9 +433,7 @@ class PHP_Reflect implements ArrayAccess
                 'namespace' => $namespace,
                 'class'     => $class,
                 'interface' => $interface,
-                'context'   => ($namespace === FALSE)  
-                    ? strtolower(str_replace('T_', '', $tokenName)) 
-                    : 'namespace'
+                'context'   => strtolower(str_replace('T_', '', $tokenName))
             );
 
             switch ($tokenName) {
@@ -475,6 +497,11 @@ class PHP_Reflect implements ArrayAccess
         list($subject, $context, $token) = func_get_args();
         extract($context);
 
+        $container = $subject->options['containers'][$context];
+        if ($container === NULL) {
+            return;
+        }
+
         $name = $token->getName();
         $tmp  = array();
 
@@ -517,9 +544,11 @@ class PHP_Reflect implements ArrayAccess
             }
         }
 
-        $container = $subject->options['containers'][$context];
-        if ($container === NULL) {
-            return;
+        if ($namespace === FALSE) {
+            // global namespace
+            $ns = '\\';
+        } else {
+            $ns = $namespace;
         }
 
         if ($context == 'function') {
@@ -527,13 +556,9 @@ class PHP_Reflect implements ArrayAccess
 
             if ($class === FALSE && $interface === FALSE) {
                 // update user functions
-                if ($namespace === FALSE) {
-                    $subject->offsetSet(array($container => $name), $tmp);
-                } else {
-                    $_ns = $subject->offsetGet(array($container => $namespace));
-                    $_ns[$name] = $tmp;
-                    $subject->offsetSet(array($container => $namespace), $_ns);
-                }
+                $_ns = $subject->offsetGet(array($container => $ns));
+                $_ns[$name] = $tmp;
+                $subject->offsetSet(array($container => $ns), $_ns);
 
             } elseif ($interface === FALSE) {
                 if (!in_array('methods', $properties['class'])) {
@@ -547,15 +572,9 @@ class PHP_Reflect implements ArrayAccess
                         unset($tmp['namespace']);
                     }
 
-                    if ($namespace === FALSE) {
-                        $_class = $subject->offsetGet(array($container => $class));
-                        $_class['methods'][$name] = $tmp;
-                        $subject->offsetSet(array($container => $class), $_class);
-                    } else {
-                        $_ns = $subject->offsetGet(array($container => $namespace));
-                        $_ns[$class]['methods'][$name] = $tmp;
-                        $subject->offsetSet(array($container => $namespace), $_ns);
-                    }
+                    $_ns = $subject->offsetGet(array($container => $ns));
+                    $_ns[$class]['methods'][$name] = $tmp;
+                    $subject->offsetSet(array($container => $ns), $_ns);
                 }
 
             } else {
@@ -571,43 +590,31 @@ class PHP_Reflect implements ArrayAccess
                     }
 
                     if ($namespace === FALSE) {
-                        $_interface = $subject->offsetGet(
-                            array($container => $interface)
-                        );
-                        $_interface['methods'][$name] = $tmp;
-                        $subject->offsetSet(
-                            array($container => $interface), $_interface
-                        );
+                        // global namespace
+                        $ns = '\\';
                     } else {
-                        $_ns = $subject->offsetGet(array($container => $namespace));
-                        $_ns[$interface]['methods'][$name] = $tmp;
-                        $subject->offsetSet(array($container => $namespace), $_ns);
+                        $ns = $namespace;
                     }
+                    $_ns = $subject->offsetGet(array($container => $ns));
+                    $_ns[$interface]['methods'][$name] = $tmp;
+                    $subject->offsetSet(array($container => $ns), $_ns);
                 }
             }
 
         } elseif ($inc === TRUE) {
             $type = $token->getType();
             // update includes
-            if ($namespace === FALSE) {
-                $_inc = $subject->offsetGet($container);
-                $_inc[$type][$name] = $tmp;
-                $subject->offsetSet($container, $_inc);
-            } else {
-                $_ns = $subject->offsetGet(array($container => $namespace));
-                $_ns[$type][$name] = $tmp;
-                $subject->offsetSet(array($container => $namespace), $_ns);
-            }
+            $_ns = $subject->offsetGet(array($container => $ns));
+            $_ns[$type][$name] = $tmp;
+            $subject->offsetSet(array($container => $ns), $_ns);
+
+        } elseif ($context == 'namespace') {
+            $subject->offsetSet(array($container => $name), $tmp);
 
         } else {
-
-            if ($namespace === FALSE) {
-                $subject->offsetSet(array($container => $name), $tmp);
-            } else {
-                $_ns = $subject->offsetGet(array($container => $namespace));
-                $_ns[$name] = $tmp;
-                $subject->offsetSet(array($container => $namespace), $_ns);
-            }
+            $_ns = $subject->offsetGet(array($container => $ns));
+            $_ns[$name] = $tmp;
+            $subject->offsetSet(array($container => $ns), $_ns);
         }
     }
 
@@ -620,7 +627,13 @@ class PHP_Reflect implements ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return isset($this->_container[$offset]);
+        if (is_array($offset)) {
+            list ($container, $namespace) = each($offset);
+
+            return isset($this->_container[$container][$namespace]);
+        } else {
+            return isset($this->_container[$offset]);
+        }
     }
 
     /**
@@ -633,10 +646,10 @@ class PHP_Reflect implements ArrayAccess
     public function offsetGet($offset)
     {
         if (is_array($offset)) {
-            list ($container, $name) = each($offset);
+            list ($container, $namespace) = each($offset);
 
-            if (isset($this->_container[$container][$name])) {
-                return $this->_container[$container][$name];
+            if (isset($this->_container[$container][$namespace])) {
+                return $this->_container[$container][$namespace];
             }
 
         } else {
@@ -659,8 +672,8 @@ class PHP_Reflect implements ArrayAccess
         if (is_null($offset)) {
             $this->_container[] = $value;
         } elseif (is_array($offset)) {
-            list ($container, $name) = each($offset);
-            $this->_container[$container][$name] = $value;
+            list ($container, $namespace) = each($offset);
+            $this->_container[$container][$namespace] = $value;
         } else {
             $this->_container[$offset] = $value;
         }
@@ -676,8 +689,8 @@ class PHP_Reflect implements ArrayAccess
     public function offsetUnset($offset)
     {
         if (is_array($offset)) {
-            list ($container, $name) = each($offset);
-            unset($this->_container[$container][$name]);
+            list ($container, $namespace) = each($offset);
+            unset($this->_container[$container][$namespace]);
         } else {
             unset($this->_container[$offset]);
         }

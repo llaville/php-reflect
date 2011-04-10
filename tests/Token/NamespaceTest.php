@@ -62,6 +62,7 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
 {
     protected $ns;
     protected $namespaces;
+    protected $functions;
 
     protected function setUp()
     {
@@ -75,8 +76,9 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
                 $this->ns[] = new PHP_Reflect_Token_NAMESPACE($token[1], $token[2], $id, $tokens);
             }
         }
+        $this->functions = $reflect->getFunctions();
 
-        $tokens  = $reflect->scan(TEST_FILES_PATH . 'source6.php');
+        $tokens = $reflect->scan(TEST_FILES_PATH . 'source6.php');
 
         foreach ($tokens as $id => $token) {
             if (($token[0] == 'T_STRING' && $token[1] == 'namespace')
@@ -151,4 +153,52 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
             );
         }
     }
+
+    /**
+     * Retrieves functions declared on a user namespace
+     *
+     * @covers PHP_Reflect_Token_NAMESPACE::getName
+     */
+    public function testGetFunctionsFromUserNamespace()
+    {
+        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+            $this->markTestSkipped(
+                'NAMESPACE is fully supported only with PHP 5.3.0 or greater'
+            );
+        } else {
+            $expected = array(
+                'Bar' => array(
+                    'startLine' => 5,
+                    'endLine'   => 5,
+                    'file'      => TEST_FILES_PATH . 'source5.php',
+                    'namespace' => 'A\B',
+                    'docblock'  => null,
+                    'keywords'  => '',
+                    'signature' => 'Bar()',
+                    'ccn'       => 1
+                ),
+            );
+
+            $this->assertSame(
+                $expected, $this->functions['A\B']
+            );
+        }
+    }
+
+    /**
+     * Retrieves functions declared on global namespace
+     *
+     * @covers PHP_Reflect_Token_NAMESPACE::getName
+     */
+    public function testGetFunctionsFromGlobalNamespace()
+    {
+        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+            $this->markTestSkipped(
+                'NAMESPACE is fully supported only with PHP 5.3.0 or greater'
+            );
+        } else {
+            $this->assertNotContains('\\', array_keys($this->functions));
+        }
+    }
+
 }
