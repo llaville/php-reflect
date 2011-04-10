@@ -235,7 +235,7 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
         }
 
         if ($this->endTokenId === NULL) {
-            if ($t_ns_open = 'ns_open_semicolon') {
+            if ($t_ns_open == 'ns_open_semicolon') {
                 // simple namespace without bracketed syntax ending
                 $this->endTokenId = $i - 1;
             } else {
