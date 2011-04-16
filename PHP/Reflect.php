@@ -142,6 +142,7 @@ class PHP_Reflect implements ArrayAccess
                 'require'      => 'includes',
                 'include_once' => 'includes',
                 'include'      => 'includes',
+                'variable'     => 'globals'
             ),
             // properties for each component to provide on final result
             'properties' => array(
@@ -170,6 +171,9 @@ class PHP_Reflect implements ArrayAccess
                     'file', 'startEndLines', 'docblock', 'namespace',
                 ),
                 'include' => array(
+                    'file', 'startEndLines', 'docblock', 'namespace',
+                ),
+                'variable' => array(
                     'file', 'startEndLines', 'docblock', 'namespace',
                 ),
             ),
@@ -213,6 +217,9 @@ class PHP_Reflect implements ArrayAccess
             ),
             'T_INCLUDE'      => array(
                 'PHP_Reflect_Token_INCLUDE', array($this, 'parseToken')
+            ),
+            'T_VARIABLE'     => array(
+                'PHP_Reflect_Token_VARIABLE', array($this, 'parseToken')
             ),
         );
     }
@@ -396,6 +403,83 @@ class PHP_Reflect implements ArrayAccess
     }
 
     /**
+     * Gets global variables defined in source scanned
+     *
+     * Parameter $categorize set to TRUE causing this function to return a
+     * multi-dimensional array with categories in the keys of the first dimension
+     * and constants and their values in the second dimension.
+     *
+     * Parameter $category allow to filter following specific global type
+     *
+     * @param bool   $categorize OPTIONAL
+     * @param string $category   OPTIONAL
+     * @param string $namespace  OPTIONAL Default is global namespace
+     *
+     * @return array
+     */
+    public function getGlobals($categorize = FALSE, $category = NULL,
+        $namespace = FALSE)
+    {
+        static $glob = array(
+            'global',
+            '$GLOBALS',
+            '$HTTP_SERVER_VARS',
+            '$_SERVER',
+            '$HTTP_GET_VARS',
+            '$_GET',
+            '$HTTP_POST_VARS',
+            '$HTTP_POST_FILES',
+            '$_POST',
+            '$HTTP_COOKIE_VARS',
+            '$_COOKIE',
+            '$HTTP_SESSION_VARS',
+            '$_SESSION',
+            '$HTTP_ENV_VARS',
+            '$_ENV',
+        );
+
+        if ($namespace === FALSE) {
+            // global namespace
+            $ns = '\\';
+        } else {
+            $ns = $namespace;
+        }
+
+        $globals = $this->offsetGet(array('globals' => $ns));
+
+        foreach ($glob as $key) {
+            if (!isset($globals[$key])) {
+                $globals[$key] = array();
+            }
+        }
+
+        if (isset($globals[$category])) {
+            $globals = $globals[$category];
+
+        } elseif ($categorize === FALSE) {
+            $globals = array_merge(
+                $globals['global'],
+                $globals['$GLOBALS'],
+                $globals['$HTTP_SERVER_VARS'],
+                $globals['$_SERVER'],
+                $globals['$HTTP_GET_VARS'],
+                $globals['$_GET'],
+                $globals['$HTTP_POST_VARS'],
+                $globals['$HTTP_POST_FILES'],
+                $globals['$_POST'],
+                $globals['$HTTP_COOKIE_VARS'],
+                $globals['$_COOKIE'],
+                $globals['$HTTP_SESSION_VARS'],
+                $globals['$_SESSION'],
+                $globals['$HTTP_ENV_VARS'],
+                $globals['$_ENV']
+            );
+        }
+        ksort($globals);
+        return $globals;
+    }
+
+    /**
      * Returns number of lines (code, comment, total) in source code parsed
      *
      * @return array
@@ -489,11 +573,30 @@ class PHP_Reflect implements ArrayAccess
      * Default parser for tokens
      * T_NAMESPACE, T_INTERFACE, T_CLASS, T_FUNCTION,
      * T_REQUIRE_ONCE, T_REQUIRE, T_INCLUDE_ONCE, T_INCLUDE,
+     * T_VARIABLE
      *
      * @return void
      */
     protected function parseToken()
     {
+        static $globals = array(
+            'global',
+            '$GLOBALS',
+            '$HTTP_SERVER_VARS',
+            '$_SERVER',
+            '$HTTP_GET_VARS',
+            '$_GET',
+            '$HTTP_POST_VARS',
+            '$HTTP_POST_FILES',
+            '$_POST',
+            '$HTTP_COOKIE_VARS',
+            '$_COOKIE',
+            '$HTTP_SESSION_VARS',
+            '$_SESSION',
+            '$HTTP_ENV_VARS',
+            '$_ENV'
+        );
+
         list($subject, $context, $token) = func_get_args();
         extract($context);
 
@@ -502,12 +605,22 @@ class PHP_Reflect implements ArrayAccess
             return;
         }
 
-        $name = $token->getName();
         $tmp  = array();
+        $name = $token->getName();
+        if ($name === NULL) {
+            return;
+        }
 
         $inc = in_array(
             $context, array('require_once', 'require', 'include_once', 'include')
         );
+
+        if (method_exists($token, 'getType')) {
+            $type = $token->getType();
+            $glob = in_array($type, $globals);
+        } else {
+            $glob = FALSE;
+        }
 
         if (isset($subject->options['properties'][$context])) {
             $properties = $subject->options['properties'][$context];
@@ -524,6 +637,7 @@ class PHP_Reflect implements ArrayAccess
         case 'require':
         case 'include_once':
         case 'include':
+        case 'variable':
             if (in_array('startEndLines', $properties)) {
                 $tmp['startLine'] = $token->getLine();
                 $tmp['endLine']   = $token->getEndLine();
@@ -601,9 +715,8 @@ class PHP_Reflect implements ArrayAccess
                 }
             }
 
-        } elseif ($inc === TRUE) {
-            $type = $token->getType();
-            // update includes
+        } elseif ($inc === TRUE || $glob === TRUE) {
+            // update includes or globals
             $_ns = $subject->offsetGet(array($container => $ns));
             $_ns[$type][$name] = $tmp;
             $subject->offsetSet(array($container => $ns), $_ns);
