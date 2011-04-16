@@ -73,8 +73,8 @@ class PHP_Reflect_Token_IncludeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHP_TokenIncludes::getName
-     * @covers PHP_TokenIncludes::getType
+     * @covers PHP_Reflect_Token_Includes::getName
+     * @covers PHP_Reflect_Token_Includes::getType
      */
     public function testGetIncludes()
     {
@@ -85,8 +85,8 @@ class PHP_Reflect_Token_IncludeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHP_TokenIncludes::getName
-     * @covers PHP_TokenIncludes::getType
+     * @covers PHP_Reflect_Token_Includes::getName
+     * @covers PHP_Reflect_Token_Includes::getType
      */
     public function testGetIncludesCategorized()
     {
