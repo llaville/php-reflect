@@ -15,11 +15,11 @@ and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2011-04-16</date>
- <time>17:03:28</time>
+ <date>2011-04-24</date>
+ <time>10:44:50</time>
  <version>
-  <release>0.7.0</release>
-  <api>0.7.0</api>
+  <release>1.0.0RC1</release>
+  <api>1.0.0</api>
  </version>
  <stability>
   <release>beta</release>
@@ -27,11 +27,13 @@ and more, by connecting php callbacks to tokens.
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
+First release candidate; on way to stable version 
+
 Additions and changes:
-- adds globals variable support
+- no changes since version 0.7.0
 
 Bug fixes:
-- typo errors on IncludeTest.php file about method covers; allow to use --coverage phpunit feature
+- none
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -126,6 +128,27 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.0.0RC1</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2011-04-24</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+First release candidate; on way to stable version 
+
+Additions and changes:
+- no changes since version 0.7.0
+
+Bug fixes:
+- none
+   </notes>
+  </release>
   <release>
    <version>
     <release>0.7.0</release>
