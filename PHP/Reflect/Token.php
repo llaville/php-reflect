@@ -264,15 +264,21 @@ abstract class PHP_Reflect_Token_Includes extends PHP_Reflect_TokenWithScope
             return $this->name;
         }
 
-        $i = $this->id + 2;
-        if ($this->tokenStream[$i][0] == 'T_CONSTANT_ENCAPSED_STRING') {
-            $this->name = trim($this->tokenStream[$i][1], "'\"");
+        $i = $this->id + 1;
+        while (isset($this->tokenStream[$i]) && $this->tokenStream[$i][0] !== 'T_SEMICOLON') {
+            if ($this->tokenStream[$i][0] == 'T_CONSTANT_ENCAPSED_STRING') {
+                $this->name .= trim($this->tokenStream[$i][1], "'\"");
+            } elseif ($this->tokenStream[$i][0] == 'T_VARIABLE') {
+                $this->name .= $this->tokenStream[$i][1] . ' ';
+            }
+            $i++;
+        }
+        if ($this->name !== NULL) {
             $this->type = strtolower(
                 str_replace('T_', '', $this->tokenStream[$this->id][0])
             );
         }
-
-        return $this->name;
+        return trim($this->name);
     }
 
     public function getType()
