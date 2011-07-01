@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.9.3" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
  <name>PHP_Reflect</name>
  <channel>bartlett.laurent-laville.org</channel>
- <summary>Adds the ability to reverse-engineer classes, interfaces, functions, constants and more. </summary>
- <description>PHP_Reflect adds the ability to reverse-engineer classes, interfaces, functions, constants 
+ <summary>Adds the ability to reverse-engineer classes, interfaces, functions, constants, namespaces and more. </summary>
+ <description>PHP_Reflect adds the ability to reverse-engineer classes, interfaces, functions, constants, namespaces 
 and more, by connecting php callbacks to tokens.
  </description>
  <lead>
@@ -15,28 +15,217 @@ and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2011-04-24</date>
- <time>10:44:50</time>
+ <date>2011-07-01</date>
+ <time>22:05:38</time>
  <version>
-  <release>1.0.0RC1</release>
+  <release>1.0.0</release>
   <api>1.0.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
-First release candidate; on way to stable version 
+First stable version 
 
 Additions and changes:
-- no changes since version 0.7.0
+- WARNING: Autoloader is no more loaded by default.
+- add AllTests.php script to launch all tests at once.
+- add source documentation that can be build with AsciiDoc (see docs/README.txt)
 
 Bug fixes:
 - none
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
+   <dir name="docs">
+    <dir name="images">
+     <dir name="icons">
+      <dir name="callouts">
+       <file name="1.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="2.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="3.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="4.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="5.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="6.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="7.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="8.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="9.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="10.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="11.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="12.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="13.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="14.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file name="15.png" role="doc">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /docs/images/icons/callouts -->
+      <file name="caution.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file name="example.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file name="home.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file name="important.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file name="next.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file name="note.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file name="prev.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file name="README" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file name="tip.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file name="up.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file name="warning.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /docs/images/icons -->
+     <file name="logo.png" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /docs/images -->
+    <dir name="js">
+     <file name="asciidoc-xhtml11.js" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="asciidoc.js" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /docs/js -->
+    <dir name="sources">
+     <file name="Autoload.html" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="Autoload.txt" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="Reflect.html" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="Reflect.txt" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="scanFile.html" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="scanFile.txt" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="Token.html" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="Token.txt" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /docs/sources -->
+    <dir name="styles">
+     <file name="flask.css" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="pygments.css" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="toc2.css" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="xhtml11-quirks.css" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="xhtml11.css" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /docs/styles -->
+    <file name="build-phing.xml" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="CHANGELOG.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="configure.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="connect_tokens.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="getting_started.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="index.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="INSTALL.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="LICENSE.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="README.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="revision.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="userguide-docinfo.xml" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="userguide.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /docs -->
+   <dir name="examples">
+    <file name="scanFile.php" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="scanFileWithOptions.php" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="scanFileWithOtherTokenConnect.php" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /examples -->
    <dir name="PHP">
     <dir name="Reflect">
      <file name="Autoload.php" role="php">
@@ -128,6 +317,29 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2011-07-01</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+First stable version 
+
+Additions and changes:
+- WARNING: Autoloader is no more loaded by default.
+- add AllTests.php script to launch all tests at once.
+- add source documentation that can be build with AsciiDoc (see docs/README.txt)
+
+Bug fixes:
+- none
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.0.0RC1</release>
