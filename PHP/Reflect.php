@@ -41,7 +41,6 @@
  * @link     http://php5.laurent-laville.org/reflect/
  */
 
-require_once dirname(__FILE__) . '/Reflect/Autoload.php';
 
 /**
  * PHP_Reflect adds the ability to reverse-engineer
