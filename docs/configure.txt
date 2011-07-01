@@ -1,0 +1,188 @@
+Configure
+=========
+include::revision.txt[]
+
+== Containers
+
+You can change default containers ('interfaces', 'classes', 'functions', 'includes'),
+and then have different getting methods (rather than standard 'getInterfaces', ... ).
+
+.Containers options
+[grid="rows",format="csv"]
+[options="header",cols="5,10"]
+|===========================
+key code, container default name
+namespace, namespaces
+interface, interfaces
+class,     classes
+function,  functions
+require_once, includes
+require,      includes
+include_once, includes
+include,      includes
+variable,  globals
+|===========================
+
+.Example
+[source,php]
+----
+<?php
+require_once 'Bartlett/PHP/Reflect/Autoload.php';
+
+$source = '/path/to/source_file.php';
+
+try {
+    $options = array('containers' => array('function' => 'userFunctions');
+
+    $reflect = new PHP_Reflect($options);
+    $reflect->scan($source);
+
+    $functions = $reflect->getUserFunctions();
+    // OR
+    $functions = $reflect['userFunctions'];
+
+} catch (Exception $e) {
+    echo 'Caught exception: ' . $e->getMessage() . PHP_EOL;
+?>
+----
+
+== Properties
+
+You can choose what information to retrieve depending of element (key code).
+
+.Properties options
+[grid="rows",format="csv"]
+[options="header",cols="5,10"]
+|===========================
+key code,default property
+namespace, "file, startEndLines, docblock"
+interface, "file, startEndLines, docblock, namespace, keywords, parent, methods"
+class,     "file, startEndLines, docblock, namespace, keywords, parent, methods, interfaces, package"
+function,  "file, startEndLines, docblock, namespace, keywords, signature, ccn"
+require_once, "file, startEndLines, docblock, namespace"
+require,      "file, startEndLines, docblock, namespace"
+include_once, "file, startEndLines, docblock, namespace"
+include,      "file, startEndLines, docblock, namespace"
+variable,     "file, startEndLines, docblock, namespace"
+|===========================
+
+.Example
+[source,php]
+----
+<?php
+require_once 'Bartlett/PHP/Reflect/Autoload.php';
+
+$source = '/path/to/PEAR-1.9.2/PEAR.php';
+
+try {
+    $options = array(
+        'properties' => array(
+            'interface' => array(
+                'keywords', 'parent', 'methods'
+            ),
+            'class' => array(
+                'keywords', 'parent', 'methods', 'interfaces', 'package'
+            ),
+            'function' => array(
+                'keywords', 'signature'
+            ),
+        )
+    );
+    $reflect = new PHP_Reflect($options);
+    $reflect->scan($source);
+
+    $classes = $reflect->getClasses();
+
+    print_r($classes['\\']['PEAR_Error']['docblock']);
+    print_r($classes['\\']['PEAR_Error']['methods']);
+
+} catch (Exception $e) {
+    echo 'Caught exception: ' . $e->getMessage() . PHP_EOL;
+}
+?>
+----
+
+Here we got only keywords and signature of each class methods.
+Class docblock is NULL (first print_r result)
+because we have decided NOT to get this property as file, startLine + endLine (startEndLines).
+
+[source,php]
+----
+<?php
+
+Array
+(
+    [PEAR_Error] => Array
+        (
+            [keywords] =>
+            [signature] => PEAR_Error($message = 'unknown error', $code = null,
+                        $mode = null, $options = null, $userinfo = null)
+        )
+
+    [getMode] => Array
+        (
+            [keywords] =>
+            [signature] => getMode()
+        )
+
+    [getCallback] => Array
+        (
+            [keywords] =>
+            [signature] => getCallback()
+        )
+
+    [getMessage] => Array
+        (
+            [keywords] =>
+            [signature] => getMessage()
+        )
+
+    [getCode] => Array
+        (
+            [keywords] =>
+            [signature] => getCode()
+        )
+
+    [getType] => Array
+        (
+            [keywords] =>
+            [signature] => getType()
+        )
+
+    [getUserInfo] => Array
+        (
+            [keywords] =>
+            [signature] => getUserInfo()
+        )
+
+    [getDebugInfo] => Array
+        (
+            [keywords] =>
+            [signature] => getDebugInfo()
+        )
+
+    [getBacktrace] => Array
+        (
+            [keywords] =>
+            [signature] => getBacktrace($frame = null)
+        )
+
+    [addUserInfo] => Array
+        (
+            [keywords] =>
+            [signature] => addUserInfo($info)
+        )
+
+    [__toString] => Array
+        (
+            [keywords] =>
+            [signature] => __toString()
+        )
+
+    [toString] => Array
+        (
+            [keywords] =>
+            [signature] => toString()
+        )
+)
+----

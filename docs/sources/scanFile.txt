@@ -1,0 +1,140 @@
+PHP_Reflect Basic usage
+=======================
+include::../revision.txt[]
+:stylesdir:   ../styles
+:scriptsdir:  ../js
+:iconsdir:    ../images/icons
+
+== Source Code
+
+[source,php]
+----
+include::../../examples/scanFile.php[]
+----
+
+Scan +PEAR.php+ script and returns only class names defined. 
+All details (docblock, startLine, endLine, keywords, parent, metods, interfaces, ...)
+are available in +$classes+ variable. 
+
++print_r+ should display array below:
+[source,php]
+----
+<php
+Array
+(
+    [0] => PEAR
+    [1] => PEAR5
+    [2] => PEAR_Error
+)
+----
+
+[NOTE]
+=====================================================================
+You can also retrieve informations through the array access interface.
+[source,php]
+----
+<?php
+    $reflect = new PHP_Reflect();
+    $reflect->scan($source);
+
+    $classes = $reflect['classes'];
+----
+=====================================================================
+
+
+== Full results
+
+If you want to have all results on a specific class returned, always with this example.
+
+[source,php]
+----
+<?php
+    print_r($classes['PEAR_Error']);
+----
+
+Should return
+----
+Array
+(
+    [startLine] => 796
+    [endLine] => 1055
+    [file] => C:\UwAmp\apache\php_5.2.13\tmp\PEAR-1.9.2\PEAR.php
+    [docblock] => /**
+ * Standard PEAR error class for PHP 4
+ *
+ * This class is supserseded by {@link PEAR_Exception} in PHP 5
+ *
+ * @category   pear
+ * @package    PEAR
+ * @author     Stig Bakken <ssb@php.net>
+ * @author     Tomas V.V. Cox <cox@idecnet.com>
+ * @author     Gregory Beaver <cellog@php.net>
+ * @copyright  1997-2006 The PHP Group
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    Release: 1.9.2
+ * @link       http://pear.php.net/manual/en/core.pear.pear-error.php
+ * @see        PEAR::raiseError(), PEAR::throwError()
+ * @since      Class available since PHP 4.0.2
+ */
+    [keywords] =>
+    [parent] =>
+    [interfaces] =>
+    [package] => Array
+        (
+            [namespace] =>
+            [fullPackage] => PEAR
+            [category] => pear
+            [package] => PEAR
+            [subpackage] =>
+        )
+
+    [methods] => Array
+        (
+            [PEAR_Error] => Array
+                (
+                    [startLine] => 826
+                    [endLine] => 897
+
+... more ....
+
+            [toString] => Array
+                (
+                    [startLine] => 1015
+                    [endLine] => 1054
+                    [file] => C:\UwAmp\apache\php_5.2.13\tmp\PEAR-1.9.2\PEAR.php
+
+                    [docblock] => /**
+     * Make a string representation of this object.
+     *
+     * @return string a string with an object summary
+     * @access public
+     */
+                    [keywords] =>
+                    [signature] => toString()
+                    [ccn] => 8
+                )
+
+        )
+)
+----
+
+
+== More Informations
+
+To get informations such as interfaces or functions, uses either corresponding container get methods
+or array access interface (as seen previously with classes).
+
+[source,php]
+----
+<?php
+    $reflect = new PHP_Reflect();
+    $reflect->scan($source);
+    
+    $interfaces = $reflect->getInterfaces();
+    // OR
+    $interfaces = $reflect['interfaces'];
+    
+    $functions  = $reflect->getFunctions();
+    // OR
+    $functions  = $reflect['functions'];    
+----

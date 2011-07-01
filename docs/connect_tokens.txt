@@ -1,0 +1,139 @@
+Connect other tokens
+====================
+include::revision.txt[]
+
+Extends PHP_Reflect core, to match user needs, is possible
+with usage of the +connect()+ function.
+
+Take a real case. _PHP_CompatInfo v2_ need to know what are the internal functions
+used in a source code before to give the minimal php version requires.
+
+To do so, we need to connect a new parser element to token T_STRING.
+I won't describe the code of this T_STRING parser here: it's not the purpose.
+But we will see how to do.
+
+.Main script
+[source,php]
+----
+<?php
+require_once 'Bartlett/PHP/Reflect/Autoload.php';
+
+$source = '/path/to/PEAR-1.9.2/PEAR.php';
+
+try {
+    $options = array('containers' => array('core' => 'internalFunctions'));  <1>
+
+    $reflect = new PHP_Reflect($options);
+    $reflect->connect(
+        'T_STRING', 'PHP_CompatInfo_Token_STRING',                           <2>
+        array('PHP_CompatInfo_TokenParser', 'parseTokenString')              <2>
+    );
+    $reflect->scan($source);                                                 <3>
+
+    $functions = $reflect->getInternalFunctions();                           <4>
+    // OR
+    $functions = $reflect['internalFunctions'];                              <4>
+
+    print_r($functions);
+
+} catch (Exception $e) {
+    echo 'Caught exception: ' . $e->getMessage() . PHP_EOL;
+}
+?>
+----
+<1> we add a new container to store internal PHP functions that will be scanned by our new parser element
+<2> we connect a user callback that have logic to parse the new token T_STRING
+<3> we scan the source file
+<4> we get the results (OOP or array access interface)
+
+
+.Synopsis of our new token T_STRING
+[source,php]
+----
+<?php
+
+class PHP_CompatInfo_Token_STRING extends PHP_Reflect_Token_STRING
+{
+    public function getName()
+    {
+    }
+
+    public function getType()
+    {
+    }
+
+    // private methods ...
+}
+----
+
+.Synopsis of our callback (param #3 of +connect+ function)
+[source,php]
+----
+<?php
+class PHP_CompatInfo_TokenParser
+{
+    public static function parseTokenString()
+    {
+        list($subject, $context, $token) = func_get_args();
+        extract($context);
+
+        // ... more
+    }
+}
+----
+
+Final result gave list of 42 PHP functions used in PEAR.php script of PEAR 1.9.2
+
+[source,php]
+----
+<?php
+
+Array
+(
+    [0] => define
+    [1] => function_exists
+    [2] => version_compare
+    [3] => zend_version
+    [4] => substr
+    [5] => ini_set
+    [6] => strtolower
+    [7] => get_class
+    [8] => strcasecmp
+    [9] => method_exists
+    [10] => register_shutdown_function
+    [11] => get_parent_class
+    [12] => printf
+    [13] => array_key_exists
+    [14] => is_a
+    [15] => is_null
+    [16] => is_string
+    [17] => is_callable
+    [18] => trigger_error
+    [19] => is_array
+    [20] => array_push
+    [21] => count
+    [22] => array_pop
+    [23] => in_array
+    [24] => array_search
+    [25] => is_object
+    [26] => end
+    [27] => is_int
+    [28] => reset
+    [29] => intval
+    [30] => sizeof
+    [31] => extension_loaded
+    [32] => ini_get
+    [33] => dl
+    [34] => array_reverse
+    [35] => each
+    [36] => call_user_func_array
+    [37] => debug_backtrace
+    [38] => sprintf
+    [39] => call_user_func
+    [40] => defined
+    [41] => implode
+)
+----
+
+NOTE: _PHP_CompatInfo v2_ is an excellent exemple of what is possible to do
+by connecting other tokens.

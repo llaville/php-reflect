@@ -1,0 +1,160 @@
+PHP_Reflect
+===========
+include::revision.txt[]
+:stylesdir:   styles
+:scriptsdir:  js
+:binary_dir:  http://bartlett.laurent-laville.org/get/
+
+image:images/logo.png[alt="PHP_Reflect logo"]
+
+.{revdate}: PHP_Reflect {revnumber} Released
+************************************************************************
+Release highlights:
+
+- After almost 4 months, here are the first stable version with a full user guide.
+
+Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
+additions, changes and bug fixes. Changes are documented in the
+updated link:userguide.html[User Guide]. See the
+link:INSTALL.html[Installation page] for downloads and installation instructions.
+
+'Laurent Laville'
+************************************************************************
+
+== Introduction
+
+PHP_Reflect adds the ability to reverse-engineer classes, interfaces, functions, 
+constants, namespaces and more. 
+
+
+*Why PHP_Reflect is different to standard PHP5 Reflection API ?*
+
+With _PHP5 Reflection API_ the code to analyze needs to be loaded and interpreted 
+by the php interpreter, and in certain cases, this triggers fatal errors. 
+
+With _PHP_Reflect_ you don't have to trust in source code, because it will be parsed
+with tokenizer extension. 
+
+
+== Overview
+
+PHP_Reflect provides :
+
+.Ability to reverse-engineer classes 
+
+* Core, loaded extensions or user classes
+* Start and end lines of implementation
+* Gets doc comments
+* Gets namespace name
+
+.Ability to reverse-engineer interfaces
+
+* Core, loaded extensions or user classes
+* Start and end lines of implementation
+* Gets doc comments
+* Gets namespace name
+
+.Ability to reverse-engineer functions
+
+* Core, loaded extensions or user classes
+* Start and end lines of implementation
+* Gets doc comments
+* Gets namespace name
+
+.Ability to reverse-engineer constants
+
+* Core, loaded extensions or user classes
+* Start and end lines of implementation
+* Gets doc comments
+* Gets namespace name
+
+.Ability to reverse-engineer namespaces
+
+* Core, loaded extensions or user classes
+* Start and end lines of implementation
+* Gets doc comments
+
+.Ability to reverse-engineer includes
+
+* require, require_once, include, include_once
+* Start and end lines of implementation
+* Gets doc comments
+* Gets namespace name
+
+.Ability to reverse-engineer globals variables
+
+* Core and user globals
+* Start and end lines of implementation
+* Gets doc comments
+* Gets namespace name
+
+
+== Documentation
+
+The PHP_Reflect manual is available in a selection of formats. Pick a format
+from the table below to start downloading.
+
+[grid="rows",format="csv"]
+[options="header"]
+|===========================
+Language,Single HTML file,Many HTML files,HTML Help file,PDF file
+English,link:{binary_dir}userguide.zip[zip] 6 Kb, link:{binary_dir}userguide.chunked.zip[zip] 42 Kb , link:{binary_dir}userguide.chm[chm] 46 Kb, link:{binary_dir}userguide.pdf[pdf] 70 Kb
+|===========================
+
+
+[appendix]
+Classes Source Code
+-------------------
+Below you can find highlighted PHP source code
+(with http://pygments.org/[Pygments])
+of PHP_Reflect classes version {revnumber}
+
+* link:sources/Reflect.html[PHP_Reflect]
+* link:sources/Autoload.html[Autoload]
+* link:sources/Token.html[Tokens]
+
+[appendix]
+Examples
+--------
+.Scan a simple file
+* link:sources/scanFile.html[Basic usage with default options]
+
+[appendix]
+Changelog
+---------
+link:CHANGELOG.html[History of changes]
+
+[appendix]
+License
+-------
+Released under the link:LICENSE.html[BSD] license,
+you are free to do whatever you want, even in a commercial environment.
+You are also encouraged to contribute.
+
+[appendix]
+Credits
+-------
+
+[quote, , https://github.com/sebastianbergmann/]
+____
+.Sebastian Bergmann
+
+Original author of link:https://github.com/sebastianbergmann/php-token-stream[PHPUnit/PHP_Token_Stream],
+that show me the way with his base concept to produce an extendable package .
+____
+
+
+[appendix]
+Links
+-----
+All pages of this site, and user guide were generated with AsciiDoc 8.6.5,
+assisted by FOP 1.0 (for PDFs). Automated build process uses Phing 2.4.5
+
+Convert the HTML Help source (.hhp and .html) files to HTML Help (.chm) files
+using the Microsoft HTML Help Compiler.
+
+* http://www.methods.co.nz/asciidoc/index.html[AsciiDoc]
+* http://pygments.org/[Pygments - Python syntax highlighter]
+* http://xmlgraphics.apache.org/fop/[Apache FOP]
+* http://msdn.microsoft.com/en-us/library/ms670169%28VS.85%29.aspx[Microsoft HTML Help Compiler]
+* http://phing.info/trac/[Phing]

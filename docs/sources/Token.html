@@ -1,0 +1,802 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.5" />
+<title>Tokens</title>
+<link rel="stylesheet" href="../styles/flask.css" type="text/css" />
+<link rel="stylesheet" href="../styles/pygments.css" type="text/css" />
+<script type="text/javascript" src="../js/asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>Tokens</h1>
+<span id="author">Laurent Laville</span><br />
+<span id="email"><tt>&lt;<a href="mailto:pear@laurent-laville.org">pear@laurent-laville.org</a>&gt;</tt></span><br />
+<span id="revnumber">version 1.0.0,</span>
+<span id="revdate">July 1, 2011</span>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_source_code">Source Code</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="sd">/**</span>
+<span class="sd"> * Tokens for PHP_Reflect parser</span>
+<span class="sd"> *</span>
+<span class="sd"> * Credits to Sebastian Bergmann on base concept from phpunit/PHP_Token_Stream</span>
+<span class="sd"> *</span>
+<span class="sd"> * @category PHP</span>
+<span class="sd"> * @package  PHP_Reflect</span>
+<span class="sd"> * @author   Laurent Laville &lt;pear@laurent-laville.org&gt;</span>
+<span class="sd"> * @license  http://www.opensource.org/licenses/bsd-license.php  BSD</span>
+<span class="sd"> * @version  Release: @package_version@</span>
+<span class="sd"> * @link     http://php5.laurent-laville.org/reflect/</span>
+<span class="sd"> */</span>
+
+<span class="k">abstract</span> <span class="k">class</span> <span class="nc">PHP_Reflect_Token</span>
+<span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">     * @var string</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$text</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var integer</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$line</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var integer</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$id</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var array</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$tokenStream</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Constructor.</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param string  $text</span>
+<span class="sd">     * @param integer $line</span>
+<span class="sd">     * @param integer $id</span>
+<span class="sd">     * @param array   $tokenStream</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$text</span><span class="p">,</span> <span class="nv">$line</span><span class="p">,</span> <span class="nv">$id</span><span class="p">,</span> <span class="nv">$tokens</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span>        <span class="o">=</span> <span class="nv">$text</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span>        <span class="o">=</span> <span class="nv">$line</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span>          <span class="o">=</span> <span class="nv">$id</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span> <span class="o">=</span> <span class="nv">$tokens</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @return string</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__toString</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @return integer</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getLine</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="k">abstract</span> <span class="k">class</span> <span class="nc">PHP_Reflect_TokenWithScope</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$endTokenId</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Get the docblock for this token</span>
+<span class="sd">     *</span>
+<span class="sd">     * This method will fetch the docblock belonging to the current token. The</span>
+<span class="sd">     * docblock must be placed on the line directly above the token to be</span>
+<span class="sd">     * recognized.</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return string|null Returns the docblock as a string if found</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getDocblock</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$currentLineNumber</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">][</span><span class="m">2</span><span class="p">];</span>
+        <span class="nv">$prevLineNumber</span>    <span class="o">=</span> <span class="nv">$currentLineNumber</span> <span class="o">-</span> <span class="m">1</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">-</span> <span class="m">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">;</span> <span class="nv">$i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;T_FUNCTION&#39;</span> <span class="o">==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span>
+                <span class="o">||</span> <span class="s1">&#39;T_CLASS&#39;</span> <span class="o">==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// Some other class or function,</span>
+                <span class="c1">// no docblock can be used for the current token</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="nv">$line</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">2</span><span class="p">];</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$line</span> <span class="o">==</span> <span class="nv">$currentLineNumber</span>
+                <span class="o">||</span> <span class="p">((</span><span class="nv">$line</span> <span class="o">==</span> <span class="nv">$prevLineNumber</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="s1">&#39;T_WHITESPACE&#39;</span> <span class="o">==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]))</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="k">continue</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$line</span> <span class="o">==</span> <span class="nv">$prevLineNumber</span>
+                <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="s1">&#39;T_COMMENT&#39;</span> <span class="o">==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">])</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">((</span><span class="nv">$line</span> <span class="o">&lt;</span> <span class="nv">$currentLineNumber</span><span class="p">)</span>
+                <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="s1">&#39;T_DOC_COMMENT&#39;</span> <span class="o">!==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">])</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getVisibility</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">-</span> <span class="m">2</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">-</span> <span class="m">7</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-=</span> <span class="m">2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">&lt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="k">true</span> <span class="o">===</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_PRIVATE&#39;</span> <span class="o">||</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_PROTECTED&#39;</span> <span class="o">||</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_PUBLIC&#39;</span><span class="p">)</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">strtolower</span><span class="p">(</span>
+                    <span class="nb">str_replace</span><span class="p">(</span><span class="s1">&#39;T_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">])</span>
+                <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">false</span> <span class="o">===</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_STATIC&#39;</span> <span class="o">||</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_FINAL&#39;</span> <span class="o">||</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_ABSTRACT&#39;</span><span class="p">)</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// no keywords; stop visibility search</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getKeywords</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$keywords</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">-</span> <span class="m">2</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">-</span> <span class="m">7</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-=</span> <span class="m">2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">&lt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="k">true</span> <span class="o">===</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_PRIVATE&#39;</span> <span class="o">||</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_PROTECTED&#39;</span> <span class="o">||</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_PUBLIC&#39;</span><span class="p">)</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="k">continue</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="k">true</span> <span class="o">===</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_STATIC&#39;</span> <span class="o">||</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_FINAL&#39;</span> <span class="o">||</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_ABSTRACT&#39;</span><span class="p">)</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$keywords</span><span class="p">[]</span> <span class="o">=</span> <span class="nb">strtolower</span><span class="p">(</span>
+                    <span class="nb">str_replace</span><span class="p">(</span><span class="s1">&#39;T_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">])</span>
+                <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nb">implode</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="nv">$keywords</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getEndTokenId</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$block</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="nv">$i</span>     <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">1</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span> <span class="nx">instanceof</span> <span class="nx">PHP_Reflect_Token_NAMESPACE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nv">$j</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">3</span><span class="p">;</span> <span class="p">;</span> <span class="nv">$j</span> <span class="o">+=</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$j</span><span class="p">]))</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$j</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_OPEN_CURLY&#39;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nv">$t_ns_open</span> <span class="o">=</span> <span class="s1">&#39;ns_open_curly&#39;</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$j</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_SEMICOLON&#39;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nv">$t_ns_open</span> <span class="o">=</span> <span class="s1">&#39;ns_open_semicolon&#39;</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$t_ns_open</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endTokenId</span> <span class="o">===</span> <span class="k">NULL</span> <span class="o">&amp;&amp;</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">]))</span> <span class="p">{</span>
+
+            <span class="nv">$tokenName</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">];</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$tokenName</span> <span class="o">==</span> <span class="s1">&#39;T_OPEN_CURLY&#39;</span> <span class="o">||</span>
+                <span class="nv">$tokenName</span> <span class="o">==</span> <span class="s1">&#39;T_CURLY_OPEN&#39;</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$block</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">elseif</span> <span class="p">(</span><span class="nv">$tokenName</span> <span class="o">==</span> <span class="s1">&#39;T_CLOSE_CURLY&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$block</span><span class="o">--</span><span class="p">;</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$block</span> <span class="o">===</span> <span class="m">0</span>
+                    <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="nv">$t_ns_open</span> <span class="o">||</span> <span class="nv">$t_ns_open</span> <span class="o">==</span> <span class="s1">&#39;ns_open_curly&#39;</span><span class="p">)</span>
+                <span class="p">)</span> <span class="p">{</span>
+                    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endTokenId</span> <span class="o">=</span> <span class="nv">$i</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">elseif</span> <span class="p">(</span><span class="nv">$tokenName</span> <span class="o">==</span> <span class="s1">&#39;T_SEMICOLON&#39;</span>
+                <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nv">$this</span> <span class="nx">instanceof</span> <span class="nx">PHP_Reflect_Token_FUNCTION</span> <span class="o">||</span>
+                <span class="nv">$this</span> <span class="nx">instanceof</span> <span class="nx">PHP_Reflect_Token_REQUIRE_ONCE</span> <span class="o">||</span>
+                <span class="nv">$this</span> <span class="nx">instanceof</span> <span class="nx">PHP_Reflect_Token_REQUIRE</span> <span class="o">||</span>
+                <span class="nv">$this</span> <span class="nx">instanceof</span> <span class="nx">PHP_Reflect_Token_INCLUDE_ONCE</span> <span class="o">||</span>
+                <span class="nv">$this</span> <span class="nx">instanceof</span> <span class="nx">PHP_Reflect_Token_INCLUDE</span> <span class="o">||</span>
+                <span class="nv">$this</span> <span class="nx">instanceof</span> <span class="nx">PHP_Reflect_Token_VARIABLE</span><span class="p">))</span> <span class="p">{</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$block</span> <span class="o">===</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endTokenId</span> <span class="o">=</span> <span class="nv">$i</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">elseif</span> <span class="p">(</span><span class="nv">$tokenName</span> <span class="o">==</span> <span class="s1">&#39;T_NAMESPACE&#39;</span>
+                <span class="o">&amp;&amp;</span> <span class="nv">$t_ns_open</span> <span class="o">==</span> <span class="s1">&#39;ns_open_semicolon&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// multiple namespace without bracketed syntax ending</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endTokenId</span> <span class="o">=</span> <span class="nv">$i</span> <span class="o">-</span> <span class="m">1</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="nv">$i</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endTokenId</span> <span class="o">===</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$t_ns_open</span> <span class="o">==</span> <span class="s1">&#39;ns_open_semicolon&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// simple namespace without bracketed syntax ending</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endTokenId</span> <span class="o">=</span> <span class="nv">$i</span> <span class="o">-</span> <span class="m">1</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endTokenId</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endTokenId</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getEndLine</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getEndTokenId</span><span class="p">()][</span><span class="m">2</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">abstract</span> <span class="k">class</span> <span class="nc">PHP_Reflect_Token_Includes</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_TokenWithScope</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$name</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$type</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getName</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">!==</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nv">$i</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">1</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">&#39;T_SEMICOLON&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_CONSTANT_ENCAPSED_STRING&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">.=</span> <span class="nb">trim</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">1</span><span class="p">],</span> <span class="s2">&quot;&#39;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_VARIABLE&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">.=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">1</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39; &#39;</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nv">$i</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">!==</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">type</span> <span class="o">=</span> <span class="nb">strtolower</span><span class="p">(</span>
+                <span class="nb">str_replace</span><span class="p">(</span><span class="s1">&#39;T_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">][</span><span class="m">0</span><span class="p">])</span>
+            <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">trim</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getType</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_REQUIRE_ONCE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token_Includes</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_REQUIRE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token_Includes</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_EVAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_INCLUDE_ONCE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token_Includes</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_INCLUDE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token_Includes</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_LOGICAL_OR</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_LOGICAL_XOR</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_LOGICAL_AND</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_PRINT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_SR_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_SL_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_XOR_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_OR_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_AND_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_MOD_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CONCAT_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DIV_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_MUL_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_MINUS_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_PLUS_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_BOOLEAN_OR</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_BOOLEAN_AND</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_IS_NOT_IDENTICAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_IS_IDENTICAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_IS_NOT_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_IS_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_IS_GREATER_OR_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_IS_SMALLER_OR_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_SR</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_SL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_INSTANCEOF</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_UNSET_CAST</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_BOOL_CAST</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_OBJECT_CAST</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ARRAY_CAST</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_STRING_CAST</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DOUBLE_CAST</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_INT_CAST</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DEC</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_INC</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CLONE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_NEW</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_EXIT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_IF</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ELSEIF</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ELSE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ENDIF</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_LNUMBER</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DNUMBER</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_STRING</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_STRING_VARNAME</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+
+<span class="k">abstract</span> <span class="k">class</span> <span class="nc">PHP_Reflect_Token_Globals</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_TokenWithScope</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$name</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$type</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getName</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// @link http://www.php.net/manual/en/language.variables.superglobals.php</span>
+        <span class="k">static</span> <span class="nv">$superglobals</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;$GLOBALS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_SERVER_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_SERVER&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_GET_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_GET&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_POST_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_POST_FILES&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_POST&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_COOKIE_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_COOKIE&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_SESSION_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_SESSION&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_ENV_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_ENV&#39;</span><span class="p">,</span>
+        <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">!==</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">][</span><span class="m">1</span><span class="p">],</span> <span class="nv">$superglobals</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$i</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">2</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="o">+</span><span class="m">1</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_WHITESPACE&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$i</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_CONSTANT_ENCAPSED_STRING&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="nb">trim</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">1</span><span class="p">],</span> <span class="s2">&quot;&#39;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_VARIABLE&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">type</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$i</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">-</span> <span class="m">2</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">&gt;</span> <span class="m">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_COMMA&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$i</span> <span class="o">-=</span> <span class="m">3</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">&gt;</span> <span class="m">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_GLOBAL&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">type</span> <span class="o">=</span> <span class="s1">&#39;global&#39;</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getType</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_VARIABLE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token_Globals</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_NUM_STRING</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_INLINE_HTML</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CHARACTER</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_BAD_CHARACTER</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ENCAPSED_AND_WHITESPACE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CONSTANT_ENCAPSED_STRING</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ECHO</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DO</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_WHILE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ENDWHILE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_FOR</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ENDFOR</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_FOREACH</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ENDFOREACH</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DECLARE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ENDDECLARE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_AS</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_SWITCH</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ENDSWITCH</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CASE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DEFAULT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_BREAK</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CONTINUE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_GOTO</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_FUNCTION</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_TokenWithScope</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$arguments</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$ccn</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$name</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$signature</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getArguments</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">arguments</span> <span class="o">!==</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">arguments</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">arguments</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+        <span class="nv">$i</span>               <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">3</span><span class="p">;</span>
+        <span class="nv">$typeHint</span>        <span class="o">=</span> <span class="k">NULL</span><span class="p">;</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;T_CLOSE_BRACKET&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_STRING&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$typeHint</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+            <span class="p">}</span>
+
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_VARIABLE&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">arguments</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">1</span><span class="p">]]</span> <span class="o">=</span> <span class="nv">$typeHint</span><span class="p">;</span>
+                <span class="nv">$typeHint</span>                                   <span class="o">=</span> <span class="k">NULL</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="nv">$i</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">arguments</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getName</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">!==</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="o">+</span><span class="m">2</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_STRING&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="o">+</span><span class="m">2</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="o">+</span><span class="m">2</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_AMPERSAND&#39;</span> <span class="o">&amp;&amp;</span>
+                 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="o">+</span><span class="m">3</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_STRING&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="o">+</span><span class="m">3</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="s1">&#39;anonymous function&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getCCN</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ccn</span> <span class="o">!==</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ccn</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ccn</span> <span class="o">=</span> <span class="m">1</span><span class="p">;</span>
+        <span class="nv">$end</span>       <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getEndTokenId</span><span class="p">();</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;=</span> <span class="nv">$end</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">switch</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">])</span> <span class="p">{</span>
+                <span class="k">case</span> <span class="s1">&#39;T_IF&#39;</span><span class="o">:</span>
+                <span class="k">case</span> <span class="s1">&#39;T_ELSEIF&#39;</span><span class="o">:</span>
+                <span class="k">case</span> <span class="s1">&#39;T_FOR&#39;</span><span class="o">:</span>
+                <span class="k">case</span> <span class="s1">&#39;T_FOREACH&#39;</span><span class="o">:</span>
+                <span class="k">case</span> <span class="s1">&#39;T_WHILE&#39;</span><span class="o">:</span>
+                <span class="k">case</span> <span class="s1">&#39;T_CASE&#39;</span><span class="o">:</span>
+                <span class="k">case</span> <span class="s1">&#39;T_CATCH&#39;</span><span class="o">:</span>
+                <span class="k">case</span> <span class="s1">&#39;T_BOOLEAN_AND&#39;</span><span class="o">:</span>
+                <span class="k">case</span> <span class="s1">&#39;T_LOGICAL_AND&#39;</span><span class="o">:</span>
+                <span class="k">case</span> <span class="s1">&#39;T_BOOLEAN_OR&#39;</span><span class="o">:</span>
+                <span class="k">case</span> <span class="s1">&#39;T_LOGICAL_OR&#39;</span><span class="o">:</span>
+                <span class="k">case</span> <span class="s1">&#39;T_QUESTION_MARK&#39;</span><span class="o">:</span>
+                    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ccn</span><span class="o">++</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ccn</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getSignature</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">signature</span> <span class="o">!==</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">signature</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">signature</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+        <span class="nv">$i</span>      <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">2</span><span class="p">;</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;T_CLOSE_BRACKET&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">signature</span> <span class="o">.=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="o">++</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">signature</span> <span class="o">.=</span> <span class="s1">&#39;)&#39;</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">signature</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CONST</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_RETURN</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_TRY</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CATCH</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_THROW</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_USE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_GLOBAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_PUBLIC</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_PROTECTED</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_PRIVATE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_FINAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ABSTRACT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_STATIC</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_VAR</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_UNSET</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ISSET</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_EMPTY</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_HALT_COMPILER</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_INTERFACE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_TokenWithScope</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$interfaces</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getName</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$token</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">2</span><span class="p">];</span>
+        <span class="nv">$text</span>  <span class="o">=</span> <span class="nv">$token</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+        <span class="k">return</span> <span class="nv">$text</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">hasParent</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span>
+            <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">4</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">4</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_EXTENDS&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getParent</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hasParent</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">FALSE</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nv">$i</span>         <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">6</span><span class="p">;</span>
+        <span class="nv">$className</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="o">+</span><span class="m">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="o">+</span><span class="m">1</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;T_WHITESPACE&#39;</span>
+        <span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$className</span> <span class="o">.=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="o">++</span><span class="nv">$i</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$className</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getPackage</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$className</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+        <span class="nv">$docComment</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getDocblock</span><span class="p">();</span>
+
+        <span class="nv">$result</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;namespace&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;fullPackage&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;category&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;package&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;subpackage&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span>
+        <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$className</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;namespace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">arrayToName</span><span class="p">(</span>
+              <span class="nb">explode</span><span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="nv">$className</span><span class="p">)</span>
+            <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span><span class="p">(</span><span class="s1">&#39;/@category[\s]+([\.\w]+)/&#39;</span><span class="p">,</span> <span class="nv">$docComment</span><span class="p">,</span> <span class="nv">$matches</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$matches</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span><span class="p">(</span><span class="s1">&#39;/@package[\s]+([\.\w]+)/&#39;</span><span class="p">,</span> <span class="nv">$docComment</span><span class="p">,</span> <span class="nv">$matches</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;package&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="nv">$matches</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+            <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;fullPackage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$matches</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span><span class="p">(</span><span class="s1">&#39;/@subpackage[\s]+([\.\w]+)/&#39;</span><span class="p">,</span> <span class="nv">$docComment</span><span class="p">,</span> <span class="nv">$matches</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;subpackage&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="nv">$matches</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+            <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;fullPackage&#39;</span><span class="p">]</span> <span class="o">.=</span> <span class="s1">&#39;.&#39;</span> <span class="o">.</span> <span class="nv">$matches</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;fullPackage&#39;</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;fullPackage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">arrayToName</span><span class="p">(</span>
+              <span class="nb">explode</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="nb">str_replace</span><span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="nv">$className</span><span class="p">)),</span> <span class="s1">&#39;.&#39;</span>
+            <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">arrayToName</span><span class="p">(</span><span class="k">array</span> <span class="nv">$parts</span><span class="p">,</span> <span class="nv">$join</span> <span class="o">=</span> <span class="s1">&#39;\\&#39;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$parts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">array_pop</span><span class="p">(</span><span class="nv">$parts</span><span class="p">);</span>
+
+            <span class="nv">$result</span> <span class="o">=</span> <span class="nb">join</span><span class="p">(</span><span class="nv">$join</span><span class="p">,</span> <span class="nv">$parts</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">hasInterfaces</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">((</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">4</span><span class="p">])</span>
+            <span class="o">&amp;&amp;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">4</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_IMPLEMENTS&#39;</span><span class="p">)</span> <span class="o">||</span>
+           <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">8</span><span class="p">])</span>
+            <span class="o">&amp;&amp;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">8</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_IMPLEMENTS&#39;</span><span class="p">)){</span>
+            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getInterfaces</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">interfaces</span> <span class="o">!==</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">interfaces</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hasInterfaces</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">interfaces</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">4</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_IMPLEMENTS&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$i</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">3</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$i</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">7</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="o">+</span><span class="m">1</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;T_OPEN_CURLY&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$i</span><span class="o">++</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_STRING&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">interfaces</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">interfaces</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CLASS</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token_INTERFACE</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_TRAIT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token_INTERFACE</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_EXTENDS</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_IMPLEMENTS</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_OBJECT_OPERATOR</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DOUBLE_ARROW</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_LIST</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_ARRAY</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CLASS_C</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_METHOD_C</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_FUNC_C</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_LINE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_FILE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_COMMENT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DOC_COMMENT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_OPEN_TAG</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_OPEN_TAG_WITH_ECHO</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CLOSE_TAG</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_WHITESPACE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_START_HEREDOC</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_END_HEREDOC</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DOLLAR_OPEN_CURLY_BRACES</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CURLY_OPEN</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_PAAMAYIM_NEKUDOTAYIM</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_NAMESPACE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_TokenWithScope</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getName</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$namespace</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="o">+</span><span class="m">2</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span> <span class="o">+</span> <span class="m">3</span><span class="p">;</span> <span class="p">;</span> <span class="nv">$i</span> <span class="o">+=</span> <span class="m">2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;T_NS_SEPARATOR&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$namespace</span> <span class="o">.=</span> <span class="s1">&#39;\\&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokenStream</span><span class="p">[</span><span class="nv">$i</span><span class="o">+</span><span class="m">1</span><span class="p">][</span><span class="m">1</span><span class="p">];</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$namespace</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_NS_C</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DIR</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_NS_SEPARATOR</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DOUBLE_COLON</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_OPEN_BRACKET</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CLOSE_BRACKET</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_OPEN_SQUARE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CLOSE_SQUARE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_OPEN_CURLY</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CLOSE_CURLY</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_SEMICOLON</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DOT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_COMMA</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_EQUAL</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_LT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_GT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_PLUS</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_MINUS</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_MULT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DIV</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_QUESTION_MARK</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_EXCLAMATION_MARK</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_COLON</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DOUBLE_QUOTES</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_AT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_AMPERSAND</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_PERCENT</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_PIPE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_DOLLAR</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_CARET</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_TILDE</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect_Token_BACKTICK</span> <span class="k">extends</span> <span class="nx">PHP_Reflect_Token</span> <span class="p">{}</span>
+</pre></div></div></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Version 1.0.0<br />
+Last updated 2011-06-19 19:43:56 Paris, Madrid (heure d'été)
+</div>
+</div>
+</body>
+</html>

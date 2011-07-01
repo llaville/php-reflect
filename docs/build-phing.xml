@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="netgrowl" default="make-full-docs" basedir=".">
+
+    <property name="asciidoc.home" value="C:\asciidoc-8.6.5" override="true" />
+    <property name="homedir" value="C:\www\github\php-reflect" override="true" />
+    <property name="htmlhelpworkshop" value="C:\Program Files\HTML Help Workshop" override="true" />
+    <property name="theme" value="flask" override="true" />
+
+    <target name="make-userguide-all"
+            depends="make-userguide, make-userguide-chunked, make-userguide-htmlhelp, make-userguide-pdf"
+            description="Build the user guide of PHP_Reflect in all formats">
+
+    </target>
+
+    <target name="make-userguide"
+            description="Build the user guide of PHP_Reflect">
+
+        <exec dir="${asciidoc.home}"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -a toc2 -n ${homedir}/docs/userguide.txt"
+        />
+
+    </target>
+
+    <target name="make-userguide-chunked"
+            description="Build the user guide of PHP_Reflect in many HTML files">
+
+        <exec dir="${asciidoc.home}"
+            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f chunked ${homedir}/docs/userguide.txt"
+        />
+
+    </target>
+
+    <target name="make-userguide-htmlhelp"
+            description="Build the user guide of PHP_Reflect in CHM format">
+
+        <exec dir="${asciidoc.home}"
+            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f htmlhelp ${homedir}/docs/userguide.txt"
+        />
+
+        <exec dir="${htmlhelpworkshop}"
+            command="hhc.exe ${homedir}/docs/userguide.hhp"
+        />
+
+    </target>
+
+    <target name="make-userguide-pdf"
+            description="Build the user guide of PHP_Reflect in PDF format">
+
+        <exec dir="${asciidoc.home}"
+            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f pdf --fop ${homedir}/docs/userguide.txt"
+        />
+
+    </target>
+
+    <target name="make-docs"
+            depends="clean-docs"
+            description="Build the documentation of PHP_Reflect">
+
+        <exec dir="${asciidoc.home}"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/CHANGELOG.txt"
+        />
+        <exec dir="${asciidoc.home}"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/INSTALL.txt"
+        />
+        <exec dir="${asciidoc.home}"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/LICENSE.txt"
+        />
+        <exec dir="${asciidoc.home}"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -a toc2 -n ${homedir}/docs/index.txt"
+        />
+
+    </target>
+
+    <target name="make-full-docs"
+            depends="clean-docs, clean-docs-sources, make-docs-sources, make-docs, make-userguide"
+            description="Build the full documentation of PHP_Reflect">
+
+    </target>
+
+    <target name="clean-docs"
+            description="Remove old html generated files">
+
+        <delete>
+            <fileset dir="${homedir}/docs">
+                <include name="*.html" />
+            </fileset>
+        </delete>
+
+    </target>
+
+    <target name="clean-docs-sources"
+            description="Remove old sources html generated files">
+
+        <delete>
+            <fileset dir="${homedir}/docs/sources">
+                <include name="*.html" />
+            </fileset>
+        </delete>
+
+    </target>
+
+    <target name="make-docs-sources"
+            description="Build the highlighted source code of PHP_Reflect">
+
+        <exec dir="${asciidoc.home}"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/sources/Reflect.txt"
+        />
+        <exec dir="${asciidoc.home}"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/sources/Autoload.txt"
+        />
+        <exec dir="${asciidoc.home}"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/sources/Token.txt"
+        />
+        <exec dir="${asciidoc.home}"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/sources/scanFile.txt"
+        />
+
+    </target>
+
+</project>

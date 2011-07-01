@@ -1,0 +1,853 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.5" />
+<title>PHP_Reflect</title>
+<link rel="stylesheet" href="../styles/flask.css" type="text/css" />
+<link rel="stylesheet" href="../styles/pygments.css" type="text/css" />
+<script type="text/javascript" src="../js/asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>PHP_Reflect</h1>
+<span id="author">Laurent Laville</span><br />
+<span id="email"><tt>&lt;<a href="mailto:pear@laurent-laville.org">pear@laurent-laville.org</a>&gt;</tt></span><br />
+<span id="revnumber">version 1.0.0,</span>
+<span id="revdate">July 1, 2011</span>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_source_code">Source Code</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="sd">/**</span>
+<span class="sd"> * Copyright (c) 2011, Laurent Laville &lt;pear@laurent-laville.org&gt;</span>
+<span class="sd"> *</span>
+<span class="sd"> * Credits to Sebastian Bergmann on base concept from phpunit/PHP_Token_Stream</span>
+<span class="sd"> *</span>
+<span class="sd"> * All rights reserved.</span>
+<span class="sd"> *</span>
+<span class="sd"> * Redistribution and use in source and binary forms, with or without</span>
+<span class="sd"> * modification, are permitted provided that the following conditions</span>
+<span class="sd"> * are met:</span>
+<span class="sd"> *</span>
+<span class="sd"> *     * Redistributions of source code must retain the above copyright</span>
+<span class="sd"> *       notice, this list of conditions and the following disclaimer.</span>
+<span class="sd"> *     * Redistributions in binary form must reproduce the above copyright</span>
+<span class="sd"> *       notice, this list of conditions and the following disclaimer in the</span>
+<span class="sd"> *       documentation and/or other materials provided with the distribution.</span>
+<span class="sd"> *     * Neither the name of the authors nor the names of its contributors</span>
+<span class="sd"> *       may be used to endorse or promote products derived from this software</span>
+<span class="sd"> *       without specific prior written permission.</span>
+<span class="sd"> *</span>
+<span class="sd"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span>
+<span class="sd"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span>
+<span class="sd"> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span>
+<span class="sd"> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS</span>
+<span class="sd"> * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR</span>
+<span class="sd"> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span>
+<span class="sd"> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span>
+<span class="sd"> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span>
+<span class="sd"> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span>
+<span class="sd"> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span>
+<span class="sd"> * POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="sd"> *</span>
+<span class="sd"> * PHP version 5</span>
+<span class="sd"> *</span>
+<span class="sd"> * @category PHP</span>
+<span class="sd"> * @package  PHP_Reflect</span>
+<span class="sd"> * @author   Laurent Laville &lt;pear@laurent-laville.org&gt;</span>
+<span class="sd"> * @license  http://www.opensource.org/licenses/bsd-license.php  BSD</span>
+<span class="sd"> * @version  SVN: $Id$</span>
+<span class="sd"> * @link     http://php5.laurent-laville.org/reflect/</span>
+<span class="sd"> */</span>
+
+
+<span class="sd">/**</span>
+<span class="sd"> * PHP_Reflect adds the ability to reverse-engineer</span>
+<span class="sd"> * classes, interfaces, functions, constants and more.</span>
+<span class="sd"> *</span>
+<span class="sd"> * @category PHP</span>
+<span class="sd"> * @package  PHP_Reflect</span>
+<span class="sd"> * @author   Laurent Laville &lt;pear@laurent-laville.org&gt;</span>
+<span class="sd"> * @license  http://www.opensource.org/licenses/bsd-license.php  BSD</span>
+<span class="sd"> * @version  Release: @package_version@</span>
+<span class="sd"> * @link     http://php5.laurent-laville.org/reflect/</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">PHP_Reflect</span> <span class="k">implements</span> <span class="nx">ArrayAccess</span>
+<span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">     * Support for interface ArrayAccess</span>
+<span class="sd">     * @var  array</span>
+<span class="sd">     * @link http://www.php.net/manual/en/class.arrayaccess.php</span>
+<span class="sd">     */</span>
+    <span class="k">private</span> <span class="nv">$_container</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var array</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="k">static</span> <span class="nv">$customTokens</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;(&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_OPEN_BRACKET&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;)&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_CLOSE_BRACKET&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;[&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_OPEN_SQUARE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;]&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_CLOSE_SQUARE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;{&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_OPEN_CURLY&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;}&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_CLOSE_CURLY&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;;&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_SEMICOLON&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;.&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_DOT&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;,&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_COMMA&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;=&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_EQUAL&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_LT&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&gt;&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_GT&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;+&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_PLUS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_MINUS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;*&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_MULT&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;/&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_DIV&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;?&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_QUESTION_MARK&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;!&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_EXCLAMATION_MARK&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;:&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_COLON&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&quot;&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_DOUBLE_QUOTES&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;@&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_AT&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&amp;&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_AMPERSAND&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;%&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_PERCENT&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;|&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_PIPE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;$&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_DOLLAR&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;^&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_CARET&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;~&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_TILDE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;`&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;T_BACKTICK&#39;</span>
+    <span class="p">);</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var array</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$tokens</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var array</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$parserToken</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var array</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="nv">$options</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var string</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$filename</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var array</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$linesOfCode</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;loc&#39;</span> <span class="o">=&gt;</span> <span class="m">0</span><span class="p">,</span> <span class="s1">&#39;cloc&#39;</span> <span class="o">=&gt;</span> <span class="m">0</span><span class="p">,</span> <span class="s1">&#39;ncloc&#39;</span> <span class="o">=&gt;</span> <span class="m">0</span><span class="p">);</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Class constructor</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param array $options (OPTIONAL) Configure options</span>
+<span class="sd">     *</span>
+<span class="sd">     * @throws RuntimeException</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$options</span> <span class="o">=</span> <span class="k">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$defaultOptions</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+            <span class="c1">// default containers to store results from parsing</span>
+            <span class="s1">&#39;containers&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;namespace&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;namespaces&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;interface&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;interfaces&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;class&#39;</span>        <span class="o">=&gt;</span> <span class="s1">&#39;classes&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;function&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;functions&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;require_once&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;includes&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;require&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;includes&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;include_once&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;includes&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;include&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;includes&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;variable&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;globals&#39;</span>
+            <span class="p">),</span>
+            <span class="c1">// properties for each component to provide on final result</span>
+            <span class="s1">&#39;properties&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;namespace&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;startEndLines&#39;</span><span class="p">,</span> <span class="s1">&#39;docblock&#39;</span>
+                <span class="p">),</span>
+                <span class="s1">&#39;interface&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;startEndLines&#39;</span><span class="p">,</span> <span class="s1">&#39;docblock&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;keywords&#39;</span><span class="p">,</span> <span class="s1">&#39;parent&#39;</span><span class="p">,</span> <span class="s1">&#39;methods&#39;</span>
+                <span class="p">),</span>
+                <span class="s1">&#39;class&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;startEndLines&#39;</span><span class="p">,</span> <span class="s1">&#39;docblock&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;keywords&#39;</span><span class="p">,</span> <span class="s1">&#39;parent&#39;</span><span class="p">,</span> <span class="s1">&#39;methods&#39;</span><span class="p">,</span> <span class="s1">&#39;interfaces&#39;</span><span class="p">,</span> <span class="s1">&#39;package&#39;</span>
+                <span class="p">),</span>
+                <span class="s1">&#39;function&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;startEndLines&#39;</span><span class="p">,</span> <span class="s1">&#39;docblock&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;keywords&#39;</span><span class="p">,</span> <span class="s1">&#39;signature&#39;</span><span class="p">,</span> <span class="s1">&#39;ccn&#39;</span>
+                <span class="p">),</span>
+                <span class="s1">&#39;require_once&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;startEndLines&#39;</span><span class="p">,</span> <span class="s1">&#39;docblock&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="s1">&#39;require&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;startEndLines&#39;</span><span class="p">,</span> <span class="s1">&#39;docblock&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="s1">&#39;include_once&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;startEndLines&#39;</span><span class="p">,</span> <span class="s1">&#39;docblock&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="s1">&#39;include&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;startEndLines&#39;</span><span class="p">,</span> <span class="s1">&#39;docblock&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="s1">&#39;variable&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;startEndLines&#39;</span><span class="p">,</span> <span class="s1">&#39;docblock&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">options</span> <span class="o">=</span> <span class="nv">$defaultOptions</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">NULL</span> <span class="o">!==</span> <span class="nv">$options</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$options</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">foreach</span> <span class="p">(</span><span class="nv">$options</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$values</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">array_merge</span><span class="p">(</span>
+                        <span class="nv">$defaultOptions</span><span class="p">[</span><span class="nv">$key</span><span class="p">],</span> <span class="nv">$values</span>
+                    <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">RuntimeException</span><span class="p">(</span><span class="s1">&#39;Invalid options&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// default parsers for interfaces, classes, functions, includes</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parserToken</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;T_NAMESPACE&#39;</span>    <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;PHP_Reflect_Token_NAMESPACE&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="s1">&#39;parseToken&#39;</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;T_INTERFACE&#39;</span>    <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;PHP_Reflect_Token_INTERFACE&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="s1">&#39;parseToken&#39;</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;T_CLASS&#39;</span>        <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;PHP_Reflect_Token_CLASS&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="s1">&#39;parseToken&#39;</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;T_FUNCTION&#39;</span>     <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;PHP_Reflect_Token_FUNCTION&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="s1">&#39;parseToken&#39;</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;T_REQUIRE_ONCE&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;PHP_Reflect_Token_REQUIRE_ONCE&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="s1">&#39;parseToken&#39;</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;T_REQUIRE&#39;</span>      <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;PHP_Reflect_Token_REQUIRE&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="s1">&#39;parseToken&#39;</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;T_INCLUDE_ONCE&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;PHP_Reflect_Token_INCLUDE_ONCE&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="s1">&#39;parseToken&#39;</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;T_INCLUDE&#39;</span>      <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;PHP_Reflect_Token_INCLUDE&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="s1">&#39;parseToken&#39;</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;T_VARIABLE&#39;</span>     <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;PHP_Reflect_Token_VARIABLE&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="s1">&#39;parseToken&#39;</span><span class="p">)</span>
+            <span class="p">),</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Connect additionnal tokens for parsing</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param string $tokenName  Token name T_ prefixed</span>
+<span class="sd">     * @param string $tokenClass Token class corresponding</span>
+<span class="sd">     * @param mixed  $callback   Function to connect to token for parsing</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return void</span>
+<span class="sd">     * @throws RuntimeException</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">connect</span><span class="p">(</span><span class="nv">$tokenName</span><span class="p">,</span> <span class="nv">$tokenClass</span><span class="p">,</span> <span class="nv">$callback</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">class_exists</span><span class="p">(</span><span class="nv">$tokenClass</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">RuntimeException</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid token name provided. &quot;</span> <span class="o">.</span>
+                <span class="s2">&quot;Given &#39;&quot;</span> <span class="o">.</span> <span class="p">(</span><span class="nx">string</span><span class="p">)</span><span class="nv">$tokenName</span> <span class="o">.</span> <span class="s2">&quot;&#39;&quot;</span>
+            <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">is_callable</span><span class="p">(</span><span class="nv">$callback</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">RuntimeException</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot connect to function provided&quot;</span>
+            <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parserToken</span><span class="p">[</span><span class="nv">$tokenName</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nv">$tokenClass</span><span class="p">,</span> <span class="nv">$callback</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Scans the source for sequences of characters and converts them into a</span>
+<span class="sd">     * stream of tokens.</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param string $sourceCode Filename or raw php code line</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return array</span>
+<span class="sd">     * @throws RuntimeException</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">scan</span><span class="p">(</span><span class="nv">$sourceCode</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">is_file</span><span class="p">(</span><span class="nv">$sourceCode</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">filename</span> <span class="o">=</span> <span class="nv">$sourceCode</span><span class="p">;</span>
+            <span class="nv">$sourceCode</span>     <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$sourceCode</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">!</span><span class="nb">is_string</span><span class="p">(</span><span class="nv">$sourceCode</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">RuntimeException</span><span class="p">(</span><span class="s1">&#39;sourceCode wrong parameter&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nv">$line</span> <span class="o">=</span> <span class="m">1</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokens</span> <span class="o">=</span> <span class="nb">token_get_all</span><span class="p">(</span><span class="nv">$sourceCode</span><span class="p">);</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokens</span> <span class="k">as</span> <span class="nv">$id</span> <span class="o">=&gt;</span> <span class="nv">$token</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$token</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nv">$text</span>      <span class="o">=</span> <span class="nv">$token</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+                <span class="nv">$tokenName</span> <span class="o">=</span> <span class="nb">token_name</span><span class="p">(</span><span class="nv">$token</span><span class="p">[</span><span class="m">0</span><span class="p">]);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nv">$text</span>      <span class="o">=</span> <span class="nv">$token</span><span class="p">;</span>
+                <span class="nv">$tokenName</span> <span class="o">=</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$customTokens</span><span class="p">[</span><span class="nv">$token</span><span class="p">];</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokens</span><span class="p">[</span><span class="nv">$id</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="m">1</span> <span class="o">=&gt;</span> <span class="nv">$text</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokens</span><span class="p">[</span><span class="nv">$id</span><span class="p">][</span><span class="m">2</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$line</span><span class="p">;</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokens</span><span class="p">[</span><span class="nv">$id</span><span class="p">][</span><span class="m">0</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$tokenName</span><span class="p">;</span>
+            <span class="nv">$lines</span> <span class="o">=</span> <span class="nb">substr_count</span><span class="p">(</span><span class="nv">$text</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+            <span class="nv">$line</span> <span class="o">+=</span> <span class="nv">$lines</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;T_HALT_COMPILER&#39;</span> <span class="o">==</span> <span class="nv">$tokenName</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$tokenName</span> <span class="o">==</span> <span class="s1">&#39;T_COMMENT&#39;</span>
+                <span class="o">||</span> <span class="nv">$tokenName</span> <span class="o">==</span> <span class="s1">&#39;T_DOC_COMMENT&#39;</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">linesOfCode</span><span class="p">[</span><span class="s1">&#39;cloc&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="nv">$lines</span> <span class="o">+</span> <span class="m">1</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">linesOfCode</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">substr_count</span><span class="p">(</span><span class="nv">$sourceCode</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">linesOfCode</span><span class="p">[</span><span class="s1">&#39;ncloc&#39;</span><span class="p">]</span>
+            <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">linesOfCode</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">linesOfCode</span><span class="p">[</span><span class="s1">&#39;cloc&#39;</span><span class="p">];</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parse</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokens</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Magic methods to get informations on parsing results about</span>
+<span class="sd">     * includes, interfaces, classes, functions, constants</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param string $name Method name invoked</span>
+<span class="sd">     * @param array  $args Method arguments provided</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return array</span>
+<span class="sd">     * @throws RuntimeException</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__call</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$methods</span> <span class="o">=</span> <span class="nb">array_map</span><span class="p">(</span>
+            <span class="s1">&#39;ucfirst&#39;</span><span class="p">,</span>
+            <span class="nb">array_unique</span><span class="p">(</span><span class="nb">array_values</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">&#39;containers&#39;</span><span class="p">]))</span>
+        <span class="p">);</span>
+        <span class="nv">$pattern</span> <span class="o">=</span> <span class="s1">&#39;/get&#39;</span> <span class="o">.</span>
+            <span class="s1">&#39;(?&gt;(&#39;</span> <span class="o">.</span> <span class="nb">implode</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="nv">$methods</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;))/&#39;</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span><span class="p">(</span><span class="nv">$pattern</span><span class="p">,</span> <span class="nv">$name</span><span class="p">,</span> <span class="nv">$matches</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$container</span> <span class="o">=</span> <span class="nb">strtolower</span><span class="p">(</span><span class="nv">$matches</span><span class="p">[</span><span class="m">1</span><span class="p">]{</span><span class="m">0</span><span class="p">})</span> <span class="o">.</span> <span class="nb">substr</span><span class="p">(</span><span class="nv">$matches</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="m">1</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$container</span> <span class="o">==</span> <span class="s1">&#39;namespaces&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">offsetGet</span><span class="p">(</span><span class="nv">$container</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nv">$namespace</span> <span class="o">=</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">is_string</span><span class="p">(</span><span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]))</span>
+                    <span class="o">?</span> <span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="o">:</span> <span class="k">false</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$namespace</span> <span class="o">===</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">// get data from all namespaces</span>
+                    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">offsetGet</span><span class="p">(</span><span class="nv">$container</span><span class="p">);</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="c1">// get data from specified namespace</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">offsetExists</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$namespace</span><span class="p">)))</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">offsetGet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$namespace</span><span class="p">));</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="k">array</span><span class="p">();</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">RuntimeException</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid method. Given &#39;</span><span class="si">$name</span><span class="s2">&#39;&quot;</span>
+            <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Gets the names of all files that have been included</span>
+<span class="sd">     * using include(), include_once(), require() or require_once().</span>
+<span class="sd">     *</span>
+<span class="sd">     * Parameter $categorize set to TRUE causing this function to return a</span>
+<span class="sd">     * multi-dimensional array with categories in the keys of the first dimension</span>
+<span class="sd">     * and constants and their values in the second dimension.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Parameter $category allow to filter following specific inclusion type</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param bool   $categorize OPTIONAL</span>
+<span class="sd">     * @param string $category   OPTIONAL Either &#39;require_once&#39;, &#39;require&#39;,</span>
+<span class="sd">     *                                           &#39;include_once&#39;, &#39;include&#39;</span>
+<span class="sd">     * @param string $namespace  OPTIONAL Default is global namespace</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return array</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getIncludes</span><span class="p">(</span><span class="nv">$categorize</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">,</span> <span class="nv">$category</span> <span class="o">=</span> <span class="k">NULL</span><span class="p">,</span>
+        <span class="nv">$namespace</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$namespace</span> <span class="o">===</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// global namespace</span>
+            <span class="nv">$ns</span> <span class="o">=</span> <span class="s1">&#39;\\&#39;</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$ns</span> <span class="o">=</span> <span class="nv">$namespace</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nv">$includes</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">offsetGet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;includes&#39;</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">));</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;require_once&#39;</span><span class="p">,</span> <span class="s1">&#39;require&#39;</span><span class="p">,</span> <span class="s1">&#39;include_once&#39;</span><span class="p">,</span> <span class="s1">&#39;include&#39;</span><span class="p">)</span>
+            <span class="k">as</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$includes</span><span class="p">[</span><span class="nv">$key</span><span class="p">]))</span> <span class="p">{</span>
+                <span class="nv">$includes</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$includes</span><span class="p">[</span><span class="nv">$category</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nv">$includes</span> <span class="o">=</span> <span class="nv">$includes</span><span class="p">[</span><span class="nv">$category</span><span class="p">];</span>
+
+        <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$categorize</span> <span class="o">===</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$includes</span> <span class="o">=</span> <span class="nb">array_merge</span><span class="p">(</span>
+                <span class="nv">$includes</span><span class="p">[</span><span class="s1">&#39;require_once&#39;</span><span class="p">],</span>
+                <span class="nv">$includes</span><span class="p">[</span><span class="s1">&#39;require&#39;</span><span class="p">],</span>
+                <span class="nv">$includes</span><span class="p">[</span><span class="s1">&#39;include_once&#39;</span><span class="p">],</span>
+                <span class="nv">$includes</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span>
+            <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$includes</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Gets global variables defined in source scanned</span>
+<span class="sd">     *</span>
+<span class="sd">     * Parameter $categorize set to TRUE causing this function to return a</span>
+<span class="sd">     * multi-dimensional array with categories in the keys of the first dimension</span>
+<span class="sd">     * and constants and their values in the second dimension.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Parameter $category allow to filter following specific global type</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param bool   $categorize OPTIONAL</span>
+<span class="sd">     * @param string $category   OPTIONAL</span>
+<span class="sd">     * @param string $namespace  OPTIONAL Default is global namespace</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return array</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getGlobals</span><span class="p">(</span><span class="nv">$categorize</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">,</span> <span class="nv">$category</span> <span class="o">=</span> <span class="k">NULL</span><span class="p">,</span>
+        <span class="nv">$namespace</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="nv">$glob</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;global&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$GLOBALS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_SERVER_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_SERVER&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_GET_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_GET&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_POST_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_POST_FILES&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_POST&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_COOKIE_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_COOKIE&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_SESSION_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_SESSION&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_ENV_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_ENV&#39;</span><span class="p">,</span>
+        <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$namespace</span> <span class="o">===</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// global namespace</span>
+            <span class="nv">$ns</span> <span class="o">=</span> <span class="s1">&#39;\\&#39;</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$ns</span> <span class="o">=</span> <span class="nv">$namespace</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nv">$globals</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">offsetGet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;globals&#39;</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">));</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$glob</span> <span class="k">as</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$globals</span><span class="p">[</span><span class="nv">$key</span><span class="p">]))</span> <span class="p">{</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$globals</span><span class="p">[</span><span class="nv">$category</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nv">$globals</span> <span class="o">=</span> <span class="nv">$globals</span><span class="p">[</span><span class="nv">$category</span><span class="p">];</span>
+
+        <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$categorize</span> <span class="o">===</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$globals</span> <span class="o">=</span> <span class="nb">array_merge</span><span class="p">(</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;global&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$GLOBALS&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$HTTP_SERVER_VARS&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$_SERVER&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$HTTP_GET_VARS&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$_GET&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$HTTP_POST_VARS&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$HTTP_POST_FILES&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$_POST&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$HTTP_COOKIE_VARS&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$_COOKIE&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$HTTP_SESSION_VARS&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$_SESSION&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$HTTP_ENV_VARS&#39;</span><span class="p">],</span>
+                <span class="nv">$globals</span><span class="p">[</span><span class="s1">&#39;$_ENV&#39;</span><span class="p">]</span>
+            <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nb">ksort</span><span class="p">(</span><span class="nv">$globals</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$globals</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Returns number of lines (code, comment, total) in source code parsed</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return array</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getLinesOfCode</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">linesOfCode</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Main Parser</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return void</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">parse</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$namespace</span>        <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+        <span class="nv">$namespaceEndLine</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+        <span class="nv">$class</span>            <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+        <span class="nv">$classEndLine</span>     <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+        <span class="nv">$interface</span>        <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+        <span class="nv">$interfaceEndLine</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokens</span> <span class="k">as</span> <span class="nv">$id</span> <span class="o">=&gt;</span> <span class="nv">$token</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;T_HALT_COMPILER&#39;</span> <span class="o">==</span> <span class="nv">$token</span><span class="p">[</span><span class="m">0</span><span class="p">])</span> <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="nv">$tokenName</span>  <span class="o">=</span> <span class="nv">$token</span><span class="p">[</span><span class="m">0</span><span class="p">];</span>
+            <span class="nv">$text</span>       <span class="o">=</span> <span class="nv">$token</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+            <span class="nv">$line</span>       <span class="o">=</span> <span class="nv">$token</span><span class="p">[</span><span class="m">2</span><span class="p">];</span>
+
+            <span class="nv">$context</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;namespace&#39;</span> <span class="o">=&gt;</span> <span class="nv">$namespace</span><span class="p">,</span>
+                <span class="s1">&#39;class&#39;</span>     <span class="o">=&gt;</span> <span class="nv">$class</span><span class="p">,</span>
+                <span class="s1">&#39;interface&#39;</span> <span class="o">=&gt;</span> <span class="nv">$interface</span><span class="p">,</span>
+                <span class="s1">&#39;context&#39;</span>   <span class="o">=&gt;</span> <span class="nb">strtolower</span><span class="p">(</span><span class="nb">str_replace</span><span class="p">(</span><span class="s1">&#39;T_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$tokenName</span><span class="p">))</span>
+            <span class="p">);</span>
+
+            <span class="k">switch</span> <span class="p">(</span><span class="nv">$tokenName</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="s1">&#39;T_CLOSE_CURLY&#39;</span><span class="o">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$namespaceEndLine</span> <span class="o">!==</span> <span class="k">FALSE</span>
+                    <span class="o">&amp;&amp;</span> <span class="nv">$namespaceEndLine</span> <span class="o">==</span> <span class="nv">$line</span>
+                <span class="p">)</span> <span class="p">{</span>
+                    <span class="nv">$namespace</span>        <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+                    <span class="nv">$namespaceEndLine</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$classEndLine</span> <span class="o">!==</span> <span class="k">FALSE</span>
+                    <span class="o">&amp;&amp;</span> <span class="nv">$classEndLine</span> <span class="o">==</span> <span class="nv">$line</span>
+                <span class="p">)</span> <span class="p">{</span>
+                    <span class="nv">$class</span>        <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+                    <span class="nv">$classEndLine</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$interfaceEndLine</span> <span class="o">!==</span> <span class="k">FALSE</span>
+                    <span class="o">&amp;&amp;</span> <span class="nv">$interfaceEndLine</span> <span class="o">==</span> <span class="nv">$line</span>
+                <span class="p">)</span> <span class="p">{</span>
+                    <span class="nv">$interface</span>        <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+                    <span class="nv">$interfaceEndLine</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">default</span><span class="o">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parserToken</span><span class="p">[</span><span class="nv">$tokenName</span><span class="p">]))</span> <span class="p">{</span>
+                    <span class="nv">$tokenClass</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parserToken</span><span class="p">[</span><span class="nv">$tokenName</span><span class="p">][</span><span class="m">0</span><span class="p">];</span>
+                    <span class="nv">$token</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$tokenClass</span><span class="p">(</span><span class="nv">$text</span><span class="p">,</span> <span class="nv">$line</span><span class="p">,</span> <span class="nv">$id</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">tokens</span><span class="p">);</span>
+
+                    <span class="nb">call_user_func_array</span><span class="p">(</span>
+                        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parserToken</span><span class="p">[</span><span class="nv">$tokenName</span><span class="p">][</span><span class="m">1</span><span class="p">],</span>
+                        <span class="k">array</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$this</span><span class="p">,</span> <span class="nv">$context</span><span class="p">,</span> <span class="nv">$token</span><span class="p">)</span>
+                    <span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$tokenName</span> <span class="o">==</span> <span class="s1">&#39;T_NAMESPACE&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$namespace</span>        <span class="o">=</span> <span class="nv">$token</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+                <span class="nv">$namespaceEndLine</span> <span class="o">=</span> <span class="nv">$token</span><span class="o">-&gt;</span><span class="na">getEndLine</span><span class="p">();</span>
+
+            <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$tokenName</span> <span class="o">==</span> <span class="s1">&#39;T_INTERFACE&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$interface</span>        <span class="o">=</span> <span class="nv">$token</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+                <span class="nv">$interfaceEndLine</span> <span class="o">=</span> <span class="nv">$token</span><span class="o">-&gt;</span><span class="na">getEndLine</span><span class="p">();</span>
+
+            <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$tokenName</span> <span class="o">==</span> <span class="s1">&#39;T_CLASS&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$class</span>        <span class="o">=</span> <span class="nv">$token</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+                <span class="nv">$classEndLine</span> <span class="o">=</span> <span class="nv">$token</span><span class="o">-&gt;</span><span class="na">getEndLine</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Default parser for tokens</span>
+<span class="sd">     * T_NAMESPACE, T_INTERFACE, T_CLASS, T_FUNCTION,</span>
+<span class="sd">     * T_REQUIRE_ONCE, T_REQUIRE, T_INCLUDE_ONCE, T_INCLUDE,</span>
+<span class="sd">     * T_VARIABLE</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return void</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">parseToken</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="nv">$globals</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;global&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$GLOBALS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_SERVER_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_SERVER&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_GET_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_GET&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_POST_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_POST_FILES&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_POST&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_COOKIE_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_COOKIE&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_SESSION_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_SESSION&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$HTTP_ENV_VARS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;$_ENV&#39;</span>
+        <span class="p">);</span>
+
+        <span class="k">list</span><span class="p">(</span><span class="nv">$subject</span><span class="p">,</span> <span class="nv">$context</span><span class="p">,</span> <span class="nv">$token</span><span class="p">)</span> <span class="o">=</span> <span class="nb">func_get_args</span><span class="p">();</span>
+        <span class="nb">extract</span><span class="p">(</span><span class="nv">$context</span><span class="p">);</span>
+
+        <span class="nv">$container</span> <span class="o">=</span> <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">&#39;containers&#39;</span><span class="p">][</span><span class="nv">$context</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$container</span> <span class="o">===</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nv">$tmp</span>  <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+        <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$token</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$name</span> <span class="o">===</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nv">$inc</span> <span class="o">=</span> <span class="nb">in_array</span><span class="p">(</span>
+            <span class="nv">$context</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;require_once&#39;</span><span class="p">,</span> <span class="s1">&#39;require&#39;</span><span class="p">,</span> <span class="s1">&#39;include_once&#39;</span><span class="p">,</span> <span class="s1">&#39;include&#39;</span><span class="p">)</span>
+        <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">method_exists</span><span class="p">(</span><span class="nv">$token</span><span class="p">,</span> <span class="s1">&#39;getType&#39;</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$type</span> <span class="o">=</span> <span class="nv">$token</span><span class="o">-&gt;</span><span class="na">getType</span><span class="p">();</span>
+            <span class="nv">$glob</span> <span class="o">=</span> <span class="nb">in_array</span><span class="p">(</span><span class="nv">$type</span><span class="p">,</span> <span class="nv">$globals</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$glob</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="nv">$context</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nv">$properties</span> <span class="o">=</span> <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="nv">$context</span><span class="p">];</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$properties</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">switch</span> <span class="p">(</span><span class="nv">$context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="s1">&#39;namespace&#39;</span><span class="o">:</span>
+        <span class="k">case</span> <span class="s1">&#39;interface&#39;</span><span class="o">:</span>
+        <span class="k">case</span> <span class="s1">&#39;class&#39;</span><span class="o">:</span>
+        <span class="k">case</span> <span class="s1">&#39;function&#39;</span><span class="o">:</span>
+        <span class="k">case</span> <span class="s1">&#39;require_once&#39;</span><span class="o">:</span>
+        <span class="k">case</span> <span class="s1">&#39;require&#39;</span><span class="o">:</span>
+        <span class="k">case</span> <span class="s1">&#39;include_once&#39;</span><span class="o">:</span>
+        <span class="k">case</span> <span class="s1">&#39;include&#39;</span><span class="o">:</span>
+        <span class="k">case</span> <span class="s1">&#39;variable&#39;</span><span class="o">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="s1">&#39;startEndLines&#39;</span><span class="p">,</span> <span class="nv">$properties</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nv">$tmp</span><span class="p">[</span><span class="s1">&#39;startLine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$token</span><span class="o">-&gt;</span><span class="na">getLine</span><span class="p">();</span>
+                <span class="nv">$tmp</span><span class="p">[</span><span class="s1">&#39;endLine&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="nv">$token</span><span class="o">-&gt;</span><span class="na">getEndLine</span><span class="p">();</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="nv">$properties</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nv">$tmp</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">filename</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="s1">&#39;namespace&#39;</span><span class="p">,</span> <span class="nv">$properties</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nv">$tmp</span><span class="p">[</span><span class="s1">&#39;namespace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="nv">$namespace</span> <span class="o">===</span> <span class="k">FALSE</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="nv">$namespace</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$properties</span> <span class="k">as</span> <span class="nv">$property</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$method</span> <span class="o">=</span> <span class="s1">&#39;get&#39;</span> <span class="o">.</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$property</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">method_exists</span><span class="p">(</span><span class="nv">$token</span><span class="p">,</span> <span class="nv">$method</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nv">$tmp</span><span class="p">[</span><span class="nv">$property</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$token</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$method</span><span class="p">}();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$namespace</span> <span class="o">===</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// global namespace</span>
+            <span class="nv">$ns</span> <span class="o">=</span> <span class="s1">&#39;\\&#39;</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$ns</span> <span class="o">=</span> <span class="nv">$namespace</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$context</span> <span class="o">==</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$properties</span> <span class="o">=</span> <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">];</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$class</span> <span class="o">===</span> <span class="k">FALSE</span> <span class="o">&amp;&amp;</span> <span class="nv">$interface</span> <span class="o">===</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// update user functions</span>
+                <span class="nv">$_ns</span> <span class="o">=</span> <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">offsetGet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">));</span>
+                <span class="nv">$_ns</span><span class="p">[</span><span class="nv">$name</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$tmp</span><span class="p">;</span>
+                <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">offsetSet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">),</span> <span class="nv">$_ns</span><span class="p">);</span>
+
+            <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$interface</span> <span class="o">===</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="s1">&#39;methods&#39;</span><span class="p">,</span> <span class="nv">$properties</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]))</span> <span class="p">{</span>
+                    <span class="k">return</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nv">$container</span> <span class="o">=</span> <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">&#39;containers&#39;</span><span class="p">][</span><span class="s1">&#39;class&#39;</span><span class="p">];</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$container</span> <span class="o">!==</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">// update class methods</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$tmp</span><span class="p">[</span><span class="s1">&#39;namespace&#39;</span><span class="p">]))</span> <span class="p">{</span>
+                        <span class="nb">unset</span><span class="p">(</span><span class="nv">$tmp</span><span class="p">[</span><span class="s1">&#39;namespace&#39;</span><span class="p">]);</span>
+                    <span class="p">}</span>
+
+                    <span class="nv">$_ns</span> <span class="o">=</span> <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">offsetGet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">));</span>
+                    <span class="nv">$_ns</span><span class="p">[</span><span class="nv">$class</span><span class="p">][</span><span class="s1">&#39;methods&#39;</span><span class="p">][</span><span class="nv">$name</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$tmp</span><span class="p">;</span>
+                    <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">offsetSet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">),</span> <span class="nv">$_ns</span><span class="p">);</span>
+                <span class="p">}</span>
+
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="s1">&#39;methods&#39;</span><span class="p">,</span> <span class="nv">$properties</span><span class="p">[</span><span class="s1">&#39;interface&#39;</span><span class="p">]))</span> <span class="p">{</span>
+                    <span class="k">return</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nv">$container</span> <span class="o">=</span> <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">&#39;containers&#39;</span><span class="p">][</span><span class="s1">&#39;interface&#39;</span><span class="p">];</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$container</span> <span class="o">!==</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">// update interface methods</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$tmp</span><span class="p">[</span><span class="s1">&#39;namespace&#39;</span><span class="p">]))</span> <span class="p">{</span>
+                        <span class="nb">unset</span><span class="p">(</span><span class="nv">$tmp</span><span class="p">[</span><span class="s1">&#39;namespace&#39;</span><span class="p">]);</span>
+                    <span class="p">}</span>
+
+                    <span class="k">if</span> <span class="p">(</span><span class="nv">$namespace</span> <span class="o">===</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="c1">// global namespace</span>
+                        <span class="nv">$ns</span> <span class="o">=</span> <span class="s1">&#39;\\&#39;</span><span class="p">;</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="nv">$ns</span> <span class="o">=</span> <span class="nv">$namespace</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="nv">$_ns</span> <span class="o">=</span> <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">offsetGet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">));</span>
+                    <span class="nv">$_ns</span><span class="p">[</span><span class="nv">$interface</span><span class="p">][</span><span class="s1">&#39;methods&#39;</span><span class="p">][</span><span class="nv">$name</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$tmp</span><span class="p">;</span>
+                    <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">offsetSet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">),</span> <span class="nv">$_ns</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$inc</span> <span class="o">===</span> <span class="k">TRUE</span> <span class="o">||</span> <span class="nv">$glob</span> <span class="o">===</span> <span class="k">TRUE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// update includes or globals</span>
+            <span class="nv">$_ns</span> <span class="o">=</span> <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">offsetGet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">));</span>
+            <span class="nv">$_ns</span><span class="p">[</span><span class="nv">$type</span><span class="p">][</span><span class="nv">$name</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$tmp</span><span class="p">;</span>
+            <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">offsetSet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">),</span> <span class="nv">$_ns</span><span class="p">);</span>
+
+        <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$context</span> <span class="o">==</span> <span class="s1">&#39;namespace&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">offsetSet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$name</span><span class="p">),</span> <span class="nv">$tmp</span><span class="p">);</span>
+
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$_ns</span> <span class="o">=</span> <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">offsetGet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">));</span>
+            <span class="nv">$_ns</span><span class="p">[</span><span class="nv">$name</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$tmp</span><span class="p">;</span>
+            <span class="nv">$subject</span><span class="o">-&gt;</span><span class="na">offsetSet</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="nv">$container</span> <span class="o">=&gt;</span> <span class="nv">$ns</span><span class="p">),</span> <span class="nv">$_ns</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Whether or not an offset exists</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param mixed $offset An offset to check for</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return bool</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetExists</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$offset</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">list</span> <span class="p">(</span><span class="nv">$container</span><span class="p">,</span> <span class="nv">$namespace</span><span class="p">)</span> <span class="o">=</span> <span class="nb">each</span><span class="p">(</span><span class="nv">$offset</span><span class="p">);</span>
+
+            <span class="k">return</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_container</span><span class="p">[</span><span class="nv">$container</span><span class="p">][</span><span class="nv">$namespace</span><span class="p">]);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_container</span><span class="p">[</span><span class="nv">$offset</span><span class="p">]);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Returns the value at specified offset, or null if offset does not exists</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param mixed $offset The offset to retrieve</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return mixed</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetGet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$offset</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">list</span> <span class="p">(</span><span class="nv">$container</span><span class="p">,</span> <span class="nv">$namespace</span><span class="p">)</span> <span class="o">=</span> <span class="nb">each</span><span class="p">(</span><span class="nv">$offset</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_container</span><span class="p">[</span><span class="nv">$container</span><span class="p">][</span><span class="nv">$namespace</span><span class="p">]))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_container</span><span class="p">[</span><span class="nv">$container</span><span class="p">][</span><span class="nv">$namespace</span><span class="p">];</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_container</span><span class="p">[</span><span class="nv">$offset</span><span class="p">]))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_container</span><span class="p">[</span><span class="nv">$offset</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Assigns a value to the specified offset</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param mixed $offset The offset to assign the value to</span>
+<span class="sd">     * @param mixed $value  The value to set</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return void</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">is_null</span><span class="p">(</span><span class="nv">$offset</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_container</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$offset</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">list</span> <span class="p">(</span><span class="nv">$container</span><span class="p">,</span> <span class="nv">$namespace</span><span class="p">)</span> <span class="o">=</span> <span class="nb">each</span><span class="p">(</span><span class="nv">$offset</span><span class="p">);</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_container</span><span class="p">[</span><span class="nv">$container</span><span class="p">][</span><span class="nv">$namespace</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_container</span><span class="p">[</span><span class="nv">$offset</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Unsets an offset</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param mixed $offset The offset to unset</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return void</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetUnset</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$offset</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">list</span> <span class="p">(</span><span class="nv">$container</span><span class="p">,</span> <span class="nv">$namespace</span><span class="p">)</span> <span class="o">=</span> <span class="nb">each</span><span class="p">(</span><span class="nv">$offset</span><span class="p">);</span>
+            <span class="nb">unset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_container</span><span class="p">[</span><span class="nv">$container</span><span class="p">][</span><span class="nv">$namespace</span><span class="p">]);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nb">unset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_container</span><span class="p">[</span><span class="nv">$offset</span><span class="p">]);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div></div></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Version 1.0.0<br />
+Last updated 2011-06-19 19:39:54 Paris, Madrid (heure d'été)
+</div>
+</div>
+</body>
+</html>

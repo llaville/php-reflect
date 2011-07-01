@@ -1,0 +1,100 @@
+PHP_Reflect ChangeLog
+=====================
+:author:      Laurent Laville
+:email:       pear@laurent-laville.org
+:stylesdir:   styles
+:scriptsdir:  js
+
+
+== Version 1.0.0 (2011-07-01)
+
+.Additions and changes:
+* WARNING: Autoloader is no more loaded by default.
+* add AllTests.php script to launch all tests at once.
+* add source documentation that can be build with AsciiDoc (see docs/README.txt)
+
+.Bug fixes:
+* none
+
+
+== Version 1.0.0RC1 (2011-04-24)
+
+.Additions and changes:
+* no changes since version 0.7.0
+
+.Bug fixes:
+* none
+
+
+== Version 0.7.0 (2011-04-16)
+
+.Additions and changes:
+* adds globals variable support
+
+.Bug fixes:
+* typo errors on IncludeTest.php file about method covers; allow to use --coverage phpunit feature
+
+
+== Version 0.6.0 (2011-04-10)
+
+.Additions and changes:
+* enhance namespaces support
+
+.Bug fixes:
+* two tests condition in abstract class PHP_Reflect_TokenWithScope, getEndTokenId() method
+
+
+== Version 0.5.1 (2011-04-04)
+
+.Additions and changes:
+* PEAR dependency decreased from 1.9.2 to 1.9.0 to allow EPEL repository packaging
+
+.Bug fixes:
+* when a namespace is active, keep it as current context
+
+
+== Version 0.5.0 (2011-03-25)
+
+.Additions and changes:
+* adds full support for Namespace with PHP 5.3.0 or greater
+* adds total of lines, code lines and no code lines
+
+.Bug fixes:
+* none
+
+
+== Version 0.4.0 (2011-03-19)
+
+.Additions and changes:
+* adds an independant autoloader function
+
+.Bug fixes:
+* none
+
+
+== Version 0.3.1 (2011-03-13)
+
+.Additions and changes:
+* none
+
+.Bug fixes:
+* getIncludes method introduced dupplicated values with PHP_CompatInfo 2
+
+
+== Version 0.3.0 (2011-03-13)
+
+.Additions and changes:
+* improved options handler
+* getDocblock method accept more than just phpdoc comment style
+* add docblock in each test units
+
+
+== Version 0.2.0 (2011-03-12)
+
+.Additions and changes:
+* change base install directory
+
+
+== Version 0.1.0 (2011-03-10)
+
+* First public release
