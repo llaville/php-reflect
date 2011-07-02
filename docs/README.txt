@@ -18,7 +18,7 @@ or
 Apache FOP
     http://xmlgraphics.apache.org/fop/index.html
 
-With external http://growl.laurent-laville.org/ layout, and linked javascript and styles
+With basic layout, and linked javascript and styles
 $ asciidoc-8.6.5/asciidoc.py
   -a icons
   -a toc2
