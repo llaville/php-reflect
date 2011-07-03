@@ -3,7 +3,7 @@ PHP_Reflect
 include::revision.txt[]
 :stylesdir:   styles
 :scriptsdir:  js
-:binary_dir:  http://bartlett.laurent-laville.org/get/
+:binary_dir:  http://php5.laurent-laville.org/reflect/get/
 
 image:images/logo.png[alt="PHP_Reflect logo"]
 
@@ -98,7 +98,7 @@ from the table below to start downloading.
 [options="header"]
 |===========================
 Language,Single HTML file,Many HTML files,HTML Help file,PDF file
-English,link:{binary_dir}userguide.zip[zip] 6 Kb, link:{binary_dir}userguide.chunked.zip[zip] 42 Kb , link:{binary_dir}userguide.chm[chm] 46 Kb, link:{binary_dir}userguide.pdf[pdf] 70 Kb
+English,link:{binary_dir}userguide.zip[userguide.zip] (6Kb), link:{binary_dir}userguide.chunked.zip[userguide.chunked.zip] (42Kb) , link:{binary_dir}userguide.chm.zip[userguide.chm.zip] (39Kb), link:{binary_dir}userguide.pdf[pdf] (70Kb)
 |===========================
 
 
