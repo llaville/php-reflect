@@ -523,13 +523,13 @@ class PHP_Reflect_Token_FUNCTION extends PHP_Reflect_TokenWithScope
 
         $this->signature = '';
 
-        $i      = $this->id + 2;
+        $i = $this->id + 2;
 
-        while ($this->tokenStream[$i][0] != 'T_CLOSE_BRACKET') {
+        while ($this->tokenStream[$i][0] != 'T_OPEN_CURLY'
+            && $this->tokenStream[$i][0] != 'T_SEMICOLON'
+        ) {
             $this->signature .= $this->tokenStream[$i++][1];
         }
-
-        $this->signature .= ')';
 
         return $this->signature;
     }
