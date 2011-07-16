@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.3" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
@@ -15,10 +15,10 @@ and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2011-07-01</date>
- <time>22:05:38</time>
+ <date>2011-07-16</date>
+ <time>11:16:24</time>
  <version>
-  <release>1.0.0</release>
+  <release>1.0.1</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -30,12 +30,10 @@ and more, by connecting php callbacks to tokens.
 First stable version 
 
 Additions and changes:
-- WARNING: Autoloader is no more loaded by default.
-- add AllTests.php script to launch all tests at once.
-- add source documentation that can be build with AsciiDoc (see docs/README.txt)
+- replace missing AllTests.php script to launch all tests at once by configuration file phpunit.xml
 
 Bug fixes:
-- none
+- Signature truncated on methods with array as defaultvalue (issue #1)
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -136,25 +134,13 @@ Bug fixes:
      </file>
     </dir> <!-- /docs/js -->
     <dir name="sources">
-     <file name="Autoload.html" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file name="Autoload.txt" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file name="Reflect.html" role="doc">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file name="Reflect.txt" role="doc">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file name="scanFile.html" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file name="scanFile.txt" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file name="Token.html" role="doc">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file name="Token.txt" role="doc">
@@ -283,6 +269,9 @@ Bug fixes:
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir> <!-- /tests/_files -->
+    <file name="phpunit.xml" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
    </dir> <!-- /tests -->
    <file name="LICENSE" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -317,6 +306,27 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.0.1</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2011-07-16</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+First stable version 
+
+Additions and changes:
+- replace missing AllTests.php script to launch all tests at once by configuration file phpunit.xml
+
+Bug fixes:
+- Signature truncated on methods with array as defaultvalue (issue #1)
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.0.0</release>

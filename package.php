@@ -14,7 +14,7 @@ and more, by connecting php callbacks to tokens.
 $channel     = 'bartlett.laurent-laville.org';
 
 $release_state   = 'stable';
-$release_version = '1.0.0';
+$release_version = '1.0.1';
 
 $api_state       = 'stable';
 $api_version     = '1.0.0';
@@ -22,12 +22,10 @@ $release_notes   = "
 First stable version 
 
 Additions and changes:
-- WARNING: Autoloader is no more loaded by default.
-- add AllTests.php script to launch all tests at once.
-- add source documentation that can be build with AsciiDoc (see docs/README.txt)
+- replace missing AllTests.php script to launch all tests at once by configuration file phpunit.xml
 
 Bug fixes:
-- none
+- Signature truncated on methods with array as defaultvalue (issue #1)
 ";
 $license = array('BSD License', 'http://www.opensource.org/licenses/bsd-license.php');
 
@@ -45,6 +43,7 @@ $p2->setOptions(
             ),
         'exceptions'        => array(
             'LICENSE' => 'doc',
+            'phpunit.xml' => 'test',
             ),
     )
 );

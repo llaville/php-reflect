@@ -11,7 +11,7 @@ image:images/logo.png[alt="PHP_Reflect logo"]
 ************************************************************************
 Release highlights:
 
-- After almost 4 months, here are the first stable version with a full user guide.
+- FIX the first bug of stable version, related to method/function signature.
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the

@@ -6,6 +6,15 @@ PHP_Reflect ChangeLog
 :scriptsdir:  js
 
 
+== Version 1.0.1 (2011-07-16)
+
+.Additions and changes:
+* replace missing AllTests.php script to launch all tests at once by configuration file phpunit.xml
+
+.Bug fixes:
+* Signature truncated on methods with array as defaultvalue (link:https://github.com/llaville/php-reflect/issues/1[issue #1])
+
+
 == Version 1.0.0 (2011-07-01)
 
 .Additions and changes:
