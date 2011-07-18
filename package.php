@@ -14,18 +14,16 @@ and more, by connecting php callbacks to tokens.
 $channel     = 'bartlett.laurent-laville.org';
 
 $release_state   = 'stable';
-$release_version = '1.0.1';
+$release_version = '1.0.2';
 
 $api_state       = 'stable';
 $api_version     = '1.0.0';
 $release_notes   = "
-First stable version 
-
 Additions and changes:
-- replace missing AllTests.php script to launch all tests at once by configuration file phpunit.xml
+- none
 
 Bug fixes:
-- Signature truncated on methods with array as defaultvalue (issue #1)
+- trimmed whitespace on PHP_Reflect_Token_FUNCTION::getSignature() method
 ";
 $license = array('BSD License', 'http://www.opensource.org/licenses/bsd-license.php');
 

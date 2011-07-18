@@ -6,6 +6,15 @@ PHP_Reflect ChangeLog
 :scriptsdir:  js
 
 
+== Version 1.0.2 (2011-07-18)
+
+.Additions and changes:
+* none
+
+.Bug fixes:
+* trimmed whitespace on PHP_Reflect_Token_FUNCTION::getSignature() method
+
+
 == Version 1.0.1 (2011-07-16)
 
 .Additions and changes:

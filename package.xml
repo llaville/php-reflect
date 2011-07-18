@@ -15,10 +15,10 @@ and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2011-07-16</date>
- <time>11:16:24</time>
+ <date>2011-07-18</date>
+ <time>14:11:51</time>
  <version>
-  <release>1.0.1</release>
+  <release>1.0.2</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -27,13 +27,11 @@ and more, by connecting php callbacks to tokens.
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
-First stable version 
-
 Additions and changes:
-- replace missing AllTests.php script to launch all tests at once by configuration file phpunit.xml
+- none
 
 Bug fixes:
-- Signature truncated on methods with array as defaultvalue (issue #1)
+- trimmed whitespace on PHP_Reflect_Token_FUNCTION::getSignature() method
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -306,6 +304,25 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.0.2</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2011-07-18</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- none
+
+Bug fixes:
+- trimmed whitespace on PHP_Reflect_Token_FUNCTION::getSignature() method
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.0.1</release>
