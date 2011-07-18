@@ -531,7 +531,7 @@ class PHP_Reflect_Token_FUNCTION extends PHP_Reflect_TokenWithScope
             $this->signature .= $this->tokenStream[$i++][1];
         }
 
-        return $this->signature;
+        return trim($this->signature);
     }
 }
 
