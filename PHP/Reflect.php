@@ -158,7 +158,7 @@ class PHP_Reflect implements ArrayAccess
                 ),
                 'function' => array(
                     'file', 'startEndLines', 'docblock', 'namespace',
-                    'keywords', 'signature', 'ccn'
+                    'keywords', 'signature', 'arguments', 'ccn'
                 ),
                 'require_once' => array(
                     'file', 'startEndLines', 'docblock', 'namespace',

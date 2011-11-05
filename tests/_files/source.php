@@ -21,4 +21,9 @@ class Foo{function foo(){}
     public function barfoo(Barfoo $barfoo)
     {
     }
+
+    public function fooBaz($foo, $bar = null)
+    {
+    }
+
 }

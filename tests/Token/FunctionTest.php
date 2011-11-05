@@ -80,9 +80,16 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
     public function testGetArguments()
     {
         $this->assertEquals(array(), $this->functions[0]->getArguments());
-        $this->assertEquals(array('$baz' => 'Baz'), $this->functions[1]->getArguments());
-        $this->assertEquals(array('$foobar' => 'Foobar'), $this->functions[2]->getArguments());
-        $this->assertEquals(array('$barfoo' => 'Barfoo'), $this->functions[3]->getArguments());
+        $this->assertEquals(array(array('typeHint' => 'Baz', 'name' => '$baz')), $this->functions[1]->getArguments());
+        $this->assertEquals(array(array('typeHint' => 'Foobar', 'name' => '$foobar')), $this->functions[2]->getArguments());
+        $this->assertEquals(array(array('typeHint' => 'Barfoo', 'name' => '$barfoo')), $this->functions[3]->getArguments());
+        $this->assertEquals(
+            array(
+                array('name' => '$foo'),
+                array('name' => '$bar', 'defaultValue' => 'null')
+            ),
+            $this->functions[4]->getArguments()
+        );
     }
 
     /**
