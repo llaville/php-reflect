@@ -14,16 +14,20 @@ and more, by connecting php callbacks to tokens.
 $channel     = 'bartlett.laurent-laville.org';
 
 $release_state   = 'stable';
-$release_version = '1.0.2';
+$release_version = '1.1.0';
 
 $api_state       = 'stable';
-$api_version     = '1.0.0';
+$api_version     = '1.1.0';
 $release_notes   = "
 Additions and changes:
-- none
+- PHP_Reflect_Token_FUNCTION::getArguments() return values changed : 
+see examples/scanFunctionArguments.php and User Guide Configure/Properties section (example 2).
+Thanks to Stefan Neufeind for its patch/proposal.
+- add test suite for issues reported 
+- upgrades build phing xml file : use latest asciidoc version (8.6.6)
 
 Bug fixes:
-- trimmed whitespace on PHP_Reflect_Token_FUNCTION::getSignature() method
+- none
 ";
 $license = array('BSD License', 'http://www.opensource.org/licenses/bsd-license.php');
 

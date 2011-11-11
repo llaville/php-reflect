@@ -19,7 +19,7 @@ are available in +$classes+ variable.
 +print_r+ should display array below:
 [source,php]
 ----
-<php
+<?php
 Array
 (
     [0] => PEAR

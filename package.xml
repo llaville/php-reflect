@@ -15,11 +15,11 @@ and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2011-07-18</date>
- <time>14:11:51</time>
+ <date>2011-11-11</date>
+ <time>18:36:10</time>
  <version>
-  <release>1.0.2</release>
-  <api>1.0.0</api>
+  <release>1.1.0</release>
+  <api>1.1.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -28,10 +28,14 @@ and more, by connecting php callbacks to tokens.
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
 Additions and changes:
-- none
+- PHP_Reflect_Token_FUNCTION::getArguments() return values changed : 
+see examples/scanFunctionArguments.php and User Guide Configure/Properties section (example 2).
+Thanks to Stefan Neufeind for its patch/proposal.
+- add test suite for issues reported 
+- upgrades build phing xml file : use latest asciidoc version (8.6.6)
 
 Bug fixes:
-- trimmed whitespace on PHP_Reflect_Token_FUNCTION::getSignature() method
+- none
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -141,6 +145,9 @@ Bug fixes:
      <file name="scanFile.txt" role="doc">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file name="scanFunctionArguments.txt" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file name="Token.txt" role="doc">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -209,6 +216,9 @@ Bug fixes:
     <file name="scanFileWithOtherTokenConnect.php" role="doc">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
+    <file name="scanFunctionArguments.php" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
    </dir> <!-- /examples -->
    <dir name="PHP">
     <dir name="Reflect">
@@ -240,11 +250,17 @@ Bug fixes:
      <file name="InterfaceTest.php" role="test">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file name="IssueTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file name="NamespaceTest.php" role="test">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir> <!-- /tests/Token -->
     <dir name="_files">
+     <file name="issue1.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file name="source.php" role="test">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -304,6 +320,29 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.1.0</release>
+    <api>1.1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2011-11-11</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- PHP_Reflect_Token_FUNCTION::getArguments() return values changed : 
+see examples/scanFunctionArguments.php and User Guide Configure/Properties section (example 2).
+Thanks to Stefan Neufeind for its patch/proposal.
+- add test suite for issues reported 
+- upgrades build phing xml file : use latest asciidoc version (8.6.6)
+
+Bug fixes:
+- none
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.0.2</release>

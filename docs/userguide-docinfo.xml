@@ -7,4 +7,12 @@
             First Edition of User Manual that documents the final stable version 1.0.0
         </revremark>
     </revision>
+    <revision>
+        <revnumber>1.1.0</revnumber>
+        <date>November 11, 2011</date>
+        <authorinitials>LL</authorinitials>
+        <revremark>
+            Second Edition of User Manual that documents the final stable version 1.1.0
+        </revremark>
+    </revision>
 </revhistory>

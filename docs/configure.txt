@@ -58,7 +58,7 @@ key code,default property
 namespace, "file, startEndLines, docblock"
 interface, "file, startEndLines, docblock, namespace, keywords, parent, methods"
 class,     "file, startEndLines, docblock, namespace, keywords, parent, methods, interfaces, package"
-function,  "file, startEndLines, docblock, namespace, keywords, signature, ccn"
+function,  "file, startEndLines, docblock, namespace, keywords, signature, arguments, ccn"
 require_once, "file, startEndLines, docblock, namespace"
 require,      "file, startEndLines, docblock, namespace"
 include_once, "file, startEndLines, docblock, namespace"
@@ -66,7 +66,7 @@ include,      "file, startEndLines, docblock, namespace"
 variable,     "file, startEndLines, docblock, namespace"
 |===========================
 
-.Example
+.Example 1
 [source,php]
 ----
 <?php
@@ -184,5 +184,95 @@ Array
             [keywords] =>
             [signature] => toString()
         )
+)
+----
+
+.Example 2
+[source,php]
+----
+<?php
+require_once 'Bartlett/PHP/Reflect/Autoload.php';
+
+$source = '/path/to/PHPUnit/Framework/TestCase.php';
+
+try {
+    $options = array(
+        'properties' => array(
+            'function' => array(
+                'signature', 'arguments'
+            ),
+        )
+    );
+    $reflect = new PHP_Reflect($options);
+    $reflect->scan($source);
+
+    $classes = $reflect->getClasses();
+
+    print_r($classes['\\']['PHPUnit_Framework_TestCase']['methods']);
+
+} catch (Exception $e) {
+    echo 'Caught exception: ' . $e->getMessage() . PHP_EOL;
+}
+?>
+----
+
+And here are results we got on STDOUT :
+[source,php]
+----
+<?php
+
+Array
+(
+    [methods] => Array
+        (
+            [__construct] => Array
+                (
+                    [signature] => __construct($name = NULL, array $data = array(), $dataName = '')
+                    [arguments] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [name] => $name
+                                    [defaultValue] => NULL
+                                )
+
+                            [1] => Array
+                                (
+                                    [typeHint] => array
+                                    [name] => $data
+                                    [defaultValue] => array()
+                                )
+
+                            [2] => Array
+                                (
+                                    [name] => $dataName
+                                    [defaultValue] => ''
+                                )
+
+                        )
+
+                )
+
+
+    ( ... more lines again ... )
+
+
+            [prepareTemplate] => Array
+                (
+                    [signature] => prepareTemplate(Text_Template $template)
+                    [arguments] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [typeHint] => Text_Template
+                                    [name] => $template
+                                )
+
+                        )
+
+                )
+
+        )
+
 )
 ----
