@@ -114,6 +114,9 @@
         <exec dir="${asciidoc.home}"
             command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/sources/scanFile.txt"
         />
+        <exec dir="${asciidoc.home}"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/sources/scanFunctionArguments.txt"
+        />
 
     </target>
 
