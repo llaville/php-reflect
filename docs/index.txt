@@ -11,7 +11,9 @@ image:images/logo.png[alt="PHP_Reflect logo"]
 ************************************************************************
 Release highlights:
 
-- FIX a trimmed whitespace bug on method/function signature.
+- PHP_Reflect_Token_FUNCTION::getArguments() return values changed : +
+see examples/scanFunctionArguments.php and User Guide Configure/Properties section (example 2). +
+Thanks to Stefan Neufeind for its patch/proposal.
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the
@@ -115,6 +117,7 @@ of PHP_Reflect classes version {revnumber}
 
 .Scan a simple file
 * link:sources/scanFile.html[Basic usage with default options]
+* link:sources/scanFunctionArguments.html[Get signature and arguments of methods/functions]
 
 == Appendix C: Changelog
 
@@ -140,7 +143,7 @@ ____
 == Appendix F: Links
 
 All pages of this site, and user guide were generated with AsciiDoc 8.6.6,
-assisted by FOP 1.0 (for PDFs). Automated build process uses Phing 2.4.7.1
+assisted by FOP 1.0 (for PDFs). Automated build process uses Phing 2.4.8
 
 Convert the HTML Help source (.hhp and .html) files to HTML Help (.chm) files
 using the Microsoft HTML Help Compiler.
