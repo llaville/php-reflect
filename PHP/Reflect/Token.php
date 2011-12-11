@@ -444,7 +444,6 @@ class PHP_Reflect_Token_FUNCTION extends PHP_Reflect_TokenWithScope
 
         $this->arguments = array();
         $i               = $this->id + 3;
-        $typeHint        = NULL;
         $nextArgument    = array();
 
         while ($this->tokenStream[$i][0] != 'T_CLOSE_BRACKET') {
