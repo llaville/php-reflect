@@ -658,10 +658,15 @@ class PHP_Reflect_Token_INTERFACE extends PHP_Reflect_TokenWithScope
             'subpackage'  => ''
         );
 
-        if (strpos($className, '\\') !== FALSE) {
-            $result['namespace'] = $this->arrayToName(
-              explode('\\', $className)
-            );
+        for ($i = $this->id; $i; --$i) {
+            if ($this->tokenStream[$i][0] == 'T_NAMESPACE') {
+                $ns = new PHP_Reflect_Token_NAMESPACE(
+                    $this->tokenStream[$i][1], $this->tokenStream[$i][2],
+                    $i, $this->tokenStream
+                );
+                $result['namespace'] = $ns->getName();
+                break;
+            }
         }
 
         if (preg_match('/@category[\s]+([\.\w]+)/', $docComment, $matches)) {
