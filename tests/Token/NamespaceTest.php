@@ -62,6 +62,7 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
 {
     protected $ns;
     protected $namespaces;
+    protected $classes;
     protected $functions;
 
     protected function setUp()
@@ -74,6 +75,10 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
                 || ($token[0] == 'T_NAMESPACE')
             ) {
                 $this->ns[] = new PHP_Reflect_Token_NAMESPACE($token[1], $token[2], $id, $tokens);
+            }
+
+            if ($token[0] == 'T_CLASS') {
+                $this->classes[] = new PHP_Reflect_Token_CLASS($token[1], $token[2], $id, $tokens);
             }
         }
         $this->functions = $reflect->getFunctions();
@@ -121,16 +126,22 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
             );
         } else {
             $this->assertEquals(
-                'MyProject', $this->ns[1]->getName()
+                'MyProject', $this->ns[2]->getName()
             );
             $this->assertEquals(
-                'AnotherProject', $this->ns[2]->getName()
+                'AnotherProject', $this->ns[3]->getName()
             );
 
             $expected = array(
                 'A\B' => array(
                     'startLine' => 2,
                     'endLine'   => 5,
+                    'file'      => TEST_FILES_PATH . 'source5.php',
+                    'docblock'  => null
+                ),
+                'Other\Space' => array(
+                    'startLine' => 7,
+                    'endLine'   => 9,
                     'file'      => TEST_FILES_PATH . 'source5.php',
                     'docblock'  => null
                 ),
@@ -199,6 +210,32 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
             );
         } else {
             $this->assertNotContains('\\', array_keys($this->functions));
+        }
+    }
+
+    /**
+     * Retrieves namespace of class or interface declaration
+     *
+     * @covers PHP_Reflect_Token_INTERFACE::getPackage
+     */
+    public function testGetPackageNamespaceWhenExtendingFromNamespaceClass()
+    {
+        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+            $this->markTestSkipped(
+                'NAMESPACE is fully supported only with PHP 5.3.0 or greater'
+            );
+        } else {
+            $expected = array(
+                'namespace'   => 'Other\Space',
+                'fullPackage' => '',
+                'category'    => '',
+                'package'     => '',
+                'subpackage'  => ''
+            );
+
+            $this->assertSame(
+                $expected, $this->classes[1]->getPackage()
+            );
         }
     }
 
