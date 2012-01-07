@@ -13,11 +13,12 @@ and more, by connecting php callbacks to tokens.
 //$channel     = 'pear.php.net';
 $channel     = 'bartlett.laurent-laville.org';
 
-$release_state   = 'stable';
-$release_version = '1.1.0';
+$release_state   = 'snapshot';
+$release_version = '1.2.0snapshot' . date('Ymd');
+//$release_version = '1.2.0';
 
-$api_state       = 'stable';
-$api_version     = '1.1.0';
+$api_state       = 'beta';
+$api_version     = '1.2.0';
 $release_notes   = "
 Additions and changes:
 - PHP_Reflect_Token_FUNCTION::getArguments() return values changed : 
