@@ -101,6 +101,7 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $this->functions[1]->getName());
         $this->assertEquals('foobar', $this->functions[2]->getName());
         $this->assertEquals('barfoo', $this->functions[3]->getName());
+        $this->assertEquals('fooBaz', $this->functions[4]->getName());
     }
 
     /**
@@ -112,6 +113,7 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(10, $this->functions[1]->getLine());
         $this->assertEquals(17, $this->functions[2]->getLine());
         $this->assertEquals(21, $this->functions[3]->getLine());
+        $this->assertEquals(25, $this->functions[4]->getLine());
     }
 
     /**
@@ -123,6 +125,7 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(12, $this->functions[1]->getEndLine());
         $this->assertEquals(19, $this->functions[2]->getEndLine());
         $this->assertEquals(23, $this->functions[3]->getEndLine());
+        $this->assertEquals(27, $this->functions[4]->getEndLine());
     }
 
     /**
