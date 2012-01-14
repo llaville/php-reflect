@@ -21,6 +21,7 @@ $api_state       = 'beta';
 $api_version     = '1.2.0';
 $release_notes   = "
 Additions and changes:
+- add TRAIT support (PHP 5.4.0 feature)
 - PHP_Reflect_Token_FUNCTION::getArguments() return values changed : 
 see examples/scanFunctionArguments.php and User Guide Configure/Properties section (example 2).
 Thanks to Stefan Neufeind for its patch/proposal.

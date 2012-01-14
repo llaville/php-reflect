@@ -15,10 +15,10 @@ and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2012-01-07</date>
- <time>14:04:21</time>
+ <date>2012-01-14</date>
+ <time>16:52:35</time>
  <version>
-  <release>1.2.0snapshot20120107</release>
+  <release>1.2.0snapshot20120114</release>
   <api>1.2.0</api>
  </version>
  <stability>
@@ -28,6 +28,7 @@ and more, by connecting php callbacks to tokens.
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
 Additions and changes:
+- add TRAIT support (PHP 5.4.0 feature)
 - PHP_Reflect_Token_FUNCTION::getArguments() return values changed : 
 see examples/scanFunctionArguments.php and User Guide Configure/Properties section (example 2).
 Thanks to Stefan Neufeind for its patch/proposal.
@@ -259,6 +260,9 @@ Bug fixes:
      <file name="StringTest.php" role="test">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file name="TraitTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
     </dir> <!-- /tests/Token -->
     <dir name="_files">
      <file name="issue1.php" role="test">
@@ -295,6 +299,9 @@ Bug fixes:
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file name="source8-04.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="source9.php" role="test">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir> <!-- /tests/_files -->
@@ -337,17 +344,18 @@ Bug fixes:
  <changelog>
   <release>
    <version>
-    <release>1.2.0snapshot20120107</release>
+    <release>1.2.0snapshot20120114</release>
     <api>1.2.0</api>
    </version>
    <stability>
     <release>snapshot</release>
     <api>beta</api>
    </stability>
-   <date>2012-01-07</date>
+   <date>2012-01-14</date>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
    <notes>
 Additions and changes:
+- add TRAIT support (PHP 5.4.0 feature)
 - PHP_Reflect_Token_FUNCTION::getArguments() return values changed : 
 see examples/scanFunctionArguments.php and User Guide Configure/Properties section (example 2).
 Thanks to Stefan Neufeind for its patch/proposal.
