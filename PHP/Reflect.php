@@ -134,6 +134,7 @@ class PHP_Reflect implements ArrayAccess
             // default containers to store results from parsing
             'containers' => array(
                 'namespace'    => 'namespaces',
+                'trait'        => 'traits',
                 'interface'    => 'interfaces',
                 'class'        => 'classes',
                 'function'     => 'functions',
@@ -147,6 +148,10 @@ class PHP_Reflect implements ArrayAccess
             'properties' => array(
                 'namespace' => array(
                     'file', 'startEndLines', 'docblock'
+                ),
+                'trait' => array(
+                    'file', 'startEndLines', 'docblock', 'namespace',
+                    'parent', 'methods'
                 ),
                 'interface' => array(
                     'file', 'startEndLines', 'docblock', 'namespace',
@@ -195,6 +200,9 @@ class PHP_Reflect implements ArrayAccess
         $this->parserToken = array(
             'T_NAMESPACE'    => array(
                 'PHP_Reflect_Token_NAMESPACE', array($this, 'parseToken')
+            ),
+            'T_TRAIT'    => array(
+                'PHP_Reflect_Token_TRAIT', array($this, 'parseToken')
             ),
             'T_INTERFACE'    => array(
                 'PHP_Reflect_Token_INTERFACE', array($this, 'parseToken')
@@ -501,6 +509,8 @@ class PHP_Reflect implements ArrayAccess
         $classEndLine     = FALSE;
         $interface        = FALSE;
         $interfaceEndLine = FALSE;
+        $trait            = FALSE;
+        $traitEndLine     = FALSE;
 
         foreach ($this->tokens as $id => $token) {
 
@@ -516,6 +526,7 @@ class PHP_Reflect implements ArrayAccess
                 'namespace' => $namespace,
                 'class'     => $class,
                 'interface' => $interface,
+                'trait'     => $trait,
                 'context'   => strtolower(str_replace('T_', '', $tokenName))
             );
 
@@ -539,6 +550,12 @@ class PHP_Reflect implements ArrayAccess
                     $interface        = FALSE;
                     $interfaceEndLine = FALSE;
                 }
+                if ($traitEndLine !== FALSE
+                    && $traitEndLine == $line
+                ) {
+                    $trait        = FALSE;
+                    $traitEndLine = FALSE;
+                }
                 break;
             default:
                 if (isset($this->parserToken[$tokenName])) {
@@ -556,6 +573,10 @@ class PHP_Reflect implements ArrayAccess
             if ($tokenName == 'T_NAMESPACE') {
                 $namespace        = $token->getName();
                 $namespaceEndLine = $token->getEndLine();
+
+            } elseif ($tokenName == 'T_TRAIT') {
+                $trait        = $token->getName();
+                $traitEndLine = $token->getEndLine();
 
             } elseif ($tokenName == 'T_INTERFACE') {
                 $interface        = $token->getName();
@@ -629,6 +650,7 @@ class PHP_Reflect implements ArrayAccess
 
         switch ($context) {
         case 'namespace':
+        case 'trait':
         case 'interface':
         case 'class':
         case 'function':
@@ -667,13 +689,13 @@ class PHP_Reflect implements ArrayAccess
         if ($context == 'function') {
             $properties = $subject->options['properties'];
 
-            if ($class === FALSE && $interface === FALSE) {
+            if ($class === FALSE && $interface === FALSE && $trait === FALSE) {
                 // update user functions
                 $_ns = $subject->offsetGet(array($container => $ns));
                 $_ns[$name] = $tmp;
                 $subject->offsetSet(array($container => $ns), $_ns);
 
-            } elseif ($interface === FALSE) {
+            } elseif ($interface === FALSE && $trait === FALSE) {
                 if (!in_array('methods', $properties['class'])) {
                     return;
                 }
@@ -691,10 +713,12 @@ class PHP_Reflect implements ArrayAccess
                 }
 
             } else {
-                if (!in_array('methods', $properties['interface'])) {
+                $propertyKey = ($interface) ? 'interface' : 'trait';
+
+                if (!in_array('methods', $properties[$propertyKey])) {
                     return;
                 }
-                $container = $subject->options['containers']['interface'];
+                $container = $subject->options['containers'][$propertyKey];
 
                 if ($container !== NULL) {
                     // update interface methods
@@ -709,7 +733,11 @@ class PHP_Reflect implements ArrayAccess
                         $ns = $namespace;
                     }
                     $_ns = $subject->offsetGet(array($container => $ns));
-                    $_ns[$interface]['methods'][$name] = $tmp;
+                    if ($interface) {
+                        $_ns[$interface]['methods'][$name] = $tmp;
+                    } else {
+                        $_ns[$trait]['methods'][$name] = $tmp;
+                    }
                     $subject->offsetSet(array($container => $ns), $_ns);
                 }
             }
