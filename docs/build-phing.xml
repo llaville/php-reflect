@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="phpreflect" default="make-full-docs" basedir=".">
+<project name="phpreflect" default="help" basedir=".">
 
     <property name="asciidoc.home" value="C:\asciidoc-8.6.6" override="true" />
     <property name="homedir" value="C:\www\github\php-reflect" override="true" />
     <property name="htmlhelpworkshop" value="C:\Program Files\HTML Help Workshop" override="true" />
     <property name="theme" value="flask" override="true" />
 
+    <target name="help">
+        <echo>Target                   Description</echo>
+        <echo>------------------------------------------------------------------</echo>
+        <echo>clean-docs               Remove old html generated files</echo>
+        <echo>make-docs                Build the documentation of PHP_Reflect</echo>
+        <echo>make-full-docs           Build the full documentation of PHP_Reflect</echo>
+        <echo>make-userguide           Build the user guide</echo>
+        <echo>make-userguide-all       Build the user guide in all formats</echo>
+        <echo>make-userguide-chunked   Build the user guide in many HTML files</echo>
+        <echo>make-userguide-htmlhelp  Build the user guide in CHM format</echo>
+        <echo>make-userguide-pdf       Build the user guide in PDF format</echo>
+    </target>
+    
     <target name="make-userguide-all"
             depends="make-userguide, make-userguide-chunked, make-userguide-htmlhelp, make-userguide-pdf"
             description="Build the user guide of PHP_Reflect in all formats">
