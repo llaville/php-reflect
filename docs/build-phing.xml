@@ -32,8 +32,21 @@
             description="Build the user guide of PHP_Reflect">
 
         <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -a toc2 -n ${homedir}/docs/userguide.txt"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -a toc2 -n -o ${output.dir}/phpreflect-book.html ${homedir}/docs/phpreflect-book.txt"
         />
+        <zip destfile="${output.dir}/phpreflect-book.html.zip">
+            <fileset dir="${output.dir}">
+                <include name="images/**" />
+                <include name="js/asciidoc.js" />
+                <include name="styles/pygments.css" />
+                <include name="styles/toc2.css" />
+                <include name="styles/${theme}.css" />
+                <include name="phpreflect-book.html" />
+                <exclude name="**/callouts/**" />
+                <exclude name="styles.css" />
+                <exclude name="**/Thumbs.db" />
+            </fileset>
+        </zip>
 
     </target>
 
@@ -41,8 +54,15 @@
             description="Build the user guide of PHP_Reflect in many HTML files">
 
         <exec dir="${asciidoc.home}"
-            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f chunked ${homedir}/docs/userguide.txt"
+            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f chunked -D ${output.dir} ${homedir}/docs/phpreflect-book.txt"
         />
+        <zip destfile="${output.dir}/phpreflect-book.chunked.zip">
+            <fileset dir="${output.dir}">
+                <include name="phpreflect-book.chunked/**" />
+                <exclude name="phpreflect-book.chunked/**/Thumbs.db" />
+            </fileset>
+        </zip>
+        <delete dir="${output.dir}/phpreflect-book.chunked" />
 
     </target>
 
@@ -50,12 +70,26 @@
             description="Build the user guide of PHP_Reflect in CHM format">
 
         <exec dir="${asciidoc.home}"
-            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f htmlhelp ${homedir}/docs/userguide.txt"
+            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f htmlhelp -D ${output.dir} ${homedir}/docs/phpreflect-book.txt"
         />
 
         <exec dir="${htmlhelpworkshop}"
-            command="hhc.exe ${homedir}/docs/userguide.hhp"
+            command="hhc.exe ${output.dir}/phpreflect-book.hhp"
         />
+        <zip destfile="${output.dir}/phpreflect-book.chm.zip">
+            <fileset dir="${output.dir}">
+                <include name="phpreflect-book.chm" />
+            </fileset>
+        </zip>
+        <delete>
+            <fileset dir="${output.dir}">
+                <include name="phpreflect-book.chm" />
+                <include name="phpreflect-book.hhc" />
+                <include name="phpreflect-book.hhk" />
+                <include name="phpreflect-book.hhp" />
+            </fileset>
+        </delete>
+        <delete dir="${output.dir}/phpreflect-book.htmlhelp" />
 
     </target>
 
@@ -63,26 +97,25 @@
             description="Build the user guide of PHP_Reflect in PDF format">
 
         <exec dir="${asciidoc.home}"
-            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f pdf --fop ${homedir}/docs/userguide.txt"
+            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f pdf --fop -D ${output.dir} ${homedir}/docs/phpreflect-book.txt"
         />
 
     </target>
 
     <target name="make-docs"
-            depends="clean-docs"
             description="Build the documentation of PHP_Reflect">
 
         <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/CHANGELOG.txt"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/CHANGELOG.html ${homedir}/docs/CHANGELOG.txt"
         />
         <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/INSTALL.txt"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/INSTALL.html ${homedir}/docs/INSTALL.txt"
         />
         <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/LICENSE.txt"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/LICENSE.html ${homedir}/docs/LICENSE.txt"
         />
         <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -a toc2 -n ${homedir}/docs/index.txt"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -a toc2 -n -o ${output.dir}/index.html ${homedir}/docs/index.txt"
         />
 
     </target>
@@ -119,19 +152,19 @@
             description="Build the highlighted source code of PHP_Reflect">
 
         <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/sources/Reflect.txt"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/sources/Reflect.html ${homedir}/docs/sources/Reflect.txt"
         />
         <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/sources/Autoload.txt"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/sources/Autoload.html ${homedir}/docs/sources/Autoload.txt"
         />
         <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/sources/Token.txt"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/sources/Token.html ${homedir}/docs/sources/Token.txt"
         />
         <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/sources/scanFile.txt"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/sources/scanFile.html ${homedir}/docs/sources/scanFile.txt"
         />
         <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} ${homedir}/docs/sources/scanFunctionArguments.txt"
+            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/sources/scanFunctionArguments.html ${homedir}/docs/sources/scanFunctionArguments.txt"
         />
 
     </target>
