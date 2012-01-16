@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2011, Laurent Laville <pear@laurent-laville.org>
+ * Copyright (c) 2011-2012, Laurent Laville <pear@laurent-laville.org>
  *
  * Credits to Sebastian Bergmann on base concept from phpunit/PHP_Token_Stream
  *
@@ -40,7 +40,6 @@
  * @version  SVN: $Id$
  * @link     http://php5.laurent-laville.org/reflect/
  */
-
 
 /**
  * PHP_Reflect adds the ability to reverse-engineer
