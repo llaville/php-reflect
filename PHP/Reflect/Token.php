@@ -603,6 +603,8 @@ class PHP_Reflect_Token_DEFAULT extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_BREAK extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_CONTINUE extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_GOTO extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CALLABLE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_INSTEADOF extends PHP_Reflect_Token {}
 
 class PHP_Reflect_Token_FUNCTION extends PHP_Reflect_TokenWithArgument
 {

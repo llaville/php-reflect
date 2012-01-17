@@ -137,6 +137,8 @@ function phpReflect_autoload($className)
             'PHP_Reflect_Token_BREAK',
             'PHP_Reflect_Token_CONTINUE',
             'PHP_Reflect_Token_GOTO',
+            'PHP_Reflect_Token_CALLABLE',
+            'PHP_Reflect_Token_INSTEADOF',
             'PHP_Reflect_Token_FUNCTION',
             'PHP_Reflect_Token_CONST',
             'PHP_Reflect_Token_RETURN',
