@@ -85,6 +85,10 @@ class PHP_Reflect_Token_TraitTest extends PHPUnit_Framework_TestCase
      */
     public function testGetName()
     {
+        if (version_compare(PHP_VERSION, '5.4.0RC1', '<')) {
+            $this->markTestSkipped();
+        }
+        
         $this->assertEquals(
             'T1', $this->traits[0]->getName()
         );
@@ -95,6 +99,10 @@ class PHP_Reflect_Token_TraitTest extends PHPUnit_Framework_TestCase
      */
     public function testGetParentNotExists()
     {
+        if (version_compare(PHP_VERSION, '5.4.0RC1', '<')) {
+            $this->markTestSkipped();
+        }
+        
         $this->assertFalse(
             $this->traits[0]->getParent()
         );
@@ -105,6 +113,10 @@ class PHP_Reflect_Token_TraitTest extends PHPUnit_Framework_TestCase
      */
     public function testHasParentNotExists()
     {
+        if (version_compare(PHP_VERSION, '5.4.0RC1', '<')) {
+            $this->markTestSkipped();
+        }
+        
         $this->assertFalse(
             $this->traits[0]->hasParent()
         );
