@@ -76,7 +76,9 @@ class PHP_Reflect_Token_IssueTest extends PHPUnit_Framework_TestCase
 
         foreach ($tokens as $id => $token) {
             if ($token[0] == 'T_FUNCTION') {
-                $functions[] = new PHP_Reflect_Token_FUNCTION($token[1], $token[2], $id, $tokens);
+                $functions[] = new PHP_Reflect_Token_FUNCTION(
+                    $token[1], $token[2], $id, $tokens
+                );
             }
         }
 

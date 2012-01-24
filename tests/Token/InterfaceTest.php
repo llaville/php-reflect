@@ -71,10 +71,14 @@ class PHP_Reflect_Token_InterfaceTest extends PHPUnit_Framework_TestCase
 
         foreach ($tokens as $id => $token) {
             if ($token[0] == 'T_CLASS') {
-                $this->class = new PHP_Reflect_Token_CLASS($token[1], $token[2], $id, $tokens);
+                $this->class = new PHP_Reflect_Token_CLASS(
+                    $token[1], $token[2], $id, $tokens
+                );
             }
             elseif ($token[0] == 'T_INTERFACE') {
-                $this->interfaces[$i] = new PHP_Reflect_Token_INTERFACE($token[1], $token[2], $id, $tokens);
+                $this->interfaces[$i] = new PHP_Reflect_Token_INTERFACE(
+                    $token[1], $token[2], $id, $tokens
+                );
                 $i++;
             }
         }

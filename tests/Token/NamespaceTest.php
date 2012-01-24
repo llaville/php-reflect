@@ -74,11 +74,15 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
             if (($token[0] == 'T_STRING' && $token[1] == 'namespace')
                 || ($token[0] == 'T_NAMESPACE')
             ) {
-                $this->ns[] = new PHP_Reflect_Token_NAMESPACE($token[1], $token[2], $id, $tokens);
+                $this->ns[] = new PHP_Reflect_Token_NAMESPACE(
+                    $token[1], $token[2], $id, $tokens
+                );
             }
 
             if ($token[0] == 'T_CLASS') {
-                $this->classes[] = new PHP_Reflect_Token_CLASS($token[1], $token[2], $id, $tokens);
+                $this->classes[] = new PHP_Reflect_Token_CLASS(
+                    $token[1], $token[2], $id, $tokens
+                );
             }
         }
         $this->functions = $reflect->getFunctions();
@@ -89,7 +93,9 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
             if (($token[0] == 'T_STRING' && $token[1] == 'namespace')
                 || ($token[0] == 'T_NAMESPACE')
             ) {
-                $this->ns[] = new PHP_Reflect_Token_NAMESPACE($token[1], $token[2], $id, $tokens);
+                $this->ns[] = new PHP_Reflect_Token_NAMESPACE(
+                    $token[1], $token[2], $id, $tokens
+                );
             }
         }
 

@@ -78,7 +78,9 @@ class PHP_Reflect_Token_GlobalTest extends PHPUnit_Framework_TestCase
     public function testGetGlobals()
     {
         $this->assertSame(
-            array('', '$init', '$key', '$log', '_PEAR_PACKAGEUPDATE_ERRORS', 'vname'),
+            array(
+                '', '$init', '$key', '$log', '_PEAR_PACKAGEUPDATE_ERRORS', 'vname'
+            ),
             array_keys($this->reflect->getGlobals())
         );
     }
@@ -93,7 +95,8 @@ class PHP_Reflect_Token_GlobalTest extends PHPUnit_Framework_TestCase
             array(
                 '$GLOBALS' => array(
                     '_PEAR_PACKAGEUPDATE_ERRORS' => array(
-                        'startLine' => 4, 'endLine' => 4, 'file' => $this->filename,
+                        'startLine' => 4, 'endLine' => 4, 
+                        'file' => $this->filename,
                         'namespace' => '',
                         'docblock' => null
                     )
@@ -104,17 +107,20 @@ class PHP_Reflect_Token_GlobalTest extends PHPUnit_Framework_TestCase
                 '$HTTP_POST_FILES' => array(),
                 '$HTTP_POST_VARS' => array(
                     '' => array(
-                        'startLine' => 10, 'endLine' => 10, 'file' => $this->filename,
+                        'startLine' => 10, 'endLine' => 10, 
+                        'file' => $this->filename,
                         'namespace' => '',
                         'docblock' => null
                     ),
                     'vname' => array(
-                        'startLine' => 12, 'endLine' => 13, 'file' => $this->filename,
+                        'startLine' => 12, 'endLine' => 13, 
+                        'file' => $this->filename,
                         'namespace' => '',
                         'docblock' => null
                     ),
                     '$key' => array(
-                        'startLine' => 14, 'endLine' => 14, 'file' => $this->filename,
+                        'startLine' => 14, 'endLine' => 14, 
+                        'file' => $this->filename,
                         'namespace' => '',
                         'docblock' => null
                     )
@@ -126,7 +132,8 @@ class PHP_Reflect_Token_GlobalTest extends PHPUnit_Framework_TestCase
                 '$_GET' => array(),
                 '$_POST' => array(
                     'vname' => array(
-                        'startLine' => 16, 'endLine' => 16, 'file' => $this->filename,
+                        'startLine' => 16, 'endLine' => 16, 
+                        'file' => $this->filename,
                         'namespace' => '',
                         'docblock' => null
                     )
@@ -135,12 +142,14 @@ class PHP_Reflect_Token_GlobalTest extends PHPUnit_Framework_TestCase
                 '$_SESSION' => array(),
                 'global' => array(
                     '$init' => array(
-                        'startLine' => 21, 'endLine' => 21, 'file' => $this->filename,
+                        'startLine' => 21, 'endLine' => 21, 
+                        'file' => $this->filename,
                         'namespace' => '',
                         'docblock' => "// init Bar function\n"
                     ),
                     '$log' => array(
-                        'startLine' => 8, 'endLine' => 8, 'file' => $this->filename,
+                        'startLine' => 8, 'endLine' => 8, 
+                        'file' => $this->filename,
                         'namespace' => '',
                         'docblock' => null
                     )

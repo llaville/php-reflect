@@ -71,10 +71,14 @@ class PHP_Reflect_Token_ClassTest extends PHPUnit_Framework_TestCase
         foreach ($tokens as $id => $token) {
             
             if ($token[0] == 'T_CLASS') {
-                $this->class = new PHP_Reflect_Token_CLASS($token[1], $token[2], $id, $tokens);
+                $this->class = new PHP_Reflect_Token_CLASS(
+                    $token[1], $token[2], $id, $tokens
+                );
             }
             if ($token[0] == 'T_FUNCTION') {
-                $this->function = new PHP_Reflect_Token_FUNCTION($token[1], $token[2], $id, $tokens);
+                $this->function = new PHP_Reflect_Token_FUNCTION(
+                    $token[1], $token[2], $id, $tokens
+                );
                 break;
             }
         }

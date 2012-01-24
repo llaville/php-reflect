@@ -71,10 +71,14 @@ class PHP_Reflect_Token_TraitTest extends PHPUnit_Framework_TestCase
 
         foreach ($tokens as $id => $token) {
             if ($token[0] == 'T_CLASS') {
-                $this->class = new PHP_Reflect_Token_CLASS($token[1], $token[2], $id, $tokens);
+                $this->class = new PHP_Reflect_Token_CLASS(
+                    $token[1], $token[2], $id, $tokens
+                );
             }
             elseif ($token[0] == 'T_TRAIT') {
-                $this->traits[$i] = new PHP_Reflect_Token_TRAIT($token[1], $token[2], $id, $tokens);
+                $this->traits[$i] = new PHP_Reflect_Token_TRAIT(
+                    $token[1], $token[2], $id, $tokens
+                );
                 $i++;
             }
         }

@@ -128,7 +128,8 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
             $line = $this->tokenStream[$i][2];
 
             if ($line == $currentLineNumber
-                || (($line == $prevLineNumber) && ('T_WHITESPACE' == $this->tokenStream[$i][0]))
+                || (($line == $prevLineNumber) 
+                && ('T_WHITESPACE' == $this->tokenStream[$i][0]))
             ) {
                 continue;
             }
@@ -294,7 +295,8 @@ abstract class PHP_Reflect_Token_Includes extends PHP_Reflect_TokenWithScope
         }
 
         $i = $this->id + 1;
-        while (isset($this->tokenStream[$i]) && $this->tokenStream[$i][0] !== 'T_SEMICOLON') {
+        while (isset($this->tokenStream[$i]) 
+            && $this->tokenStream[$i][0] !== 'T_SEMICOLON') {
             if ($this->tokenStream[$i][0] == 'T_CONSTANT_ENCAPSED_STRING') {
                 $this->name .= trim($this->tokenStream[$i][1], "'\"");
             } elseif ($this->tokenStream[$i][0] == 'T_VARIABLE') {

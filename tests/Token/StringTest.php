@@ -95,7 +95,9 @@ class PHP_Reflect_Token_StringTest extends PHPUnit_Framework_TestCase
 
         foreach ($tokens as $id => $token) {
             if ($token[0] == 'T_STRING') {
-                $t_string = new PHP_Reflect_Token_STRING($token[1], $token[2], $id, $tokens);
+                $t_string = new PHP_Reflect_Token_STRING(
+                    $token[1], $token[2], $id, $tokens
+                );
 
                 if ('jdtojewish'  === $t_string->getName()) {
                     $this->functions[] = $t_string;
@@ -122,7 +124,9 @@ class PHP_Reflect_Token_StringTest extends PHPUnit_Framework_TestCase
 
         foreach ($tokens as $id => $token) {
             if ($token[0] == 'T_STRING') {
-                $t_string = new PHP_Reflect_Token_STRING($token[1], $token[2], $id, $tokens);
+                $t_string = new PHP_Reflect_Token_STRING(
+                    $token[1], $token[2], $id, $tokens
+                );
 
                 if ('test'  === $t_string->getName()) {
                     $this->functions[] = $t_string;
@@ -148,7 +152,9 @@ class PHP_Reflect_Token_StringTest extends PHPUnit_Framework_TestCase
 
         foreach ($tokens as $id => $token) {
             if ($token[0] == 'T_STRING') {
-                $t_string = new PHP_Reflect_Token_STRING($token[1], $token[2], $id, $tokens);
+                $t_string = new PHP_Reflect_Token_STRING(
+                    $token[1], $token[2], $id, $tokens
+                );
 
                 if ('test'  === $t_string->getName()) {
                     $this->functions[] = $t_string;
