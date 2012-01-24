@@ -69,7 +69,7 @@ abstract class PHP_Reflect_Token
      * @param string  $text
      * @param integer $line
      * @param integer $id
-     * @param array   $tokenStream
+     * @param array   $tokens
      */
     public function __construct($text, $line, $id, $tokens)
     {
@@ -157,17 +157,17 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
                 break;
             }
 
-            if (true === ($this->tokenStream[$i][0] == 'T_PRIVATE' ||
-                $this->tokenStream[$i][0] == 'T_PROTECTED' ||
-                $this->tokenStream[$i][0] == 'T_PUBLIC')
+            if (true === ($this->tokenStream[$i][0] == 'T_PRIVATE'
+                || $this->tokenStream[$i][0] == 'T_PROTECTED' 
+                || $this->tokenStream[$i][0] == 'T_PUBLIC')
             ) {
                 return strtolower(
                     str_replace('T_', '', $this->tokenStream[$i][0])
                 );
             }
-            if (false === ($this->tokenStream[$i][0] == 'T_STATIC' ||
-                $this->tokenStream[$i][0] == 'T_FINAL' ||
-                $this->tokenStream[$i][0] == 'T_ABSTRACT')
+            if (false === ($this->tokenStream[$i][0] == 'T_STATIC' 
+                || $this->tokenStream[$i][0] == 'T_FINAL' 
+                || $this->tokenStream[$i][0] == 'T_ABSTRACT')
             ) {
                 // no keywords; stop visibility search
                 break;
@@ -184,16 +184,16 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
                 break;
             }
 
-            if (true === ($this->tokenStream[$i][0] == 'T_PRIVATE' ||
-                $this->tokenStream[$i][0] == 'T_PROTECTED' ||
-                $this->tokenStream[$i][0] == 'T_PUBLIC')
+            if (true === ($this->tokenStream[$i][0] == 'T_PRIVATE'
+                || $this->tokenStream[$i][0] == 'T_PROTECTED'
+                || $this->tokenStream[$i][0] == 'T_PUBLIC')
             ) {
                 continue;
             }
 
-            if (true === ($this->tokenStream[$i][0] == 'T_STATIC' ||
-                $this->tokenStream[$i][0] == 'T_FINAL' ||
-                $this->tokenStream[$i][0] == 'T_ABSTRACT')
+            if (true === ($this->tokenStream[$i][0] == 'T_STATIC'
+                || $this->tokenStream[$i][0] == 'T_FINAL'
+                || $this->tokenStream[$i][0] == 'T_ABSTRACT')
             ) {
                 $keywords[] = strtolower(
                     str_replace('T_', '', $this->tokenStream[$i][0])
@@ -229,12 +229,12 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
 
             $tokenName = $this->tokenStream[$i][0];
 
-            if ($tokenName == 'T_OPEN_CURLY' ||
-                $tokenName == 'T_CURLY_OPEN'
+            if ($tokenName == 'T_OPEN_CURLY' 
+                || $tokenName == 'T_CURLY_OPEN'
             ) {
                 $block++;
-            }
-            elseif ($tokenName == 'T_CLOSE_CURLY') {
+            
+            } elseif ($tokenName == 'T_CLOSE_CURLY') {
                 $block--;
 
                 if ($block === 0
@@ -242,21 +242,20 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
                 ) {
                     $this->endTokenId = $i;
                 }
-            }
-            elseif ($tokenName == 'T_SEMICOLON'
-                && ($this instanceof PHP_Reflect_Token_FUNCTION ||
-                $this instanceof PHP_Reflect_Token_REQUIRE_ONCE ||
-                $this instanceof PHP_Reflect_Token_REQUIRE ||
-                $this instanceof PHP_Reflect_Token_INCLUDE_ONCE ||
-                $this instanceof PHP_Reflect_Token_INCLUDE ||
-                $this instanceof PHP_Reflect_Token_VARIABLE)) {
+            
+            } elseif ($tokenName == 'T_SEMICOLON'
+                && ($this instanceof PHP_Reflect_Token_FUNCTION 
+                || $this instanceof PHP_Reflect_Token_REQUIRE_ONCE 
+                || $this instanceof PHP_Reflect_Token_REQUIRE 
+                || $this instanceof PHP_Reflect_Token_INCLUDE_ONCE 
+                || $this instanceof PHP_Reflect_Token_INCLUDE 
+                || $this instanceof PHP_Reflect_Token_VARIABLE)) {
 
                 if ($block === 0) {
                     $this->endTokenId = $i;
                 }
-            }
 
-            elseif ($tokenName == 'T_NAMESPACE'
+            } elseif ($tokenName == 'T_NAMESPACE'
                 && $t_ns_open == 'ns_open_semicolon') {
                 // multiple namespace without bracketed syntax ending
                 $this->endTokenId = $i - 1;
@@ -344,9 +343,8 @@ abstract class PHP_Reflect_TokenWithArgument extends PHP_Reflect_TokenWithScope
                 || $this->tokenStream[$i][0] == 'T_OPEN_BRACKET'
             ) {
                 // do nothing
-            }
 
-            else if ($this->tokenStream[$i][0] == 'T_STRING'
+            } elseif ($this->tokenStream[$i][0] == 'T_STRING'
                 && !isset($nextArgument['name'])
             ) {
                 if (($this->tokenStream[$i+1][0] == 'T_OPEN_BRACKET'
@@ -362,25 +360,21 @@ abstract class PHP_Reflect_TokenWithArgument extends PHP_Reflect_TokenWithScope
                 } else {
                     $nextArgument['typeHint'] = $this->tokenStream[$i][1];
                 }
-            }
 
-            else if ($this->tokenStream[$i][0] == 'T_VARIABLE') {
+            } elseif ($this->tokenStream[$i][0] == 'T_VARIABLE') {
                 $nextArgument['name'] = $this->tokenStream[$i][1];
-            }
 
-            else if ($this->tokenStream[$i][0] == 'T_EQUAL') {
+            } elseif ($this->tokenStream[$i][0] == 'T_EQUAL') {
                 // just do nothing - next tokens will contain the defaultValue
-            }
 
-            else if (
+            } elseif (
                 ($this->tokenStream[$i][0] == 'T_STRING') ||
                 ($this->tokenStream[$i][0] == 'T_CONSTANT_ENCAPSED_STRING') ||
                 ($this->tokenStream[$i][0] == 'T_LNUMBER')
             ) {
                 $nextArgument['defaultValue'] = $this->tokenStream[$i][1];
-            }
 
-            else if ($this->tokenStream[$i][0] == 'T_ARRAY') {
+            } elseif ($this->tokenStream[$i][0] == 'T_ARRAY') {
                 $nextArgument['defaultValue'] = $this->tokenStream[$i++][1];
 
                 // allow for anything inside the array, including nested arrays
@@ -390,8 +384,8 @@ abstract class PHP_Reflect_TokenWithArgument extends PHP_Reflect_TokenWithScope
                 ) {
                     if ($this->tokenStream[$i][0] == 'T_OPEN_BRACKET') {
                         $bracketCount++;
-                    }
-                    else if ($this->tokenStream[$i][0] == 'T_CLOSE_BRACKET') {
+
+                    } elseif ($this->tokenStream[$i][0] == 'T_CLOSE_BRACKET') {
                         $bracketCount--;
                     }
 
@@ -405,9 +399,8 @@ abstract class PHP_Reflect_TokenWithArgument extends PHP_Reflect_TokenWithScope
                 }
                 // T_CLOSE_BRACKET
                 $nextArgument['defaultValue'] .= $this->tokenStream[$i][1];
-            }
 
-            else if ($this->tokenStream[$i][0] == 'T_COMMA') {
+            } elseif ($this->tokenStream[$i][0] == 'T_COMMA') {
                 if (isset($nextArgument['typeHint'])
                     && !isset($nextArgument['name'])
                 ) {

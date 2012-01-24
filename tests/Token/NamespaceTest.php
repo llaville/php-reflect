@@ -41,15 +41,16 @@
 
 if (!defined('TEST_FILES_PATH')) {
     define(
-      'TEST_FILES_PATH',
-      dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
-      '_files' . DIRECTORY_SEPARATOR
+        'TEST_FILES_PATH',
+        dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
+        '_files' . DIRECTORY_SEPARATOR
     );
 }
 
 /**
  * Tests for the PHP_Reflect_Token_NAMESPACE class.
  *
+ * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
@@ -65,6 +66,13 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
     protected $classes;
     protected $functions;
 
+    /**
+     * Sets up the fixture.
+     *
+     * Parse source code to find all CLASS and NAMESPACE tokens
+     *
+     * @return void
+     */
     protected function setUp()
     {
         $reflect = new PHP_Reflect();
@@ -103,7 +111,10 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests namespaces naming
+     *
      * @covers PHP_Reflect_Token_NAMESPACE::getName
+     * @return void
      */
     public function testGetName()
     {
@@ -123,6 +134,7 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
      *
      * @link   http://www.php.net/manual/en/language.namespaces.definitionmultiple.php
      * @covers PHP_Reflect_Token_NAMESPACE::getName
+     * @return void
      */
     public function testGetMultipleNamespaceInSameFile()
     {
@@ -175,6 +187,7 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
      * Retrieves functions declared on a user namespace
      *
      * @covers PHP_Reflect_Token_NAMESPACE::getName
+     * @return void
      */
     public function testGetFunctionsFromUserNamespace()
     {
@@ -207,6 +220,7 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
      * Retrieves functions declared on global namespace
      *
      * @covers PHP_Reflect_Token_NAMESPACE::getName
+     * @return void
      */
     public function testGetFunctionsFromGlobalNamespace()
     {
@@ -223,6 +237,7 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
      * Retrieves namespace of class or interface declaration
      *
      * @covers PHP_Reflect_Token_INTERFACE::getPackage
+     * @return void
      */
     public function testGetPackageNamespaceWhenExtendingFromNamespaceClass()
     {

@@ -50,6 +50,7 @@ if (!defined('TEST_FILES_PATH')) {
 /**
  * Tests for the PHP_Reflect_Token_STRING class.
  *
+ * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
@@ -63,6 +64,11 @@ class PHP_Reflect_Token_StringTest extends PHPUnit_Framework_TestCase
     protected $reflect;
     protected $functions;
 
+    /**
+     * Sets up the fixture.
+     *
+     * @return void
+     */
     protected function setUp()
     {
         $opts = array(
@@ -87,7 +93,10 @@ class PHP_Reflect_Token_StringTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests functions arguments
+     * 
      * @covers PHP_Reflect_Token_STRING::getArguments
+     * @return void
      */
     public function testGetArgumentsWithNestedFunctionCalls()
     {
@@ -115,8 +124,11 @@ class PHP_Reflect_Token_StringTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests functions arguments
+     * 
      * @covers PHP_Reflect_Token_STRING::getArguments
      * @link http://www.php.net/manual/en/language.oop5.typehinting.php
+     * @return void
      */
     public function testGetArgumentsWithTypeHintingNullObject()
     {
@@ -143,8 +155,11 @@ class PHP_Reflect_Token_StringTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests functions arguments
+     * 
      * @covers PHP_Reflect_Token_STRING::getArguments
      * @link http://www.php.net/manual/en/language.oop5.typehinting.php
+     * @return void
      */
     public function testGetArgumentsWithTypeHintingNotNullObject()
     {
@@ -171,7 +186,10 @@ class PHP_Reflect_Token_StringTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests functions arguments
+     * 
      * @covers PHP_Reflect_Token_STRING::getArguments
+     * @return void
      */
     public function testGetArgumentsWithDefaultValue()
     {

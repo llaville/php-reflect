@@ -41,9 +41,9 @@
 
 if (!defined('TEST_FILES_PATH')) {
     define(
-      'TEST_FILES_PATH',
-      dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
-      '_files' . DIRECTORY_SEPARATOR
+        'TEST_FILES_PATH',
+        dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
+        '_files' . DIRECTORY_SEPARATOR
     );
 }
 
@@ -51,6 +51,7 @@ if (!defined('TEST_FILES_PATH')) {
  * Tests for the PHP_Reflect_Token_REQUIRE_ONCE, PHP_Reflect_Token_REQUIRE
  * PHP_Reflect_Token_INCLUDE_ONCE and PHP_Reflect_Token_INCLUDE_ONCE classes.
  *
+ * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
@@ -64,6 +65,11 @@ class PHP_Reflect_Token_IncludeTest extends PHPUnit_Framework_TestCase
     protected $reflect;
     protected $filename;
 
+    /**
+     * Sets up the fixture.
+     *
+     * @return void
+     */
     protected function setUp()
     {
         $this->reflect = new PHP_Reflect();
@@ -73,8 +79,11 @@ class PHP_Reflect_Token_IncludeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests includes
+     *
      * @covers PHP_Reflect_Token_Includes::getName
      * @covers PHP_Reflect_Token_Includes::getType
+     * @return void
      */
     public function testGetIncludes()
     {
@@ -85,8 +94,11 @@ class PHP_Reflect_Token_IncludeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests includes categorized
+     *
      * @covers PHP_Reflect_Token_Includes::getName
      * @covers PHP_Reflect_Token_Includes::getType
+     * @return void
      */
     public function testGetIncludesCategorized()
     {
@@ -126,8 +138,11 @@ class PHP_Reflect_Token_IncludeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests includes categorized
+     *
      * @covers PHP_Reflect_Token_Includes::getName
      * @covers PHP_Reflect_Token_Includes::getType
+     * @return void
      */
     public function testGetIncludesCategory()
     {

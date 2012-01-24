@@ -50,6 +50,7 @@ if (!defined('TEST_FILES_PATH')) {
 /**
  * Tests for the PHP_Reflect_Token_TRAIT class.
  *
+ * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
@@ -63,6 +64,13 @@ class PHP_Reflect_Token_TraitTest extends PHPUnit_Framework_TestCase
     protected $class;
     protected $traits;
 
+    /**
+     * Sets up the fixture.
+     *
+     * Parse source code to find all CLASS and TRAIT tokens
+     *
+     * @return void
+     */
     protected function setUp()
     {
         $reflect = new PHP_Reflect();
@@ -74,8 +82,8 @@ class PHP_Reflect_Token_TraitTest extends PHPUnit_Framework_TestCase
                 $this->class = new PHP_Reflect_Token_CLASS(
                     $token[1], $token[2], $id, $tokens
                 );
-            }
-            elseif ($token[0] == 'T_TRAIT') {
+
+            } elseif ($token[0] == 'T_TRAIT') {
                 $this->traits[$i] = new PHP_Reflect_Token_TRAIT(
                     $token[1], $token[2], $id, $tokens
                 );
@@ -85,7 +93,10 @@ class PHP_Reflect_Token_TraitTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests trait naming
+     * 
      * @covers PHP_Reflect_Token_TRAIT::getName
+     * @return void
      */
     public function testGetName()
     {
@@ -99,7 +110,10 @@ class PHP_Reflect_Token_TraitTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests trait inheritance
+     *
      * @covers PHP_Reflect_Token_TRAIT::getParent
+     * @return void
      */
     public function testGetParentNotExists()
     {
@@ -113,7 +127,10 @@ class PHP_Reflect_Token_TraitTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests trait inheritance
+     *
      * @covers PHP_Reflect_Token_TRAIT::hasParent
+     * @return void
      */
     public function testHasParentNotExists()
     {

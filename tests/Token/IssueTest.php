@@ -50,6 +50,7 @@ if (!defined('TEST_FILES_PATH')) {
 /**
  * Unit tests for PHP_Reflect package, issues reported
  *
+ * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
@@ -66,6 +67,7 @@ class PHP_Reflect_Token_IssueTest extends PHPUnit_Framework_TestCase
      * @link https://github.com/llaville/php-reflect/issues/1
      *       Signature truncated on methods with array as defaultvalue
      * @covers PHP_Reflect_Token_FUNCTION::getSignature
+     * @return void
      */
     public function testIssue1()
     {

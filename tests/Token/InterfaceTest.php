@@ -41,15 +41,16 @@
 
 if (!defined('TEST_FILES_PATH')) {
     define(
-      'TEST_FILES_PATH',
-      dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
-      '_files' . DIRECTORY_SEPARATOR
+        'TEST_FILES_PATH',
+        dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
+        '_files' . DIRECTORY_SEPARATOR
     );
 }
 
 /**
  * Tests for the PHP_Reflect_Token_INTERFACE class.
  *
+ * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
@@ -63,6 +64,13 @@ class PHP_Reflect_Token_InterfaceTest extends PHPUnit_Framework_TestCase
     protected $class;
     protected $interfaces;
 
+    /**
+     * Sets up the fixture.
+     *
+     * Parse source code to find all CLASS and INTERFACE tokens
+     *
+     * @return void
+     */
     protected function setUp()
     {
         $reflect = new PHP_Reflect();
@@ -74,8 +82,8 @@ class PHP_Reflect_Token_InterfaceTest extends PHPUnit_Framework_TestCase
                 $this->class = new PHP_Reflect_Token_CLASS(
                     $token[1], $token[2], $id, $tokens
                 );
-            }
-            elseif ($token[0] == 'T_INTERFACE') {
+
+            } elseif ($token[0] == 'T_INTERFACE') {
                 $this->interfaces[$i] = new PHP_Reflect_Token_INTERFACE(
                     $token[1], $token[2], $id, $tokens
                 );
@@ -85,7 +93,10 @@ class PHP_Reflect_Token_InterfaceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests interfaces naming
+     *
      * @covers PHP_Reflect_Token_INTERFACE::getName
+     * @return void
      */
     public function testGetName()
     {
@@ -95,7 +106,10 @@ class PHP_Reflect_Token_InterfaceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests interface inheritance
+     *
      * @covers PHP_Reflect_Token_INTERFACE::getParent
+     * @return void
      */
     public function testGetParentNotExists()
     {
@@ -105,7 +119,10 @@ class PHP_Reflect_Token_InterfaceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests interface inheritance
+     *
      * @covers PHP_Reflect_Token_INTERFACE::hasParent
+     * @return void
      */
     public function testHasParentNotExists()
     {
@@ -115,7 +132,10 @@ class PHP_Reflect_Token_InterfaceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests interface inheritance
+     *
      * @covers PHP_Reflect_Token_INTERFACE::getParent
+     * @return void
      */
     public function testGetParentExists()
     {
@@ -125,7 +145,10 @@ class PHP_Reflect_Token_InterfaceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests interface inheritance
+     *
      * @covers PHP_Reflect_Token_INTERFACE::hasParent
+     * @return void
      */
     public function testHasParentExists()
     {
@@ -135,7 +158,10 @@ class PHP_Reflect_Token_InterfaceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests interfaces
+     * 
      * @covers PHP_Reflect_Token_INTERFACE::getInterfaces
+     * @return void
      */
     public function testGetInterfacesExists()
     {
@@ -146,7 +172,10 @@ class PHP_Reflect_Token_InterfaceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests interface existing
+     *
      * @covers PHP_Reflect_Token_INTERFACE::hasInterfaces
+     * @return void
      */
     public function testHasInterfacesExists()
     {

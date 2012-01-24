@@ -41,15 +41,16 @@
 
 if (!defined('TEST_FILES_PATH')) {
     define(
-      'TEST_FILES_PATH',
-      dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
-      '_files' . DIRECTORY_SEPARATOR
+        'TEST_FILES_PATH',
+        dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
+        '_files' . DIRECTORY_SEPARATOR
     );
 }
 
 /**
  * Tests for the PHP_Reflect_Token_FUNCTION class.
  *
+ * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
@@ -62,6 +63,13 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
 {
     protected $functions;
 
+    /**
+     * Sets up the fixture.
+     *
+     * Parse source code to find all FUNCTION tokens
+     *
+     * @return void
+     */
     protected function setUp()
     {
         $reflect = new PHP_Reflect();
@@ -75,7 +83,10 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test functions arguments
+     *
      * @covers PHP_Reflect_Token_FUNCTION::getArguments
+     * @return void
      */
     public function testGetArguments()
     {
@@ -93,7 +104,10 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests functions naming
+     * 
      * @covers PHP_Reflect_Token_FUNCTION::getName
+     * @return void
      */
     public function testGetName()
     {
@@ -105,7 +119,10 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests functions location in source file
+     * 
      * @covers PHP_Reflect_Token::getLine
+     * @return void
      */
     public function testGetLine()
     {
@@ -117,7 +134,10 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests functions location in source file
+     * 
      * @covers PHP_Reflect_TokenWithScope::getEndLine
+     * @return void
      */
     public function testGetEndLine()
     {
@@ -129,7 +149,10 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests functions docblock
+     * 
      * @covers PHP_Reflect_Token_FUNCTION::getDocblock
+     * @return void
      */
     public function testGetDocblock()
     {

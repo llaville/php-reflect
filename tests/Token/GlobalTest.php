@@ -41,15 +41,16 @@
 
 if (!defined('TEST_FILES_PATH')) {
     define(
-      'TEST_FILES_PATH',
-      dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
-      '_files' . DIRECTORY_SEPARATOR
+        'TEST_FILES_PATH',
+        dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
+        '_files' . DIRECTORY_SEPARATOR
     );
 }
 
 /**
  * Tests for the PHP_Reflect_Token_VARIABLE class
  *
+ * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
@@ -63,6 +64,11 @@ class PHP_Reflect_Token_GlobalTest extends PHPUnit_Framework_TestCase
     protected $reflect;
     protected $filename;
 
+    /**
+     * Sets up the fixture.
+     *
+     * @return void
+     */
     protected function setUp()
     {
         $this->reflect = new PHP_Reflect();
@@ -72,8 +78,11 @@ class PHP_Reflect_Token_GlobalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests GLOBALS variables
+     * 
      * @covers PHP_Reflect_Token_Globals::getName
      * @covers PHP_Reflect_Token_Globals::getType
+     * @return void
      */
     public function testGetGlobals()
     {
@@ -86,8 +95,11 @@ class PHP_Reflect_Token_GlobalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests GLOBALS variables categorized
+     *
      * @covers PHP_Reflect_Token_Globals::getName
      * @covers PHP_Reflect_Token_Globals::getType
+     * @return void
      */
     public function testGetGlobalsCategorized()
     {
@@ -160,8 +172,11 @@ class PHP_Reflect_Token_GlobalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests GLOBALS variables
+     * 
      * @covers PHP_Reflect_Token_Globals::getName
      * @covers PHP_Reflect_Token_Globals::getType
+     * @return void
      */
     public function testGetGlobalsCategory()
     {

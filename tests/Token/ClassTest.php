@@ -41,15 +41,16 @@
 
 if (!defined('TEST_FILES_PATH')) {
     define(
-      'TEST_FILES_PATH',
-      dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
-      '_files' . DIRECTORY_SEPARATOR
+        'TEST_FILES_PATH',
+        dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR .
+        '_files' . DIRECTORY_SEPARATOR
     );
 }
 
 /**
  * Tests for the PHP_Reflect_Token_CLASS class.
  *
+ * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
@@ -63,6 +64,13 @@ class PHP_Reflect_Token_ClassTest extends PHPUnit_Framework_TestCase
     protected $class;
     protected $function;
 
+    /**
+     * Sets up the fixture.
+     *
+     * Parse source code to find all CLASS and FUNCTION tokens
+     *
+     * @return void
+     */
     protected function setUp()
     {
         $reflect = new PHP_Reflect();
@@ -85,7 +93,10 @@ class PHP_Reflect_Token_ClassTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests class with abstract keyword
+     * 
      * @covers PHP_Reflect_Token_CLASS::getKeywords
+     * @return void
      */
     public function testGetClassKeywords()
     {
@@ -95,7 +106,10 @@ class PHP_Reflect_Token_ClassTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests function with abstract and static keywords
+     *
      * @covers PHP_Reflect_Token_FUNCTION::getKeywords
+     * @return void
      */
     public function testGetFunctionKeywords()
     {
@@ -105,7 +119,10 @@ class PHP_Reflect_Token_ClassTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests function public visibility
+     *
      * @covers PHP_Reflect_Token_FUNCTION::getVisibility
+     * @return void
      */
     public function testGetFunctionVisibility()
     {
