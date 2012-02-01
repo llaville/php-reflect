@@ -15,25 +15,21 @@ and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2012-01-14</date>
- <time>16:52:35</time>
+ <date>2012-02-01</date>
+ <time>14:51:53</time>
  <version>
-  <release>1.2.0snapshot20120114</release>
+  <release>1.2.0</release>
   <api>1.2.0</api>
  </version>
  <stability>
-  <release>snapshot</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
 Additions and changes:
 - add TRAIT support (PHP 5.4.0 feature)
-- PHP_Reflect_Token_FUNCTION::getArguments() return values changed : 
-see examples/scanFunctionArguments.php and User Guide Configure/Properties section (example 2).
-Thanks to Stefan Neufeind for its patch/proposal.
-- add test suite for issues reported 
-- upgrades build phing xml file : use latest asciidoc version (8.6.6)
+- refactoring of getArguments() method introduced in previous version 1.1.0
 
 Bug fixes:
 - none
@@ -194,16 +190,19 @@ Bug fixes:
     <file name="LICENSE.txt" role="doc">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
+    <file name="local.win.properties" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="phpreflect-book-docinfo.xml" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="phpreflect-book.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
     <file name="README.txt" role="doc">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
     <file name="revision.txt" role="doc">
-     <tasks:replace from="@package_version@" to="version" type="package-info" />
-    </file>
-    <file name="userguide-docinfo.xml" role="doc">
-     <tasks:replace from="@package_version@" to="version" type="package-info" />
-    </file>
-    <file name="userguide.txt" role="doc">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
    </dir> <!-- /docs -->
@@ -344,23 +343,19 @@ Bug fixes:
  <changelog>
   <release>
    <version>
-    <release>1.2.0snapshot20120114</release>
+    <release>1.2.0</release>
     <api>1.2.0</api>
    </version>
    <stability>
-    <release>snapshot</release>
-    <api>beta</api>
+    <release>stable</release>
+    <api>stable</api>
    </stability>
-   <date>2012-01-14</date>
+   <date>2012-02-01</date>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
    <notes>
 Additions and changes:
 - add TRAIT support (PHP 5.4.0 feature)
-- PHP_Reflect_Token_FUNCTION::getArguments() return values changed : 
-see examples/scanFunctionArguments.php and User Guide Configure/Properties section (example 2).
-Thanks to Stefan Neufeind for its patch/proposal.
-- add test suite for issues reported 
-- upgrades build phing xml file : use latest asciidoc version (8.6.6)
+- refactoring of getArguments() method introduced in previous version 1.1.0
 
 Bug fixes:
 - none

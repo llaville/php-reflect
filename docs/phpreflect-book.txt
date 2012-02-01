@@ -58,7 +58,7 @@ pear install bartlett/PHP_Reflect
 
 Installing a specific version:
 ----
-pear install bartlett/PHP_Reflect-1.1.0
+pear install bartlett/PHP_Reflect-1.2.0
 ----
 
 

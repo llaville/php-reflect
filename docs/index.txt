@@ -4,6 +4,7 @@ include::revision.txt[]
 :stylesdir:   styles
 :scriptsdir:  js
 :binary_dir:  http://php5.laurent-laville.org/reflect/get/
+:man_dir:     http://php5.laurent-laville.org/reflect/manual/1.2
 
 image:images/logo.png[alt="PHP_Reflect logo"]
 
@@ -11,13 +12,11 @@ image:images/logo.png[alt="PHP_Reflect logo"]
 ************************************************************************
 Release highlights:
 
-- PHP_Reflect_Token_FUNCTION::getArguments() return values changed : +
-see examples/scanFunctionArguments.php and User Guide Configure/Properties section (example 2). +
-Thanks to Stefan Neufeind for its patch/proposal.
+- add TRAIT support (PHP 5.4.0 feature)
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the
-updated link:userguide.html[User Guide]. See the
+updated link:phpreflect-book.html[User Guide]. See the
 link:INSTALL.html[Installation page] for downloads and installation instructions.
 
 'Laurent Laville'
@@ -99,7 +98,7 @@ from the table below to start downloading.
 [options="header"]
 |===========================
 | Language | Single HTML file | Many HTML files | HTML Help file | PDF file
-| English | link:{binary_dir}userguide.zip[userguide.zip] 6 Kb | link:{binary_dir}userguide.chunked.zip[userguide.chunked.zip] 42 Kb | link:{binary_dir}userguide.chm[userguide.chm.zip] 39 Kb | link:{binary_dir}userguide.pdf[userguide.pdf] 70 Kb
+| English | link:{man_dir}/en/phpreflect-book.html.zip[phpreflect-book.html.zip] 53 Kb | link:{man_dir}/en/phpreflect-book.chunked.zip[phpreflect-book.chunked.zip] 44 Kb | link:{man_dir}/en/phpreflect-book.chm.zip[phpreflect-book.chm.zip] 40 Kb | link:{man_dir}/en/userguide.pdf[phpreflect-book.pdf] 72 Kb
 |===========================
 
 
@@ -143,7 +142,7 @@ ____
 == Appendix F: Links
 
 All pages of this site, and user guide were generated with AsciiDoc 8.6.6,
-assisted by FOP 1.0 (for PDFs). Automated build process uses Phing 2.4.8
+assisted by FOP 1.0 (for PDFs). Automated build process uses Phing 2.4.9
 
 Convert the HTML Help source (.hhp and .html) files to HTML Help (.chm) files
 using the Microsoft HTML Help Compiler.

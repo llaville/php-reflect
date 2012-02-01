@@ -37,10 +37,15 @@ $ asciidoc-8.6.6/asciidoc.py
   -v
   docs/userguide.txt
 
-Or used Phing 2.4.8
+Or used Phing 2.4.9
 
 But be careful to change first properties 'asciidoc.home' and 'homedir' values 
 that reflect your platform and installation.
+
+Since version 1.2.0 you can use alternative solution: use a properties file that define
+all values you wan't to overload (example)
+
+phing  /path/to/build-phing.xml -Ddefault.properties=/path/to/your-local.properties
 
 Single Html file
 phing  -f /path/to/build-phing.xml  make-userguide

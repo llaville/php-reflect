@@ -4,7 +4,7 @@ include::revision.txt[]
 
 == Containers
 
-You can change default containers ('interfaces', 'classes', 'functions', 'includes'),
+You can change default containers ('namespaces', 'traits', 'interfaces', 'classes', 'functions', 'includes', 'globals'),
 and then have different getting methods (rather than standard 'getInterfaces', ... ).
 
 .Containers options
@@ -13,6 +13,7 @@ and then have different getting methods (rather than standard 'getInterfaces', .
 |===========================
 key code, container default name
 namespace, namespaces
+trait, traits
 interface, interfaces
 class,     classes
 function,  functions
@@ -56,6 +57,7 @@ You can choose what information to retrieve depending of element (key code).
 |===========================
 key code,default property
 namespace, "file, startEndLines, docblock"
+trait,     "file, startEndLines, docblock, namespace, parent, methods"
 interface, "file, startEndLines, docblock, namespace, keywords, parent, methods"
 class,     "file, startEndLines, docblock, namespace, keywords, parent, methods, interfaces, package"
 function,  "file, startEndLines, docblock, namespace, keywords, signature, arguments, ccn"

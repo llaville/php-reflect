@@ -21,7 +21,7 @@
         <echo>make-userguide-htmlhelp  Build the user guide in CHM format</echo>
         <echo>make-userguide-pdf       Build the user guide in PDF format</echo>
     </target>
-    
+
     <target name="make-userguide-all"
             depends="make-userguide, make-userguide-chunked, make-userguide-htmlhelp, make-userguide-pdf"
             description="Build the user guide of PHP_Reflect in all formats">

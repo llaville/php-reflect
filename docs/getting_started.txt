@@ -24,6 +24,10 @@ try {
     // OR
     $interfaces = $reflect['interfaces'];
     
+    $traits     = $reflect->getTraits();
+    // OR
+    $traits     = $reflect['traits'];
+
     $functions  = $reflect->getFunctions();
     // OR
     $functions  = $reflect['functions'];    
