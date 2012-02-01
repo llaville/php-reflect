@@ -98,7 +98,7 @@ from the table below to start downloading.
 [options="header"]
 |===========================
 | Language | Single HTML file | Many HTML files | HTML Help file | PDF file
-| English | link:{man_dir}/en/phpreflect-book.html.zip[phpreflect-book.html.zip] 53 Kb | link:{man_dir}/en/phpreflect-book.chunked.zip[phpreflect-book.chunked.zip] 44 Kb | link:{man_dir}/en/phpreflect-book.chm.zip[phpreflect-book.chm.zip] 40 Kb | link:{man_dir}/en/userguide.pdf[phpreflect-book.pdf] 72 Kb
+| English | link:{man_dir}/en/phpreflect-book.html.zip[phpreflect-book.html.zip] 53 Kb | link:{man_dir}/en/phpreflect-book.chunked.zip[phpreflect-book.chunked.zip] 44 Kb | link:{man_dir}/en/phpreflect-book.chm.zip[phpreflect-book.chm.zip] 40 Kb | link:{man_dir}/en/phpreflect-book.pdf[phpreflect-book.pdf] 72 Kb
 |===========================
 
 
