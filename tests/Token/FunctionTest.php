@@ -77,7 +77,9 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
 
         foreach ($tokens as $id => $token) {
             if ($token[0] == 'T_FUNCTION') {
-                $this->functions[] = new PHP_Reflect_Token_FUNCTION($token[1], $token[2], $id, $tokens);
+                $this->functions[] = new PHP_Reflect_Token_FUNCTION(
+                    $token[1], $token[2], $id, $tokens
+                );
             }
         }
     }
@@ -91,9 +93,24 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
     public function testGetArguments()
     {
         $this->assertEquals(array(), $this->functions[0]->getArguments());
-        $this->assertEquals(array(array('typeHint' => 'Baz', 'name' => '$baz')), $this->functions[1]->getArguments());
-        $this->assertEquals(array(array('typeHint' => 'Foobar', 'name' => '$foobar')), $this->functions[2]->getArguments());
-        $this->assertEquals(array(array('typeHint' => 'Barfoo', 'name' => '$barfoo')), $this->functions[3]->getArguments());
+        $this->assertEquals(
+            array(
+                array('typeHint' => 'Baz', 'name' => '$baz')
+            ),
+            $this->functions[1]->getArguments()
+        );
+        $this->assertEquals(
+            array(
+                array('typeHint' => 'Foobar', 'name' => '$foobar')
+            ),
+            $this->functions[2]->getArguments()
+        );
+        $this->assertEquals(
+            array(
+                array('typeHint' => 'Barfoo', 'name' => '$barfoo')
+            ),
+            $this->functions[3]->getArguments()
+        );
         $this->assertEquals(
             array(
                 array('name' => '$foo'),
@@ -157,8 +174,14 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
     public function testGetDocblock()
     {
         $this->assertNull($this->functions[0]->getDocblock());
-        $this->assertEquals("/**\n     * @param Baz \$baz\n     */", $this->functions[1]->getDocblock());
-        $this->assertEquals("/**\n     * @param Foobar \$foobar\n     */", $this->functions[2]->getDocblock());
+        $this->assertEquals(
+            "/**\n     * @param Baz \$baz\n     */",
+            $this->functions[1]->getDocblock()
+        );
+        $this->assertEquals(
+            "/**\n     * @param Foobar \$foobar\n     */",
+            $this->functions[2]->getDocblock()
+        );
         $this->assertNull($this->functions[3]->getDocblock());
     }
 }
