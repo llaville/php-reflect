@@ -6,6 +6,17 @@
         <param value="${phing.file}"/>
     </php>
 
+    <php function="file_get_contents" returnProperty="file.contents">
+        <param value="phing/tasks/ext/GrowlNotifyTask.php"/>
+        <param value="true"/>
+    </php>
+
+    <condition property="growl.task.available">
+        <not>
+            <isfalse value="${file.contents}" />
+        </not>
+    </condition>
+
     <property name="default.properties" value="${phing.buildfile.dirname}/local.win.properties"/>
     <property file="${default.properties}"/>
 
@@ -20,6 +31,19 @@
         <echo>make-userguide-chunked   Build the user guide in many HTML files</echo>
         <echo>make-userguide-htmlhelp  Build the user guide in CHM format</echo>
         <echo>make-userguide-pdf       Build the user guide in PDF format</echo>
+    </target>
+
+    <target name="notify" if="growl.task.available">
+
+        <taskdef name="growlnotify" classname="phing.tasks.ext.GrowlNotifyTask" />
+
+        <growlnotify message="${growl.message}"
+            title="PhingNotify"
+            priority="high"
+            sticky="true"
+            appicon="./growlPhing.png"
+        />
+
     </target>
 
     <target name="make-userguide-all"
@@ -124,6 +148,9 @@
             depends="clean-docs, clean-docs-sources, make-docs-sources, make-docs, make-userguide"
             description="Build the full documentation of PHP_Reflect">
 
+        <phingcall target="notify">
+            <property name="growl.message" value="PHP_Reflect full documentation build FINISHED." />
+        </phingcall>
     </target>
 
     <target name="clean-docs"
