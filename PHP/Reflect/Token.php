@@ -841,6 +841,7 @@ class PHP_Reflect_Token_DOUBLE_ARROW extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_LIST extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_ARRAY extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_CLASS_C extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_TRAIT_C extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_METHOD_C extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_FUNC_C extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_LINE extends PHP_Reflect_Token {}

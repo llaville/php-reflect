@@ -168,6 +168,7 @@ function phpReflect_autoload($className)
             'PHP_Reflect_Token_LIST',
             'PHP_Reflect_Token_ARRAY',
             'PHP_Reflect_Token_CLASS_C',
+            'PHP_Reflect_Token_TRAIT_C',
             'PHP_Reflect_Token_METHOD_C',
             'PHP_Reflect_Token_FUNC_C',
             'PHP_Reflect_Token_LINE',
