@@ -4,7 +4,7 @@ include::revision.txt[]
 :stylesdir:   styles
 :scriptsdir:  js
 :binary_dir:  http://php5.laurent-laville.org/reflect/get/
-:man_dir:     http://php5.laurent-laville.org/reflect/manual/1.2
+:man_dir:     http://php5.laurent-laville.org/reflect/manual/1.3
 
 image:images/logo.png[alt="PHP_Reflect logo"]
 
@@ -12,7 +12,7 @@ image:images/logo.png[alt="PHP_Reflect logo"]
 ************************************************************************
 Release highlights:
 
-- add TRAIT support (PHP 5.4.0 feature)
+- additionnal TRAIT support (PHP 5.4.0 feature) with magic constant +--TRAIT--+
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the
@@ -39,55 +39,16 @@ with tokenizer extension.
 
 == Overview
 
-PHP_Reflect provides :
+.Features
 
-.Ability to reverse-engineer classes 
-
-* Core, loaded extensions or user classes
-* Start and end lines of implementation
-* Gets doc comments
-* Gets namespace name
-
-.Ability to reverse-engineer interfaces
-
-* Core, loaded extensions or user classes
-* Start and end lines of implementation
-* Gets doc comments
-* Gets namespace name
-
-.Ability to reverse-engineer functions
-
-* Core, loaded extensions or user classes
-* Start and end lines of implementation
-* Gets doc comments
-* Gets namespace name
-
-.Ability to reverse-engineer constants
-
-* Core, loaded extensions or user classes
-* Start and end lines of implementation
-* Gets doc comments
-* Gets namespace name
-
-.Ability to reverse-engineer namespaces
-
-* Core, loaded extensions or user classes
-* Start and end lines of implementation
-* Gets doc comments
-
-.Ability to reverse-engineer includes
-
-* require, require_once, include, include_once
-* Start and end lines of implementation
-* Gets doc comments
-* Gets namespace name
-
-.Ability to reverse-engineer globals variables
-
-* Core and user globals
-* Start and end lines of implementation
-* Gets doc comments
-* Gets namespace name
+* ability to reverse-engineer classes
+* ability to reverse-engineer traits
+* ability to reverse-engineer interfaces
+* ability to reverse-engineer functions
+* ability to reverse-engineer constants
+* ability to reverse-engineer namespaces
+* ability to reverse-engineer includes
+* ability to reverse-engineer globals variables
 
 
 == Documentation
@@ -97,8 +58,8 @@ from the table below to start downloading.
 
 [options="header"]
 |===========================
-| Language | Single HTML file | Many HTML files | HTML Help file | PDF file
-| English | link:{man_dir}/en/phpreflect-book.html.zip[phpreflect-book.html.zip] 53 Kb | link:{man_dir}/en/phpreflect-book.chunked.zip[phpreflect-book.chunked.zip] 44 Kb | link:{man_dir}/en/phpreflect-book.chm.zip[phpreflect-book.chm.zip] 40 Kb | link:{man_dir}/en/phpreflect-book.pdf[phpreflect-book.pdf] 72 Kb
+| Language | Single HTML file | Many HTML files | HTML Help file | PDF file | EPUB file
+| English | link:{man_dir}/en/phpreflect-book.html.zip[phpreflect-book.html.zip] 53 Kb | link:{man_dir}/en/phpreflect-book.chunked.zip[phpreflect-book.chunked.zip] 44 Kb | link:{man_dir}/en/phpreflect-book.chm.zip[phpreflect-book.chm.zip] 39 Kb | link:{man_dir}/en/phpreflect-book.pdf[phpreflect-book.pdf] 72 Kb | link:{man_dir}/en/phpreflect-book.epub.zip[phpreflect-book.epub.zip] 33Kb
 |===========================
 
 

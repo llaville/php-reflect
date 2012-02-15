@@ -15,14 +15,14 @@ $channel     = 'bartlett.laurent-laville.org';
 
 $release_state   = 'stable';
 //$release_version = '1.2.0snapshot' . date('Ymd');
-$release_version = '1.2.0';
+$release_version = '1.3.0';
 
 $api_state       = 'stable';
-$api_version     = '1.2.0';
+$api_version     = '1.3.0';
 $release_notes   = "
 Additions and changes:
-- add TRAIT support (PHP 5.4.0 feature)
-- refactoring of getArguments() method introduced in previous version 1.1.0
+- additionnal TRAIT support (PHP 5.4.0 feature) with magic constant __TRAIT__
+- EPUB doc format is now available to download
 
 Bug fixes:
 - none
@@ -44,6 +44,7 @@ $p2->setOptions(
         'exceptions'        => array(
             'LICENSE' => 'doc',
             'phpunit.xml' => 'test',
+            'README.markdown' => 'doc',
             ),
     )
 );

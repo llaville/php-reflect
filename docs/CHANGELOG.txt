@@ -6,6 +6,16 @@ PHP_Reflect ChangeLog
 :scriptsdir:  js
 
 
+== Version 1.3.0 (2012-02-15)
+
+.Additions and changes:
+* additionnal TRAIT support (PHP 5.4.0 feature) with magic constant +--TRAIT--+
+* EPUB doc format is now available to download
+
+.Bug fixes:
+* none
+
+
 == Version 1.2.0 (2012-02-01)
 
 .Additions and changes: 
