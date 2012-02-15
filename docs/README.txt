@@ -58,3 +58,7 @@ phing  -f /path/to/build-phing.xml  make-userguide-htmlhelp
 
 PDF file (with FOP)
 phing  -f /path/to/build-phing.xml  make-userguide-pdf
+
+Since version 1.3.0
+EPUB file
+phing  -f /path/to/build-phing.xml  make-userguide-epub

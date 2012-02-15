@@ -30,6 +30,7 @@
         <echo>make-userguide-chunked   Build the user guide in many HTML files</echo>
         <echo>make-userguide-htmlhelp  Build the user guide in CHM format</echo>
         <echo>make-userguide-pdf       Build the user guide in PDF format</echo>
+        <echo>make-userguide-epub      Build the user guide in EPUB format</echo>
     </target>
 
     <target name="notify" if="growl.task.available">
@@ -68,6 +69,13 @@
             <istrue value="${build.book.pdf}" />
             <then>
                 <phingcall target="make-userguide-pdf" />
+            </then>
+        </if>
+
+        <if>
+            <istrue value="${build.book.epub}" />
+            <then>
+                <phingcall target="make-userguide-epub" />
             </then>
         </if>
 
@@ -162,6 +170,32 @@
         <exec dir="${asciidoc.home}"
             command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f pdf --fop -D ${output.dir} ${homedir}/docs/phpreflect-book.txt"
         />
+
+    </target>
+
+    <target name="make-userguide-epub"
+            description="Build the user guide of PHP_Reflect in EPUB format">
+
+        <exec dir="${asciidoc.home}"
+            command="a2x.py --verbose -L -d book -f epub -D ${output.dir} ${homedir}/docs/phpreflect-book.txt"
+            returnProperty="exitCode"
+        />
+
+        <if>
+            <equals arg1="${exitCode}" arg2="0" />
+            <then>
+                <if>
+                    <istrue value="${build.tarball}" />
+                    <then>
+                        <zip destfile="${output.dir}/phpreflect-book.epub.zip">
+                            <fileset dir="${output.dir}">
+                                <include name="phpreflect-book.epub" />
+                            </fileset>
+                        </zip>
+                    </then>
+                </if>
+            </then>
+        </if>
 
     </target>
 
