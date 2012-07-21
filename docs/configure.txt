@@ -12,6 +12,7 @@ and then have different getting methods (rather than standard 'getInterfaces', .
 [options="header",cols="5,10"]
 |===========================
 key code, container default name
+use, namespaces
 namespace, namespaces
 trait, traits
 interface, interfaces
@@ -56,7 +57,8 @@ You can choose what information to retrieve depending of element (key code).
 [options="header",cols="5,10"]
 |===========================
 key code,default property
-namespace, "file, startEndLines, docblock"
+use,       "file, startEndLines, docblock, alias"
+namespace, "file, startEndLines, docblock, alias"
 trait,     "file, startEndLines, docblock, namespace, parent, methods"
 interface, "file, startEndLines, docblock, namespace, keywords, parent, methods"
 class,     "file, startEndLines, docblock, namespace, keywords, parent, methods, interfaces, package"
@@ -274,6 +276,135 @@ Array
 
                 )
 
+        )
+
+)
+----
+
+.Example 3
+
+With this code below (filename reference is __/tmp/ns_sample.php__), we want to get namespaces :
+
+* without imports
+* only imports
+* all at once
+
+[source,php]
+----
+<?php
+namespace Doctrine\Common\Cache;
+
+use \Memcache;
+use My\Full\Classname as Another;
+
+class MemcacheCache extends CacheProvider
+{
+    public function setMemcache(Memcache $memcache)
+    {
+    }
+
+}
+----
+
+[source,php]
+----
+<?php
+require_once 'Bartlett/PHP/Reflect/Autoload.php';
+
+$source = '/tmp/ns_sample.php';
+
+try {
+    $reflect = new PHP_Reflect();
+    $reflect->scan($source);
+
+    $namespaces_without_import = $reflect->getNamespaces();
+    // OR 
+    $namespaces_without_import = $reflect->getNamespaces(PHP_Reflect::NAMESPACES_WITHOUT_IMPORT);
+
+    $namespaces_only_import    = $reflect->getNamespaces(PHP_Reflect::NAMESPACES_ONLY_IMPORT);
+
+    $namespaces_all            = $reflect->getNamespaces(PHP_Reflect::NAMESPACES_ALL);
+    
+    print_r($namespaces_without_import);
+    print_r($namespaces_only_import);
+    print_r($namespaces_all);
+
+} catch (Exception $e) {
+    echo 'Caught exception: ' . $e->getMessage() . PHP_EOL;
+}
+?>
+----
+
+And here are results we got on STDOUT :
+[source,php]
+----
+<?php
+Array
+(
+    [Doctrine\Common\Cache] => Array
+        (
+            [startLine] => 2
+            [endLine] => 13
+            [file] => /tmp/ns_sample.php
+            [docblock] =>
+            [alias] => Cache
+            [import] =>
+        )
+
+)
+Array
+(
+    [\Memcache] => Array
+        (
+            [startLine] => 4
+            [endLine] => 4
+            [file] => /tmp/ns_sample.php
+            [docblock] =>
+            [alias] => Memcache
+            [import] => 1
+        )
+
+    [My\Full\Classname] => Array
+        (
+            [startLine] => 5
+            [endLine] => 5
+            [file] => /tmp/ns_sample.php
+            [docblock] =>
+            [alias] => Another
+            [import] => 1
+        )
+
+)
+Array
+(
+    [Doctrine\Common\Cache] => Array
+        (
+            [startLine] => 2
+            [endLine] => 13
+            [file] => /tmp/ns_sample.php
+            [docblock] =>
+            [alias] => Cache
+            [import] =>
+        )
+
+    [\Memcache] => Array
+        (
+            [startLine] => 4
+            [endLine] => 4
+            [file] => /tmp/ns_sample.php
+            [docblock] =>
+            [alias] => Memcache
+            [import] => 1
+        )
+
+    [My\Full\Classname] => Array
+        (
+            [startLine] => 5
+            [endLine] => 5
+            [file] => /tmp/ns_sample.php
+            [docblock] =>
+            [alias] => Another
+            [import] => 1
         )
 
 )
