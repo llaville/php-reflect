@@ -128,7 +128,7 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
             $line = $this->tokenStream[$i][2];
 
             if ($line == $currentLineNumber
-                || (($line == $prevLineNumber) 
+                || (($line == $prevLineNumber)
                 && ('T_WHITESPACE' == $this->tokenStream[$i][0]))
             ) {
                 continue;
@@ -158,15 +158,15 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
             }
 
             if (true === ($this->tokenStream[$i][0] == 'T_PRIVATE'
-                || $this->tokenStream[$i][0] == 'T_PROTECTED' 
+                || $this->tokenStream[$i][0] == 'T_PROTECTED'
                 || $this->tokenStream[$i][0] == 'T_PUBLIC')
             ) {
                 return strtolower(
                     str_replace('T_', '', $this->tokenStream[$i][0])
                 );
             }
-            if (false === ($this->tokenStream[$i][0] == 'T_STATIC' 
-                || $this->tokenStream[$i][0] == 'T_FINAL' 
+            if (false === ($this->tokenStream[$i][0] == 'T_STATIC'
+                || $this->tokenStream[$i][0] == 'T_FINAL'
                 || $this->tokenStream[$i][0] == 'T_ABSTRACT')
             ) {
                 // no keywords; stop visibility search
@@ -229,11 +229,11 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
 
             $tokenName = $this->tokenStream[$i][0];
 
-            if ($tokenName == 'T_OPEN_CURLY' 
+            if ($tokenName == 'T_OPEN_CURLY'
                 || $tokenName == 'T_CURLY_OPEN'
             ) {
                 $block++;
-            
+
             } elseif ($tokenName == 'T_CLOSE_CURLY') {
                 $block--;
 
@@ -242,13 +242,13 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
                 ) {
                     $this->endTokenId = $i;
                 }
-            
+
             } elseif ($tokenName == 'T_SEMICOLON'
-                && ($this instanceof PHP_Reflect_Token_FUNCTION 
-                || $this instanceof PHP_Reflect_Token_REQUIRE_ONCE 
-                || $this instanceof PHP_Reflect_Token_REQUIRE 
-                || $this instanceof PHP_Reflect_Token_INCLUDE_ONCE 
-                || $this instanceof PHP_Reflect_Token_INCLUDE 
+                && ($this instanceof PHP_Reflect_Token_FUNCTION
+                || $this instanceof PHP_Reflect_Token_REQUIRE_ONCE
+                || $this instanceof PHP_Reflect_Token_REQUIRE
+                || $this instanceof PHP_Reflect_Token_INCLUDE_ONCE
+                || $this instanceof PHP_Reflect_Token_INCLUDE
                 || $this instanceof PHP_Reflect_Token_VARIABLE)) {
 
                 if ($block === 0) {
@@ -294,7 +294,7 @@ abstract class PHP_Reflect_Token_Includes extends PHP_Reflect_TokenWithScope
         }
 
         $i = $this->id + 1;
-        while (isset($this->tokenStream[$i]) 
+        while (isset($this->tokenStream[$i])
             && $this->tokenStream[$i][0] !== 'T_SEMICOLON') {
             if ($this->tokenStream[$i][0] == 'T_CONSTANT_ENCAPSED_STRING') {
                 $this->name .= trim($this->tokenStream[$i][1], "'\"");
