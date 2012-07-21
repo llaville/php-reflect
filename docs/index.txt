@@ -4,7 +4,7 @@ include::revision.txt[]
 :stylesdir:   styles
 :scriptsdir:  js
 :binary_dir:  http://php5.laurent-laville.org/reflect/get/
-:man_dir:     http://php5.laurent-laville.org/reflect/manual/1.3
+:man_dir:     http://php5.laurent-laville.org/reflect/manual/1.4
 
 image:images/logo.png[alt="PHP_Reflect logo"]
 
@@ -12,7 +12,7 @@ image:images/logo.png[alt="PHP_Reflect logo"]
 ************************************************************************
 Release highlights:
 
-- additionnal TRAIT support (PHP 5.4.0 feature) with magic constant +--TRAIT--+
+- improved namespaces support with imports (Aliasing/Importing)
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the
@@ -58,8 +58,8 @@ from the table below to start downloading.
 
 [options="header"]
 |===========================
-| Language | Single HTML file | Many HTML files | HTML Help file | PDF file | EPUB file
-| English | link:{man_dir}/en/phpreflect-book.html.zip[phpreflect-book.html.zip] 53 Kb | link:{man_dir}/en/phpreflect-book.chunked.zip[phpreflect-book.chunked.zip] 44 Kb | link:{man_dir}/en/phpreflect-book.chm.zip[phpreflect-book.chm.zip] 39 Kb | link:{man_dir}/en/phpreflect-book.pdf[phpreflect-book.pdf] 72 Kb | link:{man_dir}/en/phpreflect-book.epub.zip[phpreflect-book.epub.zip] 33Kb
+| Language | Single HTML file | Many HTML files | HTML Help file | PDF A4 file | PDF US file | EPUB file
+| English | link:{man_dir}/en/phpreflect-book.html.zip[phpreflect-book.html.zip] 54 Kb | link:{man_dir}/en/phpreflect-book.chunked.zip[phpreflect-book.chunked.zip] 44 Kb | link:{man_dir}/en/phpreflect-book.chm.zip[phpreflect-book.chm.zip] 40 Kb | link:{man_dir}/en/phpreflect-book-a4.pdf[phpreflect-book-a4.pdf] 75 Kb | link:{man_dir}/en/phpreflect-book-us.pdf[phpreflect-book-us.pdf] 75 Kb | link:{man_dir}/en/phpreflect-book.epub.zip[phpreflect-book.epub.zip] 33Kb
 |===========================
 
 
@@ -102,8 +102,8 @@ ____
 
 == Appendix F: Links
 
-All pages of this site, and user guide were generated with AsciiDoc 8.6.6,
-assisted by FOP 1.0 (for PDFs). Automated build process uses Phing 2.4.9
+All pages of this site, and user guide were generated with AsciiDoc 8.6.8,
+assisted by FOP 1.0 (for PDFs). Automated build process uses Phing 2.4.12
 
 Convert the HTML Help source (.hhp and .html) files to HTML Help (.chm) files
 using the Microsoft HTML Help Compiler.
