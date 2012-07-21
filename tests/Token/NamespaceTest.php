@@ -155,25 +155,33 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
                     'startLine' => 2,
                     'endLine'   => 5,
                     'file'      => TEST_FILES_PATH . 'source5.php',
-                    'docblock'  => null
+                    'docblock'  => null,
+                    'alias'     => 'B',
+                    'import'    => false
                 ),
                 'Other\Space' => array(
                     'startLine' => 7,
                     'endLine'   => 9,
                     'file'      => TEST_FILES_PATH . 'source5.php',
-                    'docblock'  => null
+                    'docblock'  => null,
+                    'alias'     => 'Space',
+                    'import'    => false
                 ),
                 'MyProject' => array(
                     'startLine' => 2,
                     'endLine'   => 9,
                     'file'      => TEST_FILES_PATH . 'source6.php',
-                    'docblock'  => null
+                    'docblock'  => null,
+                    'alias'     => 'MyProject',
+                    'import'    => false
                 ),
                 'AnotherProject' => array(
                     'startLine' => 11,
                     'endLine'   => 16,
                     'file'      => TEST_FILES_PATH . 'source6.php',
-                    'docblock'  => null
+                    'docblock'  => null,
+                    'alias'     => 'AnotherProject',
+                    'import'    => false
                 ),
             );
 

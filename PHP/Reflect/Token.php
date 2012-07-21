@@ -249,6 +249,7 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
                 || $this instanceof PHP_Reflect_Token_REQUIRE
                 || $this instanceof PHP_Reflect_Token_INCLUDE_ONCE
                 || $this instanceof PHP_Reflect_Token_INCLUDE
+                || $this instanceof PHP_Reflect_Token_USE
                 || $this instanceof PHP_Reflect_Token_VARIABLE)) {
 
                 if ($block === 0) {
@@ -685,7 +686,65 @@ class PHP_Reflect_Token_RETURN extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_TRY extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_CATCH extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_THROW extends PHP_Reflect_Token {}
-class PHP_Reflect_Token_USE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_USE extends PHP_Reflect_TokenWithScope
+{
+    protected $namespace;
+    protected $alias;
+
+    public function getName()
+    {
+        if ($this->namespace !== NULL) {
+            return $this->namespace;
+        }
+
+        $i = $this->id + 2;
+
+        if ($this->tokenStream[$i][0] == 'T_NS_SEPARATOR') {
+            $this->namespace = '';
+        } else {
+            $this->namespace = $this->tokenStream[$i][1];
+            $i++;
+        }
+
+        for (; ; $i += 2) {
+            if (!isset($this->tokenStream[$i])) {
+                break;
+            }
+            if ($this->tokenStream[$i][0] == 'T_NS_SEPARATOR') {
+                $this->namespace .= '\\' . $this->tokenStream[$i+1][1];
+            } elseif ($this->tokenStream[$i][0] !== 'T_STRING') {
+
+                if ($this->tokenStream[$i+1][0] == 'T_AS') {
+                    $this->alias = $this->tokenStream[$i+3][1];
+                }
+                break;
+            }
+        }
+
+        return $this->namespace;
+    }
+
+    public function getAlias()
+    {
+        if ($this->alias !== NULL) {
+            return $this->alias;
+        }
+
+        $this->getName();
+
+        $tmp         = explode('\\', $this->namespace);
+        $this->alias = array_pop($tmp);
+
+        return $this->alias;
+
+    }
+
+    public function isImported()
+    {
+        return true;
+    }
+
+}
 class PHP_Reflect_Token_GLOBAL extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_PUBLIC extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_PROTECTED extends PHP_Reflect_Token {}
@@ -860,21 +919,50 @@ class PHP_Reflect_Token_PAAMAYIM_NEKUDOTAYIM extends PHP_Reflect_Token {}
 
 class PHP_Reflect_Token_NAMESPACE extends PHP_Reflect_TokenWithScope
 {
+    protected $namespace;
+    protected $alias;
+
     public function getName()
     {
-        $namespace = $this->tokenStream[$this->id+2][1];
+        if ($this->namespace !== NULL) {
+            return $this->namespace;
+        }
+
+        $this->namespace = $this->tokenStream[$this->id+2][1];
 
         for ($i = $this->id + 3; ; $i += 2) {
-            if (isset($this->tokenStream[$i]) &&
-                $this->tokenStream[$i][0] == 'T_NS_SEPARATOR') {
-                $namespace .= '\\' . $this->tokenStream[$i+1][1];
+            if (!isset($this->tokenStream[$i])) {
+                break;
+            }
+            if ($this->tokenStream[$i][0] == 'T_NS_SEPARATOR') {
+                $this->namespace .= '\\' . $this->tokenStream[$i+1][1];
             } else {
                 break;
             }
         }
 
-        return $namespace;
+        return $this->namespace;
     }
+
+    public function getAlias()
+    {
+        if ($this->alias !== NULL) {
+            return $this->alias;
+        }
+
+        $this->getName();
+
+        $tmp         = explode('\\', $this->namespace);
+        $this->alias = array_pop($tmp);
+
+        return $this->alias;
+    }
+
+    public function isImported()
+    {
+        return false;
+    }
+
 }
 
 class PHP_Reflect_Token_NS_C extends PHP_Reflect_Token {}

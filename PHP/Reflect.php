@@ -54,6 +54,10 @@
  */
 class PHP_Reflect implements ArrayAccess
 {
+    const NAMESPACES_WITHOUT_IMPORT = '1';
+    const NAMESPACES_ONLY_IMPORT    = '2';
+    const NAMESPACES_ALL            = '3';
+
     /**
      * Support for interface ArrayAccess
      * @var  array
@@ -132,6 +136,7 @@ class PHP_Reflect implements ArrayAccess
         $defaultOptions = array(
             // default containers to store results from parsing
             'containers' => array(
+                'use'          => 'namespaces',
                 'namespace'    => 'namespaces',
                 'trait'        => 'traits',
                 'interface'    => 'interfaces',
@@ -145,8 +150,11 @@ class PHP_Reflect implements ArrayAccess
             ),
             // properties for each component to provide on final result
             'properties' => array(
+                'use' => array(
+                    'file', 'startEndLines', 'docblock', 'alias'
+                ),
                 'namespace' => array(
-                    'file', 'startEndLines', 'docblock'
+                    'file', 'startEndLines', 'docblock', 'alias'
                 ),
                 'trait' => array(
                     'file', 'startEndLines', 'docblock', 'namespace',
@@ -197,6 +205,9 @@ class PHP_Reflect implements ArrayAccess
 
         // default parsers for interfaces, classes, functions, includes
         $this->parserToken = array(
+            'T_USE'    => array(
+                'PHP_Reflect_Token_USE', array($this, 'parseToken')
+            ),
             'T_NAMESPACE'    => array(
                 'PHP_Reflect_Token_NAMESPACE', array($this, 'parseToken')
             ),
@@ -333,7 +344,35 @@ class PHP_Reflect implements ArrayAccess
             $container = strtolower($matches[1]{0}) . substr($matches[1], 1);
 
             if ($container == 'namespaces') {
-                return $this->offsetGet($container);
+                $namespaces = null;
+
+                $option = (isset($args[0]) && is_string($args[0]))
+                    ? $args[0] : self::NAMESPACES_WITHOUT_IMPORT;
+
+                $tmp = $this->offsetGet($container);
+
+                if (is_array($tmp)) {
+                    $namespaces = array();
+
+                    switch ($option) {
+                    case self::NAMESPACES_ONLY_IMPORT :
+                        $import = true;
+                        break;
+                    case self::NAMESPACES_ALL :
+                        return $tmp;
+                    case self::NAMESPACES_WITHOUT_IMPORT :
+                    default:
+                        $import = false;
+                        break;
+                    }
+
+                    foreach ($tmp as $name => $data) {
+                        if ($data['import'] == $import) {
+                            $namespaces[$name] = $data;
+                        }
+                    }
+                }
+                return $namespaces;
             } else {
                 $namespace = (isset($args[0]) && is_string($args[0]))
                     ? $args[0] : false;
@@ -648,6 +687,7 @@ class PHP_Reflect implements ArrayAccess
         }
 
         switch ($context) {
+        case 'use':
         case 'namespace':
         case 'trait':
         case 'interface':
@@ -747,7 +787,8 @@ class PHP_Reflect implements ArrayAccess
             $_ns[$type][$name] = $tmp;
             $subject->offsetSet(array($container => $ns), $_ns);
 
-        } elseif ($context == 'namespace') {
+        } elseif ($context == 'use' || $context == 'namespace') {
+            $tmp['import'] = $token->isImported();
             $subject->offsetSet(array($container => $name), $tmp);
 
         } else {
