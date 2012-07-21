@@ -5,8 +5,8 @@
     http://pear.php.net/dtd/package-2.0.xsd">
  <name>PHP_Reflect</name>
  <channel>bartlett.laurent-laville.org</channel>
- <summary>Adds the ability to reverse-engineer classes, interfaces, functions, constants, namespaces and more. </summary>
- <description>PHP_Reflect adds the ability to reverse-engineer classes, interfaces, functions, constants, namespaces 
+ <summary>Adds the ability to reverse-engineer classes, interfaces, functions, constants, namespaces and more.</summary>
+ <description>PHP_Reflect adds the ability to reverse-engineer classes, interfaces, functions, constants, namespaces
 and more, by connecting php callbacks to tokens.
  </description>
  <lead>
@@ -15,11 +15,11 @@ and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2012-02-15</date>
- <time>17:34:41</time>
+ <date>2012-07-21</date>
+ <time>15:49:11</time>
  <version>
-  <release>1.3.0</release>
-  <api>1.3.0</api>
+  <release>1.4.0</release>
+  <api>1.4.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -28,8 +28,9 @@ and more, by connecting php callbacks to tokens.
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
 Additions and changes:
-- additionnal TRAIT support (PHP 5.4.0 feature) with magic constant __TRAIT__
-- EPUB doc format is now available to download
+- improved namespaces support with imports (Aliasing/Importing)
+See new example 3 in Configure Properties section of the User Guide.
+- both PDF A4 and US doc format are now available to download
 
 Bug fixes:
 - none
@@ -308,6 +309,9 @@ Bug fixes:
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
    </dir> <!-- /tests -->
+   <file name="fo-custom.xsl" role="doc">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
    <file name="LICENSE" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
    </file>
@@ -338,12 +342,33 @@ Bug fixes:
    <package>
     <name>PHPUnit</name>
     <channel>pear.phpunit.de</channel>
-    <min>3.5.0</min>
+    <min>3.6.0</min>
    </package>
   </optional>
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.4.0</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2012-07-21</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- improved namespaces support with imports (Aliasing/Importing)
+See new example 3 in Configure Properties section of the User Guide.
+- both PDF A4 and US doc format are now available to download
+
+Bug fixes:
+- none
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.3.0</release>
@@ -353,7 +378,7 @@ Bug fixes:
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2012-02-15</date>
+   <date>2012-02-24</date>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
    <notes>
 Additions and changes:

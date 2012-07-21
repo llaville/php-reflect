@@ -27,10 +27,10 @@ on the PHPUnit PEAR channel (`pear.phpunit.de`).
 This has to be done only once. Now the PEAR Installer can be used to install packages from the Bartlett channel.
 
     $ pear install bartlett/PHP_Reflect
-    downloading PHP_Reflect-1.3.0.tgz ...
-    Starting to download PHP_Reflect-1.3.0.tgz (83,888 bytes)
-    .........................done: 83,888 bytes
-    install ok: channel://bartlett.laurent-laville.org/PHP_Reflect-1.3.0
+    downloading PHP_Reflect-1.4.0.tgz ...
+    Starting to download PHP_Reflect-1.4.0.tgz (85,595 bytes)
+    .........................done: 85,595 bytes
+    install ok: channel://bartlett.laurent-laville.org/PHP_Reflect-1.4.0
 
 After the installation you can find the PHP_Reflect source files inside your local PEAR directory.
 
@@ -40,8 +40,8 @@ Documentation
 
 The documentation for PHP_Reflect is available in different formats:
 
-* [English, multiple HTML files](http://php5.laurent-laville.org/reflect/manual/1.3/en/index.html)
-* [English, single HTML file](http://php5.laurent-laville.org/reflect/manual/1.3/en/phpreflect-book.html)
-* [English, PDF](http://php5.laurent-laville.org/reflect/manual/1.3/en/phpreflect-book.pdf)
-* [English, CHM](http://php5.laurent-laville.org/reflect/manual/1.3/en/phpreflect-book.chm.zip)
-* [English, EPUB](http://php5.laurent-laville.org/reflect/manual/1.3/en/phpreflect-book.epub.zip)
+* [English, multiple HTML files](http://php5.laurent-laville.org/reflect/manual/1.4/en/index.html)
+* [English, single HTML file](http://php5.laurent-laville.org/reflect/manual/1.4/en/phpreflect-book.html)
+* [English, PDF](http://php5.laurent-laville.org/reflect/manual/1.4/en/phpreflect-book.pdf)
+* [English, CHM](http://php5.laurent-laville.org/reflect/manual/1.4/en/phpreflect-book.chm.zip)
+* [English, EPUB](http://php5.laurent-laville.org/reflect/manual/1.4/en/phpreflect-book.epub.zip)
