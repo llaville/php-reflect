@@ -688,10 +688,44 @@ class PHP_Reflect_Token_CATCH extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_THROW extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_USE extends PHP_Reflect_TokenWithScope
 {
+    protected $trait;
     protected $namespace;
     protected $alias;
 
     public function getName()
+    {
+        $i = $this->id + 2;
+
+        if ($this->tokenStream[$i][0] == 'T_NS_SEPARATOR'
+            || $this->tokenStream[$i+1][0] == 'T_NS_SEPARATOR'
+        ) {
+            return $this->getNamespace();
+        }
+        return $this->getTrait();
+    }
+
+    protected function getTrait()
+    {
+        if ($this->trait !== NULL) {
+            return $this->trait;
+        }
+        
+        $this->trait = array();
+        
+        for ($i = $this->id + 2; ; $i++) {
+            if ($this->tokenStream[$i][0] == 'T_STRING') {
+                $this->trait[] = $this->tokenStream[$i][1];
+            }
+            elseif ($this->tokenStream[$i][0] == 'T_SEMICOLON'
+                || $this->tokenStream[$i][0] == 'T_OPEN_CURLY'
+            ) {
+                break;
+            }
+        }
+        return $this->trait;
+    }    
+    
+    protected function getNamespace()
     {
         if ($this->namespace !== NULL) {
             return $this->namespace;

@@ -612,6 +612,15 @@ class PHP_Reflect implements ArrayAccess
                 $namespace        = $token->getName();
                 $namespaceEndLine = $token->getEndLine();
 
+            } elseif ($tokenName == 'T_USE') {
+                if ($class === FALSE) {
+                    $namespace        = $token->getName();
+                    $namespaceEndLine = $token->getEndLine();
+                } else {
+                    // warning: don't set $trait value 
+                    $traitEndLine = $token->getEndLine();
+                }
+
             } elseif ($tokenName == 'T_TRAIT') {
                 $trait        = $token->getName();
                 $traitEndLine = $token->getEndLine();
@@ -787,7 +796,24 @@ class PHP_Reflect implements ArrayAccess
             $_ns[$type][$name] = $tmp;
             $subject->offsetSet(array($container => $ns), $_ns);
 
-        } elseif ($context == 'use' || $context == 'namespace') {
+        } elseif ($context == 'use') {
+            if ($class === FALSE) {
+                $container     = $subject->options['containers']['namespace'];
+                $tmp['import'] = $token->isImported();
+                $subject->offsetSet(array($container => $name), $tmp);
+            } else {
+                $container = $subject->options['containers']['trait'];
+                $_ns       = $subject->offsetGet(array($container => $ns));
+                $traits    = $name;
+                foreach ($traits as $name) {
+                    if (!isset($_ns[$name])) {
+                        $_ns[$name] = $tmp;
+                        $subject->offsetSet(array($container => $ns), $_ns);
+                    }
+                }
+            }
+
+        } elseif ($context == 'namespace') {
             $tmp['import'] = $token->isImported();
             $subject->offsetSet(array($container => $name), $tmp);
 
