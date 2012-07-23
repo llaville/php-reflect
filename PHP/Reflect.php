@@ -774,12 +774,6 @@ class PHP_Reflect implements ArrayAccess
                         unset($tmp['namespace']);
                     }
 
-                    if ($namespace === FALSE) {
-                        // global namespace
-                        $ns = '\\';
-                    } else {
-                        $ns = $namespace;
-                    }
                     $_ns = $subject->offsetGet(array($container => $ns));
                     if ($interface) {
                         $_ns[$interface]['methods'][$name] = $tmp;
