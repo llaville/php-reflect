@@ -692,15 +692,12 @@ class PHP_Reflect_Token_USE extends PHP_Reflect_TokenWithScope
     protected $namespace;
     protected $alias;
 
-    public function getName()
+    public function getName($class)
     {
-        $i = $this->id + 2;
-
-        if ($this->tokenStream[$i][0] == 'T_NS_SEPARATOR'
-            || $this->tokenStream[$i+1][0] == 'T_NS_SEPARATOR'
-        ) {
+        if ($class === FALSE) {
             return $this->getNamespace();
         }
+
         return $this->getTrait();
     }
 
@@ -764,7 +761,7 @@ class PHP_Reflect_Token_USE extends PHP_Reflect_TokenWithScope
             return $this->alias;
         }
 
-        $this->getName();
+        $this->getName(TRUE);
 
         $tmp         = explode('\\', $this->namespace);
         $this->alias = array_pop($tmp);
