@@ -613,10 +613,7 @@ class PHP_Reflect implements ArrayAccess
                 $namespaceEndLine = $token->getEndLine();
 
             } elseif ($tokenName == 'T_USE') {
-                if ($class === FALSE) {
-                    $namespace        = $token->getName();
-                    $namespaceEndLine = $token->getEndLine();
-                } else {
+                if ($class !== FALSE) {
                     // warning: don't set $trait value 
                     $traitEndLine = $token->getEndLine();
                 }
@@ -672,11 +669,15 @@ class PHP_Reflect implements ArrayAccess
             return;
         }
 
-        $tmp  = array();
-        $name = $token->getName();
+        if ('use' == $context) {
+            $name = $token->getName($class);
+        } else {
+            $name = $token->getName();
+        }
         if ($name === NULL) {
             return;
         }
+        $tmp = array();
 
         $inc = in_array(
             $context, array('require_once', 'require', 'include_once', 'include')

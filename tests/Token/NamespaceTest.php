@@ -63,6 +63,10 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
 {
     protected $ns;
     protected $namespaces;
+    protected $namespacesWithoutImportDefault;
+    protected $namespacesWithoutImport;
+    protected $namespacesOnlyImport;
+    protected $namespacesUserAliasingImporting;
     protected $classes;
     protected $functions;
 
@@ -76,6 +80,7 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $reflect = new PHP_Reflect();
+        // 1st file
         $tokens  = $reflect->scan(TEST_FILES_PATH . 'source5.php');
 
         foreach ($tokens as $id => $token) {
@@ -95,6 +100,7 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
         }
         $this->functions = $reflect->getFunctions();
 
+        // 2nd file
         $tokens = $reflect->scan(TEST_FILES_PATH . 'source6.php');
 
         foreach ($tokens as $id => $token) {
@@ -106,8 +112,20 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
                 );
             }
         }
-
         $this->namespaces = $reflect->getNamespaces();
+
+        $reflect = new PHP_Reflect();
+        // 3rd file
+        $reflect->scan(TEST_FILES_PATH . 'source10.php');
+        
+        $this->namespacesWithoutImportDefault
+            = $reflect->getNamespaces();
+        $this->namespacesWithoutImport
+            = $reflect->getNamespaces(PHP_Reflect::NAMESPACES_WITHOUT_IMPORT);
+        $this->namespacesOnlyImport
+            = $reflect->getNamespaces(PHP_Reflect::NAMESPACES_ONLY_IMPORT);
+        $this->namespacesUserAliasingImporting
+            = $reflect->getNamespaces(PHP_Reflect::NAMESPACES_ALL);
     }
 
     /**
@@ -264,6 +282,128 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
 
             $this->assertSame(
                 $expected, $this->classes[1]->getPackage()
+            );
+        }
+    }
+
+    /**
+     * Retrieves only user namespaces without imports (see use keyword)
+     *
+     * @link   http://www.php.net/manual/en/language.namespaces.importing.php
+     * @return void
+     */
+    public function testGetOnlyUserNamespacesWithoutImports()
+    {
+        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+            $this->markTestSkipped(
+                'NAMESPACE is fully supported only with PHP 5.3.0 or greater'
+            );
+        } else {
+            $expected = array(
+                'Doctrine\Common\Cache' => array(
+                    'startLine' => 2,
+                    'endLine'   => 5,
+                    'file'      => TEST_FILES_PATH . 'source10.php',
+                    'docblock'  => null,
+                    'alias'     => 'Cache',
+                    'import'    => false,
+                ),
+            );
+
+            $this->assertEquals(
+                $expected,
+                $this->namespacesWithoutImportDefault
+            );
+
+            $this->assertEquals(
+                $expected,
+                $this->namespacesWithoutImport
+            );
+        }
+    }
+
+    /**
+     * Retrieves only imported namespaces (see use keyword)
+     *
+     * @link   http://www.php.net/manual/en/language.namespaces.importing.php
+     * @return void
+     */
+    public function testGetOnlyImportNamespaces()
+    {
+        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+            $this->markTestSkipped(
+                'NAMESPACE is fully supported only with PHP 5.3.0 or greater'
+            );
+        } else {
+            $expected = array(
+                '\Memcache' => array(
+                    'startLine' => 4,
+                    'endLine'   => 4,
+                    'file'      => TEST_FILES_PATH . 'source10.php',
+                    'docblock'  => null,
+                    'alias'     => 'Memcache',
+                    'import'    => true,
+                ),
+                'My\Full\Classname' => array(
+                    'startLine' => 5,
+                    'endLine'   => 5,
+                    'file'      => TEST_FILES_PATH . 'source10.php',
+                    'docblock'  => null,
+                    'alias'     => 'Another',
+                    'import'    => true,
+                ),
+            );
+
+            $this->assertEquals(
+                $expected,
+                $this->namespacesOnlyImport
+            );
+        }
+    }
+
+    /**
+     * Retrieves only imported namespaces (see use keyword)
+     *
+     * @link   http://www.php.net/manual/en/language.namespaces.importing.php
+     * @return void
+     */
+    public function testGetUserAndImportNamespaces()
+    {
+        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+            $this->markTestSkipped(
+                'NAMESPACE is fully supported only with PHP 5.3.0 or greater'
+            );
+        } else {
+            $expected = array(
+                'Doctrine\Common\Cache' => array(
+                    'startLine' => 2,
+                    'endLine'   => 5,
+                    'file'      => TEST_FILES_PATH . 'source10.php',
+                    'docblock'  => null,
+                    'alias'     => 'Cache',
+                    'import'    => false,
+                ),
+                '\Memcache' => array(
+                    'startLine' => 4,
+                    'endLine'   => 4,
+                    'file'      => TEST_FILES_PATH . 'source10.php',
+                    'docblock'  => null,
+                    'alias'     => 'Memcache',
+                    'import'    => true,
+                ),
+                'My\Full\Classname' => array(
+                    'startLine' => 5,
+                    'endLine'   => 5,
+                    'file'      => TEST_FILES_PATH . 'source10.php',
+                    'docblock'  => null,
+                    'alias'     => 'Another',
+                    'import'    => true,
+                ),
+            );
+
+            $this->assertEquals(
+                $expected,
+                $this->namespacesUserAliasingImporting
             );
         }
     }
