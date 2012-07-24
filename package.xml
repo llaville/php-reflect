@@ -15,10 +15,10 @@ and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2012-07-23</date>
- <time>14:52:00</time>
+ <date>2012-07-24</date>
+ <time>18:12:01</time>
  <version>
-  <release>1.4.1</release>
+  <release>1.4.2</release>
   <api>1.4.0</api>
  </version>
  <stability>
@@ -31,7 +31,7 @@ Additions and changes:
 - none
 
 Bug fixes:
-- avoid conflict between &apos;use&apos; when importing namespace and solve conflicts in trait class usage
+- wrong namespace used for class when importing other namespaces
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -302,6 +302,9 @@ Bug fixes:
      <file name="source9.php" role="test">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file name="source10.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
     </dir> <!-- /tests/_files -->
     <file name="phpunit.xml" role="test">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -346,6 +349,25 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.4.2</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2012-07-24</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- none
+
+Bug fixes:
+- wrong namespace used for class when importing other namespaces
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.4.1</release>
