@@ -48,7 +48,7 @@
  *
  * @return void
  */
-function phpReflect_autoload($className)
+function PHP_Reflect_autoload($className)
 {
     static $classes = null;
     static $path    = null;
@@ -229,4 +229,4 @@ function phpReflect_autoload($className)
     }
 }
 
-spl_autoload_register('phpReflect_autoload');
+spl_autoload_register('PHP_Reflect_autoload');
