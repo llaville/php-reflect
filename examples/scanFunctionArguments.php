@@ -10,7 +10,7 @@
  * @package  PHP_Reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD
- * @version  SVN: $Id$
+ * @version  GIT: $Id$
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    File available since Release 1.1.0
  */
