@@ -118,6 +118,19 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
             ),
             $this->functions[4]->getArguments()
         );
+        $this->assertEquals(
+            array(
+                array('typeHint' => 'array', 'name' => '$somefoo'),
+                array('name' => '$somethingelse'),
+            ),
+            $this->functions[5]->getArguments()
+        );
+        $this->assertEquals(
+            array(
+                array('typeHint' => 'Baz', 'name' => '$somebaz'),
+            ),
+            $this->functions[6]->getArguments()
+        );
     }
 
     /**
@@ -133,6 +146,8 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foobar', $this->functions[2]->getName());
         $this->assertEquals('barfoo', $this->functions[3]->getName());
         $this->assertEquals('fooBaz', $this->functions[4]->getName());
+        $this->assertEquals('bazFoo', $this->functions[5]->getName());
+        $this->assertEquals('foobaz', $this->functions[6]->getName());
     }
 
     /**
@@ -148,6 +163,8 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(17, $this->functions[2]->getLine());
         $this->assertEquals(21, $this->functions[3]->getLine());
         $this->assertEquals(25, $this->functions[4]->getLine());
+        $this->assertEquals(29, $this->functions[5]->getLine());
+        $this->assertEquals(34, $this->functions[6]->getLine());
     }
 
     /**
@@ -163,6 +180,8 @@ class PHP_Reflect_Token_FunctionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(19, $this->functions[2]->getEndLine());
         $this->assertEquals(23, $this->functions[3]->getEndLine());
         $this->assertEquals(27, $this->functions[4]->getEndLine());
+        $this->assertEquals(31, $this->functions[5]->getEndLine());
+        $this->assertEquals(36, $this->functions[6]->getEndLine());
     }
 
     /**

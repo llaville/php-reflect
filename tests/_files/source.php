@@ -26,4 +26,11 @@ class Foo{function foo(){}
     {
     }
 
+    public function bazFoo(array $somefoo, $somethingelse)
+    {
+    }
+}
+
+function &foobaz(Baz $somebaz)
+{
 }

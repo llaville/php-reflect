@@ -334,7 +334,12 @@ abstract class PHP_Reflect_TokenWithArgument extends PHP_Reflect_TokenWithScope
         $nextArgument    = array();
 
         if (get_class($this) === 'PHP_Reflect_Token_FUNCTION') {
-            $i = $i + 2;
+            // ampersand before function-name
+            if ($this->tokenStream[$i+1][0] == 'T_AMPERSAND') {
+              $i = $i + 3;
+            } else {
+              $i = $i + 2;
+            }
         }
 
         while (isset($this->tokenStream[$i])
@@ -345,19 +350,30 @@ abstract class PHP_Reflect_TokenWithArgument extends PHP_Reflect_TokenWithScope
             ) {
                 // do nothing
 
-            } elseif ($this->tokenStream[$i][0] == 'T_STRING'
+            } elseif (in_array($this->tokenStream[$i][0], array('T_STRING', 'T_ARRAY'))
                 && !isset($nextArgument['name'])
             ) {
                 if (($this->tokenStream[$i+1][0] == 'T_OPEN_BRACKET'
                     || $this->tokenStream[$i+2][0] == 'T_OPEN_BRACKET')
                 ) {
-                    $nextArgument['typeHint'] = 'mixed';
-                    $nextArgument['name']     = $this->tokenStream[$i][1];
+                    if ($this->tokenStream[$i][0] == 'T_STRING') {
+                        $nextArgument['typeHint'] = 'mixed';
+                        $nextArgument['name']     = $this->tokenStream[$i][1];
+                    } else {
+                        $nextArgument['typeHint'] = '';
+                    }
 
                     // allow for anything inside the brackets
                     while ($this->tokenStream[$i][0] != 'T_CLOSE_BRACKET') {
+                        if (!isset($nextArgument['name'])) {
+                            $nextArgument['typeHint'] .= $this->tokenStream[$i][1];
+                        }
                         $i++;
                     }
+                    if (!isset($nextArgument['name'])) {
+                        $nextArgument['typeHint'] .= $this->tokenStream[$i][1];
+                    }
+
                 } else {
                     $nextArgument['typeHint'] = $this->tokenStream[$i][1];
                 }
@@ -706,9 +722,9 @@ class PHP_Reflect_Token_USE extends PHP_Reflect_TokenWithScope
         if ($this->trait !== NULL) {
             return $this->trait;
         }
-        
+
         $this->trait = array();
-        
+
         for ($i = $this->id + 2; ; $i++) {
             if ($this->tokenStream[$i][0] == 'T_STRING') {
                 $this->trait[] = $this->tokenStream[$i][1];
@@ -720,8 +736,8 @@ class PHP_Reflect_Token_USE extends PHP_Reflect_TokenWithScope
             }
         }
         return $this->trait;
-    }    
-    
+    }
+
     protected function getNamespace()
     {
         if ($this->namespace !== NULL) {

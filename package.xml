@@ -15,10 +15,10 @@ and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2012-07-24</date>
- <time>18:12:01</time>
+ <date>2012-10-23</date>
+ <time>20:42:53</time>
  <version>
-  <release>1.4.2</release>
+  <release>1.4.3</release>
   <api>1.4.0</api>
  </version>
  <stability>
@@ -31,7 +31,8 @@ Additions and changes:
 - none
 
 Bug fixes:
-- wrong namespace used for class when importing other namespaces
+- detect function with ampersand in front of their name (thanks to Stefan Neufeind)
+- detect function signature with array as type-hint in parameters list (thanks to Stefan Neufeind)
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -349,6 +350,26 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.4.3</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2012-10-23</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- none
+
+Bug fixes:
+- detect function with ampersand in front of their name (thanks to Stefan Neufeind)
+- detect function signature with array as type-hint in parameters list (thanks to Stefan Neufeind)
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.4.2</release>
