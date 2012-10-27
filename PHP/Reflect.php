@@ -283,6 +283,8 @@ class PHP_Reflect implements ArrayAccess
             $sourceCode     = file_get_contents($sourceCode);
         } elseif (!is_string($sourceCode)) {
             throw new RuntimeException('sourceCode wrong parameter');
+        } else {
+            throw new RuntimeException("File $sourceCode does not exists");
         }
 
         $line = 1;
