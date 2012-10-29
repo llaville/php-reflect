@@ -12,8 +12,7 @@ image:images/logo.png[alt="PHP_Reflect logo"]
 ************************************************************************
 Release highlights:
 
-- improved namespaces support with imports (Aliasing/Importing)
-and avoid conflict with trait usage in class context.
+- improved signature and function detection.
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the
