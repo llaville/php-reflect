@@ -67,6 +67,7 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
     protected $namespacesWithoutImport;
     protected $namespacesOnlyImport;
     protected $namespacesUserAliasingImporting;
+    protected $nsWarning;
     protected $classes;
     protected $functions;
 
@@ -117,7 +118,7 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
         $reflect = new PHP_Reflect();
         // 3rd file
         $reflect->scan(TEST_FILES_PATH . 'source10.php');
-        
+
         $this->namespacesWithoutImportDefault
             = $reflect->getNamespaces();
         $this->namespacesWithoutImport
@@ -126,6 +127,12 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
             = $reflect->getNamespaces(PHP_Reflect::NAMESPACES_ONLY_IMPORT);
         $this->namespacesUserAliasingImporting
             = $reflect->getNamespaces(PHP_Reflect::NAMESPACES_ALL);
+
+        $reflect = new PHP_Reflect();
+        // 4th file
+        $reflect->scan(TEST_FILES_PATH . 'source11.php');
+
+        $this->nsWarning = $reflect->isNamespaceWarning();
     }
 
     /**
@@ -405,6 +412,22 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
                 $expected,
                 $this->namespacesUserAliasingImporting
             );
+        }
+    }
+
+    /**
+     * Tests namespaces uses that should raise warning with PHP 5.2
+     *
+     * @return void
+     */
+    public function testIsNamespaceWarning()
+    {
+        if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
+            $this->markTestSkipped(
+                'NAMESPACE is fully supported with PHP 5.3.0 or greater'
+            );
+        } else {
+            $this->assertTrue($this->nsWarning);
         }
     }
 

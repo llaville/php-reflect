@@ -6,6 +6,17 @@ PHP_Reflect ChangeLog
 :scriptsdir:  js
 
 
+== Version 1.5.0 (2012-11-26)
+
+.Additions and changes:
+* add new method isNamespaceWarning() that allow to know if PHP platform is PHP 5.2
+and source code scanned included namespace syntax
+* refactoring the documentation build phing script (split generic and specific code)
+
+.Bug fixes:
+* none
+
+
 == Version 1.4.3 (2012-10-29)
 
 .Additions and changes:

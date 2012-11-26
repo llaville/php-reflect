@@ -125,6 +125,11 @@ class PHP_Reflect implements ArrayAccess
     protected $linesOfCode = array('loc' => 0, 'cloc' => 0, 'ncloc' => 0);
 
     /**
+     * @var boolean
+     */
+    protected $nsWarning = false;
+
+    /**
      * Class constructor
      *
      * @param array $options (OPTIONAL) Configure options
@@ -288,7 +293,15 @@ class PHP_Reflect implements ArrayAccess
         }
 
         $line = 1;
-        $this->tokens = token_get_all($sourceCode);
+        $this->tokens = @token_get_all($sourceCode);
+        if (null !== ($error = error_get_last())) {
+            // check if namespaces uses with PHP 5.2
+            if (false !==
+                strpos($error['message'], "Unexpected character in input:  '\'")
+            ) {
+                $this->nsWarning = true;
+            }
+        }
 
         foreach ($this->tokens as $id => $token) {
 
@@ -537,6 +550,17 @@ class PHP_Reflect implements ArrayAccess
     }
 
     /**
+     * Tells if PHP platform is PHP 5.2
+     * and source code scanned included namespace syntax
+     *
+     * @return bool
+     */
+    public function isNamespaceWarning()
+    {
+        return $this->nsWarning;
+    }
+
+    /**
      * Main Parser
      *
      * @return void
@@ -616,7 +640,7 @@ class PHP_Reflect implements ArrayAccess
 
             } elseif ($tokenName == 'T_USE') {
                 if ($class !== FALSE) {
-                    // warning: don't set $trait value 
+                    // warning: don't set $trait value
                     $traitEndLine = $token->getEndLine();
                 }
 
