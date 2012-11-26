@@ -11,7 +11,7 @@
     <property file="${default.properties}"/>
 
     <target name="help">
-        <phingcall target="builddocs.help" />
+        <phing phingfile="${buildfile.dir}/builddocs.xml" target="help" />
         <echo>------------------------------------------------------------------</echo>
         <echo>make-full-docs           Build the full documentation in all formats </echo>
         <echo>make-html-docs           Build the documentation in HTML format only </echo>
