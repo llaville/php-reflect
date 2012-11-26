@@ -27,10 +27,10 @@ on the PHPUnit PEAR channel (`pear.phpunit.de`).
 This has to be done only once. Now the PEAR Installer can be used to install packages from the Bartlett channel.
 
     $ pear install bartlett/PHP_Reflect
-    downloading PHP_Reflect-1.4.3.tgz ...
-    Starting to download PHP_Reflect-1.4.3.tgz (86,836 bytes)
-    .....................done: 86,836 bytes
-    upgrade ok: channel://bartlett.laurent-laville.org/PHP_Reflect-1.4.3    
+    downloading PHP_Reflect-1.5.0.tgz ...
+    Starting to download PHP_Reflect-1.5.0.tgz (102,183 bytes)
+    .....................done: 102,183 bytes
+    upgrade ok: channel://bartlett.laurent-laville.org/PHP_Reflect-1.5.0   
 
 After the installation you can find the PHP_Reflect source files inside your local PEAR directory.
 
