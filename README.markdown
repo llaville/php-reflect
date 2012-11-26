@@ -40,7 +40,7 @@ Documentation
 
 The documentation for PHP_Reflect is available in different formats:
 
-* [English, multiple HTML files](http://php5.laurent-laville.org/reflect/manual/current/en/index.html)
+* [English, multiple HTML files](http://php5.laurent-laville.org/reflect/manual/current/en/phpreflect-book.chunked/index.html)
 * [English, single HTML file](http://php5.laurent-laville.org/reflect/manual/current/en/phpreflect-book.html)
 * [English, PDF A4](http://php5.laurent-laville.org/reflect/manual/current/en/phpreflect-book-a4.pdf)
 * [English, PDF US](http://php5.laurent-laville.org/reflect/manual/current/en/phpreflect-book-us.pdf)
