@@ -1,215 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="phpreflect" default="help" basedir=".">
+<project name="phpreflect" default="help" basedir="."
+    description="Build the documentation of PHP_Reflect">
 
     <!-- TIP found in ticket#62 (http://www.phing.info/trac/ticket/62) -->
-    <php function="dirname" returnProperty="phing.buildfile.dirname">
+    <php function="dirname" returnProperty="buildfile.dir">
         <param value="${phing.file}"/>
     </php>
 
-    <condition property="growl.task.available">
-        <available resource="phing/tasks/ext/GrowlNotifyTask.php"
-            property="file.exists"
-        />
-    </condition>
-
-    <property name="default.properties" value="${phing.buildfile.dirname}/local.win.properties"/>
+    <property name="default.properties" value="${buildfile.dir}/local.win.properties"/>
     <property file="${default.properties}"/>
 
     <target name="help">
-        <echo>Target                   Description</echo>
+        <phingcall target="builddocs.help" />
         <echo>------------------------------------------------------------------</echo>
-        <echo>make-full-docs           Build the full documentation of PHP_Reflect</echo>
-        <echo>make-html-docs           Build the documentation in HTML format</echo>
-        <echo>make-userguide           Build the user guide in single HTML page</echo>
-        <echo>make-userguide-all       Build the user guide in all formats</echo>
-        <echo>make-userguide-chunked   Build the user guide in many HTML files</echo>
-        <echo>make-userguide-htmlhelp  Build the user guide in CHM format</echo>
-        <echo>make-userguide-pdf-a4    Build the user guide in PDF A4 format</echo>
-        <echo>make-userguide-pdf-us    Build the user guide in PDF US format</echo>
-        <echo>make-userguide-epub      Build the user guide in EPUB format</echo>
-    </target>
-
-    <target name="notify" if="growl.task.available">
-
-        <taskdef name="growlnotify" classname="phing.tasks.ext.GrowlNotifyTask" />
-
-        <growlnotify message="${growl.message}"
-            title="PhingNotify"
-            priority="high"
-            sticky="true"
-            appicon="./growlPhing.png"
-        />
-
-    </target>
-
-    <target name="make-userguide-all"
-            description="Build the user guide of PHP_Reflect in many formats">
-
-        <phingcall target="make-userguide" />
-
-        <if>
-            <istrue value="${build.book.chunked}" />
-            <then>
-                <phingcall target="make-userguide-chunked" />
-            </then>
-        </if>
-
-        <if>
-            <istrue value="${build.book.chm}" />
-            <then>
-                <phingcall target="make-userguide-htmlhelp" />
-            </then>
-        </if>
-
-        <if>
-            <istrue value="${build.book.pdf-a4}" />
-            <then>
-                <phingcall target="make-userguide-pdf-a4" />
-            </then>
-        </if>
-
-        <if>
-            <istrue value="${build.book.pdf-us}" />
-            <then>
-                <phingcall target="make-userguide-pdf-us" />
-            </then>
-        </if>
-
-        <if>
-            <istrue value="${build.book.epub}" />
-            <then>
-                <phingcall target="make-userguide-epub" />
-            </then>
-        </if>
-
-    </target>
-
-    <target name="make-userguide"
-            description="Build the user guide of PHP_Reflect in single HTML page">
-
-        <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -a toc2 -n -o ${output.dir}/phpreflect-book.html ${homedir}/docs/phpreflect-book.txt"
-        />
-
-        <if>
-            <istrue value="${build.tarball}" />
-            <then>
-                <zip destfile="${output.dir}/phpreflect-book.html.zip">
-                    <fileset dir="${output.dir}">
-                        <include name="images/**" />
-                        <include name="js/asciidoc.js" />
-                        <include name="styles/pygments.css" />
-                        <include name="styles/toc2.css" />
-                        <include name="styles/${theme}.css" />
-                        <include name="phpreflect-book.html" />
-                        <exclude name="**/callouts/**" />
-                        <exclude name="styles.css" />
-                        <exclude name="**/Thumbs.db" />
-                    </fileset>
-                </zip>
-            </then>
-        </if>
-
-    </target>
-
-    <target name="make-userguide-chunked"
-            description="Build the user guide of PHP_Reflect in many HTML files">
-
-        <exec dir="${asciidoc.home}"
-            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f chunked -D ${output.dir} ${homedir}/docs/phpreflect-book.txt"
-        />
-
-        <if>
-            <istrue value="${build.tarball}" />
-            <then>
-                <zip destfile="${output.dir}/phpreflect-book.chunked.zip">
-                    <fileset dir="${output.dir}">
-                        <include name="phpreflect-book.chunked/**" />
-                        <exclude name="phpreflect-book.chunked/**/Thumbs.db" />
-                    </fileset>
-                </zip>
-                <delete dir="${output.dir}/phpreflect-book.chunked" />
-            </then>
-        </if>
-
-    </target>
-
-    <target name="make-userguide-htmlhelp"
-            description="Build the user guide of PHP_Reflect in CHM format">
-
-        <exec dir="${asciidoc.home}"
-            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f htmlhelp -D ${output.dir} ${homedir}/docs/phpreflect-book.txt"
-        />
-
-        <exec dir="${htmlhelpworkshop}"
-            command="hhc.exe ${output.dir}/phpreflect-book.hhp"
-        />
-
-        <if>
-            <istrue value="${build.tarball}" />
-            <then>
-                <zip destfile="${output.dir}/phpreflect-book.chm.zip">
-                    <fileset dir="${output.dir}">
-                        <include name="phpreflect-book.chm" />
-                    </fileset>
-                </zip>
-                <delete>
-                    <fileset dir="${output.dir}">
-                        <include name="phpreflect-book.chm" />
-                        <include name="phpreflect-book.hhc" />
-                        <include name="phpreflect-book.hhk" />
-                        <include name="phpreflect-book.hhp" />
-                    </fileset>
-                </delete>
-                <delete dir="${output.dir}/phpreflect-book.htmlhelp" />
-            </then>
-        </if>
-
-    </target>
-
-    <target name="make-userguide-pdf-a4"
-            description="Build the user guide in PDF A4 format">
-
-        <exec dir="${asciidoc.home}"
-            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css -d book -f pdf --fop -D ${output.dir} ${homedir}/docs/phpreflect-book.txt"
-        />
-        <move file="${output.dir}/phpreflect-book.pdf" tofile="${output.dir}/phpreflect-book-a4.pdf" />
-
-    </target>
-
-    <target name="make-userguide-pdf-us"
-            description="Build the user guide in PDF US format">
-
-        <exec dir="${asciidoc.home}"
-            command="a2x.py -L --icons --stylesheet=./stylesheets/docbook-xsl.css --xsl-file=./docbook-xsl/fo-custom.xsl -d book -f pdf --fop -D ${output.dir} ${homedir}/docs/phpreflect-book.txt"
-        />
-        <move file="${output.dir}/phpreflect-book.pdf" tofile="${output.dir}/phpreflect-book-us.pdf" />
-
-    </target>
-
-    <target name="make-userguide-epub"
-            description="Build the user guide of PHP_Reflect in EPUB format">
-
-        <exec dir="${asciidoc.home}"
-            command="a2x.py --verbose -L -d book -f epub -D ${output.dir} ${homedir}/docs/phpreflect-book.txt"
-            returnProperty="exitCode"
-        />
-
-        <if>
-            <equals arg1="${exitCode}" arg2="0" />
-            <then>
-                <if>
-                    <istrue value="${build.tarball}" />
-                    <then>
-                        <zip destfile="${output.dir}/phpreflect-book.epub.zip">
-                            <fileset dir="${output.dir}">
-                                <include name="phpreflect-book.epub" />
-                            </fileset>
-                        </zip>
-                    </then>
-                </if>
-            </then>
-        </if>
+        <echo>make-full-docs           Build the full documentation in all formats </echo>
+        <echo>make-html-docs           Build the documentation in HTML format only </echo>
 
     </target>
 
@@ -231,39 +36,43 @@
 
     </target>
 
-    <target name="make-full-docs"
-            depends="make-docs-sources, make-docs, make-userguide-all"
-            description="Build the full documentation of PHP_Reflect">
-
-        <phingcall target="notify">
-            <property name="growl.message" value="PHP_Reflect full documentation build FINISHED." />
-        </phingcall>
-    </target>
-
-    <target name="make-html-docs"
-            depends="make-docs-sources, make-docs, make-userguide"
-            description="Build the documentation in HTML format only">
-
-    </target>
-
     <target name="make-docs-sources"
-            description="Build the highlighted source code of PHP_Reflect">
+            description="Build some highlighted source code examples">
 
-        <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/sources/Reflect.html ${homedir}/docs/sources/Reflect.txt"
-        />
-        <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/sources/Autoload.html ${homedir}/docs/sources/Autoload.txt"
-        />
-        <exec dir="${asciidoc.home}"
-            command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/sources/Token.html ${homedir}/docs/sources/Token.txt"
-        />
+        <mkdir dir="${output.dir}/sources" />
+
         <exec dir="${asciidoc.home}"
             command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/sources/scanFile.html ${homedir}/docs/sources/scanFile.txt"
         />
         <exec dir="${asciidoc.home}"
             command="asciidoc.py -a linkcss -a icons -a theme=${theme} -o ${output.dir}/sources/scanFunctionArguments.html ${homedir}/docs/sources/scanFunctionArguments.txt"
         />
+
+    </target>
+
+    <target name="make-full-docs"
+            description="Build the full documentation in all formats">
+
+        <phingcall target="make-docs-sources" />
+        <phingcall target="make-docs" />
+        <phing phingfile="${buildfile.dir}/builddocs.xml" target="make-userguide-all" />
+
+        <phing phingfile="${buildfile.dir}/builddocs.xml" target="notify">
+            <property name="growl.message" value="PHP_Reflect full documentation build FINISHED." />
+        </phing>
+
+    </target>
+
+    <target name="make-html-docs"
+            description="Build the documentation in HTML format only">
+
+        <phingcall target="make-docs-sources" />
+        <phingcall target="make-docs" />
+        <phing phingfile="${buildfile.dir}/builddocs.xml" target="make-userguide-html" />
+
+        <phing phingfile="${buildfile.dir}/builddocs.xml" target="notify">
+            <property name="growl.message" value="PHP_Reflect HTML documentation build FINISHED." />
+        </phing>
 
     </target>
 
