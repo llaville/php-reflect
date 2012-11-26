@@ -15,11 +15,11 @@ and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2012-10-29</date>
- <time>21:44:01</time>
+ <date>2012-11-26</date>
+ <time>14:23:27</time>
  <version>
-  <release>1.4.3</release>
-  <api>1.4.0</api>
+  <release>1.5.0</release>
+  <api>1.5.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -28,11 +28,12 @@ and more, by connecting php callbacks to tokens.
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
 Additions and changes:
-- throws a runtime exception when data source filename does not exists
+- add new method isNamespaceWarning() that allow to know if PHP platform is PHP 5.2
+and source code scanned included namespace syntax
+- refactoring the documentation build phing script (split generic and specific code)
 
 Bug fixes:
-- detect function with ampersand in front of their name (thanks to Stefan Neufeind)
-- detect function signature with array as type-hint in parameters list (thanks to Stefan Neufeind)
+- none
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -169,6 +170,9 @@ Bug fixes:
     <file name="build-phing.xml" role="doc">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
+    <file name="builddocs.xml" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
     <file name="CHANGELOG.txt" role="doc">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
@@ -179,6 +183,9 @@ Bug fixes:
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
     <file name="getting_started.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="growlPhing.png" role="doc">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
     <file name="index.txt" role="doc">
@@ -306,6 +313,9 @@ Bug fixes:
      <file name="source10.php" role="test">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file name="source11.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
     </dir> <!-- /tests/_files -->
     <file name="phpunit.xml" role="test">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -350,6 +360,27 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.5.0</release>
+    <api>1.5.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2012-11-26</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- add new method isNamespaceWarning() that allow to know if PHP platform is PHP 5.2
+and source code scanned included namespace syntax
+- refactoring the documentation build phing script (split generic and specific code)
+
+Bug fixes:
+- none
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.4.3</release>
