@@ -39,4 +39,12 @@
             Fifth Edition of User Manual that documents the final stable version 1.4.0
         </revremark>
     </revision>
+    <revision>
+        <revnumber>1.5.0</revnumber>
+        <date>November 26, 2012</date>
+        <authorinitials>LL</authorinitials>
+        <revremark>
+            Sixth Edition of User Manual that documents the final stable version 1.5.0
+        </revremark>
+    </revision>
 </revhistory>

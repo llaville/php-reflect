@@ -4,7 +4,7 @@ include::revision.txt[]
 :stylesdir:   styles
 :scriptsdir:  js
 :binary_dir:  http://php5.laurent-laville.org/reflect/get/
-:man_dir:     http://php5.laurent-laville.org/reflect/manual/1.4
+:man_dir:     http://php5.laurent-laville.org/reflect/manual/current
 
 image:images/logo.png[alt="PHP_Reflect logo"]
 
@@ -12,7 +12,8 @@ image:images/logo.png[alt="PHP_Reflect logo"]
 ************************************************************************
 Release highlights:
 
-- improved signature and function detection.
+- add new method _isNamespaceWarning()_ that allow to know if PHP platform is PHP 5.2
+and source code scanned included namespace syntax.
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the
@@ -63,33 +64,23 @@ from the table below to start downloading.
 |===========================
 
 
-== Appendix A: Classes Source Code
-
-Below you can find highlighted PHP source code
-(with http://pygments.org/[Pygments])
-of PHP_Reflect classes version {revnumber}
-
-* link:sources/Reflect.html[PHP_Reflect]
-* link:sources/Autoload.html[Autoload]
-* link:sources/Token.html[Tokens]
-
-== Appendix B: Examples
+== Appendix A: Examples
 
 .Scan a simple file
 * link:sources/scanFile.html[Basic usage with default options]
 * link:sources/scanFunctionArguments.html[Get signature and arguments of methods/functions]
 
-== Appendix C: Changelog
+== Appendix B: Changelog
 
 link:CHANGELOG.html[History of changes]
 
-== Appendix D: License
+== Appendix C: License
 
 Released under the link:LICENSE.html[BSD] license,
 you are free to do whatever you want, even in a commercial environment.
 You are also encouraged to contribute.
 
-== Appendix E: Credits
+== Appendix D: Credits
 
 [quote, , https://github.com/sebastianbergmann/]
 ____
@@ -100,7 +91,7 @@ that show me the way with his base concept to produce an extendable package .
 ____
 
 
-== Appendix F: Links
+== Appendix E: Links
 
 All pages of this site, and user guide were generated with AsciiDoc 8.6.8,
 assisted by FOP 1.0 (for PDFs). Automated build process uses Phing 2.4.12
