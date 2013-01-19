@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2011-2012, Laurent Laville <pear@laurent-laville.org>
+ * Copyright (c) 2011-2013, Laurent Laville <pear@laurent-laville.org>
  *
  * Credits to Sebastian Bergmann on base concept from phpunit/PHP_Token_Stream
  *
