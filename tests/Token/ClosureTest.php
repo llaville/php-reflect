@@ -82,8 +82,6 @@ class PHP_Reflect_Token_ClosureTest extends PHPUnit_Framework_TestCase
                 );
             }
         }
-        error_log(print_r($this->functions[0], true));
-
     }
 
     /**
