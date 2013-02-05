@@ -339,13 +339,14 @@ class PHP_Reflect implements ArrayAccess
 
     /**
      * Magic methods to get informations on parsing results about
-     * includes, interfaces, classes, functions, constants
+     * traits, interfaces, classes, functions
      *
      * @param string $name Method name invoked
      * @param array  $args Method arguments provided
      *
      * @return array
      * @throws RuntimeException
+     * @deprecated
      */
     public function __call($name, $args)
     {
@@ -359,55 +360,138 @@ class PHP_Reflect implements ArrayAccess
             $container = strtolower($matches[1]{0}) . substr($matches[1], 1);
 
             if ($container == 'namespaces') {
-                $namespaces = null;
-
                 $option = (isset($args[0]) && is_string($args[0]))
                     ? $args[0] : self::NAMESPACES_WITHOUT_IMPORT;
 
-                $tmp = $this->offsetGet($container);
+                return $this->getNamespaces($option);
+            }
 
-                if (is_array($tmp)) {
-                    $namespaces = array();
+            $namespace = (isset($args[0]) && is_string($args[0]))
+                ? $args[0] : false;
 
-                    switch ($option) {
-                    case self::NAMESPACES_ONLY_IMPORT :
-                        $import = true;
-                        break;
-                    case self::NAMESPACES_ALL :
-                        return $tmp;
-                    case self::NAMESPACES_WITHOUT_IMPORT :
-                    default:
-                        $import = false;
-                        break;
-                    }
+            return $this->getContainer($namespace, $container);
+        }
 
-                    foreach ($tmp as $name => $data) {
-                        if ($data['import'] == $import) {
-                            $namespaces[$name] = $data;
-                        }
-                    }
-                }
-                return $namespaces;
-            } else {
-                $namespace = (isset($args[0]) && is_string($args[0]))
-                    ? $args[0] : false;
-                if ($namespace === FALSE) {
-                    // get data from all namespaces
-                    return $this->offsetGet($container);
-                } else {
-                    // get data from specified namespace
-                    if ($this->offsetExists(array($container => $namespace))) {
-                        return $this->offsetGet(array($container => $namespace));
-                    } else {
-                        return array();
-                    }
+        throw new RuntimeException(
+            "Invalid method. Given '$name'"
+        );
+    }
+
+    /**
+     * Gets the namespaces
+     *
+     * The output may be customized by passing one or more of the following constants
+     * bitwise values summed together in the optional what parameter.
+     *
+     * constant Name              Value  Description
+     * NAMESPACES_WITHOUT_IMPORT  '1'    Namespaces excluding those imported
+     * NAMESPACES_ONLY_IMPORT     '2'    Namespaces only imported
+     * NAMESPACES_ALL             '3'    Namespaces all of the above
+     *
+     * @param string $what See description above
+     *
+     * @return array | null (if failure)
+     */
+    public function getNamespaces($what = self::NAMESPACES_WITHOUT_IMPORT)
+    {
+        $namespaces = null;
+        $tmp = $this->offsetGet($this->options['containers']['namespace']);
+
+        if (is_array($tmp)) {
+            $namespaces = array();
+
+            switch ($what) {
+            case self::NAMESPACES_ONLY_IMPORT :
+                $import = true;
+                break;
+            case self::NAMESPACES_ALL :
+                return $tmp;
+            case self::NAMESPACES_WITHOUT_IMPORT :
+            default:
+                $import = false;
+                break;
+            }
+
+            foreach ($tmp as $name => $data) {
+                if ($data['import'] == $import) {
+                    $namespaces[$name] = $data;
                 }
             }
-        } else {
-            throw new RuntimeException(
-                "Invalid method. Given '$name'"
-            );
         }
+        return $namespaces;
+    }
+
+    /**
+     * Gets the traits for one or all namespaces
+     *
+     * @param string $namespace (optional) A specific namespace
+     *
+     * @return array
+     */
+    public function getTraits($namespace = '')
+    {
+        return $this->getContainer($namespace, 'trait');
+    }
+
+    /**
+     * Gets the interfaces for one or all namespaces
+     *
+     * @param string $namespace (optional) A specific namespace
+     *
+     * @return array
+     */
+    public function getInterfaces($namespace = '')
+    {
+        return $this->getContainer($namespace, 'interface');
+    }
+
+    /**
+     * Gets the classes for one or all namespaces
+     *
+     * @param string $namespace (optional) A specific namespace
+     *
+     * @return array
+     */
+    public function getClasses($namespace = '')
+    {
+        return $this->getContainer($namespace, 'class');
+    }
+
+    /**
+     * Gets the functions for one or all namespaces
+     *
+     * @param string $namespace (optional) A specific namespace
+     *
+     * @return array
+     */
+    public function getFunctions($namespace = '')
+    {
+        return $this->getContainer($namespace, 'function');
+    }
+
+    /**
+     * Retrieve data from a designed $container
+     *
+     * @param string $namespace A specific namespace
+     * @param string $container The container must exist
+     *
+     * @return array
+     */
+    protected function getContainer($namespace, $container)
+    {
+        $container = $this->options['containers'][$container];
+
+        if (empty($namespace)) {
+            // get data from all namespaces
+            return $this->offsetGet($container);
+        }
+
+        // get data from specified namespace
+        if ($this->offsetExists(array($container => $namespace))) {
+            return $this->offsetGet(array($container => $namespace));
+        }
+
+        return array();
     }
 
     /**
