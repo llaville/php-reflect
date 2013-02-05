@@ -334,11 +334,17 @@ abstract class PHP_Reflect_TokenWithArgument extends PHP_Reflect_TokenWithScope
         $nextArgument    = array();
 
         if (get_class($this) === 'PHP_Reflect_Token_FUNCTION') {
-            // ampersand before function-name
-            if ($this->tokenStream[$i+1][0] == 'T_AMPERSAND') {
-              $i = $i + 3;
+            if ($this->tokenStream[$i][0] == 'T_OPEN_BRACKET'
+                || $this->tokenStream[$i+1][0] == 'T_OPEN_BRACKET'
+            ) {
+                // closure
             } else {
-              $i = $i + 2;
+                // ampersand before function-name
+                if ($this->tokenStream[$i+1][0] == 'T_AMPERSAND') {
+                  $i = $i + 3;
+                } else {
+                  $i = $i + 2;
+                }
             }
         }
 
@@ -630,17 +636,21 @@ class PHP_Reflect_Token_FUNCTION extends PHP_Reflect_TokenWithArgument
             return $this->name;
         }
 
-        if ($this->tokenStream[$this->id+2][0] == 'T_STRING') {
-            $this->name = $this->tokenStream[$this->id+2][1];
-        }
-
-        else if ($this->tokenStream[$this->id+2][0] == 'T_AMPERSAND' &&
-                 $this->tokenStream[$this->id+3][0] == 'T_STRING') {
-            $this->name = $this->tokenStream[$this->id+3][1];
-        }
-
-        else {
-            $this->name = 'anonymous function';
+        for ($i = $this->id + 1; $i < count($this->tokenStream); $i++) {
+            if ($this->tokenStream[$i][0] == 'T_STRING') {
+                $this->name = $this->tokenStream[$i][1];
+                break;
+            }
+            elseif ($this->tokenStream[$i][0] == 'T_AMPERSAND'
+                && $this->tokenStream[$i][0] == 'T_STRING'
+            ) {
+                $this->name = $this->tokenStream[$i+1][1];
+                break;
+            }
+            elseif ($this->tokenStream[$i][0] == 'T_OPEN_BRACKET') {
+                $this->name = 'anonymous function';
+                break;
+            }
         }
 
         return $this->name;
