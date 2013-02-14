@@ -94,7 +94,6 @@ abstract class PHP_Reflect_Token
     {
         return $this->line;
     }
-
 }
 
 abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
@@ -520,6 +519,23 @@ abstract class PHP_Reflect_Token_Globals extends PHP_Reflect_TokenWithScope
     }
 }
 
+/**
+ * @link http://www.php.net/manual/en/language.constants.predefined.php
+ *       Magic constants
+ */
+abstract class PHP_Reflect_Token_MagicConstant extends PHP_Reflect_TokenWithScope
+{
+    protected $name;
+
+    public function getName()
+    {
+        if ($this->name === NULL) {
+            $this->name = $this->text;
+        }
+        return $this->name;
+    }
+}
+
 class PHP_Reflect_Token_REQUIRE_ONCE extends PHP_Reflect_Token_Includes {}
 class PHP_Reflect_Token_REQUIRE extends PHP_Reflect_Token_Includes {}
 class PHP_Reflect_Token_EVAL extends PHP_Reflect_Token {}
@@ -595,7 +611,6 @@ class PHP_Reflect_Token_STRING extends PHP_Reflect_TokenWithArgument
 }
 
 class PHP_Reflect_Token_STRING_VARNAME extends PHP_Reflect_Token {}
-
 class PHP_Reflect_Token_VARIABLE extends PHP_Reflect_Token_Globals {}
 class PHP_Reflect_Token_NUM_STRING extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_INLINE_HTML extends PHP_Reflect_Token {}
@@ -707,11 +722,51 @@ class PHP_Reflect_Token_FUNCTION extends PHP_Reflect_TokenWithArgument
     }
 }
 
-class PHP_Reflect_Token_CONST extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CONST extends PHP_Reflect_Token
+{
+    protected $name;
+    protected $value;
+
+    public function getName()
+    {
+        if ($this->name !== NULL) {
+            return $this->name;
+        }
+        $this->name = $this->tokenStream[$this->id + 2][1];
+
+        for ($i = $this->id + 3; $i < $this->id + 7; $i++) {
+            if (!isset($this->tokenStream[$i])) {
+                return;
+            }
+
+            if ($this->tokenStream[$i][0] == 'T_EQUAL'
+                || $this->tokenStream[$i][0] == 'T_WHITESPACE'
+            ) {
+                continue;
+            }
+
+            if ($this->tokenStream[$i][0] == 'T_CONSTANT_ENCAPSED_STRING') {
+                $this->value = trim($this->tokenStream[$i][1], "'\"");
+            } elseif ($this->tokenStream[$i][0] !== 'T_SEMICOLON') {
+                $this->value = $this->tokenStream[$i][1];
+            }
+            break;
+        }
+        return $this->name;
+    }
+
+    public function getValue()
+    {
+        $this->getName();
+        return $this->value;
+    }
+}
+
 class PHP_Reflect_Token_RETURN extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_TRY extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_CATCH extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_THROW extends PHP_Reflect_Token {}
+
 class PHP_Reflect_Token_USE extends PHP_Reflect_TokenWithScope
 {
     protected $trait;
@@ -800,8 +855,8 @@ class PHP_Reflect_Token_USE extends PHP_Reflect_TokenWithScope
     {
         return true;
     }
-
 }
+
 class PHP_Reflect_Token_GLOBAL extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_PUBLIC extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_PROTECTED extends PHP_Reflect_Token {}
@@ -956,12 +1011,12 @@ class PHP_Reflect_Token_OBJECT_OPERATOR extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_DOUBLE_ARROW extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_LIST extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_ARRAY extends PHP_Reflect_Token {}
-class PHP_Reflect_Token_CLASS_C extends PHP_Reflect_Token {}
-class PHP_Reflect_Token_TRAIT_C extends PHP_Reflect_Token {}
-class PHP_Reflect_Token_METHOD_C extends PHP_Reflect_Token {}
-class PHP_Reflect_Token_FUNC_C extends PHP_Reflect_Token {}
-class PHP_Reflect_Token_LINE extends PHP_Reflect_Token {}
-class PHP_Reflect_Token_FILE extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_CLASS_C extends PHP_Reflect_Token_MagicConstant {}
+class PHP_Reflect_Token_TRAIT_C extends PHP_Reflect_Token_MagicConstant {}
+class PHP_Reflect_Token_METHOD_C extends PHP_Reflect_Token_MagicConstant {}
+class PHP_Reflect_Token_FUNC_C extends PHP_Reflect_Token_MagicConstant {}
+class PHP_Reflect_Token_LINE extends PHP_Reflect_Token_MagicConstant {}
+class PHP_Reflect_Token_FILE extends PHP_Reflect_Token_MagicConstant {}
 class PHP_Reflect_Token_COMMENT extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_DOC_COMMENT extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_OPEN_TAG extends PHP_Reflect_Token {}
@@ -1019,11 +1074,10 @@ class PHP_Reflect_Token_NAMESPACE extends PHP_Reflect_TokenWithScope
     {
         return false;
     }
-
 }
 
-class PHP_Reflect_Token_NS_C extends PHP_Reflect_Token {}
-class PHP_Reflect_Token_DIR extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_NS_C extends PHP_Reflect_Token_MagicConstant {}
+class PHP_Reflect_Token_DIR extends PHP_Reflect_Token_MagicConstant {}
 class PHP_Reflect_Token_NS_SEPARATOR extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_DOUBLE_COLON extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_OPEN_BRACKET extends PHP_Reflect_Token {}

@@ -151,7 +151,8 @@ class PHP_Reflect implements ArrayAccess
                 'require'      => 'includes',
                 'include_once' => 'includes',
                 'include'      => 'includes',
-                'variable'     => 'globals'
+                'variable'     => 'globals',
+                'constant'     => 'constants',
             ),
             // properties for each component to provide on final result
             'properties' => array(
@@ -192,6 +193,9 @@ class PHP_Reflect implements ArrayAccess
                 'variable' => array(
                     'file', 'startEndLines', 'docblock', 'namespace',
                 ),
+                'constant' => array(
+                    'file', 'line', 'namespace', 'value'
+                ),
             ),
         );
 
@@ -208,15 +212,15 @@ class PHP_Reflect implements ArrayAccess
             }
         }
 
-        // default parsers for interfaces, classes, functions, includes
+        // default parsers for interfaces, classes, functions, includes, constants
         $this->parserToken = array(
-            'T_USE'    => array(
+            'T_USE'          => array(
                 'PHP_Reflect_Token_USE', array($this, 'parseToken')
             ),
             'T_NAMESPACE'    => array(
                 'PHP_Reflect_Token_NAMESPACE', array($this, 'parseToken')
             ),
-            'T_TRAIT'    => array(
+            'T_TRAIT'        => array(
                 'PHP_Reflect_Token_TRAIT', array($this, 'parseToken')
             ),
             'T_INTERFACE'    => array(
@@ -242,6 +246,33 @@ class PHP_Reflect implements ArrayAccess
             ),
             'T_VARIABLE'     => array(
                 'PHP_Reflect_Token_VARIABLE', array($this, 'parseToken')
+            ),
+            'T_LINE'         => array(
+                'PHP_Reflect_Token_LINE', array($this, 'parseToken')
+            ),
+            'T_FILE'         => array(
+                'PHP_Reflect_Token_FILE', array($this, 'parseToken')
+            ),
+            'T_DIR'          => array(
+                'PHP_Reflect_Token_DIR', array($this, 'parseToken')
+            ),
+            'T_FUNC_C'       => array(
+                'PHP_Reflect_Token_FUNC_C', array($this, 'parseToken')
+            ),
+            'T_CLASS_C'      => array(
+                'PHP_Reflect_Token_CLASS_C', array($this, 'parseToken')
+            ),
+            'T_TRAIT_C'      => array(
+                'PHP_Reflect_Token_TRAIT_C', array($this, 'parseToken')
+            ),
+            'T_METHOD_C'     => array(
+                'PHP_Reflect_Token_METHOD_C', array($this, 'parseToken')
+            ),
+            'T_NS_C'         => array(
+                'PHP_Reflect_Token_NS_C', array($this, 'parseToken')
+            ),
+            'T_CONST'        => array(
+                'PHP_Reflect_Token_CONST', array($this, 'parseToken')
             ),
         );
     }
@@ -357,9 +388,10 @@ class PHP_Reflect implements ArrayAccess
         $pattern = '/get' .
             '(?>(' . implode('|', $methods) . '))/';
         if (preg_match($pattern, $name, $matches)) {
-            $container = strtolower($matches[1]{0}) . substr($matches[1], 1);
+            $method    = strtolower($matches[1]{0}) . substr($matches[1], 1);
+            $container = array_search($method, $this->options['containers']);
 
-            if ($container == 'namespaces') {
+            if ($method == 'namespaces') {
                 $option = (isset($args[0]) && is_string($args[0]))
                     ? $args[0] : self::NAMESPACES_WITHOUT_IMPORT;
 
@@ -467,6 +499,18 @@ class PHP_Reflect implements ArrayAccess
     public function getFunctions($namespace = '')
     {
         return $this->getContainer($namespace, 'function');
+    }
+
+    /**
+     * Gets the constants for one or all namespaces
+     *
+     * @param string $namespace (optional) A specific namespace
+     *
+     * @return array
+     */
+    public function getConstants($namespace = '')
+    {
+        return $this->getContainer($namespace, 'constant');
     }
 
     /**
@@ -675,7 +719,7 @@ class PHP_Reflect implements ArrayAccess
                 'class'     => $class,
                 'interface' => $interface,
                 'trait'     => $trait,
-                'context'   => strtolower(str_replace('T_', '', $tokenName))
+                'context'   => strtolower(substr($tokenName, 2))
             );
 
             switch ($tokenName) {
@@ -744,10 +788,7 @@ class PHP_Reflect implements ArrayAccess
     }
 
     /**
-     * Default parser for tokens
-     * T_NAMESPACE, T_INTERFACE, T_CLASS, T_FUNCTION,
-     * T_REQUIRE_ONCE, T_REQUIRE, T_INCLUDE_ONCE, T_INCLUDE,
-     * T_VARIABLE
+     * Default tokens parser
      *
      * @return void
      */
@@ -773,6 +814,26 @@ class PHP_Reflect implements ArrayAccess
 
         list($subject, $context, $token) = func_get_args();
         extract($context);
+
+        /**
+         * @link http://www.php.net/manual/en/language.constants.php
+         *       Constants
+         * @link http://www.php.net/manual/en/language.constants.predefined.php
+         *       Magic constants
+         */
+        $const = in_array(
+            $context,
+            array(
+                // user constants
+                'const',
+                // magic constants
+                'line', 'file', 'dir',
+                'func_c', 'class_c', 'trait_c', 'method_c', 'ns_c'
+            )
+        );
+        if ($const) {
+            $context = 'constant';
+        }
 
         $container = $subject->options['containers'][$context];
         if ($container === NULL) {
@@ -818,6 +879,7 @@ class PHP_Reflect implements ArrayAccess
         case 'include_once':
         case 'include':
         case 'variable':
+        case 'constant':
             if (in_array('startEndLines', $properties)) {
                 $tmp['startLine'] = $token->getLine();
                 $tmp['endLine']   = $token->getEndLine();
@@ -921,6 +983,23 @@ class PHP_Reflect implements ArrayAccess
         } elseif ($context == 'namespace') {
             $tmp['import'] = $token->isImported();
             $subject->offsetSet(array($container => $name), $tmp);
+
+        } elseif ($context == 'constant') {
+            $constants = $subject->offsetGet(array($container => $ns));
+            if (substr($name, 0, 2) == '__') {
+                // location of constant only valid for user declaration
+                unset($tmp['line']);
+                // unuseful to know if it in class context or not for magic constants
+                $class = FALSE;
+            }
+            $tmp['uses'][] = $token->getLine();
+            if (method_exists($token, 'getValue')) {
+                $tmp['value'] = $token->getValue();
+            }
+            $tmp['class'] = $class;
+            $tmp['trait'] = $trait;
+            $constants[$name][] = $tmp;
+            $subject->offsetSet(array($container => $ns), $constants);
 
         } else {
             $_ns = $subject->offsetGet(array($container => $ns));
