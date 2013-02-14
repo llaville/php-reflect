@@ -989,8 +989,12 @@ class PHP_Reflect implements ArrayAccess
             if (substr($name, 0, 2) == '__') {
                 // location of constant only valid for user declaration
                 unset($tmp['line']);
-                // unuseful to know if it in class context or not for magic constants
+                /**
+                 * it's not useful to know if it's in class/trait context or not 
+                 * for magic constants
+                 */
                 $class = FALSE;
+                $trait = FALSE;
             }
             $tmp['uses'][] = $token->getLine();
             if (method_exists($token, 'getValue')) {
