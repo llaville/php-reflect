@@ -1,19 +1,21 @@
-PHP_Reflect
-===========
+= PHP_Reflect
+:description: Reverse-engineer classes, interfaces, functions, constants, namespaces and more.
+:manhtml:      64Kb
+:manchunked:  534Kb
+:manchm:      545Kb
+:manpdfa4:    655Kb
+:manpdfus:    655Kb
+:manepub:     526Kb
 include::revision.txt[]
-:stylesdir:   styles
-:scriptsdir:  js
-:binary_dir:  http://php5.laurent-laville.org/reflect/get/
-:man_dir:     http://php5.laurent-laville.org/reflect/manual/current
+include::attributes.txt[]
 
-image:images/logo.png[alt="PHP_Reflect logo"]
 
 .{revdate}: PHP_Reflect {revnumber} Released
 ************************************************************************
 Release highlights:
 
-- add new method _isNamespaceWarning()_ that allow to know if PHP platform is PHP 5.2
-and source code scanned included namespace syntax.
+- declares methods _getNamespaces()_, _getTraits()_, _getInterfaces()_, _getClasses()_,
+and _getFunctions()_. Do not used anymore the magic __call method.
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the
@@ -25,76 +27,47 @@ link:INSTALL.html[Installation page] for downloads and installation instructions
 
 == Introduction
 
-PHP_Reflect adds the ability to reverse-engineer classes, interfaces, functions, 
-constants, namespaces and more. 
-
-
-*Why PHP_Reflect is different to standard PHP5 Reflection API ?*
-
-With _PHP5 Reflection API_ the code to analyze needs to be loaded and interpreted 
-by the php interpreter, and in certain cases, this triggers fatal errors. 
-
-With _PHP_Reflect_ you don't have to trust in source code, because it will be parsed
-with tokenizer extension. 
-
-
-== Overview
-
-.Features
-
-* ability to reverse-engineer classes
-* ability to reverse-engineer traits
-* ability to reverse-engineer interfaces
-* ability to reverse-engineer functions
-* ability to reverse-engineer constants
-* ability to reverse-engineer namespaces
-* ability to reverse-engineer includes
-* ability to reverse-engineer globals variables
-
+include::introduction.txt[]
 
 == Documentation
 
-The PHP_Reflect manual is available in a selection of formats. Pick a format
-from the table below to start downloading.
+[role="lead"]
+Head to the PHP_Reflect link:phpreflect-book.html[User Guide] available online
+for information or examples to get started.
 
-[options="header"]
+The PHP_Reflect book is available in a selection of formats.
+You can download the documentation for offline reading.
+
+[options="header", role="table table-bordered"]
 |===========================
 | Language | Single HTML file | Many HTML files | HTML Help file | PDF A4 file | PDF US file | EPUB file
-| English | link:{man_dir}/en/phpreflect-book.html.zip[phpreflect-book.html.zip] 54 Kb | link:{man_dir}/en/phpreflect-book.chunked.zip[phpreflect-book.chunked.zip] 44 Kb | link:{man_dir}/en/phpreflect-book.chm.zip[phpreflect-book.chm.zip] 40 Kb | link:{man_dir}/en/phpreflect-book-a4.pdf[phpreflect-book-a4.pdf] 75 Kb | link:{man_dir}/en/phpreflect-book-us.pdf[phpreflect-book-us.pdf] 75 Kb | link:{man_dir}/en/phpreflect-book.epub.zip[phpreflect-book.epub.zip] 33Kb
+| English | link:{mandir}/en/phpreflect-book.html.zip[phpreflect-book.html.zip] {manhtml} | link:{mandir}/en/phpreflect-book.chunked.zip[phpreflect-book.chunked.zip] {manchunked} | link:{mandir}/en/phpreflect-book.chm.zip[phpreflect-book.chm.zip] {manchm} | link:{mandir}/en/phpreflect-book-a4.pdf[phpreflect-book-a4.pdf] {manpdfa4} | link:{mandir}/en/phpreflect-book-us.pdf[phpreflect-book-us.pdf] {manpdfus} | link:{mandir}/en/phpreflect-book.epub.zip[phpreflect-book.epub.zip] {manepub}
 |===========================
 
+== Appendixes
 
-== Appendix A: Examples
+=== Changelog
 
-.Scan a simple file
-* link:sources/scanFile.html[Basic usage with default options]
-* link:sources/scanFunctionArguments.html[Get signature and arguments of methods/functions]
+You want to learn more about previous versions. Read the full link:CHANGELOG.html[changelog].
 
-== Appendix B: Changelog
+=== License
 
-link:CHANGELOG.html[History of changes]
-
-== Appendix C: License
-
-Released under the link:LICENSE.html[BSD] license,
-you are free to do whatever you want, even in a commercial environment.
+You are free to do whatever you want, even in a commercial environment.
 You are also encouraged to contribute.
+Read the full link:LICENSE.html[license].
 
-== Appendix D: Credits
+=== Credits
 
-[quote, , https://github.com/sebastianbergmann/]
+[quote, Sebastian Bergmann, https://github.com/sebastianbergmann/]
 ____
-.Sebastian Bergmann
-
 Original author of link:https://github.com/sebastianbergmann/php-token-stream[PHPUnit/PHP_Token_Stream],
 that show me the way with his base concept to produce an extendable package .
 ____
 
-
-== Appendix E: Links
+=== Links
 
 All pages of this site, and user guide were generated with AsciiDoc 8.6.8,
-assisted by FOP 1.0 (for PDFs). Automated build process uses Phing 2.4.12
+assisted by FOP 1.0 (for PDFs). Automated build process uses Phing 2.4.14
 
 Convert the HTML Help source (.hhp and .html) files to HTML Help (.chm) files
 using the Microsoft HTML Help Compiler.

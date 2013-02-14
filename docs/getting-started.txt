@@ -1,6 +1,10 @@
-Getting Started with PHP_Reflect
-================================
+= Getting Started
+:description: How to get started with your first reflexion
 include::revision.txt[]
+include::attributes.txt[]
+
+[role="lead"]
+This simple tutorial will demonstrate how to parse a simple file or a directory.
 
 == Parse your first PHP source file
 
@@ -17,29 +21,29 @@ try {
     $reflect->scan($source);
 
     $classes    = $reflect->getClasses();
-    // OR 
+    // OR
     $classes    = $reflect['classes'];
-    
+
     $interfaces = $reflect->getInterfaces();
     // OR
     $interfaces = $reflect['interfaces'];
-    
+
     $traits     = $reflect->getTraits();
     // OR
     $traits     = $reflect['traits'];
 
     $functions  = $reflect->getFunctions();
     // OR
-    $functions  = $reflect['functions'];    
-    
+    $functions  = $reflect['functions'];
+
     $constants  = $reflect->getConstants();
     // OR
-    $constants  = $reflect['constants'];    
-    
+    $constants  = $reflect['constants'];
+
     $namespaces = $reflect->getNamespaces();
     // OR
-    $namespaces = $reflect['namespaces'];    
-    
+    $namespaces = $reflect['namespaces'];
+
 } catch (Exception $e) {
     echo 'Caught exception: ' . $e->getMessage() . PHP_EOL;
 ?>

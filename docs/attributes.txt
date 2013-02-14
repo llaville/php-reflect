@@ -1,0 +1,10 @@
+:author:      Laurent Laville
+:stylesdir:   styles
+:scriptsdir:  js
+:keywords:    PHP, reverse-engineer, reflexion, classes, interfaces, functions, constants, namespaces, traits
+:mandir:      http://php5.laurent-laville.org/reflect/manual/current
+:brand:       PHP_Reflect
+:brandref:    https://github.com/llaville/php-reflect
+:sidebar:     right
+:footer:
+:navinfo1:

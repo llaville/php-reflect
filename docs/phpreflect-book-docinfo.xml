@@ -47,4 +47,12 @@
             Sixth Edition of User Manual that documents the final stable version 1.5.0
         </revremark>
     </revision>
+    <revision>
+        <revnumber>1.6.0</revnumber>
+        <date>February 16, 2013</date>
+        <authorinitials>LL</authorinitials>
+        <revremark>
+            Seventh Edition of User Manual that documents the final stable version 1.6.0
+        </revremark>
+    </revision>
 </revhistory>

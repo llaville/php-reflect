@@ -1,7 +1,10 @@
-Connect other tokens
-====================
+= Connect other tokens
+:description: How to extends the parser to match your needs
 include::revision.txt[]
+include::attributes.txt[]
 
+
+[role="lead"]
 Extends PHP_Reflect core, to match user needs, is possible
 with usage of the +connect()+ function.
 

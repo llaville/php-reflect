@@ -1,0 +1,33 @@
+[role="lead"]
+PHP_Reflect is a PHP Library that adds the ability to reverse-engineer 
+classes, interfaces, functions, constants, namespaces and more.
+
+
+*Why PHP_Reflect is different to standard PHP5 Reflection API ?*
+
+With _PHP5 Reflection API_ the code to analyze needs to be loaded and interpreted 
+by the php interpreter, and in certain cases, this triggers fatal errors. 
+
+With _PHP_Reflect_ you don't have to trust in source code, because it will be parsed
+with tokenizer extension. 
+
+=== Features
+
+* ability to reverse-engineer classes
+* ability to reverse-engineer traits
+* ability to reverse-engineer interfaces
+* ability to reverse-engineer functions
+* ability to reverse-engineer constants
+* ability to reverse-engineer namespaces
+* ability to reverse-engineer includes
+* ability to reverse-engineer globals variables
+* uses containers that may be changed to store scanning results
+* select properties you want to retrieve (file, start and end lines, docblock, namespace ...)
+* ability to extend the parsing level: connect user callbacks to handle more tokens
+
+=== Requirements
+
+* link:http://www.php.net[PHP] 5.2.0 or newer
+* link:http://www.php.net/manual/en/book.pcre.php[pcre] extension
+* link:http://www.php.net/manual/en/book.spl.php[SPL] extension
+* link:http://www.php.net/manual/en/book.tokenizer.php[tokenizer] extension

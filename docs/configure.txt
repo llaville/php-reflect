@@ -1,15 +1,22 @@
-Configure
-=========
+= Configure the parser
+:description: How to configure the parser to match your needs
 include::revision.txt[]
+include::attributes.txt[]
+
+
+[role="lead"]
+You may configure the parser in two ways: _containers_ and _properties_.
+
 
 == Containers
 
 You can change default containers ('namespaces', 'traits', 'interfaces', 'classes', 'functions', 'includes', 'globals'),
 and then have different getting methods (rather than standard 'getInterfaces', ... ).
 
+
 .Containers options
 [grid="rows",format="csv"]
-[options="header",cols="5,10"]
+[options="header",cols="5,10",role="table table-bordered table-striped"]
 |===========================
 key code, container default name
 use, namespaces
@@ -23,9 +30,10 @@ require,      includes
 include_once, includes
 include,      includes
 variable,  globals
+constant, constants
 |===========================
 
-.Example
+.Configure the function container
 [source,php]
 ----
 <?php
@@ -54,7 +62,7 @@ You can choose what information to retrieve depending of element (key code).
 
 .Properties options
 [grid="rows",format="csv"]
-[options="header",cols="5,10"]
+[options="header",cols="5,10",role="table table-bordered table-striped"]
 |===========================
 key code,default property
 use,       "file, startEndLines, docblock, alias"
@@ -68,9 +76,10 @@ require,      "file, startEndLines, docblock, namespace"
 include_once, "file, startEndLines, docblock, namespace"
 include,      "file, startEndLines, docblock, namespace"
 variable,     "file, startEndLines, docblock, namespace"
+constant,  "file, line, docblock, namespace, value"
 |===========================
 
-.Example 1
+.Configure interface, class and function properties
 [source,php]
 ----
 <?php
@@ -191,7 +200,7 @@ Array
 )
 ----
 
-.Example 2
+.Gets functions signature and their arguments
 [source,php]
 ----
 <?php
@@ -281,7 +290,6 @@ Array
 )
 ----
 
-.Example 3
 
 With this code below (filename reference is __/tmp/ns_sample.php__), we want to get namespaces :
 
@@ -306,6 +314,7 @@ class MemcacheCache extends CacheProvider
 }
 ----
 
+.Getting namespaces in different ways
 [source,php]
 ----
 <?php
