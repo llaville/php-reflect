@@ -194,7 +194,7 @@ class PHP_Reflect implements ArrayAccess
                     'file', 'startEndLines', 'docblock', 'namespace',
                 ),
                 'constant' => array(
-                    'file', 'line', 'namespace', 'value'
+                    'file', 'line', 'docblock', 'namespace', 'value'
                 ),
             ),
         );
