@@ -1,7 +1,8 @@
 <?php
-error_log(__NAMESPACE__ . ' in ' . __DIR__ . ' ' . __FILE__);
-
 const CONNECT_OK = 1;
+
+error_log('Magic constants in ' . __FILE__);
+
 class Connection {
     const DSN = 'protocol://';
     public function connect() 
@@ -14,6 +15,9 @@ function connect() {
     error_log(__FUNCTION__ . '@' . __LINE__);
     
 }
+
+error_log(__NAMESPACE__ . ' in ' __DIR__);
+
 trait PeanutButter {
     function traitName() {echo __TRAIT__;}
 }

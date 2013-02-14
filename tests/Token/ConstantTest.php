@@ -105,16 +105,20 @@ class PHP_Reflect_Token_ConstantTest extends PHPUnit_Framework_TestCase
      */
     public function testGetName()
     {
-        $this->assertEquals('__NAMESPACE__', $this->constants[0]->getName());
-        $this->assertEquals('__DIR__',       $this->constants[1]->getName());
-        $this->assertEquals('__FILE__',      $this->constants[2]->getName());
-        $this->assertEquals('CONNECT_OK',    $this->constants[3]->getName());
-        $this->assertEquals('DSN',           $this->constants[4]->getName());
-        $this->assertEquals('__CLASS__',     $this->constants[5]->getName());
-        $this->assertEquals('__METHOD__',    $this->constants[6]->getName());
+        $this->assertEquals('CONNECT_OK',    $this->constants[0]->getName());
+        $this->assertEquals('__FILE__',      $this->constants[1]->getName());
+        $this->assertEquals('DSN',           $this->constants[2]->getName());
+        $this->assertEquals('__CLASS__',     $this->constants[3]->getName());
+        $this->assertEquals('__METHOD__',    $this->constants[4]->getName());
+        $this->assertEquals('__LINE__',      $this->constants[5]->getName());
+        $this->assertEquals('__FUNCTION__',  $this->constants[6]->getName());
         $this->assertEquals('__LINE__',      $this->constants[7]->getName());
-        $this->assertEquals('__FUNCTION__',  $this->constants[8]->getName());
-        $this->assertEquals('__LINE__',      $this->constants[9]->getName());
+
+        if (version_compare(PHP_VERSION, '5.3.0') < 0) {
+            return;
+        }
+        $this->assertEquals('__NAMESPACE__', $this->constants[8]->getName());
+        $this->assertEquals('__DIR__',       $this->constants[9]->getName());
 
         if (version_compare(PHP_VERSION, '5.4.0') < 0) {
             return;
@@ -132,20 +136,24 @@ class PHP_Reflect_Token_ConstantTest extends PHPUnit_Framework_TestCase
     public function testGetLine()
     {
         $this->assertEquals(2,  $this->constants[0]->getLine());
-        $this->assertEquals(2,  $this->constants[1]->getLine());
-        $this->assertEquals(2,  $this->constants[2]->getLine());
-        $this->assertEquals(4,  $this->constants[3]->getLine());
-        $this->assertEquals(6,  $this->constants[4]->getLine());
-        $this->assertEquals(9,  $this->constants[5]->getLine());
-        $this->assertEquals(9,  $this->constants[6]->getLine());
-        $this->assertEquals(9,  $this->constants[7]->getLine());
-        $this->assertEquals(14, $this->constants[8]->getLine());
-        $this->assertEquals(14, $this->constants[9]->getLine());
+        $this->assertEquals(4,  $this->constants[1]->getLine());
+        $this->assertEquals(7,  $this->constants[2]->getLine());
+        $this->assertEquals(10, $this->constants[3]->getLine());
+        $this->assertEquals(10, $this->constants[4]->getLine());
+        $this->assertEquals(10, $this->constants[5]->getLine());
+        $this->assertEquals(15, $this->constants[6]->getLine());
+        $this->assertEquals(15, $this->constants[7]->getLine());
+
+        if (version_compare(PHP_VERSION, '5.3.0') < 0) {
+            return;
+        }
+        $this->assertEquals(19, $this->constants[8]->getLine());
+        $this->assertEquals(19, $this->constants[9]->getLine());
 
         if (version_compare(PHP_VERSION, '5.4.0') < 0) {
             return;
         }
-        $this->assertEquals(18, $this->constants[10]->getLine());
+        $this->assertEquals(22, $this->constants[10]->getLine());
     }
 
 }
