@@ -1,0 +1,2 @@
+PHP_Reflect adds the ability to reverse-engineer classes, interfaces, functions, 
+constants, namespaces, traits and more, by connecting php callbacks to tokens.

@@ -1,0 +1,8 @@
+Additions and changes:
+- add user and magic constants detection
+- declares methods getNamespaces(), getTraits(), getInterfaces(), getClasses(),
+and getFunctions(). 
+Magic method __call is marked as deprecated and will be remove in next major version.
+
+Bug fixes:
+- Wrong detection of function name when a closure uses a typehint for the first argument
