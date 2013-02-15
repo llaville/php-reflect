@@ -714,6 +714,29 @@ class PHP_Reflect implements ArrayAccess
             $text       = $token[1];
             $line       = $token[2];
 
+            if ($tokenName == 'T_STRING') {
+                // make tokens forward compatible
+
+                // since PHP 5.3
+                if (strcasecmp($text, '__dir__') == 0) {
+                    $tokenName = 'T_DIR';
+                } elseif (strcasecmp($text, '__namespace__') == 0) {
+                    $tokenName = 'T_NS_C';
+                } elseif (strcasecmp($text, 'namespace') == 0) {
+                    $tokenName = 'T_NAMESPACE';
+                } elseif (strcasecmp($text, 'goto') == 0) {
+                    $tokenName = 'T_GOTO';
+
+                // since PHP 5.4
+                } elseif (strcasecmp($text, '__trait__') == 0) {
+                    $tokenName = 'T_TRAIT_C';
+                } elseif (strcasecmp($text, 'trait') == 0) {
+                    $tokenName = 'T_TRAIT';
+                } elseif (strcasecmp($text, 'insteadof') == 0) {
+                    $tokenName = 'T_INSTEADOF';
+                }
+            }
+
             $context = array(
                 'namespace' => $namespace,
                 'class'     => $class,
@@ -990,7 +1013,7 @@ class PHP_Reflect implements ArrayAccess
                 // location of constant only valid for user declaration
                 unset($tmp['line']);
                 /**
-                 * it's not useful to know if it's in class/trait context or not 
+                 * it's not useful to know if it's in class/trait context or not
                  * for magic constants
                  */
                 $class = FALSE;
