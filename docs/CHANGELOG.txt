@@ -7,10 +7,9 @@ include::attributes.txt[]
 == Version 1.6.0 _(2013-02-16)_
 
 .Additions and changes:
-* add user and magic constants detection
+* add user, class and magic constants detection
 * declares methods _getNamespaces()_, _getTraits()_, _getInterfaces()_, _getClasses()_,
-and _getFunctions()_. 
-Magic method __call is marked as deprecated and will be remove in next major version.
+_getFunctions()_ and _getConstants()_.
 
 .Bug fixes:
 * Wrong detection of function name when a closure uses a typehint for the first argument

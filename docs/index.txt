@@ -1,11 +1,11 @@
 = PHP_Reflect
 :description: Reverse-engineer classes, interfaces, functions, constants, namespaces and more.
-:manhtml:      64Kb
-:manchunked:  534Kb
-:manchm:      545Kb
-:manpdfa4:    655Kb
-:manpdfus:    655Kb
-:manepub:     526Kb
+:manhtml:      93Kb
+:manchunked:   27Kb
+:manchm:       24Kb
+:manpdfa4:     60Kb
+:manpdfus:     60Kb
+:manepub:      19Kb
 include::revision.txt[]
 include::attributes.txt[]
 
@@ -14,8 +14,7 @@ include::attributes.txt[]
 ************************************************************************
 Release highlights:
 
-- declares methods _getNamespaces()_, _getTraits()_, _getInterfaces()_, _getClasses()_,
-and _getFunctions()_. Do not used anymore the magic __call method.
+- add user, class and magic constants detection.
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the

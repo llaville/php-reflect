@@ -10,7 +10,7 @@ You may configure the parser in two ways: _containers_ and _properties_.
 
 == Containers
 
-You can change default containers ('namespaces', 'traits', 'interfaces', 'classes', 'functions', 'includes', 'globals'),
+You can change default containers ('namespaces', 'traits', 'interfaces', 'classes', 'functions', 'includes', 'globals', 'constants'),
 and then have different getting methods (rather than standard 'getInterfaces', ... ).
 
 

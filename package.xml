@@ -15,8 +15,8 @@ constants, namespaces, traits and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2013-02-14</date>
- <time>13:00:12</time>
+ <date>2013-02-15</date>
+ <time>17:00:55</time>
  <version>
   <release>1.6.0</release>
   <api>1.6.0</api>
@@ -28,10 +28,9 @@ constants, namespaces, traits and more, by connecting php callbacks to tokens.
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
 Additions and changes:
-- add user and magic constants detection
+- add user, class and magic constants detection
 - declares methods getNamespaces(), getTraits(), getInterfaces(), getClasses(),
-and getFunctions(). 
-Magic method __call is marked as deprecated and will be remove in next major version.
+getFunctions() and getConstants().
 
 Bug fixes:
 - Wrong detection of function name when a closure uses a typehint for the first argument
@@ -39,10 +38,10 @@ Bug fixes:
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
    <dir name="examples">
-    <file name="scanFile.php" role="data" />
-    <file name="scanFileWithOptions.php" role="data" />
-    <file name="scanFileWithOtherTokenConnect.php" role="data" />
-    <file name="scanFunctionArguments.php" role="data" />
+    <file name="scanFile.php" role="doc" />
+    <file name="scanFileWithOptions.php" role="doc" />
+    <file name="scanFileWithOtherTokenConnect.php" role="doc" />
+    <file name="scanFunctionArguments.php" role="doc" />
    </dir> <!-- /examples -->
    <dir name="html">
     <dir name="images">
@@ -66,7 +65,7 @@ Bug fixes:
      <file name="asciidoc.js" role="doc" />
     </dir> <!-- /html/js -->
     <dir name="styles">
-     <file name="asciidoc.css" role="doc" />
+     <file name="flask.css" role="doc" />
      <file name="pygments.css" role="doc" />
      <file name="toc2.css" role="doc" />
     </dir> <!-- /html/styles -->
@@ -161,14 +160,13 @@ Bug fixes:
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2013-02-14</date>
+   <date>2013-02-15</date>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
    <notes>
 Additions and changes:
-- add user and magic constants detection
+- add user, class and magic constants detection
 - declares methods getNamespaces(), getTraits(), getInterfaces(), getClasses(),
-and getFunctions(). 
-Magic method __call is marked as deprecated and will be remove in next major version.
+getFunctions() and getConstants().
 
 Bug fixes:
 - Wrong detection of function name when a closure uses a typehint for the first argument
