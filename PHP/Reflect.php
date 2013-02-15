@@ -369,15 +369,14 @@ class PHP_Reflect implements ArrayAccess
     }
 
     /**
-     * Magic methods to get informations on parsing results about
-     * traits, interfaces, classes, functions
+     * Magic methods to get informations on parsing results that depends of
+     * dynamic container names
      *
      * @param string $name Method name invoked
      * @param array  $args Method arguments provided
      *
      * @return array
      * @throws RuntimeException
-     * @deprecated
      */
     public function __call($name, $args)
     {
