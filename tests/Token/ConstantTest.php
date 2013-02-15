@@ -63,6 +63,7 @@ if (!defined('TEST_FILES_PATH')) {
 class PHP_Reflect_Token_ConstantTest extends PHPUnit_Framework_TestCase
 {
     protected $constants;
+    protected $obj;
 
     /**
      * Sets up the fixture.
@@ -74,8 +75,8 @@ class PHP_Reflect_Token_ConstantTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $reflect = new PHP_Reflect();
-        $tokens  = $reflect->scan(TEST_FILES_PATH . 'magic_constant.php');
+        $this->obj = new PHP_Reflect();
+        $tokens    = $this->obj->scan(TEST_FILES_PATH . 'magic_constant.php');
 
         $constants = array(
             // user constants
@@ -154,6 +155,406 @@ class PHP_Reflect_Token_ConstantTest extends PHPUnit_Framework_TestCase
             return;
         }
         $this->assertEquals(22, $this->constants[10]->getLine());
+    }
+
+    /**
+     * Test getting all constants (user, class, magic) at-once
+     *
+     * @covers PHP_Reflect::getConstants
+     * @return void
+     */
+    public function testGetAllConstants()
+    {
+        $expected = array(
+            'CONNECT_OK' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'line' => 2,
+                    'value' => '1',
+                    'uses' => array(2),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            'DSN' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'line' => 7,
+                    'value' => 'protocol://',
+                    'uses' => array(7),
+                    'class' => 'Connection',
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            '__FILE__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(4),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            '__CLASS__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(10),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            '__METHOD__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(10),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            '__LINE__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(10),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                ),
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(15),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => '/* ... */',
+                ),
+            ),
+            '__FUNCTION__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(15),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => '/* ... */',
+                )
+            ),
+            '__NAMESPACE__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(19),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            '__DIR__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(19),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            '__TRAIT__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(22),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+        );
+
+        $this->assertEquals($expected, $this->obj->getConstants());
+    }
+
+    /**
+     * Test categorized feature
+     *
+     * @covers PHP_Reflect::getConstants
+     * @return void
+     */
+    public function testGetCategorizedConstants()
+    {
+        $expected = array(
+            'user' => array(
+                'CONNECT_OK' => array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'line' => 2,
+                    'value' => '1',
+                    'uses' => array(2),
+                    'docblock' => null,
+                ),
+            ),
+            'class' => array(
+                'Connection' => array(
+                    'DSN' => array(
+                        'file' => TEST_FILES_PATH . 'magic_constant.php',
+                        'namespace' => '',
+                        'line' => 7,
+                        'value' => 'protocol://',
+                        'uses' => array(7),
+                        'docblock' => null,
+                    ),
+                ),
+            ),
+            'magic' => array(
+                '__FILE__' => array(
+                    array(
+                        'file' => TEST_FILES_PATH . 'magic_constant.php',
+                        'namespace' => '',
+                        'uses' => array(4),
+                        'class' => false,
+                        'trait' => false,
+                        'docblock' => null,
+                    )
+                ),
+                '__CLASS__' => array(
+                    array(
+                        'file' => TEST_FILES_PATH . 'magic_constant.php',
+                        'namespace' => '',
+                        'uses' => array(10),
+                        'class' => false,
+                        'trait' => false,
+                        'docblock' => null,
+                    )
+                ),
+                '__METHOD__' => array(
+                    array(
+                        'file' => TEST_FILES_PATH . 'magic_constant.php',
+                        'namespace' => '',
+                        'uses' => array(10),
+                        'class' => false,
+                        'trait' => false,
+                        'docblock' => null,
+                    )
+                ),
+                '__LINE__' => array(
+                    array(
+                        'file' => TEST_FILES_PATH . 'magic_constant.php',
+                        'namespace' => '',
+                        'uses' => array(10),
+                        'class' => false,
+                        'trait' => false,
+                        'docblock' => null,
+                    ),
+                    array(
+                        'file' => TEST_FILES_PATH . 'magic_constant.php',
+                        'namespace' => '',
+                        'uses' => array(15),
+                        'class' => false,
+                        'trait' => false,
+                        'docblock' => '/* ... */',
+                    ),
+                ),
+                '__FUNCTION__' => array(
+                    array(
+                        'file' => TEST_FILES_PATH . 'magic_constant.php',
+                        'namespace' => '',
+                        'uses' => array(15),
+                        'class' => false,
+                        'trait' => false,
+                        'docblock' => '/* ... */',
+                    )
+                ),
+                '__NAMESPACE__' => array(
+                    array(
+                        'file' => TEST_FILES_PATH . 'magic_constant.php',
+                        'namespace' => '',
+                        'uses' => array(19),
+                        'class' => false,
+                        'trait' => false,
+                        'docblock' => null,
+                    )
+                ),
+                '__DIR__' => array(
+                    array(
+                        'file' => TEST_FILES_PATH . 'magic_constant.php',
+                        'namespace' => '',
+                        'uses' => array(19),
+                        'class' => false,
+                        'trait' => false,
+                        'docblock' => null,
+                    )
+                ),
+                '__TRAIT__' => array(
+                    array(
+                        'file' => TEST_FILES_PATH . 'magic_constant.php',
+                        'namespace' => '',
+                        'uses' => array(22),
+                        'class' => false,
+                        'trait' => false,
+                        'docblock' => null,
+                    )
+                ),
+            ),
+        );
+
+        $this->assertEquals($expected, $this->obj->getConstants(true));
+    }
+
+    /**
+     * Test categorized feature : user constants only
+     *
+     * @covers PHP_Reflect::getConstants
+     * @return void
+     */
+    public function testGetUserConstants()
+    {
+        $expected = array(
+            'CONNECT_OK' => array(
+                'file' => TEST_FILES_PATH . 'magic_constant.php',
+                'namespace' => '',
+                'line' => 2,
+                'value' => '1',
+                'uses' => array(2),
+                'docblock' => null,
+            ),
+        );
+
+        $this->assertEquals($expected, $this->obj->getConstants(false, 'user'));
+    }
+
+    /**
+     * Test categorized feature : class constants only
+     *
+     * @covers PHP_Reflect::getConstants
+     * @return void
+     */
+    public function testGetClassConstants()
+    {
+        $expected = array(
+            'Connection' => array(
+                'DSN' => array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'line' => 7,
+                    'value' => 'protocol://',
+                    'uses' => array(7),
+                    'docblock' => null,
+                ),
+            ),
+        );
+
+        $this->assertEquals($expected, $this->obj->getConstants(false, 'class'));
+    }
+
+    /**
+     * Test categorized feature : magic constants only
+     *
+     * @covers PHP_Reflect::getConstants
+     * @return void
+     */
+    public function testGetMagicConstants()
+    {
+        $expected = array(
+            '__FILE__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(4),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            '__CLASS__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(10),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            '__METHOD__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(10),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            '__LINE__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(10),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                ),
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(15),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => '/* ... */',
+                ),
+            ),
+            '__FUNCTION__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(15),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => '/* ... */',
+                )
+            ),
+            '__NAMESPACE__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(19),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            '__DIR__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(19),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+            '__TRAIT__' => array(
+                array(
+                    'file' => TEST_FILES_PATH . 'magic_constant.php',
+                    'namespace' => '',
+                    'uses' => array(22),
+                    'class' => false,
+                    'trait' => false,
+                    'docblock' => null,
+                )
+            ),
+        );
+
+        $this->assertEquals($expected, $this->obj->getConstants(false, 'magic'));
     }
 
 }

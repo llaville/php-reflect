@@ -503,13 +503,62 @@ class PHP_Reflect implements ArrayAccess
     /**
      * Gets the constants for one or all namespaces
      *
-     * @param string $namespace (optional) A specific namespace
+     * Parameter $categorize set to TRUE causing this function to return a
+     * multi-dimensional array with categories in the keys of the first dimension
+     * and constants and their values in the second dimension.
+     *
+     * @param bool   $categorize OPTIONAL
+     * @param string $category   OPTIONAL Either 'user', 'class', 'magic'
+     * @param string $namespace  OPTIONAL Default is global namespace
      *
      * @return array
      */
-    public function getConstants($namespace = '')
+    public function getConstants($categorize = FALSE, $category = NULL,
+        $namespace = FALSE)
     {
-        return $this->getContainer($namespace, 'constant');
+        if ($namespace === FALSE) {
+            // global namespace
+            $ns = '\\';
+        } else {
+            $ns = $namespace;
+        }
+
+        $constants = $this->getContainer($ns, 'constant');
+
+        $const = array(
+            'user'  => array(),
+            'class' => array(),
+            'magic' => array(),
+        );
+
+        foreach ($constants as $key => $values) {
+
+            if (preg_match('/^__(.*)__$/', $key)) {
+                // magic constants
+                $const['magic'][$key] = $values;
+            } else {
+                foreach ($values as $value) {
+                    $class = $value['class'];
+                    unset($value['class']);
+                    unset($value['trait']);
+                    if (!empty($class)) {
+                        // class constants
+                        $const['class'][$class][$key] = $value;
+                    } else {
+                        // user constants
+                        $const['user'][$key] = $value;
+                    }
+                }
+            }
+        }
+
+        if (isset($const[$category])) {
+            $const = $const[$category];
+        } elseif ($categorize === FALSE) {
+            $const = $constants;
+        }
+
+        return $const;
     }
 
     /**
