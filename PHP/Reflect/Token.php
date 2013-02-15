@@ -722,7 +722,7 @@ class PHP_Reflect_Token_FUNCTION extends PHP_Reflect_TokenWithArgument
     }
 }
 
-class PHP_Reflect_Token_CONST extends PHP_Reflect_Token
+class PHP_Reflect_Token_CONST extends PHP_Reflect_TokenWithScope
 {
     protected $name;
     protected $value;
