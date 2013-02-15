@@ -543,7 +543,7 @@ class PHP_Reflect implements ArrayAccess
      *
      * Parameter $categorize set to TRUE causing this function to return a
      * multi-dimensional array with categories in the keys of the first dimension
-     * and constants and their values in the second dimension.
+     * and includes and their values in the second dimension.
      *
      * Parameter $category allow to filter following specific inclusion type
      *
