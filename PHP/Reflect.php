@@ -895,7 +895,7 @@ class PHP_Reflect implements ArrayAccess
         $const = in_array(
             $context,
             array(
-                // user constants
+                // user/class constants
                 'const',
                 // magic constants
                 'line', 'file', 'dir',
