@@ -59,7 +59,7 @@ Read the full link:LICENSE.html[license].
 
 [quote, Sebastian Bergmann, https://github.com/sebastianbergmann/]
 ____
-Original author of link:https://github.com/sebastianbergmann/php-token-stream[PHPUnit/PHP_Token_Stream],
+Original author of https://github.com/sebastianbergmann/php-token-stream[PHPUnit/PHP_Token_Stream],
 that show me the way with his base concept to produce an extendable package .
 ____
 
