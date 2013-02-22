@@ -4,7 +4,7 @@ include::revision.txt[]
 include::attributes.txt[]
 
 
-== Version 1.6.0 _(2013-02-16)_
+== Version 1.6.0 _(2013-02-22)_
 
 .Additions and changes:
 * add user, class and magic constants detection
