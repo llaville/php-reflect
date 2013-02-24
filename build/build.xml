@@ -21,7 +21,7 @@
     -->
     <property name="bartlettpackager.dir"        value="${project.dir}/vendor/BartlettPackager" />
     <property name="build.target"                value="${project.dir}/build" />
-    <property name="build.version"               value="1.6.0" />
+    <property name="build.version"               value="1.6.1" />
 
     <!--
         ======================================================================
@@ -145,6 +145,7 @@
     <patternset id="package-pt-replacements-ref">
         <include name="PHP/**/*.php" />
         <include name="tests/Token/*.php" />
+        <include name="examples/*.php" />
     </patternset>
 
     <!-- End of line files tasks replacements -->
