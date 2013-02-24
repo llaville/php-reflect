@@ -404,6 +404,7 @@ class PHP_Reflect_Token_ConstantTest extends PHPUnit_Framework_TestCase
                     )
                 ),
             ),
+            'ext' => array(),
         );
 
         $this->assertEquals($expected, $this->obj->getConstants(true));

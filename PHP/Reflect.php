@@ -523,12 +523,14 @@ class PHP_Reflect implements ArrayAccess
             $ns = $namespace;
         }
 
+        $defconst  = get_defined_constants();
         $constants = $this->getContainer($ns, 'constant');
 
         $const = array(
             'user'  => array(),
             'class' => array(),
             'magic' => array(),
+            'ext'   => array(),
         );
 
         foreach ($constants as $key => $values) {
@@ -544,6 +546,9 @@ class PHP_Reflect implements ArrayAccess
                     if (!empty($class)) {
                         // class constants
                         $const['class'][$class][$key] = $value;
+                    } elseif (array_key_exists(strtoupper($key), $defconst)) {
+                        // extension constants
+                        $const['ext'][$key][] = $value;
                     } else {
                         // user constants
                         $const['user'][$key] = $value;
