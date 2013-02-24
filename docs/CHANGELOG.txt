@@ -4,6 +4,15 @@ include::revision.txt[]
 include::attributes.txt[]
 
 
+== Version 1.6.1 _(2013-02-25)_
+
+.Additions and changes:
+* none
+
+.Bug fixes:
+* constants of extensions are no more considered as user constant
+
+
 == Version 1.6.0 _(2013-02-22)_
 
 .Additions and changes:

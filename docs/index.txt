@@ -14,7 +14,7 @@ include::attributes.txt[]
 ************************************************************************
 Release highlights:
 
-- add user, class and magic constants detection.
+- bug fix about constants detection.
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the
