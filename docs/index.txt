@@ -12,7 +12,7 @@ include::attributes.txt[]
 
 .{revdate}: PHP_Reflect {revnumber} Released
 ************************************************************************
-Release highlights:
+*Release highlights:*
 
 - bug fix about constants detection.
 
