@@ -15,10 +15,10 @@ constants, namespaces, traits and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2013-02-22</date>
- <time>09:40:07</time>
+ <date>2013-02-25</date>
+ <time>14:02:58</time>
  <version>
-  <release>1.6.0</release>
+  <release>1.6.1</release>
   <api>1.6.0</api>
  </version>
  <stability>
@@ -28,12 +28,10 @@ constants, namespaces, traits and more, by connecting php callbacks to tokens.
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
 Additions and changes:
-- add user, class and magic constants detection
-- declares methods getNamespaces(), getTraits(), getInterfaces(), getClasses(),
-getFunctions() and getConstants().
+- none
 
 Bug fixes:
-- Wrong detection of function name when a closure uses a typehint for the first argument
+- constants of extensions are no more considered as user constant
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -151,6 +149,25 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.6.1</release>
+    <api>1.6.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-02-25</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- none
+
+Bug fixes:
+- constants of extensions are no more considered as user constant
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.6.0</release>
