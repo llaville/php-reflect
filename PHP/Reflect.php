@@ -787,6 +787,8 @@ class PHP_Reflect implements ArrayAccess
                     $tokenName = 'T_TRAIT';
                 } elseif (strcasecmp($text, 'insteadof') == 0) {
                     $tokenName = 'T_INSTEADOF';
+                } elseif (strcasecmp($text, 'callable') == 0) {
+                    $tokenName = 'T_CALLABLE';
                 }
             }
 
