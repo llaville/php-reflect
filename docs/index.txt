@@ -1,11 +1,5 @@
 = PHP_Reflect
 :description: Reverse-engineer classes, interfaces, functions, constants, namespaces and more.
-:manhtml:      93Kb
-:manchunked:   27Kb
-:manchm:       24Kb
-:manpdfa4:     60Kb
-:manpdfus:     60Kb
-:manepub:      19Kb
 include::revision.txt[]
 include::attributes.txt[]
 
@@ -14,7 +8,7 @@ include::attributes.txt[]
 ************************************************************************
 *Release highlights:*
 
-- bug fix about constants detection.
+- loop infinite bug fix.
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the
@@ -40,7 +34,7 @@ You can download the documentation for offline reading.
 [options="header", role="table table-bordered"]
 |===========================
 | Language | Single HTML file | Many HTML files | HTML Help file | PDF A4 file | PDF US file | EPUB file
-| English | link:{mandir}/en/phpreflect-book.html.zip[phpreflect-book.html.zip] {manhtml} | link:{mandir}/en/phpreflect-book.chunked.zip[phpreflect-book.chunked.zip] {manchunked} | link:{mandir}/en/phpreflect-book.chm.zip[phpreflect-book.chm.zip] {manchm} | link:{mandir}/en/phpreflect-book-a4.pdf[phpreflect-book-a4.pdf] {manpdfa4} | link:{mandir}/en/phpreflect-book-us.pdf[phpreflect-book-us.pdf] {manpdfus} | link:{mandir}/en/phpreflect-book.epub.zip[phpreflect-book.epub.zip] {manepub}
+| English | link:{mandir}/en/phpreflect-book.html.zip[phpreflect-book.html.zip] | link:{mandir}/en/phpreflect-book.chunked.zip[phpreflect-book.chunked.zip] | link:{mandir}/en/phpreflect-book.chm.zip[phpreflect-book.chm.zip] | link:{mandir}/en/phpreflect-book-a4.pdf[phpreflect-book-a4.pdf] | link:{mandir}/en/phpreflect-book-us.pdf[phpreflect-book-us.pdf] | link:{mandir}/en/phpreflect-book.epub.zip[phpreflect-book.epub.zip]
 |===========================
 
 == Appendixes

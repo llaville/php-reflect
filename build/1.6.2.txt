@@ -1,0 +1,5 @@
+Additions and changes:
+- support for token T_CALLABLE on PHP lower than 5.4
+
+Bug fixes:
+- PHP_CompatInfo GH-83: Freeze while scanning a big project (Thanks to Igor Klipach)
