@@ -775,7 +775,9 @@ class PHP_Reflect implements ArrayAccess
                     $tokenName = 'T_DIR';
                 } elseif (strcasecmp($text, '__namespace__') == 0) {
                     $tokenName = 'T_NS_C';
-                } elseif (strcasecmp($text, 'namespace') == 0) {
+                } elseif (strcasecmp($text, 'namespace') == 0
+                    && $namespace === false
+                ) {
                     $tokenName = 'T_NAMESPACE';
                 } elseif (strcasecmp($text, 'goto') == 0) {
                     $tokenName = 'T_GOTO';
@@ -783,7 +785,9 @@ class PHP_Reflect implements ArrayAccess
                 // since PHP 5.4
                 } elseif (strcasecmp($text, '__trait__') == 0) {
                     $tokenName = 'T_TRAIT_C';
-                } elseif (strcasecmp($text, 'trait') == 0) {
+                } elseif (strcasecmp($text, 'trait') == 0
+                    && $trait === false
+                ) {
                     $tokenName = 'T_TRAIT';
                 } elseif (strcasecmp($text, 'insteadof') == 0) {
                     $tokenName = 'T_INSTEADOF';
