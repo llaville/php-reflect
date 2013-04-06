@@ -15,10 +15,10 @@ constants, namespaces, traits and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2013-02-25</date>
- <time>14:02:58</time>
+ <date>2013-04-06</date>
+ <time>09:19:17</time>
  <version>
-  <release>1.6.1</release>
+  <release>1.6.2</release>
   <api>1.6.0</api>
  </version>
  <stability>
@@ -28,10 +28,10 @@ constants, namespaces, traits and more, by connecting php callbacks to tokens.
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
 Additions and changes:
-- none
+- support for token T_CALLABLE on PHP lower than 5.4
 
 Bug fixes:
-- constants of extensions are no more considered as user constant
+- PHP_CompatInfo GH-83: Freeze while scanning a big project (Thanks to Igor Klipach)
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -149,6 +149,25 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.6.2</release>
+    <api>1.6.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-04-06</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- support for token T_CALLABLE on PHP lower than 5.4
+
+Bug fixes:
+- PHP_CompatInfo GH-83: Freeze while scanning a big project (Thanks to Igor Klipach)
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.6.1</release>
