@@ -15,11 +15,11 @@ constants, namespaces, traits and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2013-04-06</date>
- <time>09:19:17</time>
+ <date>2013-06-21</date>
+ <time>21:24:16</time>
  <version>
-  <release>1.6.2</release>
-  <api>1.6.0</api>
+  <release>1.7.0</release>
+  <api>1.7.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -28,10 +28,10 @@ constants, namespaces, traits and more, by connecting php callbacks to tokens.
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
 Additions and changes:
-- support for token T_CALLABLE on PHP lower than 5.4
+- add T_FINALLY and T_YIELD tokens support for PHP 5.5
 
 Bug fixes:
-- PHP_CompatInfo GH-83: Freeze while scanning a big project (Thanks to Igor Klipach)
+- none
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -88,7 +88,9 @@ Bug fixes:
      <file name="ClassTest.php" role="test" />
      <file name="ClosureTest.php" role="test" />
      <file name="ConstantTest.php" role="test" />
+     <file name="ExceptionTest.php" role="test" />
      <file name="FunctionTest.php" role="test" />
+     <file name="GeneratorTest.php" role="test" />
      <file name="GlobalTest.php" role="test" />
      <file name="IncludeTest.php" role="test" />
      <file name="InterfaceTest.php" role="test" />
@@ -99,6 +101,8 @@ Bug fixes:
     </dir> <!-- /tests/Token -->
     <dir name="_files">
      <file name="closure.php" role="test" />
+     <file name="exception.php" role="test" />
+     <file name="generator.php" role="test" />
      <file name="issue1.php" role="test" />
      <file name="magic_constant.php" role="test" />
      <file name="source.php" role="test" />
@@ -149,6 +153,25 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.7.0</release>
+    <api>1.7.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-06-21</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- add T_FINALLY and T_YIELD tokens support for PHP 5.5
+
+Bug fixes:
+- none
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.6.2</release>
