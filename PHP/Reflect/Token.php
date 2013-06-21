@@ -1080,6 +1080,8 @@ class PHP_Reflect_Token_NS_C extends PHP_Reflect_Token_MagicConstant {}
 class PHP_Reflect_Token_DIR extends PHP_Reflect_Token_MagicConstant {}
 class PHP_Reflect_Token_NS_SEPARATOR extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_DOUBLE_COLON extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_FINALLY extends PHP_Reflect_Token {}
+class PHP_Reflect_Token_YIELD extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_OPEN_BRACKET extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_CLOSE_BRACKET extends PHP_Reflect_Token {}
 class PHP_Reflect_Token_OPEN_SQUARE extends PHP_Reflect_Token {}

@@ -189,6 +189,8 @@ function PHP_Reflect_autoload($className)
             'PHP_Reflect_Token_DIR',
             'PHP_Reflect_Token_NS_SEPARATOR',
             'PHP_Reflect_Token_DOUBLE_COLON',
+            'PHP_Reflect_Token_FINALLY',
+            'PHP_Reflect_Token_YIELD',
             'PHP_Reflect_Token_OPEN_BRACKET',
             'PHP_Reflect_Token_CLOSE_BRACKET',
             'PHP_Reflect_Token_OPEN_SQUARE',
