@@ -4,7 +4,7 @@ include::revision.txt[]
 include::attributes.txt[]
 
 
-== Version 1.7.0 _(2013-06-23)_
+== Version 1.7.0 _(2013-06-24)_
 
 .Additions and changes:
 * add T_FINALLY and T_YIELD tokens support for PHP 5.5
