@@ -112,7 +112,7 @@ class PHP_Reflect implements ArrayAccess
     /**
      * @var array
      */
-    public $options;
+    protected $options;
 
     /**
      * @var string
