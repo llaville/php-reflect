@@ -1,0 +1,6 @@
+Additions and changes:
+- Latest version of branch 1.x
+- Little memory usage optimisation : tokens list are not kept after source parsing. 
+
+Bug fixes:
+- none
