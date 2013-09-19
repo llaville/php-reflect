@@ -365,7 +365,10 @@ class PHP_Reflect implements ArrayAccess
 
         $this->parse();
 
-        return $this->tokens;
+        $tokens = $this->tokens;
+        unset($this->tokens);
+
+        return $tokens;
     }
 
     /**
