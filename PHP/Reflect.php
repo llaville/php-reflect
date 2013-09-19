@@ -981,6 +981,10 @@ class PHP_Reflect implements ArrayAccess
             if (in_array('namespace', $properties)) {
                 $tmp['namespace'] = (($namespace === FALSE) ? '' : $namespace);
             }
+            if (in_array($context, array('trait', 'class', 'interface'))) {
+                $tmp['trait']     = ($context === 'trait');
+                $tmp['interface'] = ($context === 'interface');
+            }
             break;
         }
 
