@@ -172,6 +172,7 @@ abstract class PHP_Reflect_TokenWithScope extends PHP_Reflect_Token
                 break;
             }
         }
+        return '';
     }
 
     public function getKeywords()

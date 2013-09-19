@@ -239,7 +239,8 @@ class PHP_Reflect_Token_NamespaceTest extends PHPUnit_Framework_TestCase
                     'keywords'  => '',
                     'signature' => 'Bar()',
                     'arguments' => array(),
-                    'ccn'       => 1
+                    'ccn'       => 1,
+                    'visibility'=> ''
                 ),
             );
 
