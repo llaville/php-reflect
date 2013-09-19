@@ -112,7 +112,7 @@ class PHP_Reflect implements ArrayAccess
     /**
      * @var array
      */
-    protected $options;
+    public $options;
 
     /**
      * @var string
@@ -847,7 +847,7 @@ class PHP_Reflect implements ArrayAccess
 
                     call_user_func_array(
                         $this->parserToken[$tokenName][1],
-                        array($context, $token)
+                        array(&$this, $context, $token)
                     );
                 }
                 break;
@@ -903,7 +903,7 @@ class PHP_Reflect implements ArrayAccess
             '$_ENV'
         );
 
-        list($context, $token) = func_get_args();
+        list($subject, $context, $token) = func_get_args();
         extract($context);
 
         /**
@@ -926,7 +926,7 @@ class PHP_Reflect implements ArrayAccess
             $context = 'constant';
         }
 
-        $container = $this->options['containers'][$context];
+        $container = $subject->options['containers'][$context];
         if ($container === NULL) {
             return;
         }
@@ -952,8 +952,8 @@ class PHP_Reflect implements ArrayAccess
             $glob = FALSE;
         }
 
-        if (isset($this->options['properties'][$context])) {
-            $properties = $this->options['properties'][$context];
+        if (isset($subject->options['properties'][$context])) {
+            $properties = $subject->options['properties'][$context];
         } else {
             $properties = array();
         }
@@ -976,7 +976,7 @@ class PHP_Reflect implements ArrayAccess
                 $tmp['endLine']   = $token->getEndLine();
             }
             if (in_array('file', $properties)) {
-                $tmp['file'] = $this->filename;
+                $tmp['file'] = $subject->filename;
             }
             if (in_array('namespace', $properties)) {
                 $tmp['namespace'] = (($namespace === FALSE) ? '' : $namespace);
@@ -1003,19 +1003,19 @@ class PHP_Reflect implements ArrayAccess
         }
 
         if ($context == 'function') {
-            $properties = $this->options['properties'];
+            $properties = $subject->options['properties'];
 
             if ($class === FALSE && $interface === FALSE && $trait === FALSE) {
                 // update user functions
-                $_ns = $this->offsetGet(array($container => $ns));
+                $_ns = $subject->offsetGet(array($container => $ns));
                 $_ns[$name] = $tmp;
-                $this->_offsetSet(array($container => $ns), $_ns);
+                $subject->offsetSet(array($container => $ns), $_ns);
 
             } elseif ($interface === FALSE && $trait === FALSE) {
                 if (!in_array('methods', $properties['class'])) {
                     return;
                 }
-                $container = $this->options['containers']['class'];
+                $container = $subject->options['containers']['class'];
 
                 if ($container !== NULL) {
                     // update class methods
@@ -1023,9 +1023,9 @@ class PHP_Reflect implements ArrayAccess
                         unset($tmp['namespace']);
                     }
 
-                    $_ns = $this->offsetGet(array($container => $ns));
+                    $_ns = $subject->offsetGet(array($container => $ns));
                     $_ns[$class]['methods'][$name] = $tmp;
-                    $this->_offsetSet(array($container => $ns), $_ns);
+                    $subject->offsetSet(array($container => $ns), $_ns);
                 }
 
             } else {
@@ -1034,7 +1034,7 @@ class PHP_Reflect implements ArrayAccess
                 if (!in_array('methods', $properties[$propertyKey])) {
                     return;
                 }
-                $container = $this->options['containers'][$propertyKey];
+                $container = $subject->options['containers'][$propertyKey];
 
                 if ($container !== NULL) {
                     // update interface methods
@@ -1042,45 +1042,45 @@ class PHP_Reflect implements ArrayAccess
                         unset($tmp['namespace']);
                     }
 
-                    $_ns = $this->offsetGet(array($container => $ns));
+                    $_ns = $subject->offsetGet(array($container => $ns));
                     if ($interface) {
                         $_ns[$interface]['methods'][$name] = $tmp;
                     } else {
                         $_ns[$trait]['methods'][$name] = $tmp;
                     }
-                    $this->_offsetSet(array($container => $ns), $_ns);
+                    $subject->offsetSet(array($container => $ns), $_ns);
                 }
             }
 
         } elseif ($inc === TRUE || $glob === TRUE) {
             // update includes or globals
-            $_ns = $this->offsetGet(array($container => $ns));
+            $_ns = $subject->offsetGet(array($container => $ns));
             $_ns[$type][$name] = $tmp;
-            $this->_offsetSet(array($container => $ns), $_ns);
+            $subject->offsetSet(array($container => $ns), $_ns);
 
         } elseif ($context == 'use') {
             if ($class === FALSE) {
-                $container     = $this->options['containers']['namespace'];
+                $container     = $subject->options['containers']['namespace'];
                 $tmp['import'] = $token->isImported();
-                $this->_offsetSet(array($container => $name), $tmp);
+                $subject->offsetSet(array($container => $name), $tmp);
             } else {
-                $container = $this->options['containers']['trait'];
-                $_ns       = $this->offsetGet(array($container => $ns));
+                $container = $subject->options['containers']['trait'];
+                $_ns       = $subject->offsetGet(array($container => $ns));
                 $traits    = $name;
                 foreach ($traits as $name) {
                     if (!isset($_ns[$name])) {
                         $_ns[$name] = $tmp;
-                        $this->_offsetSet(array($container => $ns), $_ns);
+                        $subject->offsetSet(array($container => $ns), $_ns);
                     }
                 }
             }
 
         } elseif ($context == 'namespace') {
             $tmp['import'] = $token->isImported();
-            $this->_offsetSet(array($container => $name), $tmp);
+            $subject->offsetSet(array($container => $name), $tmp);
 
         } elseif ($context == 'constant') {
-            $constants = $this->offsetGet(array($container => $ns));
+            $constants = $subject->offsetGet(array($container => $ns));
             if (substr($name, 0, 2) == '__') {
                 // location of constant only valid for user declaration
                 unset($tmp['line']);
@@ -1098,12 +1098,12 @@ class PHP_Reflect implements ArrayAccess
             $tmp['class'] = $class;
             $tmp['trait'] = $trait;
             $constants[$name][] = $tmp;
-            $this->_offsetSet(array($container => $ns), $constants);
+            $subject->offsetSet(array($container => $ns), $constants);
 
         } else {
-            $_ns = $this->offsetGet(array($container => $ns));
+            $_ns = $subject->offsetGet(array($container => $ns));
             $_ns[$name] = $tmp;
-            $this->_offsetSet(array($container => $ns), $_ns);
+            $subject->offsetSet(array($container => $ns), $_ns);
         }
     }
 
@@ -1158,7 +1158,14 @@ class PHP_Reflect implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        // not allowed
+        if (is_null($offset)) {
+            $this->_container[] = $value;
+        } elseif (is_array($offset)) {
+            list ($container, $namespace) = each($offset);
+            $this->_container[$container][$namespace] = $value;
+        } else {
+            $this->_container[$offset] = $value;
+        }
     }
 
     /**
@@ -1171,23 +1178,6 @@ class PHP_Reflect implements ArrayAccess
     public function offsetUnset($offset)
     {
         // not allowed
-    }
-
-    /**
-     * Will be remove in next API 2.0
-     * API 1.8 did not allow anymore public uses
-     * of interface ArrayAcess offets set and unset
-     */
-    private function _offsetSet($offset, $value)
-    {
-        if (is_null($offset)) {
-            $this->_container[] = $value;
-        } elseif (is_array($offset)) {
-            list ($container, $namespace) = each($offset);
-            $this->_container[$container][$namespace] = $value;
-        } else {
-            $this->_container[$offset] = $value;
-        }
     }
 
 }

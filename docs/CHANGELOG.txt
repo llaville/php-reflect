@@ -9,9 +9,6 @@ include::attributes.txt[]
 .Additions and changes:
 * Latest version of branch 1.x
 * Little memory usage optimisation : tokens list are not kept after source parsing.
-* Not allow anymore public uses of interface ArrayAccess offsets set and unset.
-* Internal optimisation: subject reference (this) is not necessary into parserToken method.
-* options property is no more public.
 * `visibility` property for class method parsing was added by default.
 
 .Bug fixes:
