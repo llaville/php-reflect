@@ -8,7 +8,7 @@ include::attributes.txt[]
 ************************************************************************
 *Release highlights:*
 
-- add support on new tokens introduced since PHP 5.5.0
+- last version of branch 1.x, that will be compatible with PHP_CompatInfo 2.23
 
 Read the link:CHANGELOG.html[CHANGELOG] for a full list of all
 additions, changes and bug fixes. Changes are documented in the

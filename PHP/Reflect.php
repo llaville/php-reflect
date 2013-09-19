@@ -176,7 +176,7 @@ class PHP_Reflect implements ArrayAccess
                 ),
                 'function' => array(
                     'file', 'startEndLines', 'docblock', 'namespace',
-                    'keywords', 'signature', 'arguments', 'ccn'
+                    'keywords', 'signature', 'arguments', 'ccn', 'visibility'
                 ),
                 'require_once' => array(
                     'file', 'startEndLines', 'docblock', 'namespace',
@@ -365,7 +365,10 @@ class PHP_Reflect implements ArrayAccess
 
         $this->parse();
 
-        return $this->tokens;
+        $tokens = $this->tokens;
+        unset($this->tokens);
+
+        return $tokens;
     }
 
     /**
@@ -978,6 +981,10 @@ class PHP_Reflect implements ArrayAccess
             if (in_array('namespace', $properties)) {
                 $tmp['namespace'] = (($namespace === FALSE) ? '' : $namespace);
             }
+            if (in_array($context, array('trait', 'class', 'interface'))) {
+                $tmp['trait']     = ($context === 'trait');
+                $tmp['interface'] = ($context === 'interface');
+            }
             break;
         }
 
@@ -1170,12 +1177,7 @@ class PHP_Reflect implements ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        if (is_array($offset)) {
-            list ($container, $namespace) = each($offset);
-            unset($this->_container[$container][$namespace]);
-        } else {
-            unset($this->_container[$offset]);
-        }
+        // not allowed
     }
 
 }
