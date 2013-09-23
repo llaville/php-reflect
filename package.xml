@@ -15,10 +15,10 @@ constants, namespaces, traits and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2013-09-19</date>
- <time>12:30:44</time>
+ <date>2013-09-23</date>
+ <time>11:31:15</time>
  <version>
-  <release>1.8.0</release>
+  <release>1.8.1</release>
   <api>1.8.0</api>
  </version>
  <stability>
@@ -28,12 +28,13 @@ constants, namespaces, traits and more, by connecting php callbacks to tokens.
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
 Additions and changes:
-- Latest version of branch 1.x
-- Little memory usage optimisation : tokens list are not kept after source parsing.
-- visibility property for class method parsing was added by default.
+- none
+
+CAUTION: this version is the last to support PHP 5.2. Next API 2.0 will drop this support
 
 Bug fixes:
-- none
+- avoid wrong namespace detection if source code used a class property named namespace: $this-&gt;namespace
+(Thanks to Remi Collet to notice me a strong behavior in class report)
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
@@ -155,6 +156,28 @@ Bug fixes:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.8.1</release>
+    <api>1.8.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-09-23</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+Additions and changes:
+- none
+
+CAUTION: this version is the last to support PHP 5.2. Next API 2.0 will drop this support
+
+Bug fixes:
+- avoid wrong namespace detection if source code used a class property named namespace: $this-&gt;namespace
+(Thanks to Remi Collet to notice me a strong behavior in class report)
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.8.0</release>

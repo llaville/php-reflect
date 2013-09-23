@@ -780,6 +780,7 @@ class PHP_Reflect implements ArrayAccess
                     $tokenName = 'T_NS_C';
                 } elseif (strcasecmp($text, 'namespace') == 0
                     && $namespace === false
+                    && $this->tokens[$id - 1][0] != 'T_OBJECT_OPERATOR'
                 ) {
                     $tokenName = 'T_NAMESPACE';
                 } elseif (strcasecmp($text, 'goto') == 0) {
