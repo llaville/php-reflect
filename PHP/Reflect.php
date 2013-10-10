@@ -390,7 +390,7 @@ class PHP_Reflect implements ArrayAccess
         $pattern = '/get' .
             '(?>(' . implode('|', $methods) . '))/';
         if (preg_match($pattern, $name, $matches)) {
-            $method    = strtolower($matches[1]{0}) . substr($matches[1], 1);
+            $method    = lcfirst($matches[1]);
             $container = array_search($method, $this->options['containers']);
 
             if ($method == 'namespaces') {
