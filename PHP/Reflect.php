@@ -791,6 +791,7 @@ class PHP_Reflect implements ArrayAccess
                     $tokenName = 'T_TRAIT_C';
                 } elseif (strcasecmp($text, 'trait') == 0
                     && $trait === false
+                    && $this->tokens[$id - 1][0] != 'T_OBJECT_OPERATOR'
                 ) {
                     $tokenName = 'T_TRAIT';
                 } elseif (strcasecmp($text, 'insteadof') == 0) {
