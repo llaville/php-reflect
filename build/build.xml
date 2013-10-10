@@ -21,7 +21,7 @@
     -->
     <property name="bartlettpackager.dir"        value="${project.dir}/vendor/BartlettPackager" />
     <property name="build.target"                value="${project.dir}/build" />
-    <property name="build.version"               value="1.8.1" />
+    <property name="build.version"               value="1.9.0" />
 
     <!--
         ======================================================================
@@ -165,6 +165,7 @@
         <exclude name="**/*.epub" />
         <exclude name="**/Thumbs.db" />
         <exclude name="package.xml" />
+        <exclude name="composer.json" />
         <exclude name="build**" />
         <exclude name="docs**" />
     </fileset>

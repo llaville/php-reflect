@@ -29,6 +29,36 @@ Installing a specific version:
 $ pear install bartlett/PHP_Reflect-1.6.0
 ----
 
+== Composer
+
+Install http://getcomposer.org[Composer] in your root project with this command:
+----
+$ curl -s http://getcomposer.org/installer | php
+----
+
+Or http://getcomposer.org/composer.phar[download composer.phar] in your root project.
+
+Put a file named `composer.json` at the root of your project, containing the dependency:
+----
+{
+    "require": {
+        "pear-bartlett/PHP_Reflect": "1.9.*"
+    }
+}
+----
+
+And install this dependency with the following command:
+----
+$ php composer.phar install
+----
+
+Include Composer's autoloader, and use the `PHP_Reflect` class
+[source,php]
+----
+<?php
+require_once 'vendor/autoload.php';
+----
+
 == Git
 
 You can also clone the project.
