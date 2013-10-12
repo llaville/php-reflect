@@ -1,2 +1,2 @@
-:revdate:    2013-10-dd
+:revdate:    2013-10-12
 :revnumber:  1.9.0
