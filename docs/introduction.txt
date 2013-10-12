@@ -27,7 +27,7 @@ with tokenizer extension.
 
 === Requirements
 
-* http://www.php.net[PHP] 5.2.0 or newer
+* http://www.php.net[PHP] 5.3.0 or newer
 * http://www.php.net/manual/en/book.pcre.php[pcre] extension
 * http://www.php.net/manual/en/book.spl.php[SPL] extension
 * http://www.php.net/manual/en/book.tokenizer.php[tokenizer] extension
