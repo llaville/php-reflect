@@ -1,0 +1,39 @@
+{
+    "name": "pear-bartlett/PHP_Reflect",
+    "description": "Adds the ability to reverse-engineer classes, interfaces, functions, constants, namespaces, traits and more.",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "homepage": "http://php5.laurent-laville.org/reflect/",
+    "support": {
+        "source": "https://github.com/llaville/php-reflect",
+        "issues": "https://github.com/llaville/php-reflect/issues"
+    },
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://bartlett.laurent-laville.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "ext-tokenizer": "*",
+        "ext-pcre": "*",
+        "ext-SPL": "*"
+    },
+    "suggest": {
+        "pear-phpunit/PHPUnit": ">=3.6.0"
+    },
+    "authors": [
+        {
+            "name": "Laurent Laville",
+            "email": "pear@laurent-laville.org",
+            "homepage": "https://github.com/llaville",
+            "role": "Lead"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "PHP"
+        ]
+    }
+}

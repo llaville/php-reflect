@@ -21,7 +21,7 @@
     -->
     <property name="bartlettpackager.dir"        value="${project.dir}/vendor/BartlettPackager" />
     <property name="build.target"                value="${project.dir}/build" />
-    <property name="build.version"               value="1.8.1" />
+    <property name="build.version"               value="1.9.0" />
 
     <!--
         ======================================================================
@@ -165,6 +165,7 @@
         <exclude name="**/*.epub" />
         <exclude name="**/Thumbs.db" />
         <exclude name="package.xml" />
+        <exclude name="composer.json" />
         <exclude name="build**" />
         <exclude name="docs**" />
     </fileset>
@@ -218,7 +219,7 @@
     <target name="server"  depends="server.all" />
     <target name="web">
         <phingcall target="docs.make-web">
-            <property name="docs.asciidoc.target" value="D:/laurent-laville.org/www/php5/reflect/manual/current/en" />
+            <property name="docs.asciidoc.target" value="/var/reflect/manual/current/en" />
             <property name="docs.theme-asciidoc" value="bspear2" />
             <property name="docs.backend-asciidoc" value="bootstrap" />
         </phingcall>

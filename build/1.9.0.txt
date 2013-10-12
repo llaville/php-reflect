@@ -1,0 +1,7 @@
+Additions and changes:
+- drop support of PHP 5.2
+- add Composer support
+
+Bug fixes:
+- avoid wrong trait detection if source code used a class property named trait: $this->trait
+
