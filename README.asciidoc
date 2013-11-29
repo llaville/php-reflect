@@ -1,0 +1,23 @@
+= PHP Reflect
+
+**PHP Reflect** is a library that
+adds the ability to reverse-engineer classes, interfaces, functions, constants, namespaces and more.
+
+
+== Blog 
+
+Next major API version 2.0 is currently under rewrites, and should be released 
+in the beginning of year 2014.
+
+Stay tuned and follow me on the http://php5.laurent-laville.org/reflect/blog[official Blog]. 
+
+
+== Documentation
+
+The documentation for PHP Reflect will be soon available 
+in http://php5.laurent-laville.org/reflect/manual/2.0/en/[English] 
+and different formats, begun with a web doc,
+built with https://github.com/llaville/asciidoc-bootstrap-backend[AsciiDoc-Bootstrap] 
+and http://getbootstrap.com/[Bootstrap 3].   
+
+AsciiDoc source code are available on `docs` folder of the repository.
