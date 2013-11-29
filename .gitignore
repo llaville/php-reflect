@@ -1,3 +1,5 @@
 Thumbs.db
 *.tgz
 html/
+vendor/
+blog/rssbuilder.php
