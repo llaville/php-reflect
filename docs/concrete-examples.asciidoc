@@ -1,0 +1,20 @@
+= Concrete Examples
+:description: Discover how Reflect may be use in real condition.
+:jumbotron:
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+
+== Make UML diagrams
+
+[role="lead"]
+We will learn with this link:make-uml-diagrams.html[example]
+how to create PlantUML package and class diagrams.
+
+[NOTE]
+==========
+.This solution is basic but may be improved by many other features
+
+* add properties in class diagram
+* add relations between object
+* and more ...
+==========
