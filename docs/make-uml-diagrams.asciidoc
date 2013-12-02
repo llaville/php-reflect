@@ -386,5 +386,5 @@ fclose($fp);
 ----
 
 The full source code  
-footnote:[https://raw.github.com/llaville/php-reflect/tree/v2/examples/PlantUMLBuilder.php]
+footnote:[https://raw.github.com/llaville/php-reflect/v2/examples/PlantUMLBuilder.php]
 is available on GitHub repository.
