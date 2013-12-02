@@ -3,10 +3,23 @@
 :brand: https://github.com/llaville/php-reflect
 :rssref: http://php5.laurent-laville.org/reflect/blog/rss.xml
 :jumbotron-fullwidth:
-:icons: font
+:icons!:
 :iconsfont: font-awesome
 :iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
 :css-signature: blog
 
-include::201311-a-blog-official-launch.asciidoc[]
+[role="well-sm"]
+**********
+*Stay tuned*
+
+Subscribe to RSS feed icon:rss-square[size="lg",link="http://php5.laurent-laville.org/reflect/blog/rss.xml"]
+
+*Archives*
+
+[style="archives"]
+- 2013
+** link:201311.html[November] [badge pull-right]#1#
+**********
+
+include::201312-concrete-examples.asciidoc[]

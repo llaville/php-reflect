@@ -1,0 +1,12 @@
+= Official Blog of PHP Reflect
+:description: Archives of November 2013
+:brand: https://github.com/llaville/php-reflect
+:rssref: http://php5.laurent-laville.org/reflect/blog/rss.xml
+:jumbotron-fullwidth:
+:icons!:
+:iconsfont: font-awesome
+:iconsfontdir: ./fonts/font-awesome
+:imagesdir: ./images
+:css-signature: blog
+
+include::201311-a-blog-official-launch.asciidoc[]
