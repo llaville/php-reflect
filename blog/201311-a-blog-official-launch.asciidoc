@@ -1,5 +1,5 @@
 :css-signature: blog
-:icons: font
+:icons!:
 :iconsfont: font-awesome
 :iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
