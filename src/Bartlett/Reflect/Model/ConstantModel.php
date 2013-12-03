@@ -20,7 +20,14 @@ class ConstantModel
         $this->name = $qualifiedName;
 
         $parts = explode('::', $qualifiedName);
-        $this->short_name = array_pop($parts);
+        if (count($parts) > 1) {
+            // class constant
+            $this->short_name = array_pop($parts);
+        } else {
+            // user or magic constants
+            $parts = explode('\\', $parts[0]);
+            $this->short_name = array_pop($parts);
+        }
     }
 
     public function update($data)
@@ -28,6 +35,35 @@ class ConstantModel
         if ($data['magic']) {
             $data['extension'] = 'core';
         }
+
+        $ns = ltrim($data['namespace'] . '\\', '\\');
+
+        if (strcasecmp('__FILE__', $this->short_name) === 0) {
+            $data['value'] = $data['file'];
+        }
+        elseif (strcasecmp('__LINE__', $this->short_name) === 0) {
+            $data['value'] = $data['line'];
+        }
+        elseif (strcasecmp('__DIR__', $this->short_name) === 0) {
+            $data['value'] = dirname($data['file']);
+        }
+        elseif (strcasecmp('__TRAIT__', $this->short_name) === 0) {
+            $data['value'] = $ns . $data['trait'];
+        }
+        elseif (strcasecmp('__CLASS__', $this->short_name) === 0) {
+            $data['value'] = $ns . $data['class'];
+        }
+        elseif (strcasecmp('__METHOD__', $this->short_name) === 0) {
+            $data['value'] = $ns . $data['class'] .
+                '::' . $data['function'];
+        }
+        elseif (strcasecmp('__FUNCTION__', $this->short_name) === 0) {
+            $data['value'] = $ns . $data['function'];
+        }
+        elseif (strcasecmp('__NAMESPACE__', $this->short_name) === 0) {
+            $data['value'] = $data['namespace'];
+        }
+
         parent::update($data);
     }
 

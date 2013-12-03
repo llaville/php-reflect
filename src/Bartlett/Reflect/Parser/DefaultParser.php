@@ -324,6 +324,7 @@ class DefaultParser implements ParserInterface
         }
         elseif ('constant' == $context) {
             $tmp['magic']  = $magicConst;
+            $tmp['namespace'] = $namespace;
 
             if (($class === FALSE && $trait === FALSE) || $magicConst) {
                 // user or magic constant
@@ -331,7 +332,6 @@ class DefaultParser implements ParserInterface
                 if ($magicConst) {
                     $parts = array($name);
                     $tmp['uses'] = 1;
-                    unset($tmp['line']);
                 } else {
                     $parts = array(
                         ($namespace === FALSE ? '' : $namespace),
