@@ -16,9 +16,9 @@ class MethodModel
         parent::__construct();
 
         $this->short_name = $name;
-        $this->class_name = $class;
+        $this->class_name = ltrim($class, '\\');
 
-        $this->name = "$class::$name";
+        $this->name = $this->class_name . "::$name";
     }
 
     /**
