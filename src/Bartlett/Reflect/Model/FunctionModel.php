@@ -20,6 +20,8 @@ class FunctionModel
 
         $parts = explode('\\', $qualifiedName);
         $this->short_name = array_pop($parts);
+
+        $this->struct['namespace'] = implode('\\', $parts);
     }
 
     /**

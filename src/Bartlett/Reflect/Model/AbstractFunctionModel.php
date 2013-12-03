@@ -177,10 +177,10 @@ abstract class AbstractFunctionModel
             if (isset($argument['typeHint'])
                 && !in_array(
                     strtolower($argument['typeHint']),
-                    array('array', 'callable')
+                    array('array', 'callable', 'stdclass')
                 )
             ) {
-                // for object only, add the namespace
+                // for user object only, add the namespace
                 if ($this->inNamespace()) {
                     $argument['typeHint'] = $this->getNamespaceName() . '\\'
                         . $argument['typeHint'];
