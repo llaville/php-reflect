@@ -52,7 +52,7 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
         }
         foreach ($reflect->getClasses() as $rc) {
             self::$classes[] = $rc;
-        }   error_log( print_r( self::$classes , true ) ); 
+        }
     }
 
     /**
