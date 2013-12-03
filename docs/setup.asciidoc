@@ -1,0 +1,114 @@
+= Setup
+:description: Configuring your project and get ready for your first parsing.
+:jumbotron:
+:icons!:
+:iconsfont: font-awesome
+:iconsfontdir: ./fonts/font-awesome
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+
+
+== Install
+
+[role="lead"]
+Reflect may be installed in several ways, choose your favorite.
+
+[role="partintro",cols="3,9"]
+.icon:download[size="7x"] [clearfix]#Reflect takes advantage of new features in PHP 5.3 or greater.#
+--
+[medium]*Minimal Requirements*
+
+Before you install PHP [label label-primary]#Reflect#, you will need an operating system
+with http://www.php.net[PHP] 5.3.0 or later installed,
+and three loaded extensions:
+http://www.php.net/manual/en/book.tokenizer.php[tokenizer],
+http://www.php.net/manual/en/book.pcre.php[pcre],
+http://www.php.net/manual/en/book.spl.php[SPL].
+
+[medium]*Using PEAR*
+
+Once all of the dependencies have been installed, you can then install PHP [label label-primary]#Reflect#
+using the standard http://pear.php.net[PEAR] installer. Run the following commands as root (on Linux,
+OSX, and other UNIX-like operating systems) or as a user with administrator privileges on Windows.
+----
+$ pear channel-discover bartlett.laurent-laville.org
+$ pear install -o php_reflect
+----
+
+[medium]*Using Composer*
+
+Put a file named [label label-default]#composer.json# at the root of your project, with the content below:
+----
+{
+    "require": {
+        "pear-bartlett/PHP_Reflect": "2.0.*"
+    },
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://bartlett.laurent-laville.org"
+        }
+    ]
+}
+----
+And run the following command:
+----
+$ php composer.phar install
+----
+
+[medium]*Using PHP Archive (phar)*
+
+----
+wget http://bartlett.laurent-laville.org/get/phpreflect.phar
+chmod +x phpreflect.phar
+----
+
+[medium]*Using on Linux distributions*
+
+PHP [label label-primary]#Reflect# could be installed as RPM, using the package installer.
+
+In Fedora, from official repository.
+
+In Enterprise Linux (RHEL, CentOS, Scientific Linux, Oracle Linux, ...), from
+the http://fedoraproject.org/wiki/EPEL[EPEL repository].
+----
+# yum install php-bartlett-PHP-Reflect
+----
+--
+
+== Autoloaders
+
+[role="lead"]
+Reflect does not provides any native autoloader.
+
+It's up to you to choose what is be the best strategy :
+
+* If you have installed [label label-primary]#Reflect# with http://getcomposer.org/[Composer],
+it must have generated a `vendor/autoload.php` file you should used.
+* If you use the phar version, you don't need autoloader, except if you want to add some user components.
+* The basic PHP version requires an autoloader that can load classes that follow
+the http://www.php-fig.org/psr/psr-0/[PSR-0] class naming standard.
+
+NOTE: I recommend using Symfony http://symfony.com/doc/current/components/class_loader/index.html[ClassLoader] component.
+
+Here are a minimum example, if you used a forked copy of GitHub source.
+
+[source,php]
+.Symfony UniversalClassLoader
+----
+<?php
+require_once 'Symfony/Component/ClassLoader/UniversalClassLoader.php';
+
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+
+$loader = new UniversalClassLoader();
+$loader->registerNamespaces(array(
+    'Bartlett' => __DIR__ . DIRECTORY_SEPARATOR . 'src',
+    'Symfony'  => __DIR__ . DIRECTORY_SEPARATOR . 'vendor',
+));
+$loader->register();
+----
+
+You are now ready to parse your first data source.
+
+link:quick-start.html["Go to next chapter: Quick Start",role="primary",icon="glyphicon-step-forward",options="block"]
