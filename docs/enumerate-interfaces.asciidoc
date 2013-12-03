@@ -1,0 +1,30 @@
+=== Interfaces
+[role="lead"]
+Your next collection returned could be the list of interfaces defined in your source code, if any.
+
+[label label-primary]#Reflect# returns a list of interfaces with the +getInterfaces()+ method.
+
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+
+$reflect = new Reflect;
+
+$interfaces = $reflect->getInterfaces();
+----
+
+This list (+$interfaces+) is an iterator, that can be traversed by a simple foreach loop.
+
+[source,php]
+.Easy exploit interfaces
+----
+<?php
+
+use Bartlett\Reflect;
+
+foreach($reflect->getInterfaces() as $interface) {
+    $interfaces[] = $interface->getName();
+}
+----

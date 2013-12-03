@@ -1,0 +1,30 @@
+=== Constants
+[role="lead"]
+Your next collection returned could be the list of constants defined in your source code, if any.
+
+[label label-primary]#Reflect# returns a list of constants with the +getConstants()+ method.
+
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+
+$reflect = new Reflect;
+
+$constants = $reflect->getConstants();
+----
+
+This list (+$constants+) is an iterator, that can be traversed by a simple foreach loop.
+
+[source,php]
+.Easy exploit constants
+----
+<?php
+
+use Bartlett\Reflect;
+
+foreach($reflect->getConstants() as $constant) {
+    $constants[] = $constant->getName();
+}
+----

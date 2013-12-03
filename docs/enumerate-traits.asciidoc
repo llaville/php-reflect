@@ -1,0 +1,30 @@
+=== Traits
+[role="lead"]
+Your next collection returned could be the list of traits defined in your source code, if any.
+
+[label label-primary]#Reflect# returns a list of traits with the +getTraits()+ method.
+
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+
+$reflect = new Reflect;
+
+$traits = $reflect->getTraits();
+----
+
+This list (+$traits+) is an iterator, that can be traversed by a simple foreach loop.
+
+[source,php]
+.Easy exploit traits
+----
+<?php
+
+use Bartlett\Reflect;
+
+foreach($reflect->getTraits() as $trait) {
+    $traits[] = $trait->getName();
+}
+----
