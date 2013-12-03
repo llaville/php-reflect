@@ -31,7 +31,7 @@ include::attributes.asciidoc[]
 | icon:check[]     | icon:check[]
 | *getFileName* - Gets the filename of the file in which the class has been defined
 | icon:check[]     | icon:check[]
-| *getInterfaceNames* - Gets the interface names       | icon:check[]     |
+| *getInterfaceNames* - Gets the interface names       | icon:check[]     | icon:check[]
 | *getInterfaces* -  Gets the interfaces               | icon:check[]     | icon:check[]
 | *getMethod* - Gets a ReflectionMethod for a class method
 | icon:check[]     | icon:check[]
@@ -39,7 +39,7 @@ include::attributes.asciidoc[]
 | *getModifiers* - Gets modifiers                      | icon:check[]     |
 | *getName* - Gets class name                          | icon:check[]     | icon:check[]
 | *getNamespaceName* - Gets namespace name             | icon:check[]     | icon:check[]
-| *getParentClass* - Gets parent class                 | icon:check[]     |
+| *getParentClass* - Gets parent class                 | icon:check[]     | icon:check[]
 | *getProperties* - Gets properties                    | icon:check[]     |
 | *getProperty* - Gets a ReflectionProperty for a class's property
 | icon:check[]     |

@@ -20,7 +20,7 @@ class ClassModel
     {
         parent::__construct();
 
-        $this->name = $qualifiedName;
+        $this->name = ltrim($qualifiedName, '\\');
 
         $this->struct['interfaces'] = array();
         $this->struct['constants']  = array();
@@ -94,6 +94,16 @@ class ClassModel
     }
 
     /**
+     * Gets the interface names.
+     *
+     * @return array A numerical array with interface names as the values.
+     */
+    public function getInterfaceNames()
+    {
+        return $this->struct['interfaces'];
+    }
+
+    /**
      * Gets class name
      *
      * @return string
@@ -114,6 +124,16 @@ class ClassModel
         $className = array_pop($parts);
 
         return implode('\\', $parts);
+    }
+
+    /**
+     * Gets the parent class
+     *
+     * @return mixed a ClassModel instance if parent exists, false otherwise
+     */
+    public function getParentClass()
+    {
+        return $this->struct['parent'];
     }
 
     /**
@@ -197,7 +217,7 @@ class ClassModel
     public function getConstant($name)
     {
         if (isset($this->struct['constants'][$name])) {
-            return $this->struct['constants'][$name]['value'];
+            return $this->struct['constants'][$name]->getValue();
         }
         throw new ModelException(
             sprintf(
@@ -316,15 +336,12 @@ class ClassModel
         $interfaces = $this->struct['interfaces'];
 
         if (!$this->isInterface()) {
-            if (!empty($this->struct['parent'])) {
-                reset($this->struct['parent']);
-                list($parent, $values) = each($this->struct['parent']);
-
-                if (isset($values['interfaces'])
-                    && is_array($values['interfaces'])
-                ) {
-                    $interfaces = array_merge($interfaces, $values['interfaces']);
-                }
+            $parent = $this->getParentClass();
+            if (!empty($parent)) {
+                $interfaces = array_merge(
+                    $interfaces,
+                    $parent->getInterfaceNames()
+                );
             }
         }
         return in_array('Iterator', $interfaces);
@@ -342,11 +359,8 @@ class ClassModel
         }
 
         $method = '__clone';
-        if (array_key_exists($method, $this->struct['methods'])) {
-            if (empty($this->struct['methods'][$method]['visibility'])) {
-                return TRUE;
-            }
-            if ($this->struct['methods'][$method]['visibility'] === 'public') {
+        if ($this->hasMethod($method)) {
+            if ($this->getMethod($method)->isPublic()) {
                 return TRUE;
             }
             return FALSE;
@@ -376,12 +390,8 @@ class ClassModel
         }
 
         foreach(array('__construct', $this->getShortName()) as $method) {
-            if (array_key_exists($method, $this->struct['methods'])) {
-
-                if (empty($this->struct['methods'][$method]['visibility'])) {
-                    return TRUE;
-                }
-                if ($this->struct['methods'][$method]['visibility'] === 'public') {
+            if ($this->hasMethod($method)) {
+                if ($this->getMethod($method)->isPublic()) {
                     return TRUE;
                 }
                 return FALSE;
@@ -405,17 +415,16 @@ class ClassModel
             return TRUE;
         }
 
-        if (!empty($this->struct['parent'])) {
+        $parent = $this->getParentClass();
+        if (!empty($parent)) {
             // checks second inheritance
-            reset($this->struct['parent']);
-            list($parent, $values) = each($this->struct['parent']);
 
-            if ($parent === $class) {
+            if ($parent->getName() === $class) {
                 // checks class name
                 return TRUE;
             }
             // then checks interfaces implemented
-            return in_array($class, $values['interfaces']);
+            return in_array($class, $parent->getInterfaceNames());
         }
         return FALSE;
     }

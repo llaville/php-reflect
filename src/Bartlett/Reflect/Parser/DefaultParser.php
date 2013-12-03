@@ -231,6 +231,17 @@ class DefaultParser implements ParserInterface
             $element = $this->builder->buildClass(
                 implode('\\', $parts)
             );
+
+            $parent = $token->getParent();
+            if (!empty($parent)) {
+                $parts = array(
+                    ($namespace === FALSE ? '' : $namespace),
+                    $parent
+                );
+                $tmp['parent'] = $this->builder->buildClass(
+                    implode('\\', $parts)
+                );
+            }
         }
         elseif ('interface' == $context) {
             $parts = array(
