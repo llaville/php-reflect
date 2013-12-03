@@ -22,4 +22,6 @@ Subscribe to RSS feed icon:rss-square[size="lg",link="http://php5.laurent-lavill
 ** link:201311.html[November] [badge pull-right]#1#
 **********
 
+include::201312-reflection-api-compare.asciidoc[]
+
 include::201312-concrete-examples.asciidoc[]
