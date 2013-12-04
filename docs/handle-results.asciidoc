@@ -15,6 +15,13 @@ We are suppose in the following, study the source code below, script named +UseC
 [source,php]
 ----
 <?php
+include '/path/to/test1.php';
+include_once 'test2.php';
+require 'test3.php';
+// test four
+require_once
+    'test4.php';
+
 class Foo implements SplObserver
 {
     const FOO = 'default FOO value';
@@ -74,6 +81,7 @@ include::enumerate-interfaces.asciidoc[]
 include::enumerate-traits.asciidoc[]
 include::enumerate-functions.asciidoc[]
 include::enumerate-constants.asciidoc[]
+include::enumerate-includes.asciidoc[]
 
 == Exploit each elements
 
@@ -89,6 +97,7 @@ include::exploit-interfaces.asciidoc[]
 include::exploit-traits.asciidoc[]
 include::exploit-functions.asciidoc[]
 include::exploit-constants.asciidoc[]
+include::exploit-includes.asciidoc[]
 
 
 You have terminated this tutorial tour, and you are now ready to discover

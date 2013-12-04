@@ -1,0 +1,30 @@
+=== Includes
+[role="lead"]
+Your next collection returned could be the list of includes defined in your source code, if any.
+
+[label label-primary]#Reflect# returns a list of includes with the +getIncludes()+ method.
+
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+
+$reflect = new Reflect;
+
+$includes = $reflect->getIncludes();
+----
+
+This list (+$includes+) is an iterator, that can be traversed by a simple foreach loop.
+
+[source,php]
+.Easy exploit includes
+----
+<?php
+
+use Bartlett\Reflect;
+
+foreach($reflect->getIncludes() as $include) {
+    $includes[] = $include->getFilePath();
+}
+----
