@@ -7,6 +7,7 @@ use Bartlett\Reflect\Model\ClassModel;
 use Bartlett\Reflect\Model\MethodModel;
 use Bartlett\Reflect\Model\FunctionModel;
 use Bartlett\Reflect\Model\ConstantModel;
+use Bartlett\Reflect\Model\IncludeModel;
 
 class Builder
 {
@@ -16,6 +17,7 @@ class Builder
     private $traits     = array();
     private $functions  = array();
     private $constants  = array();
+    private $includes   = array();
 
     public function buildPackage($qualifiedName)
     {
@@ -76,6 +78,14 @@ class Builder
         return $this->constants[$qualifiedName];
     }
 
+    public function buildInclude($path)
+    {
+        if (!isset($this->includes[$path])) {
+            $this->includes[$path] = new IncludeModel($path);
+        }
+        return $this->includes[$path];
+    }
+
     public function getPackages()
     {
         return $this->packages;
@@ -104,6 +114,11 @@ class Builder
     public function getConstants()
     {
         return $this->constants;
+    }
+
+    public function getIncludes()
+    {
+        return $this->includes;
     }
 
 }

@@ -168,6 +168,16 @@ class Reflect implements ManagerInterface
     }
 
     /**
+     * Gets informations about all includes.
+     *
+     * @return array IncludeModel Map objects reflecting each include.
+     */
+    public function getIncludes()
+    {
+        return $this->builder->getIncludes();
+    }
+
+    /**
      * Parse the contents of a single file
      *
      * @param string $file

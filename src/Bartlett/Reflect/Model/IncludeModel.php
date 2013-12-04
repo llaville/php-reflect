@@ -2,6 +2,9 @@
 
 namespace Bartlett\Reflect\Model;
 
+use Bartlett\Reflect\Model\AbstractModel;
+use Bartlett\Reflect\Model\Visitable;
+
 class IncludeModel
     extends AbstractModel
     implements Visitable
@@ -13,6 +16,8 @@ class IncludeModel
      */
     public function __construct($filepath)
     {
+        parent::__construct();
+
         $this->filepath = $filepath;
     }
 

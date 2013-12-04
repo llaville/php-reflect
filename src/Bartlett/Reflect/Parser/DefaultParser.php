@@ -360,6 +360,9 @@ class DefaultParser implements ParserInterface
                 $obj->update(array('constants' => array($name => $constant)));
             }
         }
+        elseif ($inc === true) {
+            $element = $this->builder->buildInclude($name);
+        }
 
         if (isset($element)) {
             $element->update($tmp);
