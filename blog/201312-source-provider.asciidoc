@@ -1,0 +1,28 @@
+:css-signature: blog
+:icons!:
+:iconsfont: font-awesome
+:iconsfontdir: ./fonts/font-awesome
+:imagesdir: ./images
+:author: Laurent Laville
+:revdate: 2013-12-05
+:pubdate: Thu, 05 Dec 2013 19:42:08 +0100
+:summary: Learn how to identify a data source to parse.
+
+== Data Source Provider
+
+[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
+.icon:code[size="4x"]
+--
+[role="lead"]
+{summary}
+
+API 2.0 was enhanced in many ways. 
+[label label-primary]#Reflect# offers a data source provider mechanism.
+
+You may either use Symfony Finder, or any other that implement the `Bartlett\Reflect\Provider\ProviderInterface` interface.
+
+Discover in details how to use Symfony Finder provider in a  
+http://php5.laurent-laville.org/reflect/manual/2.0/en/quick-start.html[quick start] tutorial.
+
+This is one of the major changes in API 2.0 : take time to learn and understand.
+--
