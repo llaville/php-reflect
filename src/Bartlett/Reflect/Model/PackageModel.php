@@ -33,11 +33,6 @@ class PackageModel
         $this->elements[] = $element;
     }
 
-    public function getElements()
-    {
-        return $this->elements;
-    }
-
     /**
      * Get a Doc comment from a namespace.
      *
