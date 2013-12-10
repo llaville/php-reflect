@@ -4,7 +4,7 @@ namespace Bartlett\Reflect\Model;
 
 class PackageModel
     extends AbstractModel
-    implements Visitable
+    implements Visitable, \IteratorAggregate
 {
     protected $elements = array();
 
@@ -21,6 +21,11 @@ class PackageModel
             'endLine'   => 0,
             'file'      => '',
         );
+    }
+
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->elements);
     }
 
     public function addElement($element)
