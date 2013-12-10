@@ -88,23 +88,24 @@ class Builder
 
     public function buildFromCache($cacheData)
     {
-        for($i = 0, $max = count($cacheData); $i < $max; $i++) {
+        while (!empty($cacheData)) {
+            $element = array_shift($cacheData);
 
-            if ($cacheData[$i] instanceof ClassModel) {
-                $qualifiedName = $cacheData[$i]->getName();
-                if ($cacheData[$i]->isInterface()) {
-                    $this->interfaces[$qualifiedName] = $cacheData[$i];
+            if ($element instanceof ClassModel) {
+                $qualifiedName = $element->getName();
+                if ($element->isInterface()) {
+                    $this->interfaces[$qualifiedName] = $element;
                 }
-                elseif ($cacheData[$i]->isTrait()) {
-                    $this->traits[$qualifiedName] = $cacheData[$i];
+                elseif ($element->isTrait()) {
+                    $this->traits[$qualifiedName] = $element;
                 }
                 else {
-                    $this->classes[$qualifiedName] = $cacheData[$i];
+                    $this->classes[$qualifiedName] = $element;
                 }
             }
-            elseif($cacheData[$i] instanceof FunctionModel) {
-                $qualifiedName = $cacheData[$i]->getName();
-                $this->functions[$qualifiedName] = $cacheData[$i];
+            elseif($element instanceof FunctionModel) {
+                $qualifiedName = $element->getName();
+                $this->functions[$qualifiedName] = $element;
             }
         }
     }
