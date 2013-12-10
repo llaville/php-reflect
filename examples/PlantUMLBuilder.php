@@ -32,7 +32,7 @@ class PlantUMLBuilder
             'classes' => array(),
         );
 
-        foreach($package->getElements() as $element) {
+        foreach($package as $element) {
             if ($element instanceof ClassModel) {
                 $element->accept($this);
             }
