@@ -2,6 +2,7 @@
 
 namespace Bartlett;
 
+use Bartlett\Reflect\Event\AbstractDispatcher;
 use Bartlett\Reflect\ManagerInterface;
 use Bartlett\Reflect\ProviderManager;
 use Bartlett\Reflect\Token;
@@ -10,8 +11,11 @@ use Bartlett\Reflect\Parser\ParserInterface;
 use Bartlett\Reflect\Parser\DefaultParser;
 use Bartlett\Reflect\Builder;
 use Bartlett\Reflect\Tokenizer\DefaultTokenizer;
+use Bartlett\Reflect\Filter\FilenameFilter;
 
-class Reflect implements ManagerInterface
+class Reflect
+    extends AbstractDispatcher
+    implements ManagerInterface
 {
     protected $pm;
     protected $parsers;
@@ -98,12 +102,42 @@ class Reflect implements ManagerInterface
         }
 
         foreach($this->getProviderManager()->all() as $alias => $provider) {
-            if (in_array($alias, $providers)) {
-                // creates the data model of sources referenced by the $alias name
-                foreach ($provider as $uri => $file) {
+            if (!in_array($alias, $providers)) {
+                continue;
+            }
+            // creates the data model of sources referenced by the $alias name
+            foreach ($provider as $uri => $file) {
+                $event = $this->dispatch('reflect.progress',
+                    array('source' => $alias, 'filename' => $file->getRealpath())
+                );
+                if (isset($event['notModified'])) {
+                    // uses cached response
+                    $this->builder->buildFromCache($event['notModified']);
+                } else {
+                    // live request
                     $this->parseFile($file);
+
+                    foreach($this->builder->getPackages() as $package) {
+                        $iterator = new FilenameFilter(
+                            $package->getIterator(), $file->getRealpath()
+                        );
+
+                        if (iterator_count($iterator) > 0) {
+                            // end of parsing the file, and sends results to observers
+                            $this->dispatch('reflect.success',
+                                array(
+                                    'source'   => $alias,
+                                    'filename' => $file->getRealpath(),
+                                    'package'  => $package->getName(),
+                                    'data'     => iterator_to_array($iterator)
+                                )
+                            );
+                        }
+                    }
                 }
             }
+            // end of parsing the data source provider
+            $this->dispatch('reflect.complete', array('source' => $alias));
         }
     }
 

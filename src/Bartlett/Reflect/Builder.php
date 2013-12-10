@@ -86,6 +86,29 @@ class Builder
         return $this->includes[$path];
     }
 
+    public function buildFromCache($cacheData)
+    {
+        for($i = 0, $max = count($cacheData); $i < $max; $i++) {
+
+            if ($cacheData[$i] instanceof ClassModel) {
+                $qualifiedName = $cacheData[$i]->getName();
+                if ($cacheData[$i]->isInterface()) {
+                    $this->interfaces[$qualifiedName] = $cacheData[$i];
+                }
+                elseif ($cacheData[$i]->isTrait()) {
+                    $this->traits[$qualifiedName] = $cacheData[$i];
+                }
+                else {
+                    $this->classes[$qualifiedName] = $cacheData[$i];
+                }
+            }
+            elseif($cacheData[$i] instanceof FunctionModel) {
+                $qualifiedName = $cacheData[$i]->getName();
+                $this->functions[$qualifiedName] = $cacheData[$i];
+            }
+        }
+    }
+
     public function getPackages()
     {
         return $this->packages;
