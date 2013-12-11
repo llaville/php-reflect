@@ -234,10 +234,21 @@ class DefaultParser implements ParserInterface
 
             $parent = $token->getParent();
             if (!empty($parent)) {
-                $parts = array(
-                    ($namespace === FALSE ? '' : $namespace),
-                    $parent
-                );
+                if (array_key_exists($parent, $aliases)) {
+                    // parent class has a namespace found in aliases
+                    $parent = $aliases[ $parent ];
+                    $parts  = explode('\\', $parent);
+                }
+                elseif (substr($parent,0,1) == '\\') {
+                    // parent class is in global namespace
+                    $parts  = explode('\\', $parent);
+                }
+                else {
+                    $parts = array(
+                        ($namespace === FALSE ? '' : $namespace),
+                        $parent
+                    );
+                }
                 $tmp['parent'] = $this->builder->buildClass(
                     implode('\\', $parts)
                 );

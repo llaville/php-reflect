@@ -222,6 +222,7 @@ class Reflect
     {
         $this->tokenizer->setSourceFile($file);
 
+        $aliases          = array();
         $namespace        = FALSE;
         $namespaceEndLine = FALSE;
         $class            = FALSE;
@@ -286,6 +287,7 @@ class Reflect
             }
 
             $context = array(
+                'aliases'   => $aliases,
                 'namespace' => $namespace,
                 'class'     => $class,
                 'interface' => $interface,
@@ -336,11 +338,24 @@ class Reflect
                 foreach($this->parsers as $parser) {
                     $resp = $parser->handle($request);
 
+                    if ($resp === false) {
+                        $this->dispatch('parser.error',
+                            array('request' => $request, 'parser' => $parser)
+                        );
+                    } else {
+                        $this->dispatch('parser.success',
+                            array('request' => $request, 'response' => $resp)
+                        );
+                    }
+
                     if ($token === false && $resp !== false) {
                         // backup token object on first handled request
                         $token = $resp;
                     }
                 }
+                $this->dispatch('parser.complete',
+                    array('request' => $request, 'response' => $token)
+                );
 
                 if ($token !== false) {
                     if ($tokenName == 'T_NAMESPACE') {
@@ -351,6 +366,9 @@ class Reflect
                         if ($class !== FALSE) {
                             // warning: don't set $trait value
                             $traitEndLine = $token->getEndLine();
+                        } else {
+                            // namespaces imported
+                            $aliases[ $token->getAlias() ] = $token->getName(false);
                         }
 
                     } elseif ($tokenName == 'T_TRAIT') {
