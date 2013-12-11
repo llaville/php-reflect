@@ -9,13 +9,13 @@ class NamespaceToken extends TokenWithScope
 
     public function getName()
     {
-        if ($this->namespace !== NULL) {
+        if ($this->namespace !== null) {
             return $this->namespace;
         }
 
         $this->namespace = $this->tokenStream[$this->id+2][1];
 
-        for ($i = $this->id + 3; ; $i += 2) {
+        for ($i = $this->id + 3;; $i += 2) {
             if (!isset($this->tokenStream[$i])) {
                 break;
             }
@@ -31,7 +31,7 @@ class NamespaceToken extends TokenWithScope
 
     public function getAlias()
     {
-        if ($this->alias !== NULL) {
+        if ($this->alias !== null) {
             return $this->alias;
         }
 

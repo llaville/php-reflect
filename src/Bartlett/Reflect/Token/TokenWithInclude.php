@@ -9,7 +9,7 @@ abstract class TokenWithInclude extends TokenWithScope
 
     public function getName()
     {
-        if ($this->name !== NULL) {
+        if ($this->name !== null) {
             return $this->name;
         }
 
@@ -23,7 +23,7 @@ abstract class TokenWithInclude extends TokenWithScope
             }
             $i++;
         }
-        if ($this->name !== NULL) {
+        if ($this->name !== null) {
             $this->type = strtolower(
                 str_replace('T_', '', $this->tokenStream[$this->id][0])
             );

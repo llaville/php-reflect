@@ -116,7 +116,7 @@ abstract class TokenWithScope extends AbstractToken
         $i     = $this->id + 1;
 
         if ($this instanceof NamespaceToken) {
-            for ($j = $this->id + 3; ; $j += 1) {
+            for ($j = $this->id + 3;; $j += 1) {
                 if (isset($this->tokenStream[$j])) {
                     if ($this->tokenStream[$j][0] == 'T_OPEN_CURLY') {
                         $t_ns_open = 'ns_open_curly';
@@ -131,7 +131,7 @@ abstract class TokenWithScope extends AbstractToken
             $t_ns_open = false;
         }
 
-        while ($this->endTokenId === NULL && isset($this->tokenStream[$i])) {
+        while ($this->endTokenId === null && isset($this->tokenStream[$i])) {
 
             $tokenName = $this->tokenStream[$i][0];
 
@@ -171,7 +171,7 @@ abstract class TokenWithScope extends AbstractToken
             $i++;
         }
 
-        if ($this->endTokenId === NULL) {
+        if ($this->endTokenId === null) {
             if ($t_ns_open == 'ns_open_semicolon') {
                 // simple namespace without bracketed syntax ending
                 $this->endTokenId = $i - 1;

@@ -9,7 +9,7 @@ class StringToken extends TokenWithArgument
 
     public function getName()
     {
-        if ($this->name !== NULL) {
+        if ($this->name !== null) {
             return $this->name;
         }
 
@@ -23,5 +23,4 @@ class StringToken extends TokenWithArgument
 
         return $this->name;
     }
-
 }

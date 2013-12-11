@@ -95,15 +95,15 @@ class Builder
                 $qualifiedName = $element->getName();
                 if ($element->isInterface()) {
                     $this->interfaces[$qualifiedName] = $element;
-                }
-                elseif ($element->isTrait()) {
+
+                } elseif ($element->isTrait()) {
                     $this->traits[$qualifiedName] = $element;
-                }
-                else {
+
+                } else {
                     $this->classes[$qualifiedName] = $element;
                 }
-            }
-            elseif($element instanceof FunctionModel) {
+
+            } elseif ($element instanceof FunctionModel) {
                 $qualifiedName = $element->getName();
                 $this->functions[$qualifiedName] = $element;
             }
@@ -144,5 +144,4 @@ class Builder
     {
         return $this->includes;
     }
-
 }

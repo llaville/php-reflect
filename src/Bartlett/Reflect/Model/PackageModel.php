@@ -2,9 +2,7 @@
 
 namespace Bartlett\Reflect\Model;
 
-class PackageModel
-    extends AbstractModel
-    implements Visitable, \IteratorAggregate
+class PackageModel extends AbstractModel implements Visitable, \IteratorAggregate
 {
     protected $elements = array();
 
@@ -122,5 +120,4 @@ class PackageModel
 
         return $str;
     }
-
 }

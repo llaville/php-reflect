@@ -2,8 +2,7 @@
 
 namespace Bartlett\Reflect\Provider;
 
-class SymfonyFinderProvider
-    implements ProviderInterface
+class SymfonyFinderProvider implements ProviderInterface
 {
     protected $provider;
 
@@ -57,5 +56,4 @@ class SymfonyFinderProvider
     {
         return $this->provider->count();
     }
-
 }

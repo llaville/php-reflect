@@ -115,5 +115,4 @@ class ProviderManager implements \Countable
     {
         $this->providers = array();
     }
-
 }

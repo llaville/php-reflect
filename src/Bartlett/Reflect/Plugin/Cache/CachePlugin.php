@@ -57,5 +57,4 @@ class CachePlugin implements EventSubscriberInterface
     {
         $this->storage->cache($event);
     }
-
 }

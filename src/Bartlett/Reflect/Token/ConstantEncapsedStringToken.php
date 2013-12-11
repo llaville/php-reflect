@@ -10,7 +10,7 @@ class ConstantEncapsedStringToken extends TokenWithScope
     {
         static $const = array('define', 'defined', 'constant');
 
-        if ($this->name !== NULL) {
+        if ($this->name !== null) {
             return $this->name;
         }
 
@@ -57,5 +57,4 @@ class ConstantEncapsedStringToken extends TokenWithScope
             }
         }
     }
-
 }

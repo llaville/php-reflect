@@ -4,9 +4,7 @@ namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Exception\ModelException;
 
-class ConstantModel
-    extends AbstractModel
-    implements Visitable
+class ConstantModel extends AbstractModel implements Visitable
 {
     protected $short_name;
 
@@ -40,27 +38,27 @@ class ConstantModel
 
         if (strcasecmp('__FILE__', $this->short_name) === 0) {
             $data['value'] = $data['file'];
-        }
-        elseif (strcasecmp('__LINE__', $this->short_name) === 0) {
+
+        } elseif (strcasecmp('__LINE__', $this->short_name) === 0) {
             $data['value'] = $data['line'];
-        }
-        elseif (strcasecmp('__DIR__', $this->short_name) === 0) {
+
+        } elseif (strcasecmp('__DIR__', $this->short_name) === 0) {
             $data['value'] = dirname($data['file']);
-        }
-        elseif (strcasecmp('__TRAIT__', $this->short_name) === 0) {
+
+        } elseif (strcasecmp('__TRAIT__', $this->short_name) === 0) {
             $data['value'] = $ns . $data['trait'];
-        }
-        elseif (strcasecmp('__CLASS__', $this->short_name) === 0) {
+
+        } elseif (strcasecmp('__CLASS__', $this->short_name) === 0) {
             $data['value'] = $ns . $data['class'];
-        }
-        elseif (strcasecmp('__METHOD__', $this->short_name) === 0) {
+
+        } elseif (strcasecmp('__METHOD__', $this->short_name) === 0) {
             $data['value'] = $ns . $data['class'] .
                 '::' . $data['function'];
-        }
-        elseif (strcasecmp('__FUNCTION__', $this->short_name) === 0) {
+
+        } elseif (strcasecmp('__FUNCTION__', $this->short_name) === 0) {
             $data['value'] = $ns . $data['function'];
-        }
-        elseif (strcasecmp('__NAMESPACE__', $this->short_name) === 0) {
+
+        } elseif (strcasecmp('__NAMESPACE__', $this->short_name) === 0) {
             $data['value'] = $data['namespace'];
         }
 
@@ -86,7 +84,7 @@ class ConstantModel
     public function getFileName()
     {
         if ($this->isInternal()) {
-            return FALSE;
+            return false;
         }
         return $this->struct['file'];
     }
@@ -101,11 +99,13 @@ class ConstantModel
     {
         if ($this->struct['extension'] === 'user') {
             throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.', 405
+                'Extension ' . $this->struct['extension'] . ' does not exist.',
+                405
             );
         } elseif (!extension_loaded($this->struct['extension'])) {
             throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.', 404
+                'Extension ' . $this->struct['extension'] . ' does not exist.',
+                404
             );
         }
 
@@ -121,8 +121,8 @@ class ConstantModel
     {
         try {
             $name = $this->getExtension()->getName();
-        }
-        catch (ModelException $e) {
+
+        } catch (ModelException $e) {
             if ($e->getCode() === 404) {
                 throw $e;  // re-throws original exception
             }
@@ -218,5 +218,4 @@ class ConstantModel
             $eol
         );
     }
-
 }

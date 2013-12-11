@@ -12,7 +12,7 @@ abstract class TokenWithMagicConstant extends TokenWithScope
 
     public function getName()
     {
-        if ($this->name === NULL) {
+        if ($this->name === null) {
             $this->name = $this->text;
         }
         return $this->name;

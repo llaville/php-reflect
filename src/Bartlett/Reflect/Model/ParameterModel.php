@@ -4,9 +4,7 @@ namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Exception\ModelException;
 
-class ParameterModel
-    extends AbstractModel
-    implements Visitable
+class ParameterModel extends AbstractModel implements Visitable
 {
 
     /**
@@ -55,7 +53,7 @@ class ParameterModel
                 && strtolower($this->struct['defaultValue']) === 'null'
             );
         }
-        return TRUE;
+        return true;
     }
 
     /**

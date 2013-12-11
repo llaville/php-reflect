@@ -2,7 +2,6 @@
 
 namespace Bartlett\Reflect\Provider;
 
-interface ProviderInterface
-    extends \IteratorAggregate, \Countable
+interface ProviderInterface extends \IteratorAggregate, \Countable
 {
 }

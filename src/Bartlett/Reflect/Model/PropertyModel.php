@@ -4,9 +4,7 @@ namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Exception\ModelException;
 
-class PropertyModel
-    extends AbstractModel
-    implements Visitable
+class PropertyModel extends AbstractModel implements Visitable
 {
 
     /**

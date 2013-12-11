@@ -9,7 +9,7 @@ class ConstToken extends TokenWithScope
 
     public function getName()
     {
-        if ($this->name !== NULL) {
+        if ($this->name !== null) {
             return $this->name;
         }
         $this->name = $this->tokenStream[$this->id + 2][1];

@@ -27,7 +27,7 @@ abstract class SuperglobalsToken extends TokenWithScope
             '$_ENV',
         );
 
-        if ($this->name !== NULL) {
+        if ($this->name !== null) {
             return $this->name;
         }
 

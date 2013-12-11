@@ -10,7 +10,7 @@ class UseToken extends TokenWithScope
 
     public function getName($class)
     {
-        if ($class === FALSE) {
+        if ($class === false) {
             return $this->getNamespace();
         }
 
@@ -19,17 +19,17 @@ class UseToken extends TokenWithScope
 
     protected function getTrait()
     {
-        if ($this->trait !== NULL) {
+        if ($this->trait !== null) {
             return $this->trait;
         }
 
         $this->trait = array();
 
-        for ($i = $this->id + 2; ; $i++) {
+        for ($i = $this->id + 2;; $i++) {
             if ($this->tokenStream[$i][0] == 'T_STRING') {
                 $this->trait[] = $this->tokenStream[$i][1];
-            }
-            elseif ($this->tokenStream[$i][0] == 'T_SEMICOLON'
+
+            } elseif ($this->tokenStream[$i][0] == 'T_SEMICOLON'
                 || $this->tokenStream[$i][0] == 'T_OPEN_CURLY'
             ) {
                 break;
@@ -40,7 +40,7 @@ class UseToken extends TokenWithScope
 
     protected function getNamespace()
     {
-        if ($this->namespace !== NULL) {
+        if ($this->namespace !== null) {
             return $this->namespace;
         }
 
@@ -53,7 +53,7 @@ class UseToken extends TokenWithScope
             $i++;
         }
 
-        for (; ; $i += 2) {
+        for (;; $i += 2) {
             if (!isset($this->tokenStream[$i])) {
                 break;
             }
@@ -73,11 +73,11 @@ class UseToken extends TokenWithScope
 
     public function getAlias()
     {
-        if ($this->alias !== NULL) {
+        if ($this->alias !== null) {
             return $this->alias;
         }
 
-        $this->getName(TRUE);
+        $this->getName(true);
 
         $tmp         = explode('\\', $this->namespace);
         $this->alias = array_pop($tmp);

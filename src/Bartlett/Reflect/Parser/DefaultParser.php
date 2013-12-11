@@ -9,7 +9,7 @@ class DefaultParser implements ParserInterface
     protected $builder;
     protected $tokenMap;
 
-    private   $defaultOptions = array(
+    private $defaultOptions = array(
         'properties' => array(
             'use' => array(
                 'file', 'startEndLines', 'docblock', 'alias'
@@ -163,20 +163,21 @@ class DefaultParser implements ParserInterface
         } else {
             $name = $token->getName();
         }
-        if ($name === NULL) {
+        if ($name === null) {
             return;
         }
         $tmp = array();
 
         $inc = in_array(
-            $context, array('require_once', 'require', 'include_once', 'include')
+            $context,
+            array('require_once', 'require', 'include_once', 'include')
         );
 
         if (method_exists($token, 'getType')) {
             $type = $token->getType();
             $glob = in_array($type, $globals);
         } else {
-            $glob = FALSE;
+            $glob = false;
         }
 
         if (isset($options['properties'][$context])) {
@@ -186,30 +187,30 @@ class DefaultParser implements ParserInterface
         }
 
         switch ($context) {
-        case 'use':
-        case 'namespace':
-        case 'trait':
-        case 'interface':
-        case 'class':
-        case 'function':
-        case 'require_once':
-        case 'require':
-        case 'include_once':
-        case 'include':
-        case 'variable':
-        case 'constant':
-            if (in_array('startEndLines', $properties)) {
-                $tmp['startLine'] = $token->getLine();
-                $tmp['endLine']   = $token->getEndLine();
-            }
-            $tmp['file'] = $request['filename'];
+            case 'use':
+            case 'namespace':
+            case 'trait':
+            case 'interface':
+            case 'class':
+            case 'function':
+            case 'require_once':
+            case 'require':
+            case 'include_once':
+            case 'include':
+            case 'variable':
+            case 'constant':
+                if (in_array('startEndLines', $properties)) {
+                    $tmp['startLine'] = $token->getLine();
+                    $tmp['endLine']   = $token->getEndLine();
+                }
+                $tmp['file'] = $request['filename'];
 
-            $tmp['trait']     = ('trait'     === $context) ? $name : $trait;
-            $tmp['interface'] = ('interface' === $context) ? $name : $interface;
-            $tmp['class']     = ('class'     === $context) ? $name : $class;
-            $tmp['function']  = ('function'  === $context) ? $name : $function;
+                $tmp['trait']     = ('trait'     === $context) ? $name : $trait;
+                $tmp['interface'] = ('interface' === $context) ? $name : $interface;
+                $tmp['class']     = ('class'     === $context) ? $name : $class;
+                $tmp['function']  = ('function'  === $context) ? $name : $function;
 
-            break;
+                break;
         }
 
         foreach ($properties as $property) {
@@ -225,7 +226,7 @@ class DefaultParser implements ParserInterface
 
         if ('class' == $context) {
             $parts = array(
-                ($namespace === FALSE ? '' : $namespace),
+                ($namespace === false ? '' : $namespace),
                 $name
             );
             $element = $this->builder->buildClass(
@@ -238,14 +239,14 @@ class DefaultParser implements ParserInterface
                     // parent class has a namespace found in aliases
                     $parent = $aliases[ $parent ];
                     $parts  = explode('\\', $parent);
-                }
-                elseif (substr($parent,0,1) == '\\') {
+
+                } elseif (substr($parent, 0, 1) == '\\') {
                     // parent class is in global namespace
                     $parts  = explode('\\', $parent);
-                }
-                else {
+
+                } else {
                     $parts = array(
-                        ($namespace === FALSE ? '' : $namespace),
+                        ($namespace === false ? '' : $namespace),
                         $parent
                     );
                 }
@@ -253,29 +254,29 @@ class DefaultParser implements ParserInterface
                     implode('\\', $parts)
                 );
             }
-        }
-        elseif ('interface' == $context) {
+
+        } elseif ('interface' == $context) {
             $parts = array(
-                ($namespace === FALSE ? '' : $namespace),
+                ($namespace === false ? '' : $namespace),
                 $name
             );
             $element = $this->builder->buildInterface(
                 implode('\\', $parts)
             );
-        }
-        elseif ('trait' == $context) {
+
+        } elseif ('trait' == $context) {
             $parts = array(
-                ($namespace === FALSE ? '' : $namespace),
+                ($namespace === false ? '' : $namespace),
                 $name
             );
             $element = $this->builder->buildTrait(
                 implode('\\', $parts)
             );
-        }
-        elseif ('function' == $context) {
-            if ($class === FALSE && $interface === FALSE && $trait === FALSE) {
+
+        } elseif ('function' == $context) {
+            if ($class === false && $interface === false && $trait === false) {
                 $parts = array(
-                    ($namespace === FALSE ? '' : $namespace),
+                    ($namespace === false ? '' : $namespace),
                     $name
                 );
                 // update user functions
@@ -286,58 +287,59 @@ class DefaultParser implements ParserInterface
                 );
             } else {
                 $parts = array(
-                    ($namespace === FALSE ? '' : $namespace)
+                    ($namespace === false ? '' : $namespace)
                 );
-                if ($class !== FALSE) {
+                if ($class !== false) {
                     array_push($parts, $class);
-                } elseif ($interface !== FALSE) {
+                } elseif ($interface !== false) {
                     array_push($parts, $interface);
                 } else {
                     array_push($parts, $trait);
                 }
                 // class, interface or trait method
                 $method = $this->builder->buildMethod(
-                    implode('\\', $parts), $name
+                    implode('\\', $parts),
+                    $name
                 );
                 $method->update($tmp);
 
                 // update methods list
-                if ($class !== FALSE) {
+                if ($class !== false) {
                     $obj = $this->builder->buildClass(
                         implode('\\', $parts)
                     );
-                }
-                elseif ($interface !== FALSE) {
+
+                } elseif ($interface !== false) {
                     $obj = $this->builder->buildInterface(
                         implode('\\', $parts)
                     );
-                }
-                else {
+
+                } else {
                     $obj = $this->builder->buildTrait(
                         implode('\\', $parts)
                     );
                 }
                 $obj->update(array('methods' => array($name => $method)));
             }
-        }
-        elseif ('use' == $context) {
-            if ($class === FALSE) {
+
+        } elseif ('use' == $context) {
+            if ($class === false) {
                 $tmp['import'] = $token->isImported();
                 // use namespace
             } else {
                 // use trait
             }
-        }
-        elseif ('namespace' == $context) {
+
+        } elseif ('namespace' == $context) {
             $tmp['import'] = $token->isImported();
             // namespace designed as a package
             $package = $this->builder->buildPackage($name);
-        }
-        elseif ('constant' == $context) {
+
+        } elseif ('constant' == $context) {
             $tmp['magic']  = $magicConst;
             $tmp['namespace'] = $namespace;
 
-            if (($class === FALSE && $trait === FALSE) || $magicConst) {
+            if (($class === false && $trait === false) || $magicConst) {
                 // user or magic constant
 
                 if ($magicConst) {
@@ -345,7 +347,7 @@ class DefaultParser implements ParserInterface
                     $tmp['uses'] = 1;
                 } else {
                     $parts = array(
-                        ($namespace === FALSE ? '' : $namespace),
+                        ($namespace === false ? '' : $namespace),
                         $name
                     );
                 }
@@ -355,7 +357,7 @@ class DefaultParser implements ParserInterface
 
             } else {
                 $parts = array(
-                    ($namespace === FALSE ? '' : $namespace),
+                    ($namespace === false ? '' : $namespace),
                     $class
                 );
                 // class constant
@@ -370,8 +372,8 @@ class DefaultParser implements ParserInterface
                 );
                 $obj->update(array('constants' => array($name => $constant)));
             }
-        }
-        elseif ($inc === true) {
+
+        } elseif ($inc === true) {
             $element = $this->builder->buildInclude($name);
         }
 

@@ -6,7 +6,7 @@ class FilenameFilter extends \FilterIterator
 {
     private $filenameFilter;
 
-    public function __construct(\Iterator $iterator , $filename)
+    public function __construct(\Iterator $iterator, $filename)
     {
         parent::__construct($iterator);
 
@@ -22,5 +22,4 @@ class FilenameFilter extends \FilterIterator
         }
         return false;
     }
-
 }

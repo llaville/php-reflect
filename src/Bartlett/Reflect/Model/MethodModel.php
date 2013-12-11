@@ -2,9 +2,7 @@
 
 namespace Bartlett\Reflect\Model;
 
-class MethodModel
-    extends AbstractFunctionModel
-    implements Visitable
+class MethodModel extends AbstractFunctionModel implements Visitable
 {
     protected $class_name;
 
@@ -145,7 +143,7 @@ class MethodModel
                 count($parameters),
                 $eol
             );
-            foreach($parameters as $parameter) {
+            foreach ($parameters as $parameter) {
                 $str .= '    ' . $parameter->__toString();
             }
             $str .= '  }' . $eol;
@@ -154,5 +152,4 @@ class MethodModel
 
         return $str;
     }
-
 }

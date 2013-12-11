@@ -4,8 +4,7 @@ namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Exception\ModelException;
 
-abstract class AbstractFunctionModel
-    extends AbstractModel
+abstract class AbstractFunctionModel extends AbstractModel
 {
     protected $short_name;
 
@@ -50,7 +49,7 @@ abstract class AbstractFunctionModel
     public function getFileName()
     {
         if ($this->isInternal()) {
-            return FALSE;
+            return false;
         }
         return $this->struct['file'];
     }
@@ -65,11 +64,13 @@ abstract class AbstractFunctionModel
     {
         if ($this->struct['extension'] === 'user') {
             throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.', 405
+                'Extension ' . $this->struct['extension'] . ' does not exist.',
+                405
             );
         } elseif (!extension_loaded($this->struct['extension'])) {
             throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.', 404
+                'Extension ' . $this->struct['extension'] . ' does not exist.',
+                404
             );
         }
 
@@ -85,8 +86,8 @@ abstract class AbstractFunctionModel
     {
         try {
             $name = $this->getExtension()->getName();
-        }
-        catch (ModelException $e) {
+
+        } catch (ModelException $e) {
             if ($e->getCode() === 404) {
                 throw $e;  // re-throws original exception
             }
@@ -171,7 +172,7 @@ abstract class AbstractFunctionModel
     {
         $parameters = array();
 
-        foreach($this->struct['arguments'] as $argument) {
+        foreach ($this->struct['arguments'] as $argument) {
             $name = $argument['name'];
             unset($argument['name']);
             if (isset($argument['typeHint'])
@@ -223,5 +224,4 @@ abstract class AbstractFunctionModel
     {
         return ($this->getExtensionName() !== 'user');
     }
-
 }

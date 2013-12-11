@@ -23,7 +23,7 @@ class InterfaceToken extends TokenWithScope
     public function getParent()
     {
         if (!$this->hasParent()) {
-            return FALSE;
+            return false;
         }
 
         $i         = $this->id + 6;
@@ -54,8 +54,10 @@ class InterfaceToken extends TokenWithScope
         for ($i = $this->id; $i; --$i) {
             if ($this->tokenStream[$i][0] == 'T_NAMESPACE') {
                 $ns = new NamespaceToken(
-                    $this->tokenStream[$i][1], $this->tokenStream[$i][2],
-                    $i, $this->tokenStream
+                    $this->tokenStream[$i][1],
+                    $this->tokenStream[$i][2],
+                    $i,
+                    $this->tokenStream
                 );
                 $result['namespace'] = $ns->getName();
                 break;
@@ -78,7 +80,8 @@ class InterfaceToken extends TokenWithScope
 
         if (empty($result['fullPackage'])) {
             $result['fullPackage'] = $this->arrayToName(
-              explode('_', str_replace('\\', '_', $className)), '.'
+                explode('_', str_replace('\\', '_', $className)),
+                '.'
             );
         }
 
@@ -103,7 +106,8 @@ class InterfaceToken extends TokenWithScope
         if ((isset($this->tokenStream[$this->id + 4])
             && $this->tokenStream[$this->id + 4][0] == 'T_IMPLEMENTS') ||
            (isset($this->tokenStream[$this->id + 8])
-            && $this->tokenStream[$this->id + 8][0] == 'T_IMPLEMENTS')){
+            && $this->tokenStream[$this->id + 8][0] == 'T_IMPLEMENTS')
+        ) {
             return true;
         }
         return false;
@@ -111,7 +115,7 @@ class InterfaceToken extends TokenWithScope
 
     public function getInterfaces()
     {
-        if ($this->interfaces !== NULL) {
+        if ($this->interfaces !== null) {
             return $this->interfaces;
         }
 

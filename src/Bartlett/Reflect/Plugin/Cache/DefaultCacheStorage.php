@@ -180,5 +180,4 @@ class DefaultCacheStorage implements CacheStorageInterface
         $request = array('source' => $source);
         $this->delete($request);
     }
-
 }

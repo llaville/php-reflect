@@ -13,9 +13,7 @@ use Bartlett\Reflect\Builder;
 use Bartlett\Reflect\Tokenizer\DefaultTokenizer;
 use Bartlett\Reflect\Filter\FilenameFilter;
 
-class Reflect
-    extends AbstractDispatcher
-    implements ManagerInterface
+class Reflect extends AbstractDispatcher implements ManagerInterface
 {
     protected $pm;
     protected $parsers;
@@ -32,7 +30,7 @@ class Reflect
      */
     public function __construct()
     {
-       $this->parsers = new \SplDoublyLinkedList;
+        $this->parsers = new \SplDoublyLinkedList;
     }
 
     public function getOptions()
@@ -101,14 +99,18 @@ class Reflect
             );
         }
 
-        foreach($this->getProviderManager()->all() as $alias => $provider) {
+        foreach ($this->getProviderManager()->all() as $alias => $provider) {
             if (!in_array($alias, $providers)) {
                 continue;
             }
             // creates the data model of sources referenced by the $alias name
             foreach ($provider as $uri => $file) {
-                $event = $this->dispatch('reflect.progress',
-                    array('source' => $alias, 'filename' => $file->getRealpath())
+                $event = $this->dispatch(
+                    'reflect.progress',
+                    array(
+                        'source' => $alias,
+                        'filename' => $file->getRealpath()
+                    )
                 );
                 if (isset($event['notModified'])) {
                     // uses cached response
@@ -117,14 +119,16 @@ class Reflect
                     // live request
                     $this->parseFile($file);
 
-                    foreach($this->builder->getPackages() as $package) {
+                    foreach ($this->builder->getPackages() as $package) {
                         $iterator = new FilenameFilter(
-                            $package->getIterator(), $file->getRealpath()
+                            $package->getIterator(),
+                            $file->getRealpath()
                         );
 
                         if (iterator_count($iterator) > 0) {
                             // end of parsing the file, and sends results to observers
-                            $this->dispatch('reflect.success',
+                            $this->dispatch(
+                                'reflect.success',
                                 array(
                                     'source'   => $alias,
                                     'filename' => $file->getRealpath(),
@@ -223,16 +227,16 @@ class Reflect
         $this->tokenizer->setSourceFile($file);
 
         $aliases          = array();
-        $namespace        = FALSE;
-        $namespaceEndLine = FALSE;
-        $class            = FALSE;
-        $classEndLine     = FALSE;
-        $interface        = FALSE;
-        $interfaceEndLine = FALSE;
-        $trait            = FALSE;
-        $traitEndLine     = FALSE;
-        $function         = FALSE;
-        $functionEndLine  = FALSE;
+        $namespace        = false;
+        $namespaceEndLine = false;
+        $class            = false;
+        $classEndLine     = false;
+        $interface        = false;
+        $interfaceEndLine = false;
+        $trait            = false;
+        $traitEndLine     = false;
+        $function         = false;
+        $functionEndLine  = false;
 
         $tokenStack = $this->tokenizer->getTokens();
 
@@ -296,35 +300,35 @@ class Reflect
             );
 
             if ('T_CLOSE_CURLY' === $tokenName) {
-                if ($namespaceEndLine !== FALSE
+                if ($namespaceEndLine !== false
                     && $namespaceEndLine == $line
                 ) {
-                    $namespace        = FALSE;
-                    $namespaceEndLine = FALSE;
+                    $namespace        = false;
+                    $namespaceEndLine = false;
                 }
-                if ($classEndLine !== FALSE
+                if ($classEndLine !== false
                     && $classEndLine == $line
                 ) {
-                    $class        = FALSE;
-                    $classEndLine = FALSE;
+                    $class        = false;
+                    $classEndLine = false;
                 }
-                if ($interfaceEndLine !== FALSE
+                if ($interfaceEndLine !== false
                     && $interfaceEndLine == $line
                 ) {
-                    $interface        = FALSE;
-                    $interfaceEndLine = FALSE;
+                    $interface        = false;
+                    $interfaceEndLine = false;
                 }
-                if ($traitEndLine !== FALSE
+                if ($traitEndLine !== false
                     && $traitEndLine == $line
                 ) {
-                    $trait        = FALSE;
-                    $traitEndLine = FALSE;
+                    $trait        = false;
+                    $traitEndLine = false;
                 }
-                if ($functionEndLine !== FALSE
+                if ($functionEndLine !== false
                     && $functionEndLine == $line
                 ) {
-                    $function        = FALSE;
-                    $functionEndLine = FALSE;
+                    $function        = false;
+                    $functionEndLine = false;
                 }
 
             } else {
@@ -335,15 +339,17 @@ class Reflect
                     'filename' => $file->getRealpath(),
                 );
 
-                foreach($this->parsers as $parser) {
+                foreach ($this->parsers as $parser) {
                     $resp = $parser->handle($request);
 
                     if ($resp === false) {
-                        $this->dispatch('parser.error',
+                        $this->dispatch(
+                            'parser.error',
                             array('request' => $request, 'parser' => $parser)
                         );
                     } else {
-                        $this->dispatch('parser.success',
+                        $this->dispatch(
+                            'parser.success',
                             array('request' => $request, 'response' => $resp)
                         );
                     }
@@ -353,7 +359,8 @@ class Reflect
                         $token = $resp;
                     }
                 }
-                $this->dispatch('parser.complete',
+                $this->dispatch(
+                    'parser.complete',
                     array('request' => $request, 'response' => $token)
                 );
 
@@ -363,7 +370,7 @@ class Reflect
                         $namespaceEndLine = $token->getEndLine();
 
                     } elseif ($tokenName == 'T_USE') {
-                        if ($class !== FALSE) {
+                        if ($class !== false) {
                             // warning: don't set $trait value
                             $traitEndLine = $token->getEndLine();
                         } else {
@@ -392,5 +399,4 @@ class Reflect
             }
         }
     }
-
 }

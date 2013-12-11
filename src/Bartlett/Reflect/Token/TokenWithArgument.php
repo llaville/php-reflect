@@ -8,7 +8,7 @@ abstract class TokenWithArgument extends TokenWithScope
 
     public function getArguments()
     {
-        if ($this->arguments !== NULL) {
+        if ($this->arguments !== null) {
             return $this->arguments;
         }
 
@@ -26,9 +26,9 @@ abstract class TokenWithArgument extends TokenWithScope
             } else {
                 // ampersand before function-name
                 if ($this->tokenStream[$i+1][0] == 'T_AMPERSAND') {
-                  $i = $i + 3;
+                    $i = $i + 3;
                 } else {
-                  $i = $i + 2;
+                    $i = $i + 2;
                 }
             }
         }
@@ -70,7 +70,7 @@ abstract class TokenWithArgument extends TokenWithScope
                 }
 
             } elseif ($this->tokenStream[$i][0] == 'T_AMPERSAND') {
-                $nextArgument['byRef'] = TRUE;
+                $nextArgument['byRef'] = true;
 
             } elseif ($this->tokenStream[$i][0] == 'T_VARIABLE') {
                 $nextArgument['name'] = ltrim($this->tokenStream[$i][1], '$');
@@ -78,8 +78,7 @@ abstract class TokenWithArgument extends TokenWithScope
             } elseif ($this->tokenStream[$i][0] == 'T_EQUAL') {
                 // just do nothing - next tokens will contain the defaultValue
 
-            } elseif (
-                ($this->tokenStream[$i][0] == 'T_STRING') ||
+            } elseif (($this->tokenStream[$i][0] == 'T_STRING') ||
                 ($this->tokenStream[$i][0] == 'T_CONSTANT_ENCAPSED_STRING') ||
                 ($this->tokenStream[$i][0] == 'T_LNUMBER')
             ) {

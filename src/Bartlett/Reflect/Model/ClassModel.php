@@ -9,9 +9,7 @@ use Bartlett\Reflect\Exception\ModelException;
 /**
  * The ClassModel class reports information about a class.
  */
-class ClassModel
-    extends AbstractModel
-    implements Visitable
+class ClassModel extends AbstractModel implements Visitable
 {
     /**
      * Constructs a new ClassModel instance.
@@ -34,14 +32,14 @@ class ClassModel
                 $this->struct['interfaces'],
                 $data['interfaces']
             );
-        }
-        elseif (isset($data['constants'])) {
+
+        } elseif (isset($data['constants'])) {
             $data['constants'] = array_merge_recursive(
                 $this->struct['constants'],
                 $data['constants']
             );
-        }
-        elseif (isset($data['methods'])) {
+
+        } elseif (isset($data['methods'])) {
             $data['methods'] = array_merge_recursive(
                 $this->struct['methods'],
                 $data['methods']
@@ -158,11 +156,13 @@ class ClassModel
     {
         if ($this->struct['extension'] === 'user') {
             throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.', 405
+                'Extension ' . $this->struct['extension'] . ' does not exist.',
+                405
             );
         } elseif (!extension_loaded($this->struct['extension'])) {
             throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.', 404
+                'Extension ' . $this->struct['extension'] . ' does not exist.',
+                404
             );
         }
 
@@ -178,8 +178,8 @@ class ClassModel
     {
         try {
             $name = $this->getExtension()->getName();
-        }
-        catch (ModelException $e) {
+
+        } catch (ModelException $e) {
             if ($e->getCode() === 404) {
                 throw $e;  // re-throws original exception
             }
@@ -303,7 +303,7 @@ class ClassModel
      */
     public function isInterface()
     {
-        return $this->struct['interface'] !== FALSE;
+        return $this->struct['interface'] !== false;
     }
 
     /**
@@ -313,7 +313,7 @@ class ClassModel
      */
     public function isTrait()
     {
-        return $this->struct['trait'] !== FALSE;
+        return $this->struct['trait'] !== false;
     }
 
     /**
@@ -355,17 +355,17 @@ class ClassModel
     public function isCloneable()
     {
         if ($this->isTrait() || $this->isInterface() || $this->isAbstract()) {
-            return FALSE;
+            return false;
         }
 
         $method = '__clone';
         if ($this->hasMethod($method)) {
             if ($this->getMethod($method)->isPublic()) {
-                return TRUE;
+                return true;
             }
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -386,18 +386,18 @@ class ClassModel
     public function isInstantiable()
     {
         if ($this->isTrait() || $this->isInterface() || $this->isAbstract()) {
-            return FALSE;
+            return false;
         }
 
-        foreach(array('__construct', $this->getShortName()) as $method) {
+        foreach (array('__construct', $this->getShortName()) as $method) {
             if ($this->hasMethod($method)) {
                 if ($this->getMethod($method)->isPublic()) {
-                    return TRUE;
+                    return true;
                 }
-                return FALSE;
+                return false;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -412,7 +412,7 @@ class ClassModel
     {
         if (in_array($class, $this->struct['interfaces'])) {
             // checks first if implement a specified interface
-            return TRUE;
+            return true;
         }
 
         $parent = $this->getParentClass();
@@ -421,12 +421,12 @@ class ClassModel
 
             if ($parent->getName() === $class) {
                 // checks class name
-                return TRUE;
+                return true;
             }
             // then checks interfaces implemented
             return in_array($class, $parent->getInterfaceNames());
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -461,7 +461,7 @@ class ClassModel
                 count($constants),
                 $eol
             );
-            foreach($constants as $constant) {
+            foreach ($constants as $constant) {
                 $str .= '    ' . $constant->__toString();
             }
             $str .= '  }' . $eol;
@@ -475,7 +475,7 @@ class ClassModel
                 count($methods),
                 $eol
             );
-            foreach($methods as $method) {
+            foreach ($methods as $method) {
                 $str .= '    ';
                 // re-indent each method ouput
                 $lines = explode($eol, $method->__toString());
@@ -491,5 +491,4 @@ class ClassModel
 
         return $str;
     }
-
 }

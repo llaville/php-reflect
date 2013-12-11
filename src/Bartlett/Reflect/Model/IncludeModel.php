@@ -5,9 +5,7 @@ namespace Bartlett\Reflect\Model;
 use Bartlett\Reflect\Model\AbstractModel;
 use Bartlett\Reflect\Model\Visitable;
 
-class IncludeModel
-    extends AbstractModel
-    implements Visitable
+class IncludeModel extends AbstractModel implements Visitable
 {
     private $filepath;
 
@@ -140,5 +138,4 @@ class IncludeModel
             $eol
         );
     }
-
 }

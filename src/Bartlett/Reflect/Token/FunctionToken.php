@@ -11,25 +11,25 @@ class FunctionToken extends TokenWithArgument
 
     public function getName()
     {
-        if ($this->name !== NULL) {
+        if ($this->name !== null) {
             return $this->name;
         }
-        $this->closure = FALSE;
+        $this->closure = false;
 
         for ($i = $this->id + 1; $i < count($this->tokenStream); $i++) {
             if ($this->tokenStream[$i][0] == 'T_STRING') {
                 $this->name = $this->tokenStream[$i][1];
                 break;
-            }
-            elseif ($this->tokenStream[$i][0] == 'T_AMPERSAND'
+
+            } elseif ($this->tokenStream[$i][0] == 'T_AMPERSAND'
                 && $this->tokenStream[$i][0] == 'T_STRING'
             ) {
                 $this->name = $this->tokenStream[$i+1][1];
                 break;
-            }
-            elseif ($this->tokenStream[$i][0] == 'T_OPEN_BRACKET') {
+
+            } elseif ($this->tokenStream[$i][0] == 'T_OPEN_BRACKET') {
                 $this->name = '';
-                $this->closure = TRUE;
+                $this->closure = true;
                 break;
             }
         }
@@ -39,7 +39,7 @@ class FunctionToken extends TokenWithArgument
 
     public function getCCN()
     {
-        if ($this->ccn !== NULL) {
+        if ($this->ccn !== null) {
             return $this->ccn;
         }
 
@@ -70,7 +70,7 @@ class FunctionToken extends TokenWithArgument
 
     public function getSignature()
     {
-        if ($this->signature !== NULL) {
+        if ($this->signature !== null) {
             return $this->signature;
         }
 
