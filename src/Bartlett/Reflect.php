@@ -109,7 +109,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                     'reflect.progress',
                     array(
                         'source' => $alias,
-                        'filename' => $file->getRealpath()
+                        'filename' => $file->getPathname()
                     )
                 );
                 if (isset($event['notModified'])) {
@@ -122,7 +122,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                     foreach ($this->builder->getPackages() as $package) {
                         $iterator = new FilenameFilter(
                             $package->getIterator(),
-                            $file->getRealpath()
+                            $file->getPathname()
                         );
 
                         if (iterator_count($iterator) > 0) {
@@ -131,7 +131,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                                 'reflect.success',
                                 array(
                                     'source'   => $alias,
-                                    'filename' => $file->getRealpath(),
+                                    'filename' => $file->getPathname(),
                                     'package'  => $package->getName(),
                                     'data'     => iterator_to_array($iterator)
                                 )
@@ -336,7 +336,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                 $request = array(
                     'context'  => $context,
                     'tokens'   => $tokenStack,
-                    'filename' => $file->getRealpath(),
+                    'filename' => $file->getPathname(),
                 );
 
                 foreach ($this->parsers as $parser) {
