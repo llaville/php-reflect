@@ -69,8 +69,8 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         try {
             $alias = 'SF2Finder';
             $pm->get($alias);
-        }
-        catch(\OutOfRangeException $expected) {
+
+        } catch (\OutOfRangeException $expected) {
             $this->assertEquals(
                 'There is no "' . $alias . '" provider registered.',
                 $expected->getMessage(),
@@ -98,8 +98,8 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
 
         try {
             $provider = $pm->get($alias);
-        }
-        catch(\OutOfRangeException $expected) {
+
+        } catch (\OutOfRangeException $expected) {
             $this->fail(
                 'An unexpected \OutOfRangeException exception has been raised.'
             );
@@ -147,8 +147,8 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         try {
             $alias = '???';
             $pm->set($alias, new SymfonyFinderProvider(self::$finder));
-        }
-        catch(\InvalidArgumentException $expected) {
+
+        } catch (\InvalidArgumentException $expected) {
             $this->assertEquals(
                 'The provider name "' . $alias . '" is invalid.',
                 $expected->getMessage(),
@@ -173,8 +173,8 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
 
         try {
             $pm->remove('SF2Finder');
-        }
-        catch(\Exception $e) {
+
+        } catch (\Exception $e) {
             $this->fail(
                 'An unexpected exception has been raised.'
             );
@@ -199,8 +199,8 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         try {
             $alias = 'SF2';
             $pm->remove($alias, new SymfonyFinderProvider(self::$finder));
-        }
-        catch(\OutOfRangeException $expected) {
+
+        } catch (\OutOfRangeException $expected) {
             $this->assertEquals(
                 'There is no "' . $alias . '" provider registered.',
                 $expected->getMessage(),
@@ -231,5 +231,4 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
             'Providers registered count does not match.'
         );
     }
-
 }

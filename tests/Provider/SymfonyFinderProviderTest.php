@@ -111,8 +111,8 @@ class SymfonyFinderProviderTest extends \PHPUnit_Framework_TestCase
 
         try {
             $provider($uri);
-        }
-        catch(\OutOfRangeException $expected) {
+
+        } catch (\OutOfRangeException $expected) {
             $this->assertEquals(
                 "$uri does not exist in this provider.",
                 $expected->getMessage(),
@@ -125,5 +125,4 @@ class SymfonyFinderProviderTest extends \PHPUnit_Framework_TestCase
             ' has not been raised.'
         );
     }
-
 }

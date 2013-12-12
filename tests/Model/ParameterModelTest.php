@@ -75,7 +75,7 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
             'baz',
             self::$classes[$c]->getMethods()[$m]->getParameters()[$p]->getName(),
             self::$classes[$c]->getMethods()[$m]->getName()
-                . ", parameter #$p name does not match."
+            . ", parameter #$p name does not match."
         );
     }
 
@@ -113,7 +113,7 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(
             self::$interfaces[$i]->getMethods()[$m]->getParameters()[$p]->allowsNull(),
             self::$interfaces[$i]->getMethods()[$m]->getName()
-                . ", parameter #$p does not allow null with type hint without null default value."
+            . ", parameter #$p does not allow null with type hint without null default value."
         );
     }
 
@@ -133,7 +133,7 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(
             self::$classes[$c]->getMethods()[$m]->getParameters()[$p]->allowsNull(),
             self::$classes[$c]->getMethods()[$m]->getName()
-                . ", parameter #$p allows null with type hint and null default value."
+            . ", parameter #$p allows null with type hint and null default value."
         );
     }
 
@@ -153,7 +153,7 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(
             self::$classes[$c]->getMethods()[$m]->getParameters()[$p]->allowsNull(),
             self::$classes[$c]->getMethods()[$m]->getName()
-                . ", parameter #$p allows null without type hint."
+            . ", parameter #$p allows null without type hint."
         );
     }
 
@@ -260,7 +260,7 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
             'TRUE',
             self::$classes[$c]->getMethods()[$m]->getParameters()[$p]->getDefaultValue(),
             self::$classes[$c]->getMethods()[$m]->getName()
-                . ", parameter #$p default value does not match."
+            . ", parameter #$p default value does not match."
         );
     }
 
@@ -295,8 +295,8 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
             $p = 0;  // parameter $someparam
 
             self::$functions[$f]->getParameters()[$p]->getDefaultValue();
-        }
-        catch(ModelException $expected) {
+
+        } catch (ModelException $expected) {
             $this->assertEquals(
                 'Parameter #0 [$someparam] is not optional.',
                 $expected->getMessage(),
@@ -346,9 +346,7 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
             'Parameter #0 [ <optional> stdClass $param = NULL ]' . "\n",
             self::$classes[$c]->getMethods()[$m]->getParameters()[$p]->__toString(),
             self::$classes[$c]->getMethods()[$m]->getName()
-                . ", parameter #$p string representation does not match."
-
+            . ", parameter #$p string representation does not match."
         );
     }
-
 }

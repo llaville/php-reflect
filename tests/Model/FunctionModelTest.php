@@ -78,7 +78,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
             $expected,
             self::$classes[$c]->getMethods()[$m]->getDocComment(),
             self::$classes[$c]->getMethods()[$m]->getName()
-                . ' doc comment does not match.'
+            . ' doc comment does not match.'
         );
     }
 
@@ -346,5 +346,4 @@ EOS;
             self::$functions[$f]->__toString()
         );
     }
-
 }

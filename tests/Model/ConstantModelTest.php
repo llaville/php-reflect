@@ -376,5 +376,4 @@ EOS;
             self::$constants[$c]->__toString()
         );
     }
-
 }

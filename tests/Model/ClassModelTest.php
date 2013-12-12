@@ -224,8 +224,8 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
             $k = 'FOO';  // constant FOO is not implemented
 
             self::$classes[$c]->getConstant($k);
-        }
-        catch(ModelException $expected) {
+
+        } catch (ModelException $expected) {
             $this->assertEquals(
                 "Constant [$k] is not defined.",
                 $expected->getMessage(),
@@ -304,8 +304,8 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
             $m = 'nemo'; // method nemo is not implemented
 
             self::$classes[$c]->getMethod($m);
-        }
-        catch(ModelException $expected) {
+
+        } catch (ModelException $expected) {
             $this->assertEquals(
                 "Method Bar::$m does not exist.",
                 $expected->getMessage(),
@@ -622,5 +622,4 @@ EOS;
             self::$classes[$c]->__toString()
         );
     }
-
 }
