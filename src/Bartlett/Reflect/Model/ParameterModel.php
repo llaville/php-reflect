@@ -1,14 +1,38 @@
 <?php
+/**
+ * ParameterModel represents a parameter definition.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Exception\ModelException;
 
+/**
+ * The ParameterModel class reports information about a parameter.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 class ParameterModel extends AbstractModel implements Visitable
 {
-
     /**
      * Constructs a new ParameterModel instance.
+     *
+     * @param string $name Name of the parameter
      */
     public function __construct($name)
     {

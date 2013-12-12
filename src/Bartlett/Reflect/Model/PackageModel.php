@@ -1,13 +1,38 @@
 <?php
+/**
+ * PackageModel represents a package/namespace definition.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Model;
 
+/**
+ * The PackageModel class reports information about a package/namespace.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 class PackageModel extends AbstractModel implements Visitable, \IteratorAggregate
 {
     protected $elements = array();
 
     /**
      * Constructs a new PackageModel instance.
+     *
+     * @param string $name Name of the package or namespace
      */
     public function __construct($name)
     {
@@ -21,11 +46,23 @@ class PackageModel extends AbstractModel implements Visitable, \IteratorAggregat
         );
     }
 
+    /**
+     * Returns internal iterator that allow to iterate over array of elements
+     *
+     * @return iterator
+     */
     public function getIterator()
     {
         return new \ArrayIterator($this->elements);
     }
 
+    /**
+     * Adds a new element that is part of the namespace
+     *
+     * @param AbstractModel $element A Model representation of the new element
+     *
+     * @return void
+     */
     public function addElement($element)
     {
         $this->elements[] = $element;

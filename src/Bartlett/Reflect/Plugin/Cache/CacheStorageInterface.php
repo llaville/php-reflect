@@ -1,14 +1,43 @@
 <?php
+/**
+ * Common interface to all storage.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Plugin\Cache;
 
 /**
  * Interface used to cache FILE parses
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Interface available since Release 2.0.0RC1
  */
 interface CacheStorageInterface
 {
     /**
-     * Get a response from the cache for a request
+     * Checks if cache exists for a request.
+     *
+     * @param array $request Request data to check for
+     *
+     * @return bool TRUE if a response exists in cache, FALSE otherwise
+     */
+    public function exists($request);
+
+    /**
+     * Get a response from the cache for a request.
      *
      * @param array $request Request data to read from cache
      *
@@ -17,23 +46,30 @@ interface CacheStorageInterface
     public function fetch($request);
 
     /**
-     * Cache a FILE parse
+     * Cache a FILE parse.
      *
      * @param array $request Request being cached
+     *
+     * @return void
      */
     public function cache($request);
 
     /**
-     * Deletes cache entries that match a request
+     * Deletes cache entries that match a request.
      *
      * @param array $request Request to delete from cache
+     *
+     * @return void
      */
     public function delete($request);
 
     /**
-     * Purge all cache entries for a given data source
+     * Purge all cache entries for a given data source.
      *
-     * @param string $dataSource
+     * @param string $source Name that identify a data source
+     *                       (see ProviderManager)
+     *
+     * @return void
      */
-    public function purge($dataSource);
+    public function purge($source);
 }

@@ -1,12 +1,36 @@
 <?php
+/**
+ * FunctionModel represents a function definition.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Model;
 
+/**
+ * The FunctionModel class reports information about a function.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 class FunctionModel extends AbstractFunctionModel implements Visitable
 {
-
     /**
      * Constructs a new FunctionModel instance.
+     *
+     * @param string $qualifiedName The full qualified name of the function
      */
     public function __construct($qualifiedName)
     {

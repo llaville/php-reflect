@@ -1,15 +1,40 @@
 <?php
+/**
+ * ConstantModel represents a constant definition.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Exception\ModelException;
 
+/**
+ * The ConstantModel class reports information about a constant.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 class ConstantModel extends AbstractModel implements Visitable
 {
     protected $short_name;
 
     /**
      * Constructs a new ConstantModel instance.
+     *
+     * @param string $qualifiedName The full qualified name of the constant
      */
     public function __construct($qualifiedName)
     {
@@ -28,6 +53,13 @@ class ConstantModel extends AbstractModel implements Visitable
         }
     }
 
+    /**
+     * Updates the content of current instance of ConstantModel.
+     *
+     * @param array $data New data to merge with a previous content.
+     *
+     * @return void
+     */
     public function update($data)
     {
         if ($data['magic']) {

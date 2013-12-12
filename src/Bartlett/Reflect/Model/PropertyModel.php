@@ -1,14 +1,38 @@
 <?php
+/**
+ * PropertyModel represents a class property definition.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Exception\ModelException;
 
+/**
+ * The PropertyModel class reports information about a class property.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 class PropertyModel extends AbstractModel implements Visitable
 {
-
     /**
      * Constructs a new PropertyModel instance.
+     *
+     * @param string $qualifiedName The full qualified name of the class property
      */
     public function __construct($qualifiedName)
     {

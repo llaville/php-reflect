@@ -1,4 +1,16 @@
 <?php
+/**
+ * Plugin to cache parsing results.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Plugin\Cache;
 
@@ -7,6 +19,14 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Plugin to enable the caching of all data source parser.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
  */
 class CachePlugin implements EventSubscriberInterface
 {
@@ -18,7 +38,7 @@ class CachePlugin implements EventSubscriberInterface
     /**
      * Initializes the cache plugin.
      *
-     * @param CacheStorageInterface $cache
+     * @param CacheStorageInterface $cache Object used to cache parsing results
      */
     public function __construct(CacheStorageInterface $cache)
     {
@@ -26,7 +46,9 @@ class CachePlugin implements EventSubscriberInterface
     }
 
     /**
-     * EventSubscriberInterface implementation
+     * Returns an array of event names this subscriber wants to listen to.
+     *
+     * @return array The event names to listen to
      */
     public static function getSubscribedEvents()
     {
@@ -37,9 +59,11 @@ class CachePlugin implements EventSubscriberInterface
     }
 
     /**
-     * Check if results in cache will satisfy the source before parsing
+     * Checks if results in cache will satisfy the source before parsing.
      *
-     * @param Event $event
+     * @param Event $event Current event emitted by the manager (Reflect class)
+     *
+     * @return void
      */
     public function onReflectProgress(Event $event)
     {
@@ -49,9 +73,11 @@ class CachePlugin implements EventSubscriberInterface
     }
 
     /**
-     * If possible, store results in cache after source parsing
+     * If possible, store results in cache after source parsing.
      *
-     * @param Event $event
+     * @param Event $event Current event emitted by the manager (Reflect class)
+     *
+     * @return void
      */
     public function onReflectSuccess(Event $event)
     {

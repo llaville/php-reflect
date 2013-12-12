@@ -1,9 +1,32 @@
 <?php
+/**
+ * A parent class for FunctionModel.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Exception\ModelException;
 
+/**
+ * A parent class for concrete FunctionModel.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 abstract class AbstractFunctionModel extends AbstractModel
 {
     protected $short_name;
@@ -108,6 +131,8 @@ abstract class AbstractFunctionModel extends AbstractModel
 
     /**
      * Get the namespace name where the class or user-function is defined.
+     *
+     * @return string
      */
     public function getNamespaceName()
     {

@@ -1,9 +1,29 @@
 <?php
+/**
+ * Default cache storage implementation.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Plugin\Cache;
 
 /**
- * Default cache storage implementation
+ * Default cache storage implementation.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
  */
 class DefaultCacheStorage implements CacheStorageInterface
 {
@@ -32,6 +52,8 @@ class DefaultCacheStorage implements CacheStorageInterface
     private $key;
 
     /**
+     * Constructs a default cache storage.
+     *
      * @param CacheAdapterInterface $adapter Cache adapter used to store cache data
      * @param int                   $ttl     (optional) Default cache TTL
      */
@@ -42,11 +64,11 @@ class DefaultCacheStorage implements CacheStorageInterface
     }
 
     /**
-     * Checks if cache exists for a request
+     * Checks if cache exists for a request.
      *
-     * @param RequestInterface $request
+     * @param array $request Request data to check for
      *
-     * @return bool
+     * @return bool TRUE if a response exists in cache, FALSE otherwise
      */
     public function exists($request)
     {
@@ -60,11 +82,11 @@ class DefaultCacheStorage implements CacheStorageInterface
     }
 
     /**
-     * Get a Response from the cache for a request
+     * Get a response from the cache for a request.
      *
-     * @param RequestInterface $request
+     * @param array $request Request data to read from cache
      *
-     * @return null|Response
+     * @return mixed
      */
     public function fetch($request)
     {
@@ -114,9 +136,11 @@ class DefaultCacheStorage implements CacheStorageInterface
     }
 
     /**
-     * Cache a FILE parse
+     * Cache a FILE parse.
      *
-     * @param RequestInterface $request  Request being cached
+     * @param array $request Request being cached
+     *
+     * @return void
      */
     public function cache($request)
     {
@@ -140,11 +164,14 @@ class DefaultCacheStorage implements CacheStorageInterface
 
         // update the manifest
         $key = sha1_file($request['filename']);
-        array_push($entries, array(
-            'expiration' => $currentTime + $this->maxlifetime,
-            'cacheData'  => $key,
-            'sourceFile' => $request['filename']
-        ));
+        array_push(
+            $entries,
+            array(
+                'expiration' => $currentTime + $this->maxlifetime,
+                'cacheData'  => $key,
+                'sourceFile' => $request['filename']
+            )
+        );
         $this->cache->save($this->key, serialize($entries));
 
         // save user data
@@ -152,9 +179,11 @@ class DefaultCacheStorage implements CacheStorageInterface
     }
 
     /**
-     * Deletes cache entries that match a request
+     * Deletes cache entries that match a request.
      *
-     * @param RequestInterface $request Request to delete from cache
+     * @param array $request Request to delete from cache
+     *
+     * @return void
      */
     public function delete($request)
     {
@@ -171,9 +200,11 @@ class DefaultCacheStorage implements CacheStorageInterface
     }
 
     /**
-     * Purge all cache entries for a given data source
+     * Purge all cache entries for a given data source.
      *
-     * @param string $source
+     * @param string $source Name that identify a data source
+     *
+     * @return void
      */
     public function purge($source)
     {

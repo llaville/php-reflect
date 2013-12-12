@@ -1,4 +1,16 @@
 <?php
+/**
+ * ClassModel represents a class definition.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Model;
 
@@ -8,11 +20,21 @@ use Bartlett\Reflect\Exception\ModelException;
 
 /**
  * The ClassModel class reports information about a class.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
  */
 class ClassModel extends AbstractModel implements Visitable
 {
     /**
      * Constructs a new ClassModel instance.
+     *
+     * @param string $qualifiedName The full qualified name of the class
      */
     public function __construct($qualifiedName)
     {
@@ -25,6 +47,13 @@ class ClassModel extends AbstractModel implements Visitable
         $this->struct['methods']    = array();
     }
 
+    /**
+     * Updates the content of current instance of ClassModel.
+     *
+     * @param array $data New data to merge with a previous content.
+     *
+     * @return void
+     */
     public function update($data)
     {
         if (isset($data['interfaces'])) {
@@ -211,6 +240,8 @@ class ClassModel extends AbstractModel implements Visitable
     /**
      * Gets the defined constant value.
      *
+     * @param string $name The name of the constant
+     *
      * @return mixed constant value
      * @throws ModelException if constant is not defined
      */
@@ -229,6 +260,8 @@ class ClassModel extends AbstractModel implements Visitable
 
     /**
      * Checks whether a specific constant is defined in a class.
+     *
+     * @param string $name The name of the constant being checked for
      *
      * @return bool TRUE if it has the constant, otherwise FALSE
      */
@@ -267,6 +300,8 @@ class ClassModel extends AbstractModel implements Visitable
 
     /**
      * Checks whether a specific method is defined in a class.
+     *
+     * @param string $name The name of the method being checked for
      *
      * @return bool TRUE if it has the method, otherwise FALSE
      */

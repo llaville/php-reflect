@@ -1,16 +1,41 @@
 <?php
+/**
+ * IncludeModel represents an include definition.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Model\AbstractModel;
 use Bartlett\Reflect\Model\Visitable;
 
+/**
+ * The IncludeModel class reports information about an include.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 class IncludeModel extends AbstractModel implements Visitable
 {
     private $filepath;
 
     /**
      * Constructs a new IncludeModel instance.
+     *
+     * @param string $filepath The full path to the file to include
      */
     public function __construct($filepath)
     {
