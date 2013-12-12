@@ -1,9 +1,34 @@
 <?php
+/**
+ * Cache Adapter interface that should be implemented by all adapters.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Cache;
 
 /**
  * Cache adapters allow Reflect to utilize various frameworks for caching parses results.
+ *
+ * Reflect doesn't try to reinvent the wheel when it comes to caching.
+ * Plenty of other frameworks have excellent solutions in place that you are probably
+ * already using in your applications. Reflect uses adapters for caching.
+ * The cache plugin requires a cache adapter so that is can store parses results in a cache.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Interface available since Release 2.0.0RC1
  */
 interface CacheAdapterInterface
 {

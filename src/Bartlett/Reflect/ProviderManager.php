@@ -1,9 +1,32 @@
 <?php
+/**
+ * Data source provider.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect;
 
 use Bartlett\Reflect\Provider\ProviderInterface;
 
+/**
+ * Manager that handle your different data sources.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 class ProviderManager implements \Countable
 {
     /**
@@ -14,7 +37,7 @@ class ProviderManager implements \Countable
     /**
      * Create instance of the new provider manager
      *
-     * @return object
+     * @return ProviderManager
      */
     public function __construct()
     {
@@ -78,6 +101,7 @@ class ProviderManager implements \Countable
      * @param string            $alias    The provider name
      * @param ProviderInterface $provider The data source provider
      *
+     * @return void
      * @throws \InvalidArgumentException If the provider name is invalid
      */
     public function set($alias, ProviderInterface $provider)
@@ -92,6 +116,8 @@ class ProviderManager implements \Countable
 
     /**
      * Removes a registered provider.
+     *
+     * @param string $alias The provider name of instance to remove
      *
      * @return void
      * @throws \OutOfRangeException If there is no provider by that name

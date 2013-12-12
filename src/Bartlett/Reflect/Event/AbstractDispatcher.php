@@ -1,4 +1,16 @@
 <?php
+/**
+ * Event-driven architecture.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Event;
 
@@ -8,7 +20,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class that holds an event dispatcher
+ * Class that holds an event dispatcher.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
  */
 class AbstractDispatcher implements DispatcherInterface
 {
@@ -18,7 +38,12 @@ class AbstractDispatcher implements DispatcherInterface
     protected $eventDispatcher;
 
     /**
-     * {@inheritdoc}
+     * Set the EventDispatcher of the request
+     *
+     * @param EventDispatcherInterface $eventDispatcher Instance of the event
+     *        dispatcher
+     *
+     * @return self for a fuent interface
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
@@ -27,7 +52,9 @@ class AbstractDispatcher implements DispatcherInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get the EventDispatcher of the request
+     *
+     * @return Symfony\Component\EventDispatcher\EventDispatcher
      */
     public function getEventDispatcher()
     {
@@ -38,15 +65,28 @@ class AbstractDispatcher implements DispatcherInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Dispatches an event to all registered listeners.
+     *
+     * @param string $eventName The name of the event to dispatch
+     * @param array  $context   (optional) Contextual event data
+     *
+     * @return Symfony\Component\EventDispatcher\GenericEvent
      */
     public function dispatch($eventName, array $context = array())
     {
-        return $this->getEventDispatcher()->dispatch($eventName, new GenericEvent($this, $context));
+        return $this->getEventDispatcher()->dispatch(
+            $eventName,
+            new GenericEvent($this, $context)
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * Adds an event subscriber.
+     *
+     * @param EventSubscriberInterface $subscriber The subscriber which is
+     *        interested by events
+     *
+     * @return self for a fuent interface
      */
     public function addSubscriber(EventSubscriberInterface $subscriber)
     {
