@@ -15,32 +15,39 @@ constants, namespaces, traits and more, by connecting php callbacks to tokens.
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2013-10-12</date>
- <time>14:04:23</time>
+ <date>2013-12-13</date>
+ <time>21:25:09</time>
  <version>
-  <release>1.9.0</release>
-  <api>1.9.0</api>
+  <release>2.0.0RC1</release>
+  <api>2.0.0</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>snapshot</release>
+  <api>beta</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
  <notes>
-Additions and changes:
-- drop support of PHP 5.2
-- add Composer support
+New major version and API rewritten specially for PHP 5.3 and greater.
 
-Bug fixes:
-- avoid wrong trait detection if source code used a class property named trait: $this-&gt;trait
+Additions and changes:
+- Implement Event Driven Architecture powered by the Symfony EventDispatcher component.
+- More data source can be parse. Implement a new source provider powered by the Symfony Finder component. 
+- Each element found during parsing can be exploited by an API almost equivalent to PHP5 Reflection.
+
+This first release candidate is published for test purpose only, and should not be used yet in production.
  </notes>
  <contents>
   <dir baseinstalldir="Bartlett" name="/">
    <dir name="examples">
-    <file name="scanFile.php" role="doc" />
-    <file name="scanFileWithOptions.php" role="doc" />
-    <file name="scanFileWithOtherTokenConnect.php" role="doc" />
-    <file name="scanFunctionArguments.php" role="doc" />
+    <dir name="archives">
+     <file name="phpunit.phar" role="doc" />
+     <file name="PHP_Reflect-1.0.0.tar" role="doc" />
+    </dir> <!-- /examples/archives -->
+    <file name="archiveContent.php" role="doc" />
+    <file name="autoload.php" role="doc" />
+    <file name="classDiagram.plantuml" role="doc" />
+    <file name="packageDiagram.plantuml" role="doc" />
+    <file name="PlantUMLBuilder.php" role="doc" />
    </dir> <!-- /examples -->
    <dir name="html">
     <dir name="images">
@@ -59,69 +66,139 @@ Bug fixes:
       <file name="warning.png" role="doc" />
      </dir> <!-- /html/images/icons -->
      <file name="logo.png" role="doc" />
+     <file name="plantUML_classDiag.png" role="doc" />
+     <file name="plantUML_packageDiag.png" role="doc" />
     </dir> <!-- /html/images -->
-    <dir name="js">
+    <dir name="javascripts">
      <file name="asciidoc.js" role="doc" />
-    </dir> <!-- /html/js -->
-    <dir name="styles">
+    </dir> <!-- /html/javascripts -->
+    <dir name="stylesheets">
      <file name="flask.css" role="doc" />
      <file name="pygments.css" role="doc" />
      <file name="toc2.css" role="doc" />
-    </dir> <!-- /html/styles -->
-    <file name="CHANGELOG.html" role="doc" />
-    <file name="configure.html" role="doc" />
-    <file name="connect-tokens.html" role="doc" />
-    <file name="getting-started.html" role="doc" />
-    <file name="index.html" role="doc" />
-    <file name="INSTALL.html" role="doc" />
-    <file name="LICENSE.html" role="doc" />
-    <file name="phpreflect-book.html" role="doc" />
+    </dir> <!-- /html/stylesheets -->
+    <file name="concrete-examples.html" role="doc" />
+    <file name="features-compared.html" role="doc" />
+    <file name="handle-results.html" role="doc" />
+    <file name="landing.html" role="doc" />
+    <file name="license.html" role="doc" />
+    <file name="make-uml-diagrams.html" role="doc" />
+    <file name="quick-start.html" role="doc" />
+    <file name="setup.html" role="doc" />
    </dir> <!-- /html -->
-   <dir name="PHP">
-    <dir name="Reflect">
-     <file name="Autoload.php" role="php" />
-     <file name="Token.php" role="php" />
-    </dir> <!-- /PHP/Reflect -->
-    <file name="Reflect.php" role="php" />
-   </dir> <!-- /PHP -->
+   <dir name="src">
+    <dir name="Bartlett">
+     <dir name="Reflect">
+      <dir name="Cache">
+       <file name="CacheAdapterInterface.php" role="php" />
+       <file name="DoctrineCacheAdapter.php" role="php" />
+      </dir> <!-- /src/Bartlett/Reflect/Cache -->
+      <dir name="Event">
+       <file name="AbstractDispatcher.php" role="php" />
+       <file name="DispatcherInterface.php" role="php" />
+      </dir> <!-- /src/Bartlett/Reflect/Event -->
+      <dir name="Exception">
+       <file name="Exception.php" role="php" />
+       <file name="ModelException.php" role="php" />
+      </dir> <!-- /src/Bartlett/Reflect/Exception -->
+      <dir name="Filter">
+       <file name="FilenameFilter.php" role="php" />
+      </dir> <!-- /src/Bartlett/Reflect/Filter -->
+      <dir name="Model">
+       <file name="AbstractFunctionModel.php" role="php" />
+       <file name="AbstractModel.php" role="php" />
+       <file name="ClassModel.php" role="php" />
+       <file name="ConstantModel.php" role="php" />
+       <file name="FunctionModel.php" role="php" />
+       <file name="IncludeModel.php" role="php" />
+       <file name="MethodModel.php" role="php" />
+       <file name="PackageModel.php" role="php" />
+       <file name="ParameterModel.php" role="php" />
+       <file name="PropertyModel.php" role="php" />
+       <file name="Visitable.php" role="php" />
+      </dir> <!-- /src/Bartlett/Reflect/Model -->
+      <dir name="Parser">
+       <file name="DefaultParser.php" role="php" />
+       <file name="ParserInterface.php" role="php" />
+      </dir> <!-- /src/Bartlett/Reflect/Parser -->
+      <dir name="Plugin">
+       <dir name="Cache">
+        <file name="CachePlugin.php" role="php" />
+        <file name="CacheStorageInterface.php" role="php" />
+        <file name="DefaultCacheStorage.php" role="php" />
+       </dir> <!-- /src/Bartlett/Reflect/Plugin/Cache -->
+      </dir> <!-- /src/Bartlett/Reflect/Plugin -->
+      <dir name="Provider">
+       <file name="ProviderInterface.php" role="php" />
+       <file name="SymfonyFinderProvider.php" role="php" />
+      </dir> <!-- /src/Bartlett/Reflect/Provider -->
+      <dir name="Token">
+       <file name="AbstractToken.php" role="php" />
+       <file name="ClassCToken.php" role="php" />
+       <file name="ClassToken.php" role="php" />
+       <file name="CloseCurlyToken.php" role="php" />
+       <file name="ConstantEncapsedStringToken.php" role="php" />
+       <file name="ConstToken.php" role="php" />
+       <file name="DirToken.php" role="php" />
+       <file name="FileToken.php" role="php" />
+       <file name="FuncCToken.php" role="php" />
+       <file name="FunctionToken.php" role="php" />
+       <file name="IncludeOnceToken.php" role="php" />
+       <file name="IncludeToken.php" role="php" />
+       <file name="InterfaceToken.php" role="php" />
+       <file name="LineToken.php" role="php" />
+       <file name="MethodCToken.php" role="php" />
+       <file name="NamespaceToken.php" role="php" />
+       <file name="NsCToken.php" role="php" />
+       <file name="OpenCurlyToken.php" role="php" />
+       <file name="RequireOnceToken.php" role="php" />
+       <file name="RequireToken.php" role="php" />
+       <file name="StringToken.php" role="php" />
+       <file name="SuperglobalsToken.php" role="php" />
+       <file name="TokenWithArgument.php" role="php" />
+       <file name="TokenWithInclude.php" role="php" />
+       <file name="TokenWithMagicConstant.php" role="php" />
+       <file name="TokenWithScope.php" role="php" />
+       <file name="TraitCToken.php" role="php" />
+       <file name="TraitToken.php" role="php" />
+       <file name="UseToken.php" role="php" />
+       <file name="VariableToken.php" role="php" />
+      </dir> <!-- /src/Bartlett/Reflect/Token -->
+      <dir name="Tokenizer">
+       <file name="DefaultTokenizer.php" role="php" />
+      </dir> <!-- /src/Bartlett/Reflect/Tokenizer -->
+      <dir name="Visitor">
+       <file name="AbstractVisitor.php" role="php" />
+       <file name="VisitorInterface.php" role="php" />
+      </dir> <!-- /src/Bartlett/Reflect/Visitor -->
+      <file name="Builder.php" role="php" />
+      <file name="ManagerInterface.php" role="php" />
+      <file name="ProviderManager.php" role="php" />
+     </dir> <!-- /src/Bartlett/Reflect -->
+     <file name="Reflect.php" role="php" />
+    </dir> <!-- /src/Bartlett -->
+   </dir> <!-- /src -->
    <dir name="tests">
-    <dir name="Token">
-     <file name="ClassTest.php" role="test" />
-     <file name="ClosureTest.php" role="test" />
-     <file name="ConstantTest.php" role="test" />
-     <file name="ExceptionTest.php" role="test" />
-     <file name="FunctionTest.php" role="test" />
-     <file name="GeneratorTest.php" role="test" />
-     <file name="GlobalTest.php" role="test" />
-     <file name="IncludeTest.php" role="test" />
-     <file name="InterfaceTest.php" role="test" />
-     <file name="IssueTest.php" role="test" />
-     <file name="NamespaceTest.php" role="test" />
-     <file name="StringTest.php" role="test" />
-     <file name="TraitTest.php" role="test" />
-    </dir> <!-- /tests/Token -->
+    <dir name="Model">
+     <file name="ClassModelTest.php" role="test" />
+     <file name="ConstantModelTest.php" role="test" />
+     <file name="FunctionModelTest.php" role="test" />
+     <file name="IncludeModelTest.php" role="test" />
+     <file name="MethodModelTest.php" role="test" />
+     <file name="ParameterModelTest.php" role="test" />
+    </dir> <!-- /tests/Model -->
+    <dir name="Provider">
+     <file name="SymfonyFinderProviderTest.php" role="test" />
+    </dir> <!-- /tests/Provider -->
     <dir name="_files">
-     <file name="closure.php" role="test" />
-     <file name="exception.php" role="test" />
-     <file name="generator.php" role="test" />
-     <file name="issue1.php" role="test" />
-     <file name="magic_constant.php" role="test" />
-     <file name="source.php" role="test" />
-     <file name="source2.php" role="test" />
-     <file name="source3.php" role="test" />
-     <file name="source4.php" role="test" />
-     <file name="source5.php" role="test" />
-     <file name="source6.php" role="test" />
-     <file name="source7.php" role="test" />
-     <file name="source8-01.php" role="test" />
-     <file name="source8-02.php" role="test" />
-     <file name="source8-03.php" role="test" />
-     <file name="source8-04.php" role="test" />
-     <file name="source9.php" role="test" />
-     <file name="source10.php" role="test" />
-     <file name="source11.php" role="test" />
+     <file name="classes.php" role="test" />
+     <file name="constants.php" role="test" />
+     <file name="functions.php" role="test" />
+     <file name="includes.php" role="test" />
+     <file name="namespaces.php" role="test" />
     </dir> <!-- /tests/_files -->
-    <file name="phpunit.xml" role="test" />
+    <file name="bootstrap.php" role="test" />
+    <file name="ProviderTest.php" role="test" />
    </dir> <!-- /tests -->
    <file name="LICENSE" role="doc" />
   </dir> <!-- / -->
@@ -135,6 +212,9 @@ Bug fixes:
     <min>1.9.0</min>
    </pearinstaller>
    <extension>
+    <name>Reflection</name>
+   </extension>
+   <extension>
     <name>tokenizer</name>
    </extension>
    <extension>
@@ -146,14 +226,51 @@ Bug fixes:
   </required>
   <optional>
    <package>
+    <name>EventDispatcher</name>
+    <channel>pear.symfony.com</channel>
+    <min>2.3.0</min>
+   </package>
+   <package>
+    <name>Finder</name>
+    <channel>pear.symfony.com</channel>
+    <min>2.3.0</min>
+   </package>
+   <package>
+    <name>ClassLoader</name>
+    <channel>pear.symfony.com</channel>
+    <min>2.3.0</min>
+   </package>
+   <package>
     <name>PHPUnit</name>
     <channel>pear.phpunit.de</channel>
-    <min>3.6.0</min>
+    <min>3.7.0</min>
    </package>
   </optional>
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>2.0.0RC1</release>
+    <api>2.0.0</api>
+   </version>
+   <stability>
+    <release>snapshot</release>
+    <api>beta</api>
+   </stability>
+   <date>2013-12-13</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+   <notes>
+New major version and API rewritten specially for PHP 5.3 and greater.
+
+Additions and changes:
+- Implement Event Driven Architecture powered by the Symfony EventDispatcher component.
+- More data source can be parse. Implement a new source provider powered by the Symfony Finder component. 
+- Each element found during parsing can be exploited by an API almost equivalent to PHP5 Reflection.
+
+This first release candidate is published for test purpose only, and should not be used yet in production.
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.9.0</release>
