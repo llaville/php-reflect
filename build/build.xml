@@ -191,6 +191,8 @@
         <exclude name="composer.json" />
         <exclude name="build**" />
         <exclude name="docs**" />
+        <exclude name="blog**" />
+        <exclude name="vendor**" />
     </fileset>
 
     <!--
