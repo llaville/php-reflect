@@ -74,10 +74,12 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      * @param mixed    $otherparam
      */';
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertEquals(
             $expected,
-            self::$classes[$c]->getMethods()[$m]->getDocComment(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->getDocComment(),
+            $methods[$m]->getName()
             . ' doc comment does not match.'
         );
     }

@@ -71,10 +71,13 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 1;  // method otherfunction
         $p = 0;  // parameter $baz
 
+        $methods    = self::$classes[$c]->getMethods();
+        $parameters = $methods[$m]->getParameters();
+
         $this->assertEquals(
             'baz',
-            self::$classes[$c]->getMethods()[$m]->getParameters()[$p]->getName(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $parameters[$p]->getName(),
+            $methods[$m]->getName()
             . ", parameter #$p name does not match."
         );
     }
@@ -90,9 +93,11 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $f = 0;  // function singleFunction
         $p = 1;  // parameter $somethingelse
 
+        $parameters = self::$functions[$f]->getParameters();
+
         $this->assertEquals(
             1,
-            self::$functions[$f]->getParameters()[$p]->getPosition(),
+            $parameters[$p]->getPosition(),
             self::$functions[$f]->getName() . ", parameter #$p position does not match."
         );
     }
@@ -110,9 +115,12 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 0;  // method baz
         $p = 0;  // parameter $baz
 
+        $methods    = self::$interfaces[$i]->getMethods();
+        $parameters = $methods[$m]->getParameters();
+
         $this->assertFalse(
-            self::$interfaces[$i]->getMethods()[$m]->getParameters()[$p]->allowsNull(),
-            self::$interfaces[$i]->getMethods()[$m]->getName()
+            $parameters[$p]->allowsNull(),
+            $methods[$m]->getName()
             . ", parameter #$p does not allow null with type hint without null default value."
         );
     }
@@ -130,9 +138,12 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 0;  // method myfunction
         $p = 0;  // parameter $param
 
+        $methods    = self::$classes[$c]->getMethods();
+        $parameters = $methods[$m]->getParameters();
+
         $this->assertTrue(
-            self::$classes[$c]->getMethods()[$m]->getParameters()[$p]->allowsNull(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $parameters[$p]->allowsNull(),
+            $methods[$m]->getName()
             . ", parameter #$p allows null with type hint and null default value."
         );
     }
@@ -150,9 +161,12 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 1;  // method otherfunction
         $p = 1;  // parameter $param
 
+        $methods    = self::$classes[$c]->getMethods();
+        $parameters = $methods[$m]->getParameters();
+
         $this->assertTrue(
-            self::$classes[$c]->getMethods()[$m]->getParameters()[$p]->allowsNull(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $parameters[$p]->allowsNull(),
+            $methods[$m]->getName()
             . ", parameter #$p allows null without type hint."
         );
     }
@@ -169,8 +183,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $f = 0;  // function singleFunction
         $p = 2;  // parameter $lastone
 
+        $parameters = self::$functions[$f]->getParameters();
+
         $this->assertTrue(
-            self::$functions[$f]->getParameters()[$p]->allowsNull(),
+            $parameters[$p]->allowsNull(),
             self::$functions[$f]->getName() . ", parameter #$p allows null when default value is null."
         );
     }
@@ -186,8 +202,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $f = 0;  // function singleFunction
         $p = 1;  // parameter $somethingelse
 
+        $parameters = self::$functions[$f]->getParameters();
+
         $this->assertFalse(
-            self::$functions[$f]->getParameters()[$p]->isOptional(),
+            $parameters[$p]->isOptional(),
             self::$functions[$f]->getName() . ", parameter #$p is required."
         );
     }
@@ -203,8 +221,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $f = 1;  // function myprocess
         $p = 1;  // parameter $myresult
 
+        $parameters = self::$functions[$f]->getParameters();
+
         $this->assertTrue(
-            self::$functions[$f]->getParameters()[$p]->isPassedByReference(),
+            $parameters[$p]->isPassedByReference(),
             self::$functions[$f]->getName() . ", parameter #$p is passed by reference."
         );
     }
@@ -220,8 +240,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $f = 0;  // function singleFunction
         $p = 0;  // parameter $someparam
 
+        $parameters = self::$functions[$f]->getParameters();
+
         $this->assertTrue(
-            self::$functions[$f]->getParameters()[$p]->isArray(),
+            $parameters[$p]->isArray(),
             self::$functions[$f]->getName() . ", parameter #$p expects an array."
         );
     }
@@ -238,8 +260,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $f = 0;  // function singleFunction
         $p = 2;  // parameter $lastone
 
+        $parameters = self::$functions[$f]->getParameters();
+
         $this->assertTrue(
-            self::$functions[$f]->getParameters()[$p]->isDefaultValueAvailable(),
+            $parameters[$p]->isDefaultValueAvailable(),
             self::$functions[$f]->getName() . ", parameter #$p have a default value."
         );
     }
@@ -256,10 +280,13 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 0;  // method myfunction
         $p = 1;  // parameter $otherparam
 
+        $methods    = self::$classes[$c]->getMethods();
+        $parameters = $methods[$m]->getParameters();
+
         $this->assertEquals(
             'TRUE',
-            self::$classes[$c]->getMethods()[$m]->getParameters()[$p]->getDefaultValue(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $parameters[$p]->getDefaultValue(),
+            $methods[$m]->getName()
             . ", parameter #$p default value does not match."
         );
     }
@@ -275,9 +302,11 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $f = 0;  // function singleFunction
         $p = 2;  // parameter $lastone
 
+        $parameters = self::$functions[$f]->getParameters();
+
         $this->assertEquals(
             'NULL',
-            self::$functions[$f]->getParameters()[2]->getDefaultValue(),
+            $parameters[2]->getDefaultValue(),
             self::$functions[$f]->getName() . ", parameter #$p default value does not match."
         );
     }
@@ -294,7 +323,9 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
             $f = 0;  // function singleFunction
             $p = 0;  // parameter $someparam
 
-            self::$functions[$f]->getParameters()[$p]->getDefaultValue();
+            $parameters = self::$functions[$f]->getParameters();
+
+            $parameters[$p]->getDefaultValue();
 
         } catch (ModelException $expected) {
             $this->assertEquals(
@@ -322,9 +353,11 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $f = 1;  // function myprocess
         $p = 1;  // parameter $myresult
 
+        $parameters = self::$functions[$f]->getParameters();
+
         $this->assertEquals(
             'Parameter #1 [ <required> &$myresult ]' . "\n",
-            self::$functions[$f]->getParameters()[$p]->__toString(),
+            $parameters[$p]->__toString(),
             self::$functions[$f]->getName() . ", parameter #$p string representation does not match."
         );
     }
@@ -342,10 +375,13 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 0;  // method myfunction
         $p = 0;  // parameter $param
 
+        $methods    = self::$classes[$c]->getMethods();
+        $parameters = $methods[$m]->getParameters();
+
         $this->assertEquals(
             'Parameter #0 [ <optional> stdClass $param = NULL ]' . "\n",
-            self::$classes[$c]->getMethods()[$m]->getParameters()[$p]->__toString(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $parameters[$p]->__toString(),
+            $methods[$m]->getName()
             . ", parameter #$p string representation does not match."
         );
     }

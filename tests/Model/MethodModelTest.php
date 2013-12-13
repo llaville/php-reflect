@@ -65,10 +65,12 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 1;  // abstract class AbstractClass
         $m = 0;  // method lambdaMethod
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertEquals(
             '/* static meth: */',
-            self::$classes[$c]->getMethods()[$m]->getDocComment(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->getDocComment(),
+            $methods[$m]->getName()
             . ' doc comment does not match.'
         );
     }
@@ -84,10 +86,12 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 2;  // method dump
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertEquals(
             54,
-            self::$classes[$c]->getMethods()[$m]->getStartLine(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->getStartLine(),
+            $methods[$m]->getName()
             . ' starting line does not match.'
         );
     }
@@ -103,10 +107,12 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 2;  // method dump
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertEquals(
             57,
-            self::$classes[$c]->getMethods()[$m]->getEndLine(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->getEndLine(),
+            $methods[$m]->getName()
             . ' ending line does not match.'
         );
     }
@@ -122,10 +128,12 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 2;  // method dump
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertEquals(
             TEST_FILES_PATH . 'classes.php',
-            self::$classes[$c]->getMethods()[$m]->getFileName(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->getFileName(),
+            $methods[$m]->getName()
             . ' file name does not match.'
         );
     }
@@ -141,10 +149,12 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 2;  // method dump
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertEquals(
             'MyDestructableClass::dump',
-            self::$classes[$c]->getMethods()[$m]->getName(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->getName(),
+            $methods[$m]->getName()
             . ' method name does not match.'
         );
     }
@@ -160,10 +170,12 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 2;  // method dump
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertEquals(
             'user',
-            self::$classes[$c]->getMethods()[$m]->getExtensionName(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->getExtensionName(),
+            $methods[$m]->getName()
             . ' extension name does not match.'
         );
     }
@@ -179,9 +191,11 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class Foo implements iB
         $m = 0;  // method Foo
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertTrue(
-            self::$classes[$c]->getMethods()[$m]->isConstructor(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->isConstructor(),
+            $methods[$m]->getName()
             . ' is not a class constructor.'
         );
     }
@@ -197,9 +211,11 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 0;  // method __construct
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertTrue(
-            self::$classes[$c]->getMethods()[$m]->isConstructor(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->isConstructor(),
+            $methods[$m]->getName()
             . ' is not a class constructor.'
         );
     }
@@ -215,9 +231,11 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 1;  // method __destruct
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertTrue(
-            self::$classes[$c]->getMethods()[$m]->isDestructor(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->isDestructor(),
+            $methods[$m]->getName()
             . ' is not a class destructor.'
         );
     }
@@ -233,9 +251,11 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 1;  // abstract class AbstractClass
         $m = 1;  // method abstractMethod
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertTrue(
-            self::$classes[$c]->getMethods()[$m]->isAbstract(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->isAbstract(),
+            $methods[$m]->getName()
             . ' is not an abstract class method.'
         );
     }
@@ -251,9 +271,11 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class Foo implements iB
         $m = 2;  // method baz
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertTrue(
-            self::$classes[$c]->getMethods()[$m]->isFinal(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->isFinal(),
+            $methods[$m]->getName()
             . ' is not a final class method.'
         );
     }
@@ -269,9 +291,11 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 1;  // abstract class AbstractClass
         $m = 0;  // method lambdaMethod
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertTrue(
-            self::$classes[$c]->getMethods()[$m]->isStatic(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->isStatic(),
+            $methods[$m]->getName()
             . ' is not a static class method.'
         );
     }
@@ -287,9 +311,11 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class Foo implements iB
         $m = 1;  // method FooBaz
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertTrue(
-            self::$classes[$c]->getMethods()[$m]->isPrivate(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->isPrivate(),
+            $methods[$m]->getName()
             . ' is not a private class method.'
         );
     }
@@ -305,9 +331,11 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 3;  // class Bar
         $m = 1;  // method otherfunction
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertTrue(
-            self::$classes[$c]->getMethods()[$m]->isProtected(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->isProtected(),
+            $methods[$m]->getName()
             . ' is not a protected class method.'
         );
     }
@@ -323,9 +351,11 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 1;  // abstract class AbstractClass
         $m = 0;  // method lambdaMethod
 
+        $methods = self::$classes[$c]->getMethods();
+
         $this->assertTrue(
-            self::$classes[$c]->getMethods()[$m]->isPublic(),
-            self::$classes[$c]->getMethods()[$m]->getName()
+            $methods[$m]->isPublic(),
+            $methods[$m]->getName()
             . ' is not a public class method.'
         );
     }
@@ -341,10 +371,12 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $i = 2;  // interface iB extends iA
         $m = 0;  // method baz
 
+        $methods = self::$interfaces[$i]->getMethods();
+
         $this->assertCount(
             1,
-            self::$interfaces[$i]->getMethods()[$m]->getParameters(),
-            self::$interfaces[$i]->getMethods()[$m]->getName()
+            $methods[$m]->getParameters(),
+            $methods[$m]->getName()
             . ' parameters number does not match.'
         );
     }
@@ -375,8 +407,10 @@ EOS;
             str_replace('%path%', TEST_FILES_PATH, $expected)
         );
 
+        $methods = self::$classes[$c]->getMethods();
+
         print(
-            self::$classes[$c]->getMethods()[$m]->__toString()
+            $methods[$m]->__toString()
         );
     }
 }
