@@ -1,2 +1,2 @@
-:revdate:    2013-12-08
+:revdate:    2013-12-13
 :revnumber:  2.0.0RC1

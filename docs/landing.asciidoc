@@ -39,8 +39,8 @@ with tokenizer extension.
 --
 [medium]*Reflection API*
 
-[label label-primary]#Reflect# comes with a complete reflection API almost equivalent to PHP5 reflection.
-link:features-compared.html[Compare both versions]
+[label label-primary]#Reflect# comes with a complete reflection API
+link:features-compared.html[almost equivalent] to PHP5 reflection.
 --
 [cols="1,11"]
 .icon:suitcase[size="2x"]
@@ -48,7 +48,7 @@ link:features-compared.html[Compare both versions]
 [medium]*Solid Foundation*
 
 Whenever possible wheel reinvention was avoided. [label label-primary]#Reflect# uses code from well-known projects
-including http://www.symfony.com/[Symfony] Finder.
+including http://www.symfony.com/[Symfony] Finder, and EventDispatcher.
 --
 [cols="1,11"]
 .icon:expand[size="2x"]

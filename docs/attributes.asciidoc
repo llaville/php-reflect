@@ -8,3 +8,4 @@
 :navinfo1:
 :iconsfont:    font-awesome
 :iconsfontdir: ./fonts/font-awesome
+:imagesdir:    ./images

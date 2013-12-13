@@ -20,7 +20,8 @@ Reflect may be installed in several ways, choose your favorite.
 
 Before you install PHP [label label-primary]#Reflect#, you will need an operating system
 with http://www.php.net[PHP] 5.3.0 or later installed,
-and three loaded extensions:
+and four loaded extensions:
+http://www.php.net/manual/en/book.reflection.php[Reflection],
 http://www.php.net/manual/en/book.tokenizer.php[tokenizer],
 http://www.php.net/manual/en/book.pcre.php[pcre],
 http://www.php.net/manual/en/book.spl.php[SPL].

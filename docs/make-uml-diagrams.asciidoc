@@ -1,3 +1,8 @@
+:icons!:
+:iconsfont: font-awesome
+:iconsfontdir: ./fonts/font-awesome
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
 
 == Make UML diagrams
 
@@ -11,7 +16,7 @@ by implementing the http://en.wikipedia.org/wiki/Visitor_pattern[Visitor Pattern
 Our goal is to create a PlantUML builder class that will implement this design pattern,
 and can be able to produce code that make such diagram :
 
-image::images/plantUML_packageDiag.png[options="responsive"]
+image::plantUML_packageDiag.png[options="responsive"]
 
 === Parsing Data Source
 
@@ -266,7 +271,7 @@ class PlantUMLBuilder
 PlantUML can produce lot of diagrams. Now you know how to explore parsing results,
 and make a package diagram, we will modify the `PlantUMLBuilder` class to make this kind of class diagram :
 
-image::images/plantUML_classDiag.png[options="responsive"]
+image::plantUML_classDiag.png[options="responsive"]
 
 The `visitClassModel` need to explore methods.
 
