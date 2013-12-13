@@ -1,11 +1,40 @@
 <?php
+/**
+ * InterfaceToken represents the T_INTERFACE token.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @link     http://www.php.net/manual/en/tokens.php
+ */
 
 namespace Bartlett\Reflect\Token;
 
+/**
+ * Reports information about an interface.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 class InterfaceToken extends TokenWithScope
 {
     protected $interfaces;
 
+    /**
+     * Gets the name of interface.
+     *
+     * @return string
+     */
     public function getName()
     {
         $token = $this->tokenStream[$this->id + 2];
@@ -13,6 +42,11 @@ class InterfaceToken extends TokenWithScope
         return $text;
     }
 
+    /**
+     * Checks if interface extends another.
+     *
+     * @return bool TRUE if a parent exists, FALSE otherwise
+     */
     public function hasParent()
     {
         return
@@ -20,6 +54,11 @@ class InterfaceToken extends TokenWithScope
             $this->tokenStream[$this->id + 4][0] == 'T_EXTENDS');
     }
 
+    /**
+     * Gets the name of the parent interface.
+     *
+     * @return string
+     */
     public function getParent()
     {
         if (!$this->hasParent()) {
@@ -38,6 +77,11 @@ class InterfaceToken extends TokenWithScope
         return $className;
     }
 
+    /**
+     * Returns DocBlock (if any) that identify this interface
+     *
+     * @return array
+     */
     public function getPackage()
     {
         $className  = $this->getName();
@@ -101,11 +145,16 @@ class InterfaceToken extends TokenWithScope
         return $result;
     }
 
+    /**
+     * Checks if this interface implement others interfaces.
+     *
+     * @return bool TRUE if implements others interfaces, FALSE otherwise
+     */
     public function hasInterfaces()
     {
         if ((isset($this->tokenStream[$this->id + 4])
-            && $this->tokenStream[$this->id + 4][0] == 'T_IMPLEMENTS') ||
-           (isset($this->tokenStream[$this->id + 8])
+            && $this->tokenStream[$this->id + 4][0] == 'T_IMPLEMENTS')
+            || (isset($this->tokenStream[$this->id + 8])
             && $this->tokenStream[$this->id + 8][0] == 'T_IMPLEMENTS')
         ) {
             return true;
@@ -113,6 +162,11 @@ class InterfaceToken extends TokenWithScope
         return false;
     }
 
+    /**
+     * Returns list of others interfaces implemented.
+     *
+     * @return array
+     */
     public function getInterfaces()
     {
         if ($this->interfaces !== null) {

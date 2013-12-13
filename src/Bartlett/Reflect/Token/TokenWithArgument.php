@@ -1,11 +1,41 @@
 <?php
+/**
+ * Abstract class that support tokens with arguments.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @link     http://www.php.net/manual/en/tokens.php
+ */
 
 namespace Bartlett\Reflect\Token;
 
+/**
+ * Abstract class that support tokens with arguments like T_FUNCTION.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 abstract class TokenWithArgument extends TokenWithScope
 {
     protected $arguments;
 
+    /**
+     * Returns list of arguments available associated with this token.
+     *
+     * @return array
+     *         with keys: 'name', 'typeHint', 'byRef', 'defaultValue', 'position'
+     */
     public function getArguments()
     {
         if ($this->arguments !== null) {
@@ -78,9 +108,9 @@ abstract class TokenWithArgument extends TokenWithScope
             } elseif ($this->tokenStream[$i][0] == 'T_EQUAL') {
                 // just do nothing - next tokens will contain the defaultValue
 
-            } elseif (($this->tokenStream[$i][0] == 'T_STRING') ||
-                ($this->tokenStream[$i][0] == 'T_CONSTANT_ENCAPSED_STRING') ||
-                ($this->tokenStream[$i][0] == 'T_LNUMBER')
+            } elseif (($this->tokenStream[$i][0] == 'T_STRING')
+                || ($this->tokenStream[$i][0] == 'T_CONSTANT_ENCAPSED_STRING')
+                || ($this->tokenStream[$i][0] == 'T_LNUMBER')
             ) {
                 $nextArgument['defaultValue'] = $this->tokenStream[$i][1];
 
@@ -99,8 +129,9 @@ abstract class TokenWithArgument extends TokenWithScope
                         $bracketCount--;
                     }
 
-                    if (($this->tokenStream[$i][0] == 'T_COMMENT') ||
-                        ($this->tokenStream[$i][0] == 'T_DOC_COMMENT')) {
+                    if (($this->tokenStream[$i][0] == 'T_COMMENT')
+                        || ($this->tokenStream[$i][0] == 'T_DOC_COMMENT')
+                    ) {
                         // skip comments and doc-comments
                         $i++;
                     } else {

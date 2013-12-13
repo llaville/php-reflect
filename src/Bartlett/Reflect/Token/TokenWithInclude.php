@@ -1,12 +1,42 @@
 <?php
+/**
+ * Abstract class that support includes family tokens.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @link     http://www.php.net/manual/en/tokens.php
+ */
 
 namespace Bartlett\Reflect\Token;
 
+/**
+ * Abstract class that support includes family tokens:
+ * T_INCLUDE, T_INCLUDE_ONCE, T_REQUIRE, T_REQUIRE_ONCE
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 abstract class TokenWithInclude extends TokenWithScope
 {
     protected $name;
     protected $type;
 
+    /**
+     * Gets the path to resource included.
+     *
+     * @return string
+     */
     public function getName()
     {
         if ($this->name !== null) {
@@ -31,6 +61,11 @@ abstract class TokenWithInclude extends TokenWithScope
         return trim($this->name);
     }
 
+    /**
+     * Identify the type of include.
+     *
+     * @return string
+     */
     public function getType()
     {
         $this->getName();

@@ -1,4 +1,18 @@
 <?php
+/**
+ * Reflect
+ * Reverse-engineer classes, interfaces, traits, functions, constants, namespaces
+ * and more.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett;
 
@@ -13,17 +27,26 @@ use Bartlett\Reflect\Builder;
 use Bartlett\Reflect\Tokenizer\DefaultTokenizer;
 use Bartlett\Reflect\Filter\FilenameFilter;
 
+/**
+ * Reflect analyse your source code with the tokenizer extension.
+ *
+ * All data sources (archive, local or remote script) are parsable.
+ * You can cache or logs results and even more. API is extensible simply.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 class Reflect extends AbstractDispatcher implements ManagerInterface
 {
     protected $pm;
     protected $parsers;
     protected $tokenizer;
     protected $builder;
-
-    /**
-     * @var array
-     */
-    protected $options;
 
     /**
      * Class constructor
@@ -33,13 +56,12 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
         $this->parsers = new \SplDoublyLinkedList;
     }
 
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
     /**
-     * {@inheritdoc}
+     * Pushes a parser on to the stack.
+     *
+     * @param ParserInterface $parser Instance of your custom parser
+     *
+     * @return void
      */
     public function pushParser(ParserInterface $parser)
     {
@@ -47,7 +69,10 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Pops a parser from the stack.
+     *
+     * @return ParserInterface
+     * @throws \LogicException if parsers stack is empty
      */
     public function popParser()
     {
@@ -58,7 +83,9 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns an instance of the current provider manager.
+     *
+     * @return ProviderManager
      */
     public function getProviderManager()
     {
@@ -69,7 +96,11 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Defines the current provider manager.
+     *
+     * @param ProviderManager $manager Instance of your custom source provider
+     *
+     * @return void
      */
     public function setProviderManager(ProviderManager $manager)
     {
@@ -77,6 +108,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
     }
 
     /**
+     * Analyse all or part of data sources identified by the Provider Manager.
      *
      * @param array $providers (optional) Data source providers to parse at this runtime.
      *                         All providers defined in Provider Manager by default.
@@ -218,7 +250,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
     /**
      * Parse the contents of a single file
      *
-     * @param string $file
+     * @param Symfony\Component\Finder\SplFileInfo $file Current file be parsed
      *
      * @return void
      */

@@ -1,7 +1,31 @@
 <?php
+/**
+ * Abstract class that support tokens with a scope context.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @link     http://www.php.net/manual/en/tokens.php
+ */
 
 namespace Bartlett\Reflect\Token;
 
+/**
+ * Abstract class that support tokens with a scope context.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 abstract class TokenWithScope extends AbstractToken
 {
     protected $endTokenId;
@@ -55,6 +79,11 @@ abstract class TokenWithScope extends AbstractToken
         }
     }
 
+    /**
+     * Gets the visibility (Public, Protected, Private) of an element.
+     *
+     * @return string
+     */
     public function getVisibility()
     {
         for ($i = $this->id - 2; $i > $this->id - 7; $i -= 2) {
@@ -81,6 +110,11 @@ abstract class TokenWithScope extends AbstractToken
         return '';
     }
 
+    /**
+     * Gets the access modifiers for a class or method.
+     *
+     * @return array
+     */
     public function getModifiers()
     {
         $modifiers = array();
@@ -110,6 +144,11 @@ abstract class TokenWithScope extends AbstractToken
         return $modifiers;
     }
 
+    /**
+     * Returns index of last token stack in the current scope context.
+     *
+     * @return int
+     */
     public function getEndTokenId()
     {
         $block = 0;
@@ -156,14 +195,15 @@ abstract class TokenWithScope extends AbstractToken
                 || $this instanceof IncludeOnceToken
                 || $this instanceof IncludeToken
                 || $this instanceof UseToken
-                || $this instanceof VariableToken)) {
-
+                || $this instanceof VariableToken)
+            ) {
                 if ($block === 0) {
                     $this->endTokenId = $i;
                 }
 
             } elseif ($tokenName == 'T_NAMESPACE'
-                && $t_ns_open == 'ns_open_semicolon') {
+                && $t_ns_open == 'ns_open_semicolon'
+            ) {
                 // multiple namespace without bracketed syntax ending
                 $this->endTokenId = $i - 1;
             }
@@ -183,6 +223,11 @@ abstract class TokenWithScope extends AbstractToken
         return $this->endTokenId;
     }
 
+    /**
+     * Gets the line number in source code where is implemented this token.
+     *
+     * @return int
+     */
     public function getEndLine()
     {
         return $this->tokenStream[$this->getEndTokenId()][2];

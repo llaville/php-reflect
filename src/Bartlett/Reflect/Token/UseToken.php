@@ -1,13 +1,44 @@
 <?php
+/**
+ * UseToken represents the T_USE token.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @link     http://www.php.net/manual/en/tokens.php
+ */
 
 namespace Bartlett\Reflect\Token;
 
+/**
+ * Reports information about a namespace or trait import.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 class UseToken extends TokenWithScope
 {
     protected $trait;
     protected $namespace;
     protected $alias;
 
+    /**
+     * Gets the name of the namespace or trait imported.
+     *
+     * @param bool $class Tells if we are in class context (TRUE) or not (FALSE)
+     *
+     * @return string
+     */
     public function getName($class)
     {
         if ($class === false) {
@@ -17,6 +48,11 @@ class UseToken extends TokenWithScope
         return $this->getTrait();
     }
 
+    /**
+     * Gets the name of trait imported.
+     *
+     * @return string
+     */
     protected function getTrait()
     {
         if ($this->trait !== null) {
@@ -38,6 +74,11 @@ class UseToken extends TokenWithScope
         return $this->trait;
     }
 
+    /**
+     * Gets the name of namespace imported.
+     *
+     * @return string
+     */
     protected function getNamespace()
     {
         if ($this->namespace !== null) {
@@ -71,6 +112,11 @@ class UseToken extends TokenWithScope
         return $this->namespace;
     }
 
+    /**
+     * Gets the alias used to identify the namespace imported.
+     *
+     * @return string
+     */
     public function getAlias()
     {
         if ($this->alias !== null) {
@@ -86,6 +132,11 @@ class UseToken extends TokenWithScope
 
     }
 
+    /**
+     * Checks if namespace is imported.
+     *
+     * @return bool TRUE
+     */
     public function isImported()
     {
         return true;

@@ -1,7 +1,31 @@
 <?php
+/**
+ * FunctionToken represents the T_FUNCTION token.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @link     http://www.php.net/manual/en/tokens.php
+ */
 
 namespace Bartlett\Reflect\Token;
 
+/**
+ * Reports information about a user function or class method.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC1
+ */
 class FunctionToken extends TokenWithArgument
 {
     protected $ccn;
@@ -9,6 +33,11 @@ class FunctionToken extends TokenWithArgument
     protected $signature;
     protected $closure;
 
+    /**
+     * Gets the name of the user function or class method
+     *
+     * @return string
+     */
     public function getName()
     {
         if ($this->name !== null) {
@@ -37,6 +66,11 @@ class FunctionToken extends TokenWithArgument
         return $this->name;
     }
 
+    /**
+     * Gets the Cyclomatic Complexity Number (CCN)
+     *
+     * @return int
+     */
     public function getCCN()
     {
         if ($this->ccn !== null) {
@@ -68,6 +102,11 @@ class FunctionToken extends TokenWithArgument
         return $this->ccn;
     }
 
+    /**
+     * Gets the signature (name + parameters) of a user function or class method.
+     *
+     * @return string
+     */
     public function getSignature()
     {
         if ($this->signature !== null) {
@@ -87,6 +126,11 @@ class FunctionToken extends TokenWithArgument
         return trim($this->signature);
     }
 
+    /**
+     * Checks if its an anonymous function (closure)
+     *
+     * @return bool TRUE if its a closure, FALSE otherwise
+     */
     public function isClosure()
     {
         return $this->closure;
