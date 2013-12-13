@@ -21,7 +21,7 @@
     -->
     <property name="bartlettpackager.dir"        value="${project.dir}/vendor/BartlettPackager" />
     <property name="build.target"                value="${project.dir}/build" />
-    <property name="build.version"               value="1.9.0" />
+    <property name="build.version"               value="2.0.0RC1" />
 
     <!--
         ======================================================================
@@ -29,7 +29,6 @@
         ======================================================================
     -->
     <property name="test.printsummary"           value="true" />
-    <property name="test.configuration"          value="${project.dir}/tests/phpunit.xml" />
 
     <!--
         ======================================================================
@@ -37,7 +36,7 @@
         ======================================================================
     -->
     <property name="docs.phpdoctask"             value="" />
-    <property name="docs.inc-pattern"            value="PHP/**/*.php" />
+    <property name="docs.inc-pattern"            value="src/**/*.php" />
 
     <!--
         ======================================================================
@@ -48,17 +47,18 @@
     <property name="docs.asciidoc.target"        value="${project.dir}/html" />
     <property name="docs.theme-asciidoc"         value="flask" />
     <property name="docs.book-source.name"       value="phpreflect-book" />
-    <property name="docs.html-books-list"        value="INSTALL,CHANGELOG,LICENSE,configure,connect-tokens,getting-started,index" />
+    <property name="docs.book-source.ext"        value="asciidoc" />
+    <property name="docs.html-books-list"        value="license,make-uml-diagrams,concrete-examples,handle-results,quick-start,setup,features-compared,landing" />
     <property name="docs.htmlhelpworkshop.home"  value="C:\Program Files\HTML Help Workshop" />
     <property name="docs.fo-xsl"                 value="${docs.asciidoc.home}/docbook-xsl/fo-custom.xsl" />
     <property name="docs.build-dist"             value="true" />
 
     <fileset id="asciidoc-assets" dir="${project.dir}/docs">
         <include name="images**" />
-        <include name="js/asciidoc.js" />
-        <include name="styles/pygments.css" />
-        <include name="styles/toc2.css" />
-        <include name="styles/${docs.theme-asciidoc}.css" />
+        <include name="javascripts/asciidoc.js" />
+        <include name="stylesheets/pygments.css" />
+        <include name="stylesheets/toc2.css" />
+        <include name="stylesheets/${docs.theme-asciidoc}.css" />
         <exclude name="**/callouts/**" />
         <exclude name="styles.css" />
         <exclude name="**/Thumbs.db" />
@@ -66,15 +66,16 @@
 
     <fileset id="html-books-assets" dir="${docs.asciidoc.target}">
         <include name="images**" />
-        <include name="js/**" />
-        <include name="styles/**" />
-        <include name="INSTALL.html" />
-        <include name="CHANGELOG.html" />
-        <include name="LICENSE.html" />
-        <include name="configure.html" />
-        <include name="connect-tokens.html" />
-        <include name="getting-started.html" />
-        <include name="index.html" />
+        <include name="javascripts/**" />
+        <include name="stylesheets/**" />
+        <include name="license.html" />
+        <include name="make-uml-diagrams.html" />
+        <include name="concrete-examples.html" />
+        <include name="handle-results.html" />
+        <include name="quick-start.html" />
+        <include name="setup.html" />
+        <include name="features-compared.html" />
+        <include name="landing.html" />
     </fileset>
 
     <!--
@@ -101,7 +102,6 @@
     <!-- filelist roles exceptions -->
     <mapping name="exceptions" id="package-exceptions-ref">
         <element key="LICENSE" value="doc" />
-        <element key="phpunit.xml" value="test" />
     </mapping>
 
     <!-- filelist basedirectory install exceptions -->
@@ -116,17 +116,39 @@
 
     <!-- packages dependencies list -->
     <mapping name="deps" id="package-deps-ref">
+        <!-- required -->
+        <element>
+            <element key="channel" value="pear.symfony.com" />
+            <element key="name" value="EventDispatcher" />
+            <element key="version" value="2.3.0" />
+            <element key="optional" value="false" />
+        </element>
         <!-- optional -->
+        <element>
+            <element key="channel" value="pear.symfony.com" />
+            <element key="name" value="Finder" />
+            <element key="version" value="2.3.0" />
+            <element key="optional" value="false" />
+        </element>
+        <element>
+            <element key="channel" value="pear.symfony.com" />
+            <element key="name" value="ClassLoader" />
+            <element key="version" value="2.3.0" />
+            <element key="optional" value="false" />
+        </element>
         <element>
             <element key="channel" value="pear.phpunit.de" />
             <element key="name" value="PHPUnit" />
-            <element key="version" value="3.6.0" />
+            <element key="version" value="3.7.0" />
             <element key="optional" value="true" />
         </element>
     </mapping>
 
     <!-- extensions dependencies list -->
     <mapping name="extdeps" id="package-extdeps-ref">
+        <element>
+            <element key="name" value="Reflection" />
+        </element>
         <element>
             <element key="name" value="tokenizer" />
         </element>
@@ -143,8 +165,8 @@
 
     <!-- files replacements at packaging-time -->
     <patternset id="package-pt-replacements-ref">
-        <include name="PHP/**/*.php" />
-        <include name="tests/Token/*.php" />
+        <include name="src/**/*.php" />
+        <include name="tests/**/*.php" />
         <include name="examples/*.php" />
     </patternset>
 
@@ -158,7 +180,7 @@
     <fileset dir="${project.dir}" id="package-contents-ref">
         <include name="**" />
 
-        <exclude name="README.markdown" />
+        <exclude name="README.asciidoc" />
         <exclude name="**/*.tgz" />
         <exclude name="**/*.zip" />
         <exclude name="**/*.pdf" />
@@ -219,9 +241,10 @@
     <target name="server"  depends="server.all" />
     <target name="web">
         <phingcall target="docs.make-web">
-            <property name="docs.asciidoc.target" value="/var/reflect/manual/current/en" />
-            <property name="docs.theme-asciidoc" value="bspear2" />
+            <property name="docs.asciidoc.target" value="/var/reflect/manual/2.0/en" />
+            <property name="docs.theme-asciidoc" value="flatly" />
             <property name="docs.backend-asciidoc" value="bootstrap" />
+            <property name="docs.bootstrap-backend-opt" value="-a bsver=3 -a navbar=fixed -a totop -a numbered -a navinfo1 -a icons! -a jumbotron! -a jumbotron-fullwidth -a toc2 -a sidebar=right -a tocaffix=200" />
         </phingcall>
     </target>
 
