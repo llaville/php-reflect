@@ -320,6 +320,8 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                 } elseif (strcasecmp($text, 'yield') == 0) {
                     $tokenName = 'T_YIELD';
                 }
+                $token[0] = $tokenName;
+                $tokenStack[$id] = $token;
             }
 
             $context = array(
