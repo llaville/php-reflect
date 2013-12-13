@@ -46,6 +46,7 @@
     <property name="docs.asciidoc.home"          value="/asciidoc-8.6.8" />
     <property name="docs.asciidoc.target"        value="${project.dir}/html" />
     <property name="docs.theme-asciidoc"         value="flask" />
+    <property name="docs.conf-file-asciidoc"     value="${build.target}/asciidoc-backward-compat.conf" />
     <property name="docs.book-source.name"       value="phpreflect-book" />
     <property name="docs.book-source.ext"        value="asciidoc" />
     <property name="docs.html-books-list"        value="license,make-uml-diagrams,concrete-examples,handle-results,quick-start,setup,features-compared,landing" />
