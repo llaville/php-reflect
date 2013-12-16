@@ -18,3 +18,10 @@ how to create PlantUML package and class diagrams.
 * add relations between object
 * and more ...
 ==========
+
+== Measuring the size of a PHP project
+
+[role="lead"]
+As Sebastian Bergmann did with https://github.com/sebastianbergmann/phploc[phploc],
+we will learn with this link:measuring-size-project.html[example] how to produce
+Structure report of any data source.
