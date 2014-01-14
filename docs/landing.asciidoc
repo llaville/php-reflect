@@ -70,13 +70,13 @@ You can download the documentation for offline reading.
 
 [options="header", cols="3,9", role="table table-bordered table-striped"]
 |===========================
-| Formats          | Download links
-| Single HTML file | link:{mandir}/en/[phpreflect-book.html.zip]
-| Many HTML files  | link:{mandir}/en/[phpreflect-book.chunked.zip]
-| HTML Help file   | link:{mandir}/en/[phpreflect-book.chm.zip]
-| PDF A4 file      | link:{mandir}/en/[phpreflect-book-a4.pdf]
-| PDF US file      | link:{mandir}/en/[phpreflect-book-us.pdf]
-| EPUB file        | link:{mandir}/en/[phpreflect-book.epub.zip]
+| Formats                             | Download links
+| icon:file-o[]      Single HTML file | link:{mandir}/en/[phpreflect-book.html.zip]
+| icon:files-o[]     Many HTML files  | link:{mandir}/en/[phpreflect-book.chunked.zip]
+| icon:file-text-o[] HTML Help file   | link:{mandir}/en/[phpreflect-book.chm.zip]
+| icon:file-text[]   PDF A4 file      | link:{mandir}/en/[phpreflect-book-a4.pdf]
+| icon:file-text[]   PDF US file      | link:{mandir}/en/[phpreflect-book-us.pdf]
+| icon:book[]        EPUB file        | link:{mandir}/en/[phpreflect-book.epub.zip]
 |===========================
 --
 
