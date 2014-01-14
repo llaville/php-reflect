@@ -20,16 +20,5 @@ Subscribe to RSS feed icon:rss-square[size="lg",link="http://php5.laurent-lavill
 [style="archives"]
 - 2013
 ** link:201311.html[November] [badge pull-right]#1#
+** link:201312.html[December] [badge pull-right]#6#
 **********
-
-include::201312-concrete-examples-part2.asciidoc[]
-
-include::201312-Reflect-2.0.0RC1-released.asciidoc[]
-
-include::201312-source-provider.asciidoc[]
-
-include::201312-handle-results.asciidoc[]
-
-include::201312-reflection-api-compare.asciidoc[]
-
-include::201312-concrete-examples.asciidoc[]
