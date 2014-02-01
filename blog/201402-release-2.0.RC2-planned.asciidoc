@@ -1,0 +1,26 @@
+:css-signature: blog
+:icons!:
+:iconsfont: font-awesome
+:iconsfontdir: ./fonts/font-awesome
+:imagesdir: ./images
+:author: Laurent Laville
+:revdate: 2014-02-01
+:pubdate: Sat, 01 Feb 2014 09:25:10 +0100
+:summary: A new core code for the second release candidate of version 2.0
+
+== Release 2.0.0RC2 planned
+
+[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
+.icon:calendar[size="4x"]
+--
+[role="lead"]
+{summary}
+
+After lot of test on huge source code, like Zend Framework 1.12, I've be faced
+on a major performance issue with the first RC code.
+
+This is the reason, why I've decided to rewrite the core code of PHP Reflect one times again.
+
+Even if I'm still under test protocol, I got good results, and
+the second release candidate of version 2.0 should come very soon now (probably next week).
+--
