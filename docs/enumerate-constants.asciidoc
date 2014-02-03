@@ -1,6 +1,6 @@
 === Constants
 [role="lead"]
-Your next collection returned could be the list of constants defined in your source code, if any.
+Your next collection returned could be the list of constants defined in a package, if any.
 
 [label label-primary]#Reflect# returns a list of constants with the +getConstants()+ method.
 
@@ -12,7 +12,9 @@ use Bartlett\Reflect;
 
 $reflect = new Reflect;
 
-$constants = $reflect->getConstants();
+foreach ($reflect->getPackages() as $package) {
+    $constants = $package->getConstants();
+}
 ----
 
 This list (+$constants+) is an iterator, that can be traversed by a simple foreach loop.
@@ -24,7 +26,9 @@ This list (+$constants+) is an iterator, that can be traversed by a simple forea
 
 use Bartlett\Reflect;
 
-foreach($reflect->getConstants() as $constant) {
-    $constants[] = $constant->getName();
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getConstants() as $constant) {
+        echo $constant->getName(), PHP_EOL;
+    }
 }
 ----

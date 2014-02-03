@@ -40,14 +40,14 @@ include::attributes.asciidoc[]
 | *getName* - Gets class name                          | icon:check[]     | icon:check[]
 | *getNamespaceName* - Gets namespace name             | icon:check[]     | icon:check[]
 | *getParentClass* - Gets parent class                 | icon:check[]     | icon:check[]
-| *getProperties* - Gets properties                    | icon:check[]     |
+| *getProperties* - Gets properties                    | icon:check[]     | icon:check[]
 | *getProperty* - Gets a ReflectionProperty for a class's property
-| icon:check[]     |
+| icon:check[]     | icon:check[]
 | *getShortName* - Gets short name                     | icon:check[]     | icon:check[]
 | *getStartLine* - Gets starting line number           | icon:check[]     | icon:check[]
-| *getStaticProperties* - Gets static properties       | icon:check[]     |
+| *getStaticProperties* - Gets static properties       | icon:check[]     | icon:check[]
 | *getStaticPropertyValue* - Gets static property value
-| icon:check[]     |
+| icon:check[]     | icon:check[]
 | *getTraitAliases* - Returns an array of trait aliases
 | icon:check[]     |
 | *getTraitNames* - Returns an array of names of traits used by this class
@@ -56,7 +56,7 @@ include::attributes.asciidoc[]
 | icon:check[]     |
 | *hasConstant* - Checks if constant is defined        | icon:check[]     | icon:check[]
 | *hasMethod* - Checks if method is defined            | icon:check[]     | icon:check[]
-| *hasProperty* - Checks if property is defined        | icon:check[]     |
+| *hasProperty* - Checks if property is defined        | icon:check[]     | icon:check[]
 | *implementsInterface* - Implements interface         | icon:check[]     |
 | *inNamespace* - Checks if class in namespace         | icon:check[]     | icon:check[]
 | *isAbstract* - Checks if class is abstract           | icon:check[]     | icon:check[]

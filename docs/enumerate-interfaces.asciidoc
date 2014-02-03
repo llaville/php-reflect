@@ -1,6 +1,6 @@
 === Interfaces
 [role="lead"]
-Your next collection returned could be the list of interfaces defined in your source code, if any.
+Your next collection returned could be the list of interfaces defined in a package, if any.
 
 [label label-primary]#Reflect# returns a list of interfaces with the +getInterfaces()+ method.
 
@@ -12,7 +12,9 @@ use Bartlett\Reflect;
 
 $reflect = new Reflect;
 
-$interfaces = $reflect->getInterfaces();
+foreach ($reflect->getPackages() as $package) {
+    $interfaces = $package->getInterfaces();
+}
 ----
 
 This list (+$interfaces+) is an iterator, that can be traversed by a simple foreach loop.
@@ -24,7 +26,9 @@ This list (+$interfaces+) is an iterator, that can be traversed by a simple fore
 
 use Bartlett\Reflect;
 
-foreach($reflect->getInterfaces() as $interface) {
-    $interfaces[] = $interface->getName();
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getInterfaces() as $interface) {
+        echo $interface->getName(), PHP_EOL;
+    }
 }
 ----

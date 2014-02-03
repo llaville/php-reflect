@@ -1,6 +1,6 @@
 === Includes
 [role="lead"]
-Your next collection returned could be the list of includes defined in your source code, if any.
+Your next collection returned could be the list of includes defined in a package, if any.
 
 [label label-primary]#Reflect# returns a list of includes with the +getIncludes()+ method.
 
@@ -12,7 +12,9 @@ use Bartlett\Reflect;
 
 $reflect = new Reflect;
 
-$includes = $reflect->getIncludes();
+foreach ($reflect->getPackages() as $package) {
+    $includes = $package->getIncludes();
+}
 ----
 
 This list (+$includes+) is an iterator, that can be traversed by a simple foreach loop.
@@ -24,7 +26,9 @@ This list (+$includes+) is an iterator, that can be traversed by a simple foreac
 
 use Bartlett\Reflect;
 
-foreach($reflect->getIncludes() as $include) {
-    $includes[] = $include->getFilePath();
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getIncludes() as $include) {
+        echo $include->getFilePath(), PHP_EOL;
+    }
 }
 ----

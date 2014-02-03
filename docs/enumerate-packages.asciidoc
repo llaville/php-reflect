@@ -29,7 +29,7 @@ This list (+$packages+) is an iterator, that can be traversed by a simple foreac
 
 use Bartlett\Reflect;
 
-foreach($reflect->getPackages() as $package) {
-    $packages[] = $package->getName();
+foreach ($reflect->getPackages() as $package) {
+    echo $package->getName(), PHP_EOL;
 }
 ----

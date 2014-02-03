@@ -1,6 +1,6 @@
 === Classes
 [role="lead"]
-Your second collection returned could be the list of classes defined in your source code, if any.
+Your second collection returned could be the list of classes defined in a package, if any.
 
 [label label-primary]#Reflect# returns a list of classes with the +getClasses()+ method.
 
@@ -12,7 +12,9 @@ use Bartlett\Reflect;
 
 $reflect = new Reflect;
 
-$classes = $reflect->getClasses();
+foreach ($reflect->getPackages() as $package) {
+    $classes = $package->getClasses();
+}
 ----
 
 This list (+$classes+) is an iterator, that can be traversed by a simple foreach loop.
@@ -24,7 +26,9 @@ This list (+$classes+) is an iterator, that can be traversed by a simple foreach
 
 use Bartlett\Reflect;
 
-foreach($reflect->getClasses() as $class) {
-    $classes[] = $class->getName();
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getClasses() as $class) {
+        echo $class->getName(), PHP_EOL;
+    }
 }
 ----

@@ -1,6 +1,6 @@
 === Functions
 [role="lead"]
-Your next collection returned could be the list of functions defined in your source code, if any.
+Your next collection returned could be the list of functions defined in a package, if any.
 
 [label label-primary]#Reflect# returns a list of user functions with the +getFunctions()+ method.
 
@@ -12,7 +12,9 @@ use Bartlett\Reflect;
 
 $reflect = new Reflect;
 
-$functions = $reflect->getFunctions();
+foreach ($reflect->getPackages() as $package) {
+    $functions = $package->getFunctions();
+}
 ----
 
 This list (+$functions+) is an iterator, that can be traversed by a simple foreach loop.
@@ -24,7 +26,9 @@ This list (+$functions+) is an iterator, that can be traversed by a simple forea
 
 use Bartlett\Reflect;
 
-foreach($reflect->getFunctions() as $function) {
-    $functions[] = $function->getName();
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getFunctions() as $function) {
+        echo $function->getName(), PHP_EOL;
+    }
 }
 ----

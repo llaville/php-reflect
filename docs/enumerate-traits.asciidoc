@@ -1,6 +1,6 @@
 === Traits
 [role="lead"]
-Your next collection returned could be the list of traits defined in your source code, if any.
+Your next collection returned could be the list of traits defined in a package, if any.
 
 [label label-primary]#Reflect# returns a list of traits with the +getTraits()+ method.
 
@@ -12,7 +12,9 @@ use Bartlett\Reflect;
 
 $reflect = new Reflect;
 
-$traits = $reflect->getTraits();
+foreach ($reflect->getPackages() as $package) {
+    $traits = $package->getTraits();
+}
 ----
 
 This list (+$traits+) is an iterator, that can be traversed by a simple foreach loop.
@@ -24,7 +26,9 @@ This list (+$traits+) is an iterator, that can be traversed by a simple foreach 
 
 use Bartlett\Reflect;
 
-foreach($reflect->getTraits() as $trait) {
-    $traits[] = $trait->getName();
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getTraits() as $trait) {
+        echo $trait->getName(), PHP_EOL;
+    }
 }
 ----
