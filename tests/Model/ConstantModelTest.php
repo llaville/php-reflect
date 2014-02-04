@@ -1,4 +1,18 @@
 <?php
+/**
+ * Unit Test Case that covers the Constant Model representative.
+ *
+ * PHP version 5
+ *
+ * @category   PHP
+ * @package    PHP_Reflect
+ * @subpackage Tests
+ * @author     Laurent Laville <pear@laurent-laville.org>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    GIT: $Id$
+ * @link       http://php5.laurent-laville.org/reflect/
+ * @since      Class available since Release 2.0.0RC1
+ */
 
 namespace Bartlett\Tests\Reflect\Model;
 
@@ -18,9 +32,14 @@ if (!defined('TEST_FILES_PATH')) {
 /**
  * Unit Test Case that covers Bartlett\Reflect\Model\ConstantModel
  *
- * @author Laurent Laville
+ * @category   PHP
+ * @package    PHP_Reflect
+ * @subpackage Tests
+ * @author     Laurent Laville <pear@laurent-laville.org>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://php5.laurent-laville.org/reflect/
  */
-
 class ConstantModelTest extends \PHPUnit_Framework_TestCase
 {
     protected static $constants;
