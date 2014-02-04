@@ -1,4 +1,18 @@
 <?php
+/**
+ * Unit Test Case that covers specific Symfony Finder data source provider.
+ *
+ * PHP version 5
+ *
+ * @category   PHP
+ * @package    PHP_Reflect
+ * @subpackage Tests
+ * @author     Laurent Laville <pear@laurent-laville.org>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    GIT: $Id$
+ * @link       http://php5.laurent-laville.org/reflect/
+ * @since      Class available since Release 2.0.0RC1
+ */
 
 namespace Bartlett\Tests\Reflect\Provider;
 
@@ -14,11 +28,17 @@ if (!defined('TEST_FILES_PATH')) {
 }
 
 /**
- * Unit Test Case that covers specific Symfony Finder data source provider
+ * Tests for the PHP_CompatInfo, retrieving components informations
+ * about any extension.
  *
- * @author Laurent Laville
+ * @category   PHP
+ * @package    PHP_Reflect
+ * @subpackage Tests
+ * @author     Laurent Laville <pear@laurent-laville.org>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://php5.laurent-laville.org/reflect/
  */
-
 class SymfonyFinderProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
