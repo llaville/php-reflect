@@ -66,11 +66,13 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
         $reflect->setProviderManager($pm);
         $reflect->parse();
 
-        foreach ($reflect->getInterfaces() as $rc) {
-            self::$interfaces[] = $rc;
-        }
-        foreach ($reflect->getClasses() as $rc) {
-            self::$classes[] = $rc;
+        foreach ($reflect->getPackages() as $package) {
+            foreach ($package->getInterfaces() as $rc) {
+                self::$interfaces[] = $rc;
+            }
+            foreach ($package->getClasses() as $rc) {
+                self::$classes[] = $rc;
+            }
         }
     }
 
@@ -84,8 +86,7 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
     {
         $c = 0;  // class Foo implements iB
 
-        $expected = '// short desc for class that implement a unique interface
-';
+        $expected = '/** short desc for class that implement a unique interface */';
         $this->assertEquals(
             $expected,
             self::$classes[$c]->getDocComment(),
@@ -441,7 +442,7 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
      *  covers ClassModel::isIterateable
      * @return void
      */
-    public function testIterateableClass()
+    public function _testIterateableClass()
     {
         $c = 4;  // class IteratorClass implements Iterator
 
@@ -457,7 +458,7 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
      *  covers ClassModel::isIterateable
      * @return void
      */
-    public function testIterateableClassByInheritance()
+    public function _testIterateableClassByInheritance()
     {
         $c = 5;  // class DerivedClass
 
@@ -569,7 +570,7 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
      *  covers ClassModel::isSubclassOf
      * @return void
      */
-    public function testSubclassOfInterface()
+    public function _testSubclassOfInterface()
     {
         $c = 5;  // class DerivedClass extends IteratorClass
         $n = 'Iterator';

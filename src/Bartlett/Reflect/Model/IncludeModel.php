@@ -14,7 +14,7 @@
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Model\AbstractModel;
+use Bartlett\Reflect\Ast\AbstractNode;
 use Bartlett\Reflect\Model\Visitable;
 
 /**
@@ -28,20 +28,27 @@ use Bartlett\Reflect\Model\Visitable;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class IncludeModel extends AbstractModel implements Visitable
+class IncludeModel extends AbstractNode implements Visitable
 {
-    private $filepath;
-
     /**
      * Constructs a new IncludeModel instance.
      *
      * @param string $filepath The full path to the file to include
      */
-    public function __construct($filepath)
+    public function __construct($attributes)
     {
-        parent::__construct();
+        $struct = array(
+            'docComment' => '',
+            'startLine'  => 0,
+            'endLine'    => 0,
+            'file'       => '',
+            'filepath'   => '',
+        );
 
-        $this->filepath = $filepath;
+        parent::__construct(
+            'Include',
+            array_merge($struct, $attributes)
+        );
     }
 
     /**
@@ -52,7 +59,7 @@ class IncludeModel extends AbstractModel implements Visitable
      */
     public function getType()
     {
-        return $this->struct['type'];
+        return $this->struct['subtype'];
     }
 
     /**
@@ -62,7 +69,7 @@ class IncludeModel extends AbstractModel implements Visitable
      */
     public function getFilePath()
     {
-        return $this->filepath;
+        return $this->struct['filepath'];
     }
 
     /**
@@ -72,7 +79,7 @@ class IncludeModel extends AbstractModel implements Visitable
      */
     public function getDocComment()
     {
-        return $this->struct['docblock'];
+        return $this->struct['docComment'];
     }
 
     /**
@@ -159,7 +166,7 @@ class IncludeModel extends AbstractModel implements Visitable
         return sprintf(
             'Include [ %s ] { %s }%s',
             $this->getType(),
-            $this->getFilePath(),
+            implode(' . ', $this->getFilePath()),
             $eol
         );
     }

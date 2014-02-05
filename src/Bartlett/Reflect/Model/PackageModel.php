@@ -14,6 +14,16 @@
 
 namespace Bartlett\Reflect\Model;
 
+use Bartlett\Reflect\Ast\AbstractNode;
+use Bartlett\Reflect\Ast\Statement;
+use Bartlett\Reflect\Ast\Expression;
+use Bartlett\Reflect\Filter\ClassFilter;
+use Bartlett\Reflect\Filter\InterfaceFilter;
+use Bartlett\Reflect\Filter\TraitFilter;
+use Bartlett\Reflect\Filter\FunctionFilter;
+use Bartlett\Reflect\Filter\ConstantFilter;
+use Bartlett\Reflect\Filter\IncludeFilter;
+
 /**
  * The PackageModel class reports information about a package/namespace.
  *
@@ -25,47 +35,150 @@ namespace Bartlett\Reflect\Model;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class PackageModel extends AbstractModel implements Visitable, \IteratorAggregate
+class PackageModel extends AbstractNode implements Visitable
 {
-    protected $elements = array();
-
     /**
      * Constructs a new PackageModel instance.
      *
      * @param string $name Name of the package or namespace
      */
-    public function __construct($name)
+    public function __construct($attributes)
     {
-        $this->name = $name;
+        $name = $attributes['name'];
+        unset($attributes['name']);
 
-        $this->struct = array(
-            'docblock'  => '',
-            'startLine' => 0,
-            'endLine'   => 0,
-            'file'      => '',
+        $struct = array(
+            'docComment'   => '',
+            'startLine'    => 0,
+            'endLine'      => 0,
+            'file'         => '',
+            'import'       => false,
+            'alias'        => '',
+            'dependencies' => false,
         );
+
+        parent::__construct(
+            'Namespace',
+            array_merge($struct, $attributes)
+        );
+
+        $this->name = $name;
     }
 
     /**
-     * Returns internal iterator that allow to iterate over array of elements
+     * Gets the classes defined on this namespace.
      *
-     * @return iterator
+     * @return ClassFiler iterator that list ClassModel objects reflecting each class.
      */
-    public function getIterator()
+    public function getClasses(array $modifiers = null)
     {
-        return new \ArrayIterator($this->elements);
+        $iterator = new ClassFilter($this->getChildren(), $modifiers);
+        return $iterator;
     }
 
     /**
-     * Adds a new element that is part of the namespace
+     * Gets the interfaces defined on this namespace.
      *
-     * @param AbstractModel $element A Model representation of the new element
-     *
-     * @return void
+     * @return InterfaceFilter iterator that list ClassModel objects reflecting each interface.
      */
-    public function addElement($element)
+    public function getInterfaces()
     {
-        $this->elements[] = $element;
+        $iterator = new InterfaceFilter($this->getChildren());
+        return $iterator;
+    }
+
+    /**
+     * Gets the traits defined on this namespace.
+     *
+     * @return TraitFilter iterator that list ClassModel objects reflecting each trait.
+     */
+    public function getTraits()
+    {
+        $iterator = new TraitFilter($this->getChildren());
+        return $iterator;
+    }
+
+    /**
+     * Gets the user-functions defined on this namespace.
+     *
+     * @return FunctionFilter iterator that list FunctionModel objects reflecting each function.
+     */
+    public function getFunctions()
+    {
+        $iterator = new FunctionFilter($this->getChildren());
+        return $iterator;
+    }
+
+    /**
+     * Gets the (user|magic) constants defined on this namespace.
+     *
+     * @return ConstantFilter iterator that list ConstantModel objects reflecting each constant.
+     */
+    public function getConstants()
+    {
+        $nodes = array();
+
+        $this->findChildren(
+            'Bartlett\\Reflect\\Model\\ConstantModel',
+            'Constant',
+            $nodes
+        );
+
+        $iterator = new ConstantFilter(new \ArrayIterator($nodes));
+        return $iterator;
+    }
+
+    /**
+     * Gets the includes used on this namespace.
+     *
+     * @return IncludeFilter iterator that list IncludeModel objects reflecting each constant.
+     */
+    public function getIncludes()
+    {
+        $iterator = new IncludeFilter($this->getChildren());
+        return $iterator;
+    }
+
+    /**
+     * Gets internal components provided by PHP extensions.
+     */
+    public function getDependencies()
+    {
+        if ($this->struct['dependencies'] === false) {
+            // mapping of dependencies for lazy loading
+            $this->struct['dependencies'] = array();
+
+            $this->findChildren(
+                'Bartlett\\Reflect\\Ast\\Statement',
+                'Internal',
+                $this->struct['dependencies']
+            );
+
+            $this->findChildren(
+                'Bartlett\\Reflect\\Model\\ConstantModel',
+                'Constant',
+                $this->struct['dependencies']
+            );
+
+            $this->findChildren(
+                'Bartlett\\Reflect\\Ast\\Expression',
+                'Alloc',
+                $this->struct['dependencies']
+            );
+
+            $this->findChildren(
+                'Bartlett\\Reflect\\Ast\\Expression',
+                'MethodCall',
+                $this->struct['dependencies']
+            );
+
+            $this->findChildren(
+                'Bartlett\\Reflect\\Ast\\Expression',
+                'ClassMemberAccessOnInstantiation',
+                $this->struct['dependencies']
+            );
+        }
+        return $this->struct['dependencies'];
     }
 
     /**
@@ -75,7 +188,7 @@ class PackageModel extends AbstractModel implements Visitable, \IteratorAggregat
      */
     public function getDocComment()
     {
-        return $this->struct['docblock'];
+        return $this->struct['docComment'];
     }
 
     /**
@@ -127,7 +240,17 @@ class PackageModel extends AbstractModel implements Visitable, \IteratorAggregat
      */
     public function getShortName()
     {
-        return $this->name;
+        return $this->struct['alias'];
+    }
+
+    /**
+     * Checks if the package is imported or declared
+     *
+     * @return bool
+     */
+    public function isImported()
+    {
+        return $this->struct['import'];
     }
 
     /**

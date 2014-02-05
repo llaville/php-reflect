@@ -14,6 +14,7 @@
 
 namespace Bartlett\Reflect\Model;
 
+use Bartlett\Reflect\Ast\AbstractNode;
 use Bartlett\Reflect\Exception\ModelException;
 
 /**
@@ -27,18 +28,36 @@ use Bartlett\Reflect\Exception\ModelException;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class PropertyModel extends AbstractModel implements Visitable
+class PropertyModel extends AbstractNode implements Visitable
 {
     /**
      * Constructs a new PropertyModel instance.
      *
-     * @param string $qualifiedName The full qualified name of the class property
+     * @param string $class The class name that contains the property
+     * @param string $name  Name of the property
      */
-    public function __construct($qualifiedName)
+    public function __construct($attributes)
     {
-        parent::__construct();
+        list ($class, $name) = explode('::', $attributes['name']);
+        unset($attributes['name']);
 
-        $this->name = $qualifiedName;
+        $struct = array(
+            'docComment'  => '',
+            'startLine'   => 0,
+            'endLine'     => 0,
+            'file'        => '',
+            'compileTime' => true,
+        );
+
+        parent::__construct(
+            'Property',
+            array_merge($struct, $attributes)
+        );
+
+        $this->short_name = $name;
+        $this->class_name = ltrim($class, '\\');
+
+        $this->name = $this->class_name . "::$name";
     }
 
     /**
@@ -48,7 +67,7 @@ class PropertyModel extends AbstractModel implements Visitable
      */
     public function getDocComment()
     {
-        return $this->struct['docblock'];
+        return $this->struct['docComment'];
     }
 
     /**
@@ -58,7 +77,7 @@ class PropertyModel extends AbstractModel implements Visitable
      */
     public function getName()
     {
-        return $this->name;
+        return $this->short_name;
     }
 
     /**
@@ -72,13 +91,14 @@ class PropertyModel extends AbstractModel implements Visitable
     }
 
     /**
-     * Checks if a default value for the property is available.
+     * Checks if default value.
      *
-     * @return bool TRUE if a default value is available, otherwise FALSE
+     * @return bool TRUE if the property was declared at compile-time, or
+     *              FALSE if it was created at run-time.
      */
     public function isDefault()
     {
-        return isset($this->struct['defaultValue']);
+        return isset($this->struct['compileTime']);
     }
 
     /**

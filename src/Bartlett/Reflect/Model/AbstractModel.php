@@ -17,7 +17,7 @@ namespace Bartlett\Reflect\Model;
 use Bartlett\Reflect\Visitor\VisitorInterface;
 
 /**
- * AbstractModel is used to declare base accept operation 
+ * AbstractModel is used to declare base accept operation
  * if no element implementation is provided.
  *
  * @category PHP
@@ -52,21 +52,6 @@ abstract class AbstractModel
     public function getUses()
     {
         return $this->struct['uses'];
-    }
-
-    /**
-     * Updates the content of a Model object.
-     *
-     * @param array $data New data to merge with a previous content.
-     *
-     * @return void
-     */
-    public function update($data)
-    {
-        if (isset($data['uses'])) {
-            $data['uses'] += $this->getUses();
-        }
-        $this->struct = array_merge($this->struct, $data);
     }
 
     /**

@@ -15,6 +15,7 @@
 namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Exception\ModelException;
+use Bartlett\Reflect\Ast\AbstractNode;
 
 /**
  * The ConstantModel class reports information about a constant.
@@ -27,7 +28,7 @@ use Bartlett\Reflect\Exception\ModelException;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class ConstantModel extends AbstractModel implements Visitable
+class ConstantModel extends AbstractNode implements Visitable
 {
     protected $short_name;
 
@@ -36,9 +37,26 @@ class ConstantModel extends AbstractModel implements Visitable
      *
      * @param string $qualifiedName The full qualified name of the constant
      */
-    public function __construct($qualifiedName)
+    public function __construct($attributes)
     {
-        parent::__construct();
+        $qualifiedName = $attributes['name'];
+        unset($attributes['name']);
+
+        $struct = array(
+            'docComment' => '',
+            'startLine'  => 0,
+            'endLine'    => 0,
+            'file'       => '',
+            'extension'  => 'user',
+            'magic'      => false,
+            'namespace'  => false,
+            'value'      => null,
+        );
+
+        parent::__construct(
+            'Constant',
+            array_merge($struct, $attributes)
+        );
 
         $this->name = $qualifiedName;
 
@@ -51,50 +69,10 @@ class ConstantModel extends AbstractModel implements Visitable
             $parts = explode('\\', $parts[0]);
             $this->short_name = array_pop($parts);
         }
-    }
 
-    /**
-     * Updates the content of current instance of ConstantModel.
-     *
-     * @param array $data New data to merge with a previous content.
-     *
-     * @return void
-     */
-    public function update($data)
-    {
-        if ($data['magic']) {
-            $data['extension'] = 'core';
+        if ($this->struct['magic']) {
+            $this->struct['extension'] = 'core';
         }
-
-        $ns = ltrim($data['namespace'] . '\\', '\\');
-
-        if (strcasecmp('__FILE__', $this->short_name) === 0) {
-            $data['value'] = $data['file'];
-
-        } elseif (strcasecmp('__LINE__', $this->short_name) === 0) {
-            $data['value'] = $data['line'];
-
-        } elseif (strcasecmp('__DIR__', $this->short_name) === 0) {
-            $data['value'] = dirname($data['file']);
-
-        } elseif (strcasecmp('__TRAIT__', $this->short_name) === 0) {
-            $data['value'] = $ns . $data['trait'];
-
-        } elseif (strcasecmp('__CLASS__', $this->short_name) === 0) {
-            $data['value'] = $ns . $data['class'];
-
-        } elseif (strcasecmp('__METHOD__', $this->short_name) === 0) {
-            $data['value'] = $ns . $data['class'] .
-                '::' . $data['function'];
-
-        } elseif (strcasecmp('__FUNCTION__', $this->short_name) === 0) {
-            $data['value'] = $ns . $data['function'];
-
-        } elseif (strcasecmp('__NAMESPACE__', $this->short_name) === 0) {
-            $data['value'] = $data['namespace'];
-        }
-
-        parent::update($data);
     }
 
     /**
@@ -104,7 +82,7 @@ class ConstantModel extends AbstractModel implements Visitable
      */
     public function getDocComment()
     {
-        return $this->struct['docblock'];
+        return $this->struct['docComment'];
     }
 
     /**

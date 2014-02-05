@@ -64,8 +64,10 @@ class IncludeModelTest extends \PHPUnit_Framework_TestCase
         $reflect->setProviderManager($pm);
         $reflect->parse();
 
-        foreach ($reflect->getIncludes() as $rn) {
-            self::$includes[] = $rn;
+        foreach ($reflect->getPackages() as $package) {
+            foreach ($package->getIncludes() as $rn) {
+                self::$includes[] = $rn;
+            }
         }
     }
 
@@ -79,8 +81,7 @@ class IncludeModelTest extends \PHPUnit_Framework_TestCase
     {
         $n = 3;  // require_once
 
-        $expected = '// test four
-';
+        $expected = '/** test four */';
 
         $this->assertEquals(
             $expected,
@@ -151,7 +152,7 @@ class IncludeModelTest extends \PHPUnit_Framework_TestCase
         $n = 0;  // include
 
         $this->assertEquals(
-            'test1.php',
+            array('__DIR__', '/test1.php'),
             self::$includes[$n]->getFilePath(),
             self::$includes[$n]->getType() . ' file path does not match.'
         );
@@ -229,10 +230,10 @@ class IncludeModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
-        $n = 3;  // require_once
+        $n = 0;  // include
 
         $expected = <<<EOS
-Include [ require_once ] { test4.php }
+Include [ include ] { __DIR__ . /test1.php }
 
 EOS;
         $this->expectOutputString($expected);

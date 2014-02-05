@@ -35,14 +35,38 @@ class MethodModel extends AbstractFunctionModel implements Visitable
      * @param string $class The class name that contains the method
      * @param string $name  Name of the method
      */
-    public function __construct($class, $name)
+    public function __construct($attributes)
     {
-        parent::__construct();
+        list ($class, $name) = explode('::', $attributes['name']);
+        unset($attributes['name']);
+
+        $struct = array(
+            'docComment' => '',
+            'startLine'  => 0,
+            'endLine'    => 0,
+            'file'       => '',
+            'extension'  => 'user',
+        );
+
+        parent::__construct(
+            'ClassMethod',
+            array_merge($struct, $attributes)
+        );
 
         $this->short_name = $name;
         $this->class_name = ltrim($class, '\\');
 
         $this->name = $this->class_name . "::$name";
+    }
+
+    /**
+     * Gets class name for the reflected method.
+     *
+     * @return string
+     */
+    public function getClassName()
+    {
+        return $this->class_name;
     }
 
     /**

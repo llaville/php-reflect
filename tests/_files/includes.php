@@ -2,10 +2,10 @@
 // This file is example#1 
 // from http://www.php.net/manual/en/function.get-included-files.php
 
-include 'test1.php';
+include __DIR__ . '/test1.php';
 include_once 'test2.php';
 require 'test3.php';
-// test four
+/** test four */
 require_once 
     'test4.php';
 

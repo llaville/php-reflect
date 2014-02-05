@@ -14,9 +14,13 @@
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Model\AbstractModel;
+use Bartlett\Reflect\Ast\AbstractNode;
+use Bartlett\Reflect\Ast\Statement;
 use Bartlett\Reflect\Model\Visitable;
 use Bartlett\Reflect\Exception\ModelException;
+use Bartlett\Reflect\Filter\MethodFilter;
+use Bartlett\Reflect\Filter\ClassConstFilter;
+use Bartlett\Reflect\Filter\PropertyFilter;
 
 /**
  * The ClassModel class reports information about a class.
@@ -29,53 +33,38 @@ use Bartlett\Reflect\Exception\ModelException;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class ClassModel extends AbstractModel implements Visitable
+class ClassModel extends AbstractNode implements Visitable
 {
     /**
      * Constructs a new ClassModel instance.
      *
      * @param string $qualifiedName The full qualified name of the class
      */
-    public function __construct($qualifiedName)
+    public function __construct($attributes)
     {
-        parent::__construct();
+        $qualifiedName = $attributes['name'];
+        unset($attributes['name']);
+
+        $struct = array(
+            'docComment' => '',
+            'startLine'  => 0,
+            'endLine'    => 0,
+            'file'       => '',
+            'extension'  => 'user',
+            'trait'      => false,
+            'interface'  => false,
+            'parent'     => false,
+            'modifiers'  => array(),
+            'interfaces' => array(),
+    #        'properties' => false,
+        );
+
+        parent::__construct(
+            'Class',
+            array_merge($struct, $attributes)
+        );
 
         $this->name = ltrim($qualifiedName, '\\');
-
-        $this->struct['interfaces'] = array();
-        $this->struct['constants']  = array();
-        $this->struct['methods']    = array();
-    }
-
-    /**
-     * Updates the content of current instance of ClassModel.
-     *
-     * @param array $data New data to merge with a previous content.
-     *
-     * @return void
-     */
-    public function update($data)
-    {
-        if (isset($data['interfaces'])) {
-            $data['interfaces'] = array_merge_recursive(
-                $this->struct['interfaces'],
-                $data['interfaces']
-            );
-
-        } elseif (isset($data['constants'])) {
-            $data['constants'] = array_merge_recursive(
-                $this->struct['constants'],
-                $data['constants']
-            );
-
-        } elseif (isset($data['methods'])) {
-            $data['methods'] = array_merge_recursive(
-                $this->struct['methods'],
-                $data['methods']
-            );
-        }
-
-        parent::update($data);
     }
 
     /**
@@ -85,7 +74,7 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getDocComment()
     {
-        return $this->struct['docblock'];
+        return $this->struct['docComment'];
     }
 
     /**
@@ -127,6 +116,20 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getInterfaceNames()
     {
+        if (!empty($this->struct['interfaces'])) {
+            $interfaces = array();
+
+            foreach ($this->struct['interfaces'] as $interface) {
+                if (is_string($interface)) {
+                    // build on demand
+                    $interfaces[] = new ClassModel(array('name' => '\\'.$interface));
+                }
+            }
+            $this->struct['interfaces'] = $interfaces;
+            // lazy loading
+            $this->setAttribute('interfaces', $interfaces);
+        }
+
         return $this->struct['interfaces'];
     }
 
@@ -160,6 +163,13 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getParentClass()
     {
+        if (is_string($this->struct['parent'])) {
+            // build on demand
+            $obj = new ClassModel(array('name' => '\\'.$this->struct['parent']));
+            // lazy loading
+            $this->setAttribute('parent', $obj);
+            $this->struct['parent'] = $obj;
+        }
         return $this->struct['parent'];
     }
 
@@ -230,11 +240,12 @@ class ClassModel extends AbstractModel implements Visitable
     /**
      * Gets an array of constants for the class.
      *
-     * @return array ConstantModel objects reflecting each class constant.
+     * @return ClassConstFilter iterator that list ConstantModel objects reflecting each class constant.
      */
     public function getConstants()
     {
-        return array_values($this->struct['constants']);
+        $iterator = new ClassConstFilter($this->getChildren());
+        return $iterator;
     }
 
     /**
@@ -247,8 +258,12 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getConstant($name)
     {
-        if (isset($this->struct['constants'][$name])) {
-            return $this->struct['constants'][$name]->getValue();
+        if ($this->hasConstant($name)) {
+            $iterator = new ClassConstFilter($this->getChildren(), $name);
+            $iterator->rewind();
+            return $iterator->current()
+                ->getAttribute('value')
+            ;
         }
         throw new ModelException(
             sprintf(
@@ -267,17 +282,19 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function hasConstant($name)
     {
-        return array_key_exists($name, $this->struct['constants']);
+        $iterator = new ClassConstFilter($this->getChildren(), $name);
+        return (count($iterator) > 0);
     }
 
     /**
      * Gets an array of methods for the class.
      *
-     * @return array MethodModel objects reflecting each class method.
+     * @return MethodFilter iterator that list MethodModel objects reflecting each class method.
      */
-    public function getMethods()
+    public function getMethods(array $modifiers = null)
     {
-        return array_values($this->struct['methods']);
+        $iterator = new MethodFilter($this->getChildren(), $modifiers);
+        return $iterator;
     }
 
     /**
@@ -291,7 +308,9 @@ class ClassModel extends AbstractModel implements Visitable
     public function getMethod($name)
     {
         if ($this->hasMethod($name)) {
-            return $this->struct['methods'][$name];
+            $iterator = new MethodFilter($this->getChildren(), null, $name);
+            $iterator->rewind();
+            return $iterator->current();
         }
         throw new ModelException(
             'Method ' . $this->name . '::' .  $name . ' does not exist.'
@@ -307,7 +326,134 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function hasMethod($name)
     {
-        return array_key_exists($name, $this->struct['methods']);
+        $iterator = new MethodFilter($this->getChildren(), null, $name);
+        return (count($iterator) > 0);
+    }
+
+    /**
+     * Gets an array of static properties for the class.
+     *
+     * @return array Names of static properties
+     */
+    public function getStaticProperties()
+    {
+        static $properties;
+
+        if (!isset($properties)) {
+            $properties = array();
+            foreach ($this->getProperties() as $name => $property) {
+                if ($property->isStatic()) {
+                    $properties[] = $name;
+                }
+            }
+        }
+        return $properties;
+    }
+
+    /**
+     * Gets value of a static property for the class.
+     *
+     * @param string Name of static property
+     * @return mixed
+     * @throws ModelException if the property does not exist or is not static
+     */
+    public function getStaticPropertyValue($name)
+    {
+        $property = $this->getProperty($name);
+        if ($property->isStatic()) {
+            return $property->getValue();
+        }
+        throw new ModelException(
+            'Property ' . $this->name . '::' .  $name . ' is not static.'
+        );
+    }
+
+    /**
+     * Gets an array of properties for the class.
+     *
+     * @return array PropertiesModel objects reflecting each class method.
+     */
+    public function getProperties()
+    {
+        $iterator = new PropertyFilter($this->getChildren());
+        return $iterator;
+
+        static $properties;
+
+        if ($this->struct['properties'] === false) {
+            // mapping of properties for lazy loading
+            $this->struct['properties'] = array();
+
+            $properties = array();
+
+            $nodes = $this->getChildren();
+            $inode = 0;
+
+            while (!empty($nodes)) {
+                $node = array_shift($nodes);
+
+                if ($node instanceof PropertyModel) {
+                    $name = $node->getName();
+                    $this->struct['properties'][$name] = $inode;
+                    $properties[$name] = $node;
+                }
+                $inode++;
+            }
+        }
+        return $properties;
+    }
+
+    /**
+     * Gets an array of properties defined at compile-time.
+     *
+     * @return array Names and values of default properties.
+     */
+    public function getDefaultProperties()
+    {
+        static $properties;
+
+        if (!isset($properties)) {
+            $properties = array();
+            foreach ($this->getProperties() as $name => $property) {
+                if ($property->isDefault()) {
+                    $properties[$name] = $property->getValue();
+                }
+            }
+        }
+        return $properties;
+    }
+
+    /**
+     * Gets a PropertyModel for a class property.
+     *
+     * @param string $name The property name to reflect.
+     *
+     * @return PropertyModel
+     * @throws ModelException if the property does not exist.
+     */
+    public function getProperty($name)
+    {
+        if ($this->hasProperty($name)) {
+            return $this->getChild(
+                $this->struct['properties'][$name]
+            );
+        }
+        throw new ModelException(
+            'Property ' . $this->name . '::' .  $name . ' does not exist.'
+        );
+    }
+
+    /**
+     * Checks whether a specific property is defined in a class.
+     *
+     * @param string $name The name of the property being checked for
+     *
+     * @return bool TRUE if it has the property, otherwise FALSE
+     */
+    public function hasProperty($name)
+    {
+        $this->getProperties();
+        return array_key_exists($name, $this->struct['properties']);
     }
 
     /**

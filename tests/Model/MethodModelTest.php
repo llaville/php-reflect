@@ -65,11 +65,13 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $reflect->setProviderManager($pm);
         $reflect->parse();
 
-        foreach ($reflect->getInterfaces() as $rc) {
-            self::$interfaces[] = $rc;
-        }
-        foreach ($reflect->getClasses() as $rc) {
-            self::$classes[] = $rc;
+        foreach ($reflect->getPackages() as $package) {
+            foreach ($package->getInterfaces() as $rc) {
+                self::$interfaces[] = $rc;
+            }
+            foreach ($package->getClasses() as $rc) {
+                self::$classes[] = $rc;
+            }
         }
     }
 
@@ -84,10 +86,13 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 1;  // abstract class AbstractClass
         $m = 0;  // method lambdaMethod
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertEquals(
-            '/* static meth: */',
+            '/** static meth: */',
             $methods[$m]->getDocComment(),
             $methods[$m]->getName()
             . ' doc comment does not match.'
@@ -105,7 +110,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 2;  // method dump
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertEquals(
             54,
@@ -126,7 +134,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 2;  // method dump
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertEquals(
             57,
@@ -147,7 +158,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 2;  // method dump
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertEquals(
             TEST_FILES_PATH . 'classes.php',
@@ -168,7 +182,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 2;  // method dump
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertEquals(
             'MyDestructableClass::dump',
@@ -189,7 +206,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 2;  // method dump
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertEquals(
             'user',
@@ -210,7 +230,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class Foo implements iB
         $m = 0;  // method Foo
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertTrue(
             $methods[$m]->isConstructor(),
@@ -230,7 +253,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 0;  // method __construct
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertTrue(
             $methods[$m]->isConstructor(),
@@ -250,7 +276,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // class MyDestructableClass
         $m = 1;  // method __destruct
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertTrue(
             $methods[$m]->isDestructor(),
@@ -270,7 +299,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 1;  // abstract class AbstractClass
         $m = 1;  // method abstractMethod
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertTrue(
             $methods[$m]->isAbstract(),
@@ -290,7 +322,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class Foo implements iB
         $m = 2;  // method baz
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertTrue(
             $methods[$m]->isFinal(),
@@ -310,7 +345,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 1;  // abstract class AbstractClass
         $m = 0;  // method lambdaMethod
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertTrue(
             $methods[$m]->isStatic(),
@@ -330,7 +368,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class Foo implements iB
         $m = 1;  // method FooBaz
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertTrue(
             $methods[$m]->isPrivate(),
@@ -350,7 +391,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 3;  // class Bar
         $m = 1;  // method otherfunction
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertTrue(
             $methods[$m]->isProtected(),
@@ -370,7 +414,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $c = 1;  // abstract class AbstractClass
         $m = 0;  // method lambdaMethod
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         $this->assertTrue(
             $methods[$m]->isPublic(),
@@ -390,7 +437,10 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
         $i = 2;  // interface iB extends iA
         $m = 0;  // method baz
 
-        $methods = self::$interfaces[$i]->getMethods();
+        $methods = iterator_to_array(
+            self::$interfaces[$i]->getMethods(),
+            false
+        );
 
         $this->assertCount(
             1,
@@ -426,7 +476,10 @@ EOS;
             str_replace('%path%', TEST_FILES_PATH, $expected)
         );
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );
 
         print(
             $methods[$m]->__toString()

@@ -1,6 +1,6 @@
 <?php
 namespace sandbox;
-// connection semaphore
+/** connection semaphore */
 const CONNECT_OK = 1;
 
 error_log('Magic constants in ' . __FILE__);

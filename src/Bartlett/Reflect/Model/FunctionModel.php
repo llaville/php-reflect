@@ -32,13 +32,25 @@ class FunctionModel extends AbstractFunctionModel implements Visitable
      *
      * @param string $qualifiedName The full qualified name of the function
      */
-    public function __construct($qualifiedName)
+    public function __construct($attributes)
     {
-        parent::__construct();
+        $qualifiedName = $attributes['name'];
+        unset($attributes['name']);
+
+        $struct = array(
+            'docComment' => '',
+            'startLine'  => 0,
+            'endLine'    => 0,
+            'file'       => '',
+            'arguments'  => array(),
+        );
+
+        parent::__construct(
+            'UserFunction',
+            array_merge($struct, $attributes)
+        );
 
         $this->name = $qualifiedName;
-
-        $this->struct['arguments'] = array();
 
         $parts = explode('\\', $qualifiedName);
         $this->short_name = array_pop($parts);

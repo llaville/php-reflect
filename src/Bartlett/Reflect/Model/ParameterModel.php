@@ -14,6 +14,7 @@
 
 namespace Bartlett\Reflect\Model;
 
+use Bartlett\Reflect\Ast\AbstractNode;
 use Bartlett\Reflect\Exception\ModelException;
 
 /**
@@ -27,18 +28,25 @@ use Bartlett\Reflect\Exception\ModelException;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class ParameterModel extends AbstractModel implements Visitable
+class ParameterModel extends AbstractNode implements Visitable
 {
     /**
      * Constructs a new ParameterModel instance.
      *
      * @param string $name Name of the parameter
      */
-    public function __construct($name)
+    public function __construct($attributes)
     {
-        parent::__construct();
+        $struct = array(
+            'startLine'    => 0,
+            'endLine'      => 0,
+            'file'         => '',
+        );
 
-        $this->name = $name;
+        parent::__construct(
+            'Parameter',
+            array_merge($struct, $attributes)
+        );
     }
 
     /**
@@ -48,7 +56,7 @@ class ParameterModel extends AbstractModel implements Visitable
      */
     public function getName()
     {
-        return $this->name;
+        return $this->struct['name'];
     }
 
     /**
@@ -97,7 +105,7 @@ class ParameterModel extends AbstractModel implements Visitable
      */
     public function isPassedByReference()
     {
-        return isset($this->struct['byRef']);
+        return $this->struct['byRef'];
     }
 
     /**
@@ -136,7 +144,7 @@ class ParameterModel extends AbstractModel implements Visitable
             sprintf(
                 'Parameter #%d [$%s] is not optional.',
                 $this->struct['position'],
-                $this->name
+                $this->struct['name']
             )
         );
     }

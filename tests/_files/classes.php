@@ -17,7 +17,7 @@ interface iB extends iA
     public function baz(Baz $baz);
 }
 
-// short desc for class that implement a unique interface
+/** short desc for class that implement a unique interface */
 class Foo implements iB
 {
     public function Foo() {
@@ -34,10 +34,10 @@ class Foo implements iB
 
 // short desc
 Abstract class AbstractClass {
-    /* static meth: */
+    /** static meth: */
     public static   function lambdaMethod() {}
 
-    /* abst meth: */
+    /** abst meth: */
     public  abstract function abstractMethod();
 }
 

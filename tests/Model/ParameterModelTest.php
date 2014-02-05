@@ -67,14 +67,16 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $reflect->setProviderManager($pm);
         $reflect->parse();
 
-        foreach ($reflect->getInterfaces() as $rc) {
-            self::$interfaces[] = $rc;
-        }
-        foreach ($reflect->getClasses() as $rc) {
-            self::$classes[] = $rc;
-        }
-        foreach ($reflect->getFunctions() as $rf) {
-            self::$functions[] = $rf;
+        foreach ($reflect->getPackages() as $package) {
+            foreach ($package->getInterfaces() as $rc) {
+                self::$interfaces[] = $rc;
+            }
+            foreach ($package->getClasses() as $rc) {
+                self::$classes[] = $rc;
+            }
+            foreach ($package->getFunctions() as $rf) {
+                self::$functions[] = $rf;
+            }
         }
     }
 
@@ -90,7 +92,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 1;  // method otherfunction
         $p = 0;  // parameter $baz
 
-        $methods    = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );        
         $parameters = $methods[$m]->getParameters();
 
         $this->assertEquals(
@@ -134,7 +139,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 0;  // method baz
         $p = 0;  // parameter $baz
 
-        $methods    = self::$interfaces[$i]->getMethods();
+        $methods = iterator_to_array(
+            self::$interfaces[$i]->getMethods(),
+            false
+        );                
         $parameters = $methods[$m]->getParameters();
 
         $this->assertFalse(
@@ -157,7 +165,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 0;  // method myfunction
         $p = 0;  // parameter $param
 
-        $methods    = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );                
         $parameters = $methods[$m]->getParameters();
 
         $this->assertTrue(
@@ -180,7 +191,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 1;  // method otherfunction
         $p = 1;  // parameter $param
 
-        $methods    = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );                
         $parameters = $methods[$m]->getParameters();
 
         $this->assertTrue(
@@ -299,7 +313,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 0;  // method myfunction
         $p = 1;  // parameter $otherparam
 
-        $methods    = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );                
         $parameters = $methods[$m]->getParameters();
 
         $this->assertEquals(
@@ -394,7 +411,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
         $m = 0;  // method myfunction
         $p = 0;  // parameter $param
 
-        $methods    = self::$classes[$c]->getMethods();
+        $methods = iterator_to_array(
+            self::$classes[$c]->getMethods(),
+            false
+        );                
         $parameters = $methods[$m]->getParameters();
 
         $this->assertEquals(
