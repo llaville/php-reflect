@@ -40,7 +40,7 @@ if (!defined('TEST_FILES_PATH')) {
  * @version    Release: @package_version@
  * @link       http://php5.laurent-laville.org/reflect/
  */
-class DoAstTest extends \PHPUnit_Framework_TestCase
+class ForAstTest extends \PHPUnit_Framework_TestCase
 {
     protected static $parser;
     protected static $ast;
