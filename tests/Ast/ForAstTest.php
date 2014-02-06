@@ -201,5 +201,4 @@ class ForAstTest extends \PHPUnit_Framework_TestCase
         );
 
     }
-
 }
