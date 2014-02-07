@@ -64,8 +64,10 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
         $reflect->setProviderManager($pm);
         $reflect->parse();
 
-        foreach ($reflect->getConstants() as $rc) {
-            self::$constants[] = $rc;
+        foreach ($reflect->getPackages() as $package) {
+            foreach ($package->getConstants() as $rc) {
+                self::$constants[] = $rc;
+            }
         }
     }
 
@@ -79,8 +81,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     {
         $c = 0;  // sandbox\CONNECT_OK
 
-        $expected = '// connection semaphore
-';
+        $expected = '/** connection semaphore */';
 
         $this->assertEquals(
             $expected,
@@ -215,7 +216,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testDirMagicConstantValueAccessor()
     {
-        $c = 7;  // __DIR__
+        $c = 8;  // __DIR__
 
         $this->assertEquals(
             rtrim(TEST_FILES_PATH, DIRECTORY_SEPARATOR),
@@ -249,7 +250,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testLineMagicConstantValueAccessor()
     {
-        $c = 4;  // __LINE__ from sandbox\connect()
+        $c = 6;  // __LINE__ from sandbox\connect()
 
         $this->assertEquals(
             17,
@@ -283,7 +284,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNamespaceMagicConstantValueAccessor()
     {
-        $c = 6;  // __NAMESPACE__
+        $c = 7;  // __NAMESPACE__
 
         $this->assertEquals(
             'sandbox',
@@ -300,7 +301,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testTraitMagicConstantValueAccessor()
     {
-        $c = 8;  // __TRAIT__ from sandbox\PeanutButter::traitName()
+        $c = 9;  // __TRAIT__ from sandbox\PeanutButter::traitName()
 
         $this->assertEquals(
             'sandbox\PeanutButter',
