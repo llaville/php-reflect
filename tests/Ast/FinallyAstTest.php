@@ -116,8 +116,8 @@ class FinallyAstTest extends \PHPUnit_Framework_TestCase
         );
 
         $expected = array(
-            'startLine'       => 15,
-            'endLine'         => 18,
+            'startLine'       => 17,
+            'endLine'         => 20,
         );
         $this->assertEquals(
             $expected,

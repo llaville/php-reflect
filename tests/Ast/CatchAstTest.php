@@ -116,8 +116,8 @@ class CatchAstTest extends \PHPUnit_Framework_TestCase
         );
 
         $expected = array(
-            'startLine'       => 11,
-            'endLine'         => 14,
+            'startLine'       => 13,
+            'endLine'         => 16,
         );
         $this->assertEquals(
             $expected,

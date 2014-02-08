@@ -116,8 +116,8 @@ class TryAstTest extends \PHPUnit_Framework_TestCase
         );
 
         $expected = array(
-            'startLine'       => 8,
-            'endLine'         => 10,
+            'startLine'       => 10,
+            'endLine'         => 12,
         );
         $this->assertEquals(
             $expected,
