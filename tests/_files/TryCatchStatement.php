@@ -11,10 +11,10 @@ try {
     strpos();
 } 
 catch (Exception $e) {
-    print $e->getMessage(), 
+    echo $e->getMessage(), 
         PHP_EOL;
 }
 finally {
-    print 'After try/catch blocks, and before to continue on next statement', 
+    echo 'After try/catch blocks, and before to continue on next statement', 
         PHP_EOL;
 }
