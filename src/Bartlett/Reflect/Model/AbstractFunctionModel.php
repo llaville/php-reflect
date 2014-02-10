@@ -15,6 +15,7 @@
 namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Ast\AbstractNode;
+use Bartlett\Reflect\Ast\Expression;
 use Bartlett\Reflect\Exception\ModelException;
 
 /**
@@ -182,7 +183,7 @@ abstract class AbstractFunctionModel extends AbstractNode
 
         $count = 0;
         foreach ($args as $arg) {
-            if (!isset($arg['defaultValue'])) {
+            if (!$arg->hasAttribute('defaultValue')) {
                 $count++;
             }
         }

@@ -105,7 +105,15 @@ class PackageModel extends AbstractNode implements Visitable
      */
     public function getFunctions()
     {
-        $iterator = new FunctionFilter($this->getChildren());
+        $nodes = array();
+
+        $this->findChildren(
+            'Bartlett\\Reflect\\Model\\FunctionModel',
+            'UserFunction',
+            $nodes
+        );
+
+        $iterator = new FunctionFilter(new \ArrayIterator($nodes));
         return $iterator;
     }
 

@@ -66,14 +66,19 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
         $reflect->setProviderManager($pm);
         $reflect->parse();
 
-        foreach ($reflect->getInterfaces() as $rc) {
-            self::$interfaces[] = $rc;
-        }
-        foreach ($reflect->getClasses() as $rc) {
-            self::$classes[] = $rc;
-        }
-        foreach ($reflect->getFunctions() as $rf) {
-            self::$functions[] = $rf;
+        $n = 0;
+
+        foreach ($reflect->getPackages() as $package) {
+            foreach ($package->getInterfaces() as $rc) {
+                self::$interfaces[$n][] = $rc;
+            }
+            foreach ($package->getClasses() as $rc) {
+                self::$classes[$n][] = $rc;
+            }
+            foreach ($package->getFunctions() as $rf) {
+                self::$functions[$n][] = $rf;
+            }
+            $n++;
         }
     }
 
@@ -85,15 +90,19 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testDocCommentAccessor()
     {
+        $n = 1;  // namespace glob
         $c = 0;  // class glob\Foo
         $m = 0;  // method myfunction
+
+        $methods = iterator_to_array(
+            self::$classes[$n][$c]->getMethods(),
+            false
+        );
 
         $expected = '/**
      * @param stdClass $param
      * @param mixed    $otherparam
      */';
-
-        $methods = self::$classes[$c]->getMethods();
 
         $this->assertEquals(
             $expected,
@@ -111,12 +120,13 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testStartLineAccessor()
     {
+        $n = 1;  // namespace glob
         $f = 1;  // function glob\myprocess
 
         $this->assertEquals(
             29,
-            self::$functions[$f]->getStartLine(),
-            self::$functions[$f]->getName() . ' starting line does not match.'
+            self::$functions[$n][$f]->getStartLine(),
+            self::$functions[$n][$f]->getName() . ' starting line does not match.'
         );
     }
 
@@ -128,12 +138,13 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testEndLineAccessor()
     {
+        $n = 1;  // namespace glob
         $f = 1;  // function glob\myprocess
 
         $this->assertEquals(
             32,
-            self::$functions[$f]->getEndLine(),
-            self::$functions[$f]->getName() . ' ending line does not match.'
+            self::$functions[$n][$f]->getEndLine(),
+            self::$functions[$n][$f]->getName() . ' ending line does not match.'
         );
     }
 
@@ -145,12 +156,13 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testFileNameAccessor()
     {
+        $n = 1;  // namespace glob
         $f = 1;  // function glob\myprocess
 
         $this->assertEquals(
             TEST_FILES_PATH . 'namespaces.php',
-            self::$functions[$f]->getFileName(),
-            self::$functions[$f]->getName() . ' file name does not match.'
+            self::$functions[$n][$f]->getFileName(),
+            self::$functions[$n][$f]->getName() . ' file name does not match.'
         );
     }
 
@@ -162,12 +174,13 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNameAccessor()
     {
+        $n = 1;  // namespace glob
         $f = 1;  // function glob\myprocess
 
         $this->assertEquals(
             'glob\myprocess',
-            self::$functions[$f]->getName(),
-            self::$functions[$f]->getName() . ' function name does not match.'
+            self::$functions[$n][$f]->getName(),
+            self::$functions[$n][$f]->getName() . ' function name does not match.'
         );
     }
 
@@ -179,12 +192,13 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testExtensionNameAccessor()
     {
+        $n = 1;  // namespace glob
         $f = 1;  // function glob\myprocess
 
         $this->assertEquals(
             'user',
-            self::$functions[$f]->getExtensionName(),
-            self::$functions[$f]->getName() . ' extension name does not match.'
+            self::$functions[$n][$f]->getExtensionName(),
+            self::$functions[$n][$f]->getName() . ' extension name does not match.'
         );
     }
 
@@ -196,12 +210,13 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNamespaceNameAccessor()
     {
-        $f = 2;  // function nemo\nobody
+        $n = 2;  // namespace nemo
+        $f = 0;  // function nemo\nobody
 
         $this->assertEquals(
             'nemo',
-            self::$functions[$f]->getNamespaceName(),
-            self::$functions[$f]->getName() . ' namespace does not match.'
+            self::$functions[$n][$f]->getNamespaceName(),
+            self::$functions[$n][$f]->getName() . ' namespace does not match.'
         );
     }
 
@@ -213,12 +228,13 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testShortNameAccessor()
     {
+        $n = 1;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertEquals(
             'singleFunction',
-            self::$functions[$f]->getShortName(),
-            self::$functions[$f]->getName() . ' short name does not match.'
+            self::$functions[$n][$f]->getShortName(),
+            self::$functions[$n][$f]->getName() . ' short name does not match.'
         );
     }
 
@@ -230,12 +246,13 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNumberOfParametersAccessor()
     {
+        $n = 1;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertEquals(
             3,
-            self::$functions[$f]->getNumberOfParameters(),
-            self::$functions[$f]->getName() . ' number of parameters does not match.'
+            self::$functions[$n][$f]->getNumberOfParameters(),
+            self::$functions[$n][$f]->getName() . ' number of parameters does not match.'
         );
     }
 
@@ -247,12 +264,13 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNumberOfRequiredParametersAccessor()
     {
+        $n = 1;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertEquals(
             2,
-            self::$functions[$f]->getNumberOfRequiredParameters(),
-            self::$functions[$f]->getName() . ' number of required parameters does not match.'
+            self::$functions[$n][$f]->getNumberOfRequiredParameters(),
+            self::$functions[$n][$f]->getName() . ' number of required parameters does not match.'
         );
     }
 
@@ -264,12 +282,13 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testParametersAccessor()
     {
+        $n = 1;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertCount(
             3,
-            self::$functions[$f]->getParameters(),
-            self::$functions[$f]->getName() . ' parameters number does not match.'
+            self::$functions[$n][$f]->getParameters(),
+            self::$functions[$n][$f]->getName() . ' parameters number does not match.'
         );
     }
 
@@ -281,11 +300,12 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testInNamespace()
     {
+        $n = 1;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertTrue(
-            self::$functions[$f]->inNamespace(),
-            self::$functions[$f]->getName() . ' is defined in a namespace.'
+            self::$functions[$n][$f]->inNamespace(),
+            self::$functions[$n][$f]->getName() . ' is defined in a namespace.'
         );
     }
 
@@ -297,11 +317,12 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testAnonymousFunction()
     {
+        $n = 1;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertFalse(
-            self::$functions[$f]->isClosure(),
-            self::$functions[$f]->getName() . ' is not an anonymous function.'
+            self::$functions[$n][$f]->isClosure(),
+            self::$functions[$n][$f]->getName() . ' is not an anonymous function.'
         );
     }
 
@@ -313,11 +334,12 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testClosureInNamespace()
     {
-        $f = 3;  // closure in nemo namespace
+        $n = 2;  // namespace nemo
+        $f = 1;  // closure in nemo namespace
 
         $this->assertTrue(
-            self::$functions[$f]->isClosure(),
-            self::$functions[$f]->getName() . ' is a closure.'
+            self::$functions[$n][$f]->isClosure(),
+            self::$functions[$n][$f]->getName() . ' is a closure.'
         );
     }
 
@@ -329,11 +351,12 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testInternalFunction()
     {
+        $n = 1;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertFalse(
-            self::$functions[$f]->isInternal(),
-            self::$functions[$f]->getName() . ' is a user-defined function.'
+            self::$functions[$n][$f]->isInternal(),
+            self::$functions[$n][$f]->getName() . ' is a user-defined function.'
         );
     }
 
@@ -345,6 +368,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
+        $n = 1;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $expected = <<<EOS
@@ -364,7 +388,7 @@ EOS;
         );
 
         print(
-            self::$functions[$f]->__toString()
+            self::$functions[$n][$f]->__toString()
         );
     }
 }

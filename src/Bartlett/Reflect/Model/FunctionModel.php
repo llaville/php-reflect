@@ -35,13 +35,15 @@ class FunctionModel extends AbstractFunctionModel implements Visitable
     public function __construct($attributes)
     {
         $qualifiedName = $attributes['name'];
-        unset($attributes['name']);
+        //unset($attributes['name']);
 
         $struct = array(
             'docComment' => '',
             'startLine'  => 0,
             'endLine'    => 0,
             'file'       => '',
+            'extension'  => 'user',
+            'closure'    => false,
             'arguments'  => array(),
         );
 

@@ -36,10 +36,9 @@ namespace nemo;
 function nobody() {
 }
 
-echo preg_replace_callback('~-([a-z])~', function ($match) {
-    return strtoupper($match[1]);
-}, 'hello-world');
-// outputs helloWorld
+$greet = function($name) {
+    printf("Hello %s%s", $name, PHP_EOL);
+};
 
 namespace A\B;
 
