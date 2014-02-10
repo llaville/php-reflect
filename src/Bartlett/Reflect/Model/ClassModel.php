@@ -371,36 +371,12 @@ class ClassModel extends AbstractNode implements Visitable
     /**
      * Gets an array of properties for the class.
      *
-     * @return array PropertiesModel objects reflecting each class method.
+     * @return PropertyFilter iterator that list PropertyModel objects reflecting each class property.
      */
     public function getProperties()
     {
         $iterator = new PropertyFilter($this->getChildren());
         return $iterator;
-
-        static $properties;
-
-        if ($this->struct['properties'] === false) {
-            // mapping of properties for lazy loading
-            $this->struct['properties'] = array();
-
-            $properties = array();
-
-            $nodes = $this->getChildren();
-            $inode = 0;
-
-            while (!empty($nodes)) {
-                $node = array_shift($nodes);
-
-                if ($node instanceof PropertyModel) {
-                    $name = $node->getName();
-                    $this->struct['properties'][$name] = $inode;
-                    $properties[$name] = $node;
-                }
-                $inode++;
-            }
-        }
-        return $properties;
     }
 
     /**
