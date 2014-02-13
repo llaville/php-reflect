@@ -14,8 +14,7 @@
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Ast\AbstractNode;
-use Bartlett\Reflect\Ast\Expression;
+use Bartlett\Reflect\Model\AbstractModel;
 use Bartlett\Reflect\Exception\ModelException;
 
 /**
@@ -29,7 +28,7 @@ use Bartlett\Reflect\Exception\ModelException;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-abstract class AbstractFunctionModel extends AbstractNode
+abstract class AbstractFunctionModel extends AbstractModel
 {
     protected $short_name;
 
@@ -183,7 +182,7 @@ abstract class AbstractFunctionModel extends AbstractNode
 
         $count = 0;
         foreach ($args as $arg) {
-            if (!$arg->hasAttribute('defaultValue')) {
+            if (!$arg->isDefaultValueAvailable()) {
                 $count++;
             }
         }
@@ -197,26 +196,7 @@ abstract class AbstractFunctionModel extends AbstractNode
      */
     public function getParameters()
     {
-        $parameters = array();
-
-        foreach ($this->struct['arguments'] as $argument) {
-            $attributes = $argument->getAttributes();
-
-            if (isset($attributes['typeHint'])
-                && !in_array(
-                    strtolower($attributes['typeHint']),
-                    array('array', 'callable', 'stdclass')
-                )
-            ) {
-                // for user object only, add the namespace
-                if ($this->inNamespace()) {
-                    $attributes['typeHint'] = $this->getNamespaceName() . '\\'
-                        . $attributes['typeHint'];
-                }
-            }
-            $parameters[] = new ParameterModel($attributes);
-        }
-        return $parameters;
+        return $this->struct['arguments'];
     }
 
     /**

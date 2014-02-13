@@ -14,7 +14,7 @@
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Ast\AbstractNode;
+use Bartlett\Reflect\Model\AbstractModel;
 use Bartlett\Reflect\Exception\ModelException;
 
 /**
@@ -28,7 +28,7 @@ use Bartlett\Reflect\Exception\ModelException;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class PropertyModel extends AbstractNode implements Visitable
+class PropertyModel extends AbstractModel implements Visitable
 {
     /**
      * Constructs a new PropertyModel instance.
@@ -36,23 +36,15 @@ class PropertyModel extends AbstractNode implements Visitable
      * @param string $class The class name that contains the property
      * @param string $name  Name of the property
      */
-    public function __construct($attributes)
+    public function __construct($class, $name, $attributes)
     {
-        list ($class, $name) = explode('::', $attributes['name']);
-        unset($attributes['name']);
-
         $struct = array(
-            'docComment'  => '',
-            'startLine'   => 0,
-            'endLine'     => 0,
-            'file'        => '',
             'compileTime' => true,
+            'modifiers'   => array(),
+            'visibility'  => 'public',
         );
-
-        parent::__construct(
-            'Property',
-            array_merge($struct, $attributes)
-        );
+        $struct = array_merge($struct, $attributes);
+        parent::__construct($struct);
 
         $this->short_name = $name;
         $this->class_name = ltrim($class, '\\');

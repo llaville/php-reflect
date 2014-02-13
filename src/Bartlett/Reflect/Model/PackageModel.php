@@ -14,15 +14,7 @@
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Ast\AbstractNode;
-use Bartlett\Reflect\Ast\Statement;
-use Bartlett\Reflect\Ast\Expression;
-use Bartlett\Reflect\Filter\ClassFilter;
-use Bartlett\Reflect\Filter\InterfaceFilter;
-use Bartlett\Reflect\Filter\TraitFilter;
-use Bartlett\Reflect\Filter\FunctionFilter;
-use Bartlett\Reflect\Filter\ConstantFilter;
-use Bartlett\Reflect\Filter\IncludeFilter;
+use Bartlett\Reflect\Model\AbstractModel;
 
 /**
  * The PackageModel class reports information about a package/namespace.
@@ -35,116 +27,101 @@ use Bartlett\Reflect\Filter\IncludeFilter;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class PackageModel extends AbstractNode implements Visitable
+class PackageModel extends AbstractModel implements Visitable
 {
     /**
      * Constructs a new PackageModel instance.
      *
      * @param string $name Name of the package or namespace
      */
-    public function __construct($attributes)
+    public function __construct($name, $attributes)
     {
-        $name = $attributes['name'];
-        unset($attributes['name']);
-
         $struct = array(
-            'docComment'   => '',
-            'startLine'    => 0,
-            'endLine'      => 0,
-            'file'         => '',
             'import'       => false,
             'alias'        => '',
-            'dependencies' => false,
+            'classes'      => array(),
+            'interfaces'   => array(),
+            'traits'       => array(),
+            'functions'    => array(),
+            'constants'    => array(),
+            'includes'     => array(),
+            'dependencies' => array(),
         );
-
-        parent::__construct(
-            'Namespace',
-            array_merge($struct, $attributes)
-        );
+        $struct = array_merge($struct, $attributes);
+        parent::__construct($struct);
 
         $this->name = $name;
+    }
+
+    public function update($data)
+    {
+        $keys = array('classes', 'interfaces', 'traits', 'functions', 'constants', 'includes', 'dependencies');
+
+        foreach ($data as $index => $values) {
+            if (in_array($index, $keys)) {
+                $this->struct[$index] = array_merge($this->struct[$index], $values);
+            }
+        }
     }
 
     /**
      * Gets the classes defined on this namespace.
      *
-     * @return ClassFiler iterator that list ClassModel objects reflecting each class.
+     * @return iterator that list ClassModel objects reflecting each class.
      */
-    public function getClasses(array $modifiers = null)
+    public function getClasses()
     {
-        $iterator = new ClassFilter($this->getChildren(), $modifiers);
-        return $iterator;
+        return $this->struct['classes'];
     }
 
     /**
      * Gets the interfaces defined on this namespace.
      *
-     * @return InterfaceFilter iterator that list ClassModel objects reflecting each interface.
+     * @return iterator that list ClassModel objects reflecting each interface.
      */
     public function getInterfaces()
     {
-        $iterator = new InterfaceFilter($this->getChildren());
-        return $iterator;
+        return $this->struct['interfaces'];
     }
 
     /**
      * Gets the traits defined on this namespace.
      *
-     * @return TraitFilter iterator that list ClassModel objects reflecting each trait.
+     * @return iterator that list ClassModel objects reflecting each trait.
      */
     public function getTraits()
     {
-        $iterator = new TraitFilter($this->getChildren());
-        return $iterator;
+        return $this->struct['traits'];
     }
 
     /**
      * Gets the user-functions defined on this namespace.
      *
-     * @return FunctionFilter iterator that list FunctionModel objects reflecting each function.
+     * @return iterator that list FunctionModel objects reflecting each function.
      */
     public function getFunctions()
     {
-        $nodes = array();
-
-        $this->findChildren(
-            'Bartlett\\Reflect\\Model\\FunctionModel',
-            'UserFunction',
-            $nodes
-        );
-
-        $iterator = new FunctionFilter(new \ArrayIterator($nodes));
-        return $iterator;
+        return $this->struct['functions'];
     }
 
     /**
      * Gets the (user|magic) constants defined on this namespace.
      *
-     * @return ConstantFilter iterator that list ConstantModel objects reflecting each constant.
+     * @return iterator that list ConstantModel objects reflecting each constant.
      */
     public function getConstants()
     {
-        $nodes = array();
-
-        $this->findChildren(
-            'Bartlett\\Reflect\\Model\\ConstantModel',
-            'Constant',
-            $nodes
-        );
-
-        $iterator = new ConstantFilter(new \ArrayIterator($nodes));
-        return $iterator;
+        return $this->struct['constants'];
     }
 
     /**
      * Gets the includes used on this namespace.
      *
-     * @return IncludeFilter iterator that list IncludeModel objects reflecting each constant.
+     * @return iterator that list IncludeModel objects reflecting each constant.
      */
     public function getIncludes()
     {
-        $iterator = new IncludeFilter($this->getChildren());
-        return $iterator;
+        return $this->struct['includes'];
     }
 
     /**
@@ -152,40 +129,6 @@ class PackageModel extends AbstractNode implements Visitable
      */
     public function getDependencies()
     {
-        if ($this->struct['dependencies'] === false) {
-            // mapping of dependencies for lazy loading
-            $this->struct['dependencies'] = array();
-
-            $this->findChildren(
-                'Bartlett\\Reflect\\Ast\\Statement',
-                'Internal',
-                $this->struct['dependencies']
-            );
-
-            $this->findChildren(
-                'Bartlett\\Reflect\\Model\\ConstantModel',
-                'Constant',
-                $this->struct['dependencies']
-            );
-
-            $this->findChildren(
-                'Bartlett\\Reflect\\Ast\\Expression',
-                'Alloc',
-                $this->struct['dependencies']
-            );
-
-            $this->findChildren(
-                'Bartlett\\Reflect\\Ast\\Expression',
-                'MethodCall',
-                $this->struct['dependencies']
-            );
-
-            $this->findChildren(
-                'Bartlett\\Reflect\\Ast\\Expression',
-                'ClassMemberAccessOnInstantiation',
-                $this->struct['dependencies']
-            );
-        }
         return $this->struct['dependencies'];
     }
 

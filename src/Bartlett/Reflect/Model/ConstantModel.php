@@ -15,7 +15,7 @@
 namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Exception\ModelException;
-use Bartlett\Reflect\Ast\AbstractNode;
+use Bartlett\Reflect\Model\AbstractModel;
 
 /**
  * The ConstantModel class reports information about a constant.
@@ -28,7 +28,7 @@ use Bartlett\Reflect\Ast\AbstractNode;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class ConstantModel extends AbstractNode implements Visitable
+class ConstantModel extends AbstractModel implements Visitable
 {
     protected $short_name;
 
@@ -37,38 +37,23 @@ class ConstantModel extends AbstractNode implements Visitable
      *
      * @param string $qualifiedName The full qualified name of the constant
      */
-    public function __construct($attributes)
+    public function __construct($qualifiedName, $attributes)
     {
-        $qualifiedName = $attributes['name'];
-        unset($attributes['name']);
-
         $struct = array(
-            'docComment' => '',
-            'startLine'  => 0,
-            'endLine'    => 0,
-            'file'       => '',
-            'extension'  => 'user',
             'magic'      => false,
             'namespace'  => false,
             'value'      => null,
         );
-
-        parent::__construct(
-            'Constant',
-            array_merge($struct, $attributes)
-        );
+        $struct = array_merge($struct, $attributes);
+        parent::__construct($struct);
 
         $this->name = $qualifiedName;
 
-        $parts = explode('::', $qualifiedName);
-        if (count($parts) > 1) {
-            // class constant
-            $this->short_name = array_pop($parts);
-        } else {
-            // user or magic constants
-            $parts = explode('\\', $parts[0]);
-            $this->short_name = array_pop($parts);
-        }
+        $parts = explode('\\', $qualifiedName);
+        // a constant should be normally in uppercase
+        $this->short_name = strtoupper(array_pop($parts));
+
+        $this->struct['namespace'] = implode('\\', $parts);
 
         if ($this->struct['magic']) {
             $this->struct['extension'] = 'core';

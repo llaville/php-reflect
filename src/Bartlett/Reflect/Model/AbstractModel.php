@@ -32,16 +32,46 @@ abstract class AbstractModel
 {
     protected $name;
     protected $struct;
+    protected $calls;
 
     /**
-     * Model class constructor
+     * Base Model class constructor
      */
-    public function __construct()
+    public function __construct($attributes)
     {
-        $this->struct = array(
-            'extension' => 'user',
-            'uses'      => 0,
+        $struct = array(
+            'docComment' => null,
+            'startLine'  => 0,
+            'endLine'    => 0,
+            'file'       => null,
+            'extension'  => 'user',
         );
+        $this->struct = array_merge($struct, $attributes);
+        $this->calls  = 0;
+    }
+
+    /**
+     * Sets the file path where this model is defined
+     *
+     * @param string $path
+     *
+     * @return self for fluent interface
+     */
+    public function setFile($path)
+    {
+        $this->struct['file'] = $path;
+        return $this;
+    }
+
+    /**
+     * Increments number of element uses
+     *
+     * @return self for fluent interface
+     */
+    public function incCalls()
+    {
+        $this->calls++;
+        return $this;
     }
 
     /**
@@ -49,9 +79,9 @@ abstract class AbstractModel
      *
      * @return int
      */
-    public function getUses()
+    public function getCalls()
     {
-        return $this->struct['uses'];
+        return $this->calls;
     }
 
     /**

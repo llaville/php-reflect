@@ -14,13 +14,9 @@
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Ast\AbstractNode;
-use Bartlett\Reflect\Ast\Statement;
+use Bartlett\Reflect\Model\AbstractModel;
 use Bartlett\Reflect\Model\Visitable;
 use Bartlett\Reflect\Exception\ModelException;
-use Bartlett\Reflect\Filter\MethodFilter;
-use Bartlett\Reflect\Filter\ClassConstFilter;
-use Bartlett\Reflect\Filter\PropertyFilter;
 
 /**
  * The ClassModel class reports information about a class.
@@ -33,36 +29,27 @@ use Bartlett\Reflect\Filter\PropertyFilter;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class ClassModel extends AbstractNode implements Visitable
+class ClassModel extends AbstractModel implements Visitable
 {
     /**
      * Constructs a new ClassModel instance.
      *
      * @param string $qualifiedName The full qualified name of the class
      */
-    public function __construct($attributes)
+    public function __construct($qualifiedName, $attributes)
     {
-        $qualifiedName = $attributes['name'];
-        unset($attributes['name']);
-
         $struct = array(
-            'docComment' => '',
-            'startLine'  => 0,
-            'endLine'    => 0,
-            'file'       => '',
-            'extension'  => 'user',
             'trait'      => false,
             'interface'  => false,
             'parent'     => false,
             'modifiers'  => array(),
             'interfaces' => array(),
-    #        'properties' => false,
+            'constants'  => array(),
+            'properties' => array(),
+            'methods'    => array(),
         );
-
-        parent::__construct(
-            'Class',
-            array_merge($struct, $attributes)
-        );
+        $struct = array_merge($struct, $attributes);
+        parent::__construct($struct);
 
         $this->name = ltrim($qualifiedName, '\\');
     }
@@ -122,12 +109,10 @@ class ClassModel extends AbstractNode implements Visitable
             foreach ($this->struct['interfaces'] as $interface) {
                 if (is_string($interface)) {
                     // build on demand
-                    $interfaces[] = new ClassModel(array('name' => '\\'.$interface));
+                    $interfaces[] = new ClassModel($interface, array());
                 }
             }
             $this->struct['interfaces'] = $interfaces;
-            // lazy loading
-            $this->setAttribute('interfaces', $interfaces);
         }
 
         return $this->struct['interfaces'];
@@ -165,9 +150,8 @@ class ClassModel extends AbstractNode implements Visitable
     {
         if (is_string($this->struct['parent'])) {
             // build on demand
-            $obj = new ClassModel(array('name' => '\\'.$this->struct['parent']));
+            $obj = new ClassModel($this->struct['parent'], array());
             // lazy loading
-            $this->setAttribute('parent', $obj);
             $this->struct['parent'] = $obj;
         }
         return $this->struct['parent'];
@@ -240,12 +224,11 @@ class ClassModel extends AbstractNode implements Visitable
     /**
      * Gets an array of constants for the class.
      *
-     * @return ClassConstFilter iterator that list ConstantModel objects reflecting each class constant.
+     * @return iterator that list ConstantModel objects reflecting each class constant.
      */
     public function getConstants()
     {
-        $iterator = new ClassConstFilter($this->getChildren());
-        return $iterator;
+        return $this->struct['constants'];
     }
 
     /**
@@ -259,11 +242,7 @@ class ClassModel extends AbstractNode implements Visitable
     public function getConstant($name)
     {
         if ($this->hasConstant($name)) {
-            $iterator = new ClassConstFilter($this->getChildren(), $name);
-            $iterator->rewind();
-            return $iterator->current()
-                ->getAttribute('value')
-            ;
+            return $this->struct['constants'][$name]->getValue();
         }
         throw new ModelException(
             sprintf(
@@ -282,19 +261,17 @@ class ClassModel extends AbstractNode implements Visitable
      */
     public function hasConstant($name)
     {
-        $iterator = new ClassConstFilter($this->getChildren(), $name);
-        return (count($iterator) > 0);
+        return isset($this->struct['constants'][$name]);
     }
 
     /**
      * Gets an array of methods for the class.
      *
-     * @return MethodFilter iterator that list MethodModel objects reflecting each class method.
+     * @return iterator that list MethodModel objects reflecting each class method.
      */
-    public function getMethods(array $modifiers = null)
+    public function getMethods()
     {
-        $iterator = new MethodFilter($this->getChildren(), $modifiers);
-        return $iterator;
+        return $this->struct['methods'];
     }
 
     /**
@@ -308,9 +285,7 @@ class ClassModel extends AbstractNode implements Visitable
     public function getMethod($name)
     {
         if ($this->hasMethod($name)) {
-            $iterator = new MethodFilter($this->getChildren(), null, $name);
-            $iterator->rewind();
-            return $iterator->current();
+            return $this->struct['methods'][$name];
         }
         throw new ModelException(
             'Method ' . $this->name . '::' .  $name . ' does not exist.'
@@ -326,8 +301,7 @@ class ClassModel extends AbstractNode implements Visitable
      */
     public function hasMethod($name)
     {
-        $iterator = new MethodFilter($this->getChildren(), null, $name);
-        return (count($iterator) > 0);
+        return isset($this->struct['methods'][$name]);
     }
 
     /**
@@ -371,12 +345,11 @@ class ClassModel extends AbstractNode implements Visitable
     /**
      * Gets an array of properties for the class.
      *
-     * @return PropertyFilter iterator that list PropertyModel objects reflecting each class property.
+     * @return iterator that list PropertyModel objects reflecting each class property.
      */
     public function getProperties()
     {
-        $iterator = new PropertyFilter($this->getChildren());
-        return $iterator;
+        return $this->struct['properties'];
     }
 
     /**

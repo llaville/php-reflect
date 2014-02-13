@@ -14,7 +14,7 @@
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Ast\AbstractNode;
+use Bartlett\Reflect\Model\AbstractModel;
 use Bartlett\Reflect\Model\Visitable;
 
 /**
@@ -28,27 +28,21 @@ use Bartlett\Reflect\Model\Visitable;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class IncludeModel extends AbstractNode implements Visitable
+class IncludeModel extends AbstractModel implements Visitable
 {
     /**
      * Constructs a new IncludeModel instance.
      *
      * @param string $filepath The full path to the file to include
      */
-    public function __construct($attributes)
+    public function __construct($path, $attributes)
     {
         $struct = array(
-            'docComment' => '',
-            'startLine'  => 0,
-            'endLine'    => 0,
-            'file'       => '',
-            'filepath'   => '',
+            'type'       => '',
+            'filepath'   => $path,
         );
-
-        parent::__construct(
-            'Include',
-            array_merge($struct, $attributes)
-        );
+        $struct = array_merge($struct, $attributes);
+        parent::__construct($struct);
     }
 
     /**
@@ -59,7 +53,7 @@ class IncludeModel extends AbstractNode implements Visitable
      */
     public function getType()
     {
-        return $this->struct['subtype'];
+        return $this->struct['type'];
     }
 
     /**
@@ -166,7 +160,7 @@ class IncludeModel extends AbstractNode implements Visitable
         return sprintf(
             'Include [ %s ] { %s }%s',
             $this->getType(),
-            implode(' . ', $this->getFilePath()),
+            $this->getFilePath(),
             $eol
         );
     }
