@@ -373,7 +373,7 @@ Function [ <user> function glob\\singleFunction ] {
   @@ %path%namespaces.php 25 - 27
 
   - Parameters [3] {
-    Parameter #0 [ <required> Array \$someparam ]
+    Parameter #0 [ <required> array \$someparam ]
     Parameter #1 [ <required> stdClass \$somethingelse ]
     Parameter #2 [ <optional> \$lastone = NULL ]
   }
