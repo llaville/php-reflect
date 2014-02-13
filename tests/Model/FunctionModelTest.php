@@ -90,7 +90,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testDocCommentAccessor()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $c = 0;  // class glob\Foo
         $m = 0;  // method myfunction
 
@@ -120,7 +120,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testStartLineAccessor()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 1;  // function glob\myprocess
 
         $this->assertEquals(
@@ -138,7 +138,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testEndLineAccessor()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 1;  // function glob\myprocess
 
         $this->assertEquals(
@@ -156,7 +156,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testFileNameAccessor()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 1;  // function glob\myprocess
 
         $this->assertEquals(
@@ -174,7 +174,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNameAccessor()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 1;  // function glob\myprocess
 
         $this->assertEquals(
@@ -192,7 +192,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testExtensionNameAccessor()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 1;  // function glob\myprocess
 
         $this->assertEquals(
@@ -210,7 +210,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNamespaceNameAccessor()
     {
-        $n = 2;  // namespace nemo
+        $n = 1;  // namespace nemo
         $f = 0;  // function nemo\nobody
 
         $this->assertEquals(
@@ -228,7 +228,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testShortNameAccessor()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertEquals(
@@ -246,7 +246,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNumberOfParametersAccessor()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertEquals(
@@ -264,7 +264,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNumberOfRequiredParametersAccessor()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertEquals(
@@ -282,7 +282,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testParametersAccessor()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertCount(
@@ -300,7 +300,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testInNamespace()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertTrue(
@@ -317,7 +317,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testAnonymousFunction()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertFalse(
@@ -334,7 +334,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testClosureInNamespace()
     {
-        $n = 2;  // namespace nemo
+        $n = 1;  // namespace nemo
         $f = 1;  // closure in nemo namespace
 
         $this->assertTrue(
@@ -351,7 +351,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testInternalFunction()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $this->assertFalse(
@@ -368,7 +368,7 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
-        $n = 1;  // namespace glob
+        $n = 0;  // namespace glob
         $f = 0;  // function glob\singleFunction
 
         $expected = <<<EOS
