@@ -19,9 +19,13 @@ namespace Bartlett;
 use Bartlett\Reflect\Event\AbstractDispatcher;
 use Bartlett\Reflect\ManagerInterface;
 use Bartlett\Reflect\ProviderManager;
-use Bartlett\Reflect\Parser\DefaultParser;
-use Bartlett\Reflect\Tokenizer\DefaultTokenizer;
 use Bartlett\Reflect\Model\PackageModel;
+use Bartlett\Reflect\Builder;
+
+use PhpParser\Parser;
+use PhpParser\Lexer;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver;
 
 /**
  * Reflect analyse your source code with the tokenizer extension.
@@ -40,7 +44,6 @@ use Bartlett\Reflect\Model\PackageModel;
 class Reflect extends AbstractDispatcher implements ManagerInterface
 {
     protected $pm;
-    protected $ast;
     protected $files;
 
     /**
@@ -78,9 +81,12 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
      */
     public function parse(array $providers = null)
     {
-        $tokenizer = new DefaultTokenizer;
-        $parser    = new DefaultParser($tokenizer);
-        $this->ast = new \SplObjectStorage;
+        $this->builder = new Builder;
+
+        $parser    = new Parser(new Lexer);
+        $traverser = new NodeTraverser;
+        $traverser->addVisitor(new NameResolver);
+        $traverser->addVisitor($this->builder);
 
         $this->files = array();
 
@@ -100,28 +106,46 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                 $event = $this->dispatch(
                     'reflect.progress',
                     array(
-                        'source' => $alias,
+                        'source'   => $alias,
                         'filename' => $file->getPathname()
                     )
                 );
+                $this->files[] = $file;
+                $this->builder->setCurrentFile($file->getPathname());
+
                 if (isset($event['notModified'])) {
                     // uses cached response
                     $this->buildFromCache($event['notModified']);
                 } else {
                     // live request
-                    $ast = $parser->parseFile($file);
-                    $this->files[] = $file;
-                    $this->ast->addAll($ast);
-
-                    if ($this->getEventDispatcher()->hasListeners('reflect.success')) {
-                        $this->dispatch(
-                            'reflect.success',
-                            array(
-                                'source'   => $alias,
-                                'filename' => $file->getPathname(),
-                                'ast'      => serialize($ast)
-                            )
+                    try {
+                        $stmts = $parser->parse(
+                            file_get_contents($file->getPathname())
                         );
+                        $stmts = $traverser->traverse($stmts);
+
+                        if ($this->getEventDispatcher()->hasListeners('reflect.success')) {
+                            $this->dispatch(
+                                'reflect.success',
+                                array(
+                                    'source'   => $alias,
+                                    'filename' => $file->getPathname(),
+                                    'ast'      => serialize($stmts)
+                                )
+                            );
+                        }
+
+                    } catch (PhpParser\Error $e) {
+                        if ($this->getEventDispatcher()->hasListeners('reflect.error')) {
+                            $this->dispatch(
+                                'reflect.error',
+                                array(
+                                    'source'   => $alias,
+                                    'filename' => $file->getPathname(),
+                                    'error'    => $e->getMessage()
+                                )
+                            );
+                        }
                     }
                 }
             }
@@ -139,22 +163,9 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
      */
     public function getPackages()
     {
-        $packages = array();
-
-        foreach ($this->ast as $object) {
-            if ($object instanceof PackageModel) {
-                $packages[ $object->getName() ] = $object;
-            }
-        }
-
-        return $packages;
+        return $this->builder->getPackages();
     }
 
-    /**
-     * Gets files list parsed
-     *
-     * @return array
-     */
     public function getFiles()
     {
         return $this->files;
