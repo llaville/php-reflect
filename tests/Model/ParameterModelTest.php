@@ -89,13 +89,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
     public function testNameAccessor()
     {
         $c = 0;  // class Foo
-        $m = 1;  // method otherfunction
+        $m = 'otherfunction';
         $p = 0;  // parameter $baz
 
-        $methods = iterator_to_array(
-            self::$classes[$c]->getMethods(),
-            false
-        );
+        $methods    = self::$classes[$c]->getMethods();
         $parameters = $methods[$m]->getParameters();
 
         $this->assertEquals(
@@ -136,13 +133,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
     public function testAllowsNullWhenOnlyTypeHintDefinedOnClassMethod()
     {
         $i = 0;  // interface iB extends iA
-        $m = 0;  // method baz
+        $m = 'baz';
         $p = 0;  // parameter $baz
 
-        $methods = iterator_to_array(
-            self::$interfaces[$i]->getMethods(),
-            false
-        );
+        $methods    = self::$interfaces[$i]->getMethods();
         $parameters = $methods[$m]->getParameters();
 
         $this->assertFalse(
@@ -162,13 +156,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
     public function testAllowsNullWhenTypeHintDefinedWithNullDefaultValueOnClassMethod()
     {
         $c = 0;  // class Foo
-        $m = 0;  // method myfunction
+        $m = 'myfunction';
         $p = 0;  // parameter $param
 
-        $methods = iterator_to_array(
-            self::$classes[$c]->getMethods(),
-            false
-        );
+        $methods    = self::$classes[$c]->getMethods();
         $parameters = $methods[$m]->getParameters();
 
         $this->assertTrue(
@@ -188,13 +179,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
     public function testAllowsNullWithoutTypeHintDefinedOnClassMethod()
     {
         $c = 0;  // class Foo
-        $m = 1;  // method otherfunction
+        $m = 'otherfunction';
         $p = 1;  // parameter $param
 
-        $methods = iterator_to_array(
-            self::$classes[$c]->getMethods(),
-            false
-        );
+        $methods    = self::$classes[$c]->getMethods();
         $parameters = $methods[$m]->getParameters();
 
         $this->assertTrue(
@@ -310,13 +298,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
     public function testDefaultValueAccessorOnClassMethod()
     {
         $c = 0;  // class Foo
-        $m = 0;  // method myfunction
+        $m = 'myfunction';
         $p = 1;  // parameter $otherparam
 
-        $methods = iterator_to_array(
-            self::$classes[$c]->getMethods(),
-            false
-        );
+        $methods    = self::$classes[$c]->getMethods();
         $parameters = $methods[$m]->getParameters();
 
         $this->assertEquals(
@@ -408,13 +393,10 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
     public function testToStringOptionalParameter()
     {
         $c = 0;  // class Foo
-        $m = 0;  // method myfunction
+        $m = 'myfunction';
         $p = 0;  // parameter $param
 
-        $methods = iterator_to_array(
-            self::$classes[$c]->getMethods(),
-            false
-        );
+        $methods    = self::$classes[$c]->getMethods();
         $parameters = $methods[$m]->getParameters();
 
         $this->assertEquals(
