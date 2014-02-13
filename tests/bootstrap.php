@@ -1,5 +1,10 @@
 <?php
 
+$phpParserDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor/PHP-Parser/lib';
+
+require $phpParserDir . '/PhpParser/Autoloader.php';
+PhpParser\Autoloader::register();
+
 require_once 'Symfony/Component/ClassLoader/UniversalClassLoader.php';
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
