@@ -83,10 +83,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 5;  // var6 property
 
-        $properties = iterator_to_array(
-            self::$classes[$c]->getProperties(),
-            false
-        );
+        $properties = self::$classes[$c]->getProperties();
 
         $this->assertEquals(
             '/** This is allowed only in PHP 5.3.0 and later. */',
@@ -107,10 +104,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 1;  // var2 property
 
-        $properties = iterator_to_array(
-            self::$classes[$c]->getProperties(),
-            false
-        );
+        $properties = self::$classes[$c]->getProperties();
 
         $this->assertEquals(
             'var2',
@@ -131,10 +125,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 1;  // var2 property
 
-        $properties = iterator_to_array(
-            self::$classes[$c]->getProperties(),
-            false
-        );
+        $properties = self::$classes[$c]->getProperties();
 
         $this->assertTrue(
             $properties[$p]->isDefault(),
@@ -154,13 +145,9 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 5;  // var6 property
 
-        $properties = iterator_to_array(
-            self::$classes[$c]->getProperties(),
-            false
-        );
+        $properties = self::$classes[$c]->getProperties();
 
-        $expected = 'hello world
-';
+        $expected = 'hello world';
 
         $this->assertEquals(
             $expected,
@@ -181,10 +168,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 2;  // var3 property
 
-        $properties = iterator_to_array(
-            self::$classes[$c]->getProperties(),
-            false
-        );
+        $properties = self::$classes[$c]->getProperties();
 
         $this->assertTrue(
             $properties[$p]->isPrivate(),
@@ -204,10 +188,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 3;  // var4 property
 
-        $properties = iterator_to_array(
-            self::$classes[$c]->getProperties(),
-            false
-        );
+        $properties = self::$classes[$c]->getProperties();
 
         $this->assertTrue(
             $properties[$p]->isProtected(),
@@ -227,10 +208,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 4;  // var5 property
 
-        $properties = iterator_to_array(
-            self::$classes[$c]->getProperties(),
-            false
-        );
+        $properties = self::$classes[$c]->getProperties();
 
         $this->assertTrue(
             $properties[$p]->isPublic(),
@@ -250,10 +228,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 2;  // var3 property
 
-        $properties = iterator_to_array(
-            self::$classes[$c]->getProperties(),
-            false
-        );
+        $properties = self::$classes[$c]->getProperties();
 
         $this->assertTrue(
             $properties[$p]->isStatic(),
