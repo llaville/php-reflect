@@ -184,8 +184,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     {
         $c = 2;  // __CLASS__ from sandbox\Connection::connect()
 
-        $this->assertEquals(
-            'sandbox\Connection',
+        $this->assertNull(
             self::$constants[$c]->getValue(),
             self::$constants[$c]->getName() . ' magic constant value does not match.'
         );
@@ -201,8 +200,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     {
         $c = 3;  // __METHOD__ from sandbox\Connection::connect()
 
-        $this->assertEquals(
-            'sandbox\Connection::connect',
+        $this->assertNull(
             self::$constants[$c]->getValue(),
             self::$constants[$c]->getName() . ' magic constant value does not match.'
         );
@@ -218,8 +216,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     {
         $c = 8;  // __DIR__
 
-        $this->assertEquals(
-            rtrim(TEST_FILES_PATH, DIRECTORY_SEPARATOR),
+        $this->assertNull(
             self::$constants[$c]->getValue(),
             self::$constants[$c]->getName() . ' magic constant value does not match.'
         );
@@ -235,8 +232,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     {
         $c = 1;  // __FILE__
 
-        $this->assertEquals(
-            TEST_FILES_PATH . 'constants.php',
+        $this->assertNull(
             self::$constants[$c]->getValue(),
             self::$constants[$c]->getName() . ' magic constant value does not match.'
         );
@@ -252,8 +248,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     {
         $c = 6;  // __LINE__ from sandbox\connect()
 
-        $this->assertEquals(
-            17,
+        $this->assertNull(
             self::$constants[$c]->getValue(),
             self::$constants[$c]->getName() . ' magic constant value does not match.'
         );
@@ -269,8 +264,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     {
         $c = 5;  // __FUNCTION__ from sandbox\connect()
 
-        $this->assertEquals(
-            'sandbox\connect',
+        $this->assertNull(
             self::$constants[$c]->getValue(),
             self::$constants[$c]->getName() . ' magic constant value does not match.'
         );
@@ -286,8 +280,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     {
         $c = 7;  // __NAMESPACE__
 
-        $this->assertEquals(
-            'sandbox',
+        $this->assertNull(
             self::$constants[$c]->getValue(),
             self::$constants[$c]->getName() . ' magic constant value does not match.'
         );
@@ -303,8 +296,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     {
         $c = 9;  // __TRAIT__ from sandbox\PeanutButter::traitName()
 
-        $this->assertEquals(
-            'sandbox\PeanutButter',
+        $this->assertNull(
             self::$constants[$c]->getValue(),
             self::$constants[$c]->getName() . ' magic constant value does not match.'
         );
@@ -387,7 +379,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
         $c = 2;  // __CLASS__ from sandbox\Connection::connect()
 
         $expected = <<<EOS
-Constant [ __CLASS__ ] { sandbox\Connection }
+Constant [ __CLASS__ ] {  }
 
 EOS;
         $this->expectOutputString($expected);
