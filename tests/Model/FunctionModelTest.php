@@ -92,12 +92,9 @@ class FunctionModelTest extends \PHPUnit_Framework_TestCase
     {
         $n = 0;  // namespace glob
         $c = 0;  // class glob\Foo
-        $m = 0;  // method myfunction
+        $m = 'myfunction';
 
-        $methods = iterator_to_array(
-            self::$classes[$n][$c]->getMethods(),
-            false
-        );
+        $methods = self::$classes[$n][$c]->getMethods();
 
         $expected = '/**
      * @param stdClass $param
