@@ -1,7 +1,7 @@
 <?php
 class SimpleClass
 {
-    $var1 = 'PHP4 public property';
+    var $debug = false;
 
     public $var2 = 7;
 
