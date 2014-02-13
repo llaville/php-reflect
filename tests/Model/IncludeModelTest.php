@@ -152,7 +152,7 @@ class IncludeModelTest extends \PHPUnit_Framework_TestCase
         $n = 0;  // include
 
         $this->assertEquals(
-            array('__DIR__', '/test1.php'),
+            '__DIR__ . \'/test1.php\'',
             self::$includes[$n]->getFilePath(),
             self::$includes[$n]->getType() . ' file path does not match.'
         );
@@ -233,7 +233,7 @@ class IncludeModelTest extends \PHPUnit_Framework_TestCase
         $n = 0;  // include
 
         $expected = <<<EOS
-Include [ include ] { __DIR__ . /test1.php }
+Include [ include ] { __DIR__ . '/test1.php' }
 
 EOS;
         $this->expectOutputString($expected);
