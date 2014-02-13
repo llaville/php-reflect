@@ -286,8 +286,7 @@ class Builder extends NodeVisitorAbstract
                     foreach ($stmt->consts as $const) {
                         if ($const->value instanceof \PhpParser\Node\Scalar) {
                             $value = $const->value->value;
-                        }
-                        else {
+                        } else {
                             $value = null;
                         }
 
@@ -367,7 +366,7 @@ class Builder extends NodeVisitorAbstract
      */
     protected function parseEchoStatement($node)
     {
-    return ;
+        return ;
         $expressions = array();
 
         foreach ($node->exprs as $expr) {

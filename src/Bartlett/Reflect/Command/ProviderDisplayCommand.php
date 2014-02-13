@@ -116,9 +116,7 @@ class ProviderDisplayCommand extends ProviderCommand
                 );
             }
 
-            $table->setHeaders(
-                    array('Id', 'Token', 'Line', 'Text')
-                )
+            $table->setHeaders(array('Id', 'Token', 'Line', 'Text'))
                 ->setRows($rows)
                 ->render($output)
             ;
