@@ -329,6 +329,21 @@ class Builder extends NodeVisitorAbstract
                 }
             }
 
+            $deps = array();
+            // interfaces implemented are collected as interface dependency
+            foreach ($interfaces as $interfaceName) {
+                $dep = $this->buildDependency($interfaceName, $nodeAttributes);
+                $dep->incCalls();
+                if ($dep->getCalls() == 1) {
+                    $deps[] = $dep;
+                }
+            }
+            if (!empty($deps)) {
+                $attributes = array('interfaces' => $deps);
+                $package = $this->buildPackage($this->namespace);
+                $package->update($attributes);
+            }
+
             $nodeAttributes['interfaces'] = $interfaces;
             $nodeAttributes['parent']     = $parent;
             $nodeAttributes['constants']  = $constants;
