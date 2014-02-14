@@ -106,8 +106,9 @@ class Builder extends NodeVisitorAbstract
 
             $this->parseNewStatement($node, $nodeAttributes);
 
-        } elseif ($node instanceof \PhpParser\Node\Expr\FuncCall) {
-
+        } elseif ($node instanceof \PhpParser\Node\Expr\FuncCall
+            && $node->name instanceof \PhpParser\Node\Name
+        ) {
             $this->parseInternalFunction($node, $nodeAttributes);
 
         } elseif ($node instanceof \PhpParser\Node\Stmt\Function_) {
