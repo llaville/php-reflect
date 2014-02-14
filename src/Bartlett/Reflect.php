@@ -83,7 +83,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
     {
         $this->builder = new Builder;
 
-        $parser    = new Parser(new Lexer);
+        $parser    = new Parser(new Lexer\Emulative);
         $traverser = new NodeTraverser;
         $traverser->addVisitor(new NameResolver);
         $traverser->addVisitor($this->builder);
