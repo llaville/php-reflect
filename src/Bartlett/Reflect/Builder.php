@@ -65,11 +65,6 @@ class Builder extends NodeVisitorAbstract
         $this->namespace = '+global';
     }
 
-    public function afterTraverse(array $nodes)
-    {
-        #error_log( sprintf('onParseFileSuccess, ast = %s', print_r( $nodes, true ) ) );
-    }
-
     public function enterNode(Node $node)
     {
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
