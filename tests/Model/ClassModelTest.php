@@ -442,7 +442,7 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
      *  covers ClassModel::isIterateable
      * @return void
      */
-    public function _testIterateableClass()
+    public function testIterateableClass()
     {
         $c = 4;  // class IteratorClass implements Iterator
 
@@ -458,7 +458,7 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
      *  covers ClassModel::isIterateable
      * @return void
      */
-    public function _testIterateableClassByInheritance()
+    public function testIterateableClassByInheritance()
     {
         $c = 5;  // class DerivedClass
 
@@ -570,7 +570,7 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
      *  covers ClassModel::isSubclassOf
      * @return void
      */
-    public function _testSubclassOfInterface()
+    public function testSubclassOfInterface()
     {
         $c = 5;  // class DerivedClass extends IteratorClass
         $n = 'Iterator';

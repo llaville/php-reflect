@@ -203,12 +203,17 @@ class Builder extends NodeVisitorAbstract
                 }
                 $parent = $parent->__toString();
 
+                if (isset($this->classes[$parent])) {
+                    // load the parent model
+                    $parent = $this->classes[$parent];
+                }
+
             } else {
                 $parent = false;
             }
 
             $interfaces = array();
-            if ($node->hasAttribute('implements')
+            if ($node->implements
                 && !empty($node->implements)
             ) {
                 foreach ($node->implements as $interface) {

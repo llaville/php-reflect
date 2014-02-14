@@ -103,18 +103,6 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getInterfaceNames()
     {
-        if (!empty($this->struct['interfaces'])) {
-            $interfaces = array();
-
-            foreach ($this->struct['interfaces'] as $interface) {
-                if (is_string($interface)) {
-                    // build on demand
-                    $interfaces[] = new ClassModel($interface, array());
-                }
-            }
-            $this->struct['interfaces'] = $interfaces;
-        }
-
         return $this->struct['interfaces'];
     }
 
@@ -149,10 +137,7 @@ class ClassModel extends AbstractModel implements Visitable
     public function getParentClass()
     {
         if (is_string($this->struct['parent'])) {
-            // build on demand
-            $obj = new ClassModel($this->struct['parent'], array());
-            // lazy loading
-            $this->struct['parent'] = $obj;
+            return false;
         }
         return $this->struct['parent'];
     }
