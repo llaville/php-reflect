@@ -137,13 +137,10 @@ abstract class AbstractFunctionModel extends AbstractModel
      */
     public function getNamespaceName()
     {
-        $name = explode('\\', $this->getName());
-        if (count($name) > 1) {
-            $ns = empty($name[0]) ? '\\' : $name[0];
-        } else {
-            $ns = '\\';
-        }
-        return $ns;
+        $parts = explode('\\', $this->getName());
+        $functionName = array_pop($parts);
+
+        return implode('\\', $parts);
     }
 
     /**
