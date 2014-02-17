@@ -1,4 +1,16 @@
 <?php
+/**
+ * The Reflect CLI version.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect;
 
@@ -8,13 +20,34 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\TableHelper;
 
+/**
+ * Console Application.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 2.0.0RC2
+ */
 class ConsoleApplication extends Application
 {
-    const VERSION = '2.0.0RC2';
+    const VERSION = '@package_version@';
 
     public function __construct()
     {
         parent::__construct('phpReflect', self::VERSION);
+    }
+
+    public function getLongVersion()
+    {
+        return sprintf(
+            '<info>%s</info> version <comment>%s</comment> build <comment>%s</comment>',
+            $this->getName(),
+            '@' . 'package_version@' == $this->getVersion() ? 'DEV' : $this->getVersion(),
+            '@git_commit@'
+        );
     }
 
     protected function getDefaultInputDefinition()
