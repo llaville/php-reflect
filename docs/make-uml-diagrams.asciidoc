@@ -69,8 +69,8 @@ class PlantUMLBuilder
 
 Each element that need to be explored, should have a visit method accordingly.
 
-For packages, we need to implement a *visitPackageModel* method.
-For classes, we need to implement a *visitClassModel* method, and so on ...
+* For packages, we need to implement a *visitPackageModel* method.
+* For classes, we need to implement a *visitClassModel* method, and so on ...
 
 [source,php]
 ----
