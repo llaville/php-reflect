@@ -1,4 +1,6 @@
 <?php
+namespace Bartlett\Reflect\Examples;
+
 /**
  * Reflect v2 can analyse source code like Sebastian Bergmann phploc solution.
  *
@@ -45,9 +47,6 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'autoload.php';
 
 use Bartlett\Reflect;
 use Bartlett\Reflect\Visitor\AbstractVisitor;
-use Bartlett\Reflect\Model\ClassModel;
-use Bartlett\Reflect\Model\FunctionModel;
-use Bartlett\Reflect\Model\ConstantModel;
 use Bartlett\Reflect\ProviderManager;
 use Bartlett\Reflect\Provider\SymfonyFinderProvider;
 use Symfony\Component\Finder\Finder;
@@ -86,13 +85,16 @@ class Analyser extends AbstractVisitor
     {
         $this->packages[] = $package->getName();
 
-        foreach ($package as $element) {
-            if ($element instanceof ClassModel
-                || $element instanceof FunctionModel
-                || $element instanceof ConstantModel
-            ) {
-                $element->accept($this);
-            }
+        foreach ($package->getClasses() as $class) {
+            $class->accept($this);
+        }
+
+        foreach ($package->getFunctions() as $function) {
+            $function->accept($this);
+        }
+
+        foreach ($package->getConstants() as $constant) {
+            $constant->accept($this);
         }
     }
 
@@ -186,6 +188,14 @@ class Analyser extends AbstractVisitor
     public function visitConstantModel($constant)
     {
         $this->count['globalConstants']++;
+    }
+
+    public function visitIncludeModel($include)
+    {
+    }
+
+    public function visitDependencyModel($dependency)
+    {
     }
 
     public function __construct($reflect)
