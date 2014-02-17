@@ -13,7 +13,6 @@ use Bartlett\Reflect\Provider\SymfonyFinderProvider;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-
 // -- source 1: ZIP archive (PHP_CompatInfo 2.0.0)
 $zip = 'phar://' . __DIR__ . '/archives/PHP_CompatInfo-2.0.0.zip';
 
@@ -67,8 +66,10 @@ $reflect->getEventDispatcher()->addListener('reflect.progress', function (Generi
 $reflect->parse(array('ZipSource'));
 
 $results = array();
-foreach($reflect->getClasses() as $class) {
-    $results[] = $class->getName();
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getClasses() as $class) {
+        $results[] = $class->getName();
+    }
 }
 echo 'Classes found on data source :' . PHP_EOL;
-print_r( $results );
+print_r($results);
