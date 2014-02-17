@@ -42,12 +42,16 @@ class ConsoleApplication extends Application
 
     public function getLongVersion()
     {
-        return sprintf(
-            '<info>%s</info> version <comment>%s</comment> build <comment>%s</comment>',
+        $version = sprintf(
+            '<info>%s</info> version <comment>%s</comment>',
             $this->getName(),
-            '@' . 'package_version@' == $this->getVersion() ? 'DEV' : $this->getVersion(),
-            '@git_commit@'
+            '@' . 'package_version@' == $this->getVersion() ? 'DEV' : $this->getVersion()
         );
+
+        if ('@' . 'git_commit@' !== '@git_commit@') {
+            $version .= sprintf(' build <comment>%s</comment>', '@git_commit@');
+        }
+        return $version;
     }
 
     protected function getDefaultInputDefinition()
