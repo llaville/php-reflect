@@ -1,4 +1,6 @@
 <?php
+namespace Bartlett\Reflect\Examples;
+
 /**
  * Concrete example that is able to make PlantUML diagrams.
  *
@@ -9,21 +11,19 @@
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'autoload.php';
 
 use Bartlett\Reflect;
-use Bartlett\Reflect\Model\ClassModel;
 use Bartlett\Reflect\Visitor\AbstractVisitor;
 use Bartlett\Reflect\ProviderManager;
 use Bartlett\Reflect\Provider\SymfonyFinderProvider;
 use Symfony\Component\Finder\Finder;
 
-class PlantUMLBuilder
-    extends AbstractVisitor
+class PlantUMLBuilder extends AbstractVisitor
 {
     protected $packages;
     protected $pkgid;
     protected $clsid;
     protected $asciidoc;
 
-    public function visitPackageModel( $package )
+    public function visitPackageModel($package)
     {
         $this->pkgid = md5($package->getName());
 
@@ -32,22 +32,18 @@ class PlantUMLBuilder
             'classes' => array(),
         );
 
-        foreach($package as $element) {
-            if ($element instanceof ClassModel) {
-                $element->accept($this);
-            }
+        foreach ($package->getClasses() as $class) {
+            $class->accept($this);
         }
     }
 
-    public function visitClassModel( $class )
+    public function visitClassModel($class)
     {
         if ($class->isAbstract()) {
             $interface = 'abstract';
-        }
-        elseif ($class->isInterface()){
+        } elseif ($class->isInterface()) {
             $interface = 'interface';
-        }
-        else {
+        } else {
             $interface = 'class';
         }
 
@@ -59,12 +55,12 @@ class PlantUMLBuilder
             'methods' => array(),
         );
 
-        foreach($class->getMethods() as $method) {
+        foreach ($class->getMethods() as $method) {
             $method->accept($this);
         }
     }
 
-    public function visitMethodModel( $method )
+    public function visitMethodModel($method)
     {
         if ($method->isPrivate()) {
             $visibility = '-';
@@ -80,13 +76,29 @@ class PlantUMLBuilder
         );
     }
 
-    public function __construct( $reflect, $asciidoc_option = false )
+    public function visitConstantModel($constant)
+    {}
+
+
+    public function visitFunctionModel($function)
+    {
+    }
+
+    public function visitIncludeModel($include)
+    {
+    }
+
+    public function visitDependencyModel($dependency)
+    {
+    }
+
+    public function __construct($reflect, $asciidoc_option = false)
     {
         $this->packages = array();
         $this->asciidoc = $asciidoc_option;
 
         // explore elements results of data source parsed
-        foreach($reflect->getPackages() as $package) {
+        foreach ($reflect->getPackages() as $package) {
             $package->accept($this);
         }
     }
@@ -97,29 +109,29 @@ class PlantUMLBuilder
         $diag = '';
 
         // produce plantuml diagram
-        foreach($this->packages as $packageValues) {
+        foreach ($this->packages as $packageValues) {
 
             if ($this->asciidoc) {
                 $diag .= '["plantuml"]' . $eol;
                 $diag .= '---------------------------------------------------------------------' . $eol;
             }
 
-            $diag .= sprintf('package "%s" {%s',
+            $diag .= sprintf(
+                'package "%s" {%s',
                 $packageValues['name'],
                 $eol
             );
 
-            foreach($packageValues['classes'] as $classValues) {
-                $diag .= sprintf('%s %s%s',
+            foreach ($packageValues['classes'] as $classValues) {
+                $diag .= sprintf(
+                    '%s %s%s',
                     $classValues['type'],
                     $classValues['name'],
                     $eol
                 );
             }
 
-            $diag .= sprintf('}%s',
-                $eol
-            );
+            $diag .= sprintf('}%s', $eol);
 
             if ($this->asciidoc) {
                 $diag .= '---------------------------------------------------------------------' . $eol;
@@ -129,7 +141,7 @@ class PlantUMLBuilder
         return $diag;
     }
 
-    public function getClassDiagram( $qualifiedClass )
+    public function getClassDiagram($qualifiedClass)
     {
         $parts       = explode('\\', $qualifiedClass);
         $className   = array_pop($parts);
@@ -152,23 +164,23 @@ class PlantUMLBuilder
             $diag .= '---------------------------------------------------------------------' . $eol;
         }
 
-        $diag .= sprintf('%s %s{%s',
+        $diag .= sprintf(
+            '%s %s{%s',
             $classValues['type'],
             $classValues['name'],
             $eol
         );
 
-        foreach($classValues['methods'] as $method) {
-            $diag .= sprintf('    %s%s()%s',
+        foreach ($classValues['methods'] as $method) {
+            $diag .= sprintf(
+                '    %s%s()%s',
                 $method['visibility'],
                 $method['name'],
                 $eol
             );
         }
 
-        $diag .= sprintf('}%s',
-            $eol
-        );
+        $diag .= sprintf('}%s', $eol);
 
         if ($this->asciidoc) {
             $diag .= '---------------------------------------------------------------------' . $eol;
@@ -194,7 +206,7 @@ $reflect = new Reflect;
 $reflect->setProviderManager($pm);
 $reflect->parse();
 
-$plantuml = new PlantUMLBuilder( $reflect, true );
+$plantuml = new PlantUMLBuilder($reflect, true);
 
 $diag = $plantuml->getPackageDiagram();
 
@@ -202,7 +214,7 @@ $fp = fopen(__DIR__ . DIRECTORY_SEPARATOR . 'packageDiagram.plantuml', 'w+');
 fwrite($fp, $diag);
 fclose($fp);
 
-$diag = $plantuml->getClassDiagram( 'Bartlett\Reflect\Builder' );
+$diag = $plantuml->getClassDiagram('Bartlett\Reflect\Builder');
 
 $fp = fopen(__DIR__ . DIRECTORY_SEPARATOR . 'classDiagram.plantuml', 'w+');
 fwrite($fp, $diag);
