@@ -1,10 +1,4 @@
- Copyright (c) 2011-2013, Laurent Laville <pear@laurent-laville.org>
-
- Credits to :
-
-    * Sebastian Bergmann
-      Base concept from phpunit/PHP_Token_Stream
-
+ Copyright (c) 2011-2014, Laurent Laville <pear@laurent-laville.org>
 
  All rights reserved.
 
