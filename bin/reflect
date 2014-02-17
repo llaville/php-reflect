@@ -3,6 +3,11 @@
 // bin/console
 //putenv("REFLECT=/var/compatinfo/branches/v3/bin/reflect.json");
 
+$phpParserDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor/PHP-Parser/lib';
+
+require $phpParserDir . '/PhpParser/Autoloader.php';
+PhpParser\Autoloader::register();
+
 require_once 'Symfony/Component/ClassLoader/UniversalClassLoader.php';
 require_once 'PHP/Timer.php';
 
