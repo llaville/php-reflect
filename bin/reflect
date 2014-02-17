@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
-// bin/console
-//putenv("REFLECT=/var/compatinfo/branches/v3/bin/reflect.json");
+// CLI version 
+//putenv("REFLECT=/path/to/reflect.json");
 
 $phpParserDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor/PHP-Parser/lib';
 
