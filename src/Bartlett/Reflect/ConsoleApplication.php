@@ -97,7 +97,7 @@ class ConsoleApplication extends Application
     {
         $path = trim(getenv('REFLECT')) ? : './reflect.json';
 
-        if (!file_exists($path)) {
+        if (!is_file($path)) {
             throw new \Exception(
                 'Configuration file "' . realpath($path) . '" does not exists.'
             );
