@@ -91,12 +91,25 @@ class ConsoleApplication extends Application
      * Gets the json contents of REFLECT configuration file
      *
      * @return array
+     * @throws \Exception if configuration file does not exists or is invalid
      */
     public function getJsonConfigFile()
     {
         $path = trim(getenv('REFLECT')) ? : './reflect.json';
+
+        if (!file_exists($path)) {
+            throw new \Exception(
+                'Configuration file "' . realpath($path) . '" does not exists.'
+            );
+        }
         $json = file_get_contents($path);
         $var  = json_decode($json, true);
+
+        if (null === $var) {
+            throw new \Exception(
+                'The json configuration file has an invalid format.'
+            );
+        }
         return $var;
     }
 }
