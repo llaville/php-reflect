@@ -1,0 +1,89 @@
+:css-signature: blog
+:icons!:
+:iconsfont: font-awesome
+:iconsfontdir: ./fonts/font-awesome
+:imagesdir: ./images
+:author: Laurent Laville
+:revdate: 2014-02-18
+:pubdate: Tue, 18 Feb 2014 14:13:31 +0100
+:summary: Reflect 2.0.0RC2 has just been released.
+
+== Reflect 2.0.0RC2 released
+
+[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
+.icon:rocket[size="4x"]
+--
+[role="lead"]
+{summary}
+
+After many tries to have the more evolutive parser as possible, I've finally 
+adopted https://github.com/nikic/PHP-Parser[PHP-Parser 1.0-dev] 5 days ago.
+
+Be aware that I used the Nikita Popov version with a little patch 
+(see https://github.com/nikic/PHP-Parser/pull/95[Pull Request #95]) relative to magic constants.
+
+As there are no PEAR package available for PHP-Parser, Reflect 2.0.0RC2 will be 
+available only on two formats :
+
+* a PHAR version that bundles all dependencies (PHP-Parser + patch (1.0.0-dev+gh95), 
+Symfony Finder 2.4.1, EventDispatcher 2.4.1, Console 2.4.1) in a single file.
+* a https://github.com/llaville/php-reflect/blob/v2/composer.json[composer version].
+
+*Caution about the composer version* 
+
+To use my patch (1.0.0-dev+gh95) on base Nikita 1.0-dev version, add on your `composer.json` file
+the following contents:
+----
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/llaville/PHP-Parser"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "nikic/php-parser": "dev-MagicConst as 1.0.*@dev"
+    }
+}
+----
+
+You should get something like this output
+----
+Loading composer repositories with package information
+Installing dependencies
+  - Installing nikic/php-parser (dev-MagicConst d287cb4)
+    Cloning d287cb42896ba8921fda64fc5868093647fd65de
+
+Writing lock file
+Generating autoload files
+----
+
+The PHAR version was built with the http://box-project.org/[Box Project].
+The config file _box.json_ is https://github.com/llaville/php-reflect/blob/v2/box.json[available] 
+on the github repository.
+
+[NOTE]
+.This phar version is both compatible with CLI and other SAPI
+=====================================================================
+For web usage, just include the phar version, and use API as 
+http://php5.laurent-laville.org/reflect/manual/2.0/en/handle-results.html[explained]. 
+----
+<?php
+require '/path/to/dir/phpreflect.phar';
+// ...
+----
+=====================================================================
+
+.What is planned for the final stable version:
+************************************************
+* Fixes issues if users found something wrong.
+* Adds one analyser that will replace the concrete example that
+http://php5.laurent-laville.org/reflect/manual/2.0/en/measuring-size-project.html[measure size of project].
+* Adds one plugin to generate PlantUML diagrams as presented in concrete example
+http://php5.laurent-laville.org/reflect/manual/2.0/en/make-uml-diagrams.html[make UML diagrams]. 
+************************************************
+
+link:http://bartlett.laurent-laville.org/get/phpreflect.phar[caption="Download the PHAR version",role="primary",icon="glyphicon-download-alt"]
+
+--
