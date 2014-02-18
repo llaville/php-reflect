@@ -327,7 +327,11 @@ $pm->set('PhingSource', new SymfonyFinderProvider($tgzFinder));
 $reflect = new Reflect;
 $reflect->setProviderManager($pm);
 
-$progress = strtolower(array_pop($argv));
+if (PHP_SAPI == 'cli') {
+    $progress = strtolower(array_pop($argv));
+} else {
+    $progress = false;
+}
 
 if ($progress === '--progress') {
     // Add a listener that will echo out files when they are parsed
