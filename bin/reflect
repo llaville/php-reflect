@@ -20,6 +20,10 @@ $loader->registerNamespaces(array(
 ));
 $loader->register();
 
+if (PHP_SAPI !== 'cli') {
+    return;
+}
+
 use Bartlett\Reflect\Command\AnalyserListCommand;
 use Bartlett\Reflect\Command\ProviderListCommand;
 use Bartlett\Reflect\Command\ProviderShowCommand;
