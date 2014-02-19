@@ -22,8 +22,8 @@
         "ext-json": "*",
         "nikic/php-parser": "1.0.*@dev",
         "symfony/class-loader": ">=2.4",
-        "symfony/event-dispatcher": ">=2.4"
-        "symfony/finder": ">=2.4"
+        "symfony/event-dispatcher": ">=2.4",
+        "symfony/finder": ">=2.4",
         "symfony/console": ">=2.4"
     },
     "require-dev": {
@@ -38,8 +38,8 @@
         }
     ],
     "autoload": {
-        psr-0": {
-            "Bartlett\\": "src/"
+        "psr-0": {
+            "Bartlett\\": "src/",
             "Bartlett\\Tests\\Reflect\\": "tests/"
         }
     }
