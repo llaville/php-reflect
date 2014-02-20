@@ -6,10 +6,11 @@ adds the ability to reverse-engineer classes, interfaces, functions, constants, 
 
 == Blog 
 
-Next major API version 2.0 is currently under rewrites, and should be released 
-in the beginning of year 2014.
+The first mature Release Candidate (RC2) was released Tue, 18 Feb 2014.
+It was distributed as source code (install via composer) and a PHAR version 
+that bundles all dependencies in a single file.
 
-Stay tuned and follow me on the http://php5.laurent-laville.org/reflect/blog[official Blog]. 
+Follow development on the http://php5.laurent-laville.org/reflect/blog[official Blog]. 
 
 
 == Documentation
