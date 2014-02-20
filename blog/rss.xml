@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<rss version="2.0">
+<channel>
+<title>Official Blog of Reflect 2</title>
+<link>http://php5.laurent-laville.org/reflect</link>
+<description>Official Blog of Reflect 2</description>
+<item>
+<title>A blog official launch</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201311-a-blog-official-launch.html</link>
+<pubDate>Fri, 29 Nov 2013 11:36:05 +0100</pubDate>
+<description>At one month of end of year 2013, I've decided to open officially the blog dedicated to PHP Reflect.</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201311-a-blog-official-launch.html</guid>
+</item>
+<item>
+<title>Concrete Examples - Part 2</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201312-concrete-examples-part2.html</link>
+<pubDate>Mon, 16 Dec 2013 16:54:18 +0100</pubDate>
+<description>Discover how Reflect may measuring the size of a PHP project.</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201312-concrete-examples-part2.html</guid>
+</item>
+<item>
+<title>Concrete Examples</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201312-concrete-examples.html</link>
+<pubDate>Mon, 02 Dec 2013 12:56:29 +0100</pubDate>
+<description>Discover how Reflect may be use in real condition.</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201312-concrete-examples.html</guid>
+</item>
+<item>
+<title>Handle Results</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201312-handle-results.html</link>
+<pubDate>Wed, 04 Dec 2013 10:32:51 +0100</pubDate>
+<description>Learn how to explore and exploit parsing results.</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201312-handle-results.html</guid>
+</item>
+<item>
+<title>Reflect 2.0.0RC1 released</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201312-Reflect-2.0.0RC1-released.html</link>
+<pubDate>Fri, 13 Dec 2013 21:51:59 +0100</pubDate>
+<description>Reflect 2.0.0RC1 has been released.</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201312-Reflect-2.0.0RC1-released.html</guid>
+</item>
+<item>
+<title>Zoom on Reflection API</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201312-reflection-api-compare.html</link>
+<pubDate>Tue, 03 Dec 2013 09:19:27 +0100</pubDate>
+<description>Compare both Reflection API between PHP5 and Reflect.</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201312-reflection-api-compare.html</guid>
+</item>
+<item>
+<title>Data Source Provider</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201312-source-provider.html</link>
+<pubDate>Thu, 05 Dec 2013 19:42:08 +0100</pubDate>
+<description>Learn how to identify a data source to parse.</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201312-source-provider.html</guid>
+</item>
+<item>
+<title>Reflect 2.0.0RC2 PHAR version WARNING</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201402-Reflect-2.0.RC2-installation.html</link>
+<pubDate>Thu, 20 Feb 2014 09:38:04 +0100</pubDate>
+<description>A little explain about Reflect 2.0.0RC2 and PHAR version.</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201402-Reflect-2.0.RC2-installation.html</guid>
+</item>
+<item>
+<title>===================================================================</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201402-Reflect-2.0.RC2-released.html</link>
+<pubDate>Tue, 18 Feb 2014 14:13:31 +0100</pubDate>
+<description>Reflect 2.0.0RC2 has just been released.</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201402-Reflect-2.0.RC2-released.html</guid>
+</item>
+<item>
+<title>Future release 2.0.0RC2 will adopt PHP-Parser</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201402-release-2.0.RC2-adopt-PhpParser.html</link>
+<pubDate>Wed, 12 Feb 2014 14:40:53 +0100</pubDate>
+<description>A new parser for Reflect 2.0.0RC2</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201402-release-2.0.RC2-adopt-PhpParser.html</guid>
+</item>
+<item>
+<title>PHP-Parser migration is over</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201402-release-2.0.RC2-migration-PhpParser.html</link>
+<pubDate>Thu, 13 Feb 2014 17:35:16 +0100</pubDate>
+<description>Reflect 2.0.0RC2 has adopted PHP-Parser 1.0-dev</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201402-release-2.0.RC2-migration-PhpParser.html</guid>
+</item>
+<item>
+<title>Release 2.0.0RC2 planned</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201402-release-2.0.RC2-planned.html</link>
+<pubDate>Sat, 01 Feb 2014 09:25:10 +0100</pubDate>
+<description>A new core code for the second release candidate of version 2.0</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201402-release-2.0.RC2-planned.html</guid>
+</item>
+<item>
+<title>Command-Line preview of future release 2.0.0RC2</title>
+<link>http://php5.laurent-laville.org/reflect/blog/201402-release-2.0.RC2-preview.html</link>
+<pubDate>Mon, 03 Feb 2014 14:14:48 +0100</pubDate>
+<description>Preview of the Command-Line part of Reflect 2.0.0RC2</description>
+<guid>http://php5.laurent-laville.org/reflect/blog/201402-release-2.0.RC2-preview.html</guid>
+</item>
+</channel>
+</rss>
