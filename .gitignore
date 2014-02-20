@@ -3,4 +3,5 @@ Thumbs.db
 html/
 vendor/
 blog/rssbuilder.php
+blog/rss.xml
 *.plantuml
