@@ -6,12 +6,13 @@ adds the ability to reverse-engineer classes, interfaces, functions, constants, 
 
 == Blog 
 
-The first mature Release Candidate (RC2) was released Tue, 18 Feb 2014.
+The first mature Release Candidate (RC2) of API 2.0 was released Tue, 18 Feb 2014.
 It was distributed as source code (install via composer) and a PHAR version 
 that bundles all dependencies in a single file.
 
 Follow development on the http://php5.laurent-laville.org/reflect/blog[official Blog]. 
 
+Have a look on master branch for previous stable API 1.0
 
 == Documentation
 
