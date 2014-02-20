@@ -16,6 +16,10 @@
             "name": "*.php",
             "notPath": "/Tests/",
             "in": "vendor/Symfony"
+        },
+        {
+            "name": "*.php",
+            "in": "vendor/PHPUnit"
         }
     ],
     "metadata": [
@@ -29,9 +33,15 @@
                     ],
                     "symfony": [
                         {
-                            "console": "2.4.1",
-                            "eventdispatcher": "2.4.1",
-                            "finder": "2.4.1"
+                            "classloader": "2.4.2",
+                            "console": "2.4.2",
+                            "eventdispatcher": "2.4.2",
+                            "finder": "2.4.2"
+                        }
+                    ],
+                    "phpunit": [
+                        {
+                            "php-timer": "1.0.5"
                         }
                     ]
                 }
