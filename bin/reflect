@@ -30,6 +30,7 @@ if (PHP_SAPI !== 'cli') {
 }
 
 use Bartlett\Reflect\Command\AnalyserListCommand;
+use Bartlett\Reflect\Command\AnalyserRunCommand;
 use Bartlett\Reflect\Command\ProviderListCommand;
 use Bartlett\Reflect\Command\ProviderShowCommand;
 use Bartlett\Reflect\Command\ProviderDisplayCommand;
@@ -38,6 +39,7 @@ use Bartlett\Reflect\ConsoleApplication as Application;
 
 $application = new Application();
 $application->add(new AnalyserListCommand);
+$application->add(new AnalyserRunCommand);
 $application->add(new ProviderListCommand);
 $application->add(new ProviderShowCommand);
 $application->add(new ProviderDisplayCommand);
