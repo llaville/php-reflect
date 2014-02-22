@@ -103,24 +103,32 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
     public function visitClassModel($class)
     {
         if ($class->isAbstract()) {
-            $interface = 'abstract';
+            $type = 'abstract';
         } elseif ($class->isInterface()) {
-            $interface = 'interface';
+            $type = 'interface';
         } else {
-            $interface = 'class';
+            $type = 'class';
         }
 
         if ($parent = $class->getParentClass()) {
             $parent = $parent->getShortName();
         }
 
+        $interfaces = array();
+        foreach ($class->getInterfaceNames() as $interface) {
+            $parts     = explode('\\', $interface);
+            $shortName = array_pop($parts);
+
+            $interfaces[$shortName] = $interface;
+        }
+
         $this->clsid = md5($class->getName());
 
         $this->packages[$this->pkgid]['classes'][$this->clsid] = array(
-            'type'       => $interface,
+            'type'       => $type,
             'name'       => $class->getShortName(),
             'parent'     => $parent,
-            'interfaces' => $class->getInterfaceNames(),
+            'interfaces' => $interfaces,
             'properties' => array(),
             'methods'    => array(),
         );
@@ -301,18 +309,18 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
         }
 
         // prints interfaces (if exists)
-        foreach ($classValues['interfaces'] as $interface) {
+        foreach ($classValues['interfaces'] as $shortName => $longName) {
             // print signature just to be identified as interface
             $diag .= sprintf(
                 'interface %s {%s',
-                $interface,
+                $shortName,
                 $eol
             );
             $diag .= sprintf('}%s', $eol);
 
             $diag .= sprintf(
                 '%s <|.. %s%s',
-                $interface,
+                $shortName,
                 $classValues['name'],
                 $eol
             );
