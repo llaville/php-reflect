@@ -107,7 +107,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                     'reflect.progress',
                     array(
                         'source'   => $alias,
-                        'filename' => $file->getPathname()
+                        'file'     => $file,
                     )
                 );
                 $this->files[] = $file;
@@ -129,7 +129,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                                 'reflect.success',
                                 array(
                                     'source'   => $alias,
-                                    'filename' => $file->getPathname(),
+                                    'file'     => $file,
                                     'ast'      => serialize($stmts)
                                 )
                             );
@@ -141,7 +141,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                                 'reflect.error',
                                 array(
                                     'source'   => $alias,
-                                    'filename' => $file->getPathname(),
+                                    'file'     => $file,
                                     'error'    => $e->getMessage()
                                 )
                             );

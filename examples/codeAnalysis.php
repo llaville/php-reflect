@@ -341,7 +341,7 @@ if ($progress === '--progress') {
             printf(
                 'Parsing Data source "%s" in progress ... File "%s"' . PHP_EOL,
                 $e['source'],
-                $e['filename']
+                $e['file']->getPathname()
             );
         }
     );
