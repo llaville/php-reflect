@@ -87,9 +87,13 @@ class ConsoleApplication extends Application
         $commands[] = new ProviderShowCommand;
         $commands[] = new ProviderDisplayCommand;
 
-        $var = $this->getJsonConfigFile();
+        try {
+            $var = $this->getJsonConfigFile();
+        } catch (\Exception $e) {
+            // stop here if json config file is missing or invalid
+        }
 
-        if (is_array($var) && isset($var['plugins'])) {
+        if (isset($var['plugins'])) {
             // checks for additional commands
 
             if (is_array($var['plugins'])) {
