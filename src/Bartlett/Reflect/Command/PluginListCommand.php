@@ -29,6 +29,18 @@ class PluginListCommand extends Command
             );
         }
 
+        if (!isset($var['plugins'])) {
+            $fmt = $this->getApplication()->getHelperSet()->get('formatter');
+
+            $output->writeln(
+                $fmt->formatBlock(
+                    array('[Json Configuration]', 'No plugins detected.'),
+                    'error'
+                )
+            );
+            return;
+        }
+
         if (is_array($var['plugins'])) {
             $plugins = $var['plugins'];
         } else {
