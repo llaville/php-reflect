@@ -52,12 +52,13 @@ class PluginListCommand extends Command
         foreach ($plugins as $plugin) {
             $classPlugin = $plugin['class'];
             $events = $classPlugin::getSubscribedEvents();
-
+            $first  = true;
             foreach ($events as $event => $function) {
-                if (count($rows)) {
+                if (!$first) {
                     $rows[] = array('', '', $event);
                 } else {
                     $rows[] = array($plugin['name'], $plugin['class'], $event);
+                    $first  = false;
                 }
             }
         }
