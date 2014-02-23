@@ -15,7 +15,6 @@ use Bartlett\Reflect\Command\ProviderCommand;
 use Bartlett\Reflect\ProviderManager;
 use Bartlett\Reflect\Provider\SymfonyFinderProvider;
 use Bartlett\Reflect\Plugin\Analyser\AnalyserPlugin;
-use Bartlett\Reflect\Analyser\StructureAnalyser;
 use Bartlett\Reflect\Printer\Text;
 
 class AnalyserRunCommand extends ProviderCommand
@@ -81,16 +80,14 @@ class AnalyserRunCommand extends ProviderCommand
             $providers = array($var['source-providers']);
         }
 
-        $analysers = $input->getArgument('analysers');
-
         if (is_array($var['analysers'])) {
             $analysersInstalled = $var['analysers'];
         } else {
             $analysersInstalled = array($var['analysers']);
         }
 
-        $plugins = array();
-        foreach ($analysers as $analyser) {
+        $analysers = array();
+        foreach ($input->getArgument('analysers') as $analyser) {
             $found = false;
             foreach ($analysersInstalled as $analyserInstalled) {
                 if (strcasecmp($analyserInstalled['name'], $analyser) === 0) {
@@ -107,12 +104,11 @@ class AnalyserRunCommand extends ProviderCommand
                     )
                 );
             }
-            $plugins[] = new $analyserInstalled['class'];
+            $analysers[] = new $analyserInstalled['class'];
         }
         if (empty($analysers)) {
             // at least, there is always this analyser to print structure
-            $plugins[]   = new Reflect\Analyser\StructureAnalyser;
-            $analysers[] = 'structure';
+            $analysers[] = new Reflect\Analyser\StructureAnalyser;
         }
 
         foreach ($providers as $provider) {
@@ -142,8 +138,8 @@ class AnalyserRunCommand extends ProviderCommand
             $reflect = new Reflect;
             $reflect->setProviderManager($pm);
 
-            $analyser = new AnalyserPlugin($plugins);
-            $reflect->addSubscriber($analyser);
+            $plugin = new AnalyserPlugin($analysers);
+            $reflect->addSubscriber($plugin);
 
             $fmt = $this->getApplication()->getHelperSet()->get('formatter');
 
@@ -188,167 +184,17 @@ class AnalyserRunCommand extends ProviderCommand
                 $progress->finish();
             }
 
-            $metrics = $analyser->getMetrics();
+            $metrics = $plugin->getMetrics();
             if (!$metrics) {
                 // No reports printed if there are no metrics.
                 return;
             }
 
-            $count = $metrics['DataSource'];
-            $count['constants'] = $count['classConstants'] + $count['globalConstants'];
-
-            $lines = array();
-
-            if ($count['directories'] > 0) {
-                $lines['dataSourceAnalysed'] = array(
-                    '<info>Data Source Analysed</info>%s',
-                    array(PHP_EOL)
-                );
-                $lines['directories'] = array(
-                    'Directories                                 %10d',
-                    array($count['directories'])
-                );
-                $lines['files'] = array(
-                    'Files                                       %10d',
-                    array($count['files'])
-                );
-            }
-
-            if ($count['testClasses'] > 0) {
-                $lines['testClasses'] = array(
-                    '  Classes                                   %10d',
-                    array($count['testClasses'])
-                );
-                $lines['testMethods'] = array(
-                    '  Methods                                   %10d',
-                    array($count['testMethods'])
-                );
-            }
-
-            $lines['structure'] = array(
-                '%sStructure',
-                array(PHP_EOL)
-            );
-            $lines['namespaces'] = array(
-                '  Namespaces                                %10d',
-                array($count['namespaces'])
-            );
-            $lines['interfaces'] = array(
-                '  Interfaces                                %10d',
-                array($count['interfaces'])
-            );
-            $lines['traits'] = array(
-                '  Traits                                    %10d',
-                array($count['traits'])
-            );
-
-            $lines['classes'] = array(
-                '  Classes                                   %10d',
-                array($count['classes'])
-            );
-            $lines['abstractClasses'] = array(
-                '    Abstract Classes                        %10d (%.2f%%)',
-                array(
-                    $count['abstractClasses'],
-                    $count['classes'] > 0 ? ($count['abstractClasses'] / $count['classes']) * 100 : 0,
-                )
-            );
-            $lines['concreteClasses'] = array(
-                '    Concrete Classes                        %10d (%.2f%%)',
-                array(
-                    $count['concreteClasses'],
-                    $count['classes'] > 0 ? ($count['concreteClasses'] / $count['classes']) * 100 : 0,
-                )
-            );
-
-            $lines['methods'] = array(
-                '  Methods                                   %10d',
-                array($count['methods'])
-            );
-            $lines['methodsScope'] = array(
-                '    Scope',
-                array()
-            );
-            $lines['nonStaticMethods'] = array(
-                '      Non-Static Methods                    %10d (%.2f%%)',
-                array(
-                    $count['nonStaticMethods'],
-                    $count['methods'] > 0 ? ($count['nonStaticMethods'] / $count['methods']) * 100 : 0,
-                )
-            );
-            $lines['staticMethods'] = array(
-                '      Static Methods                        %10d (%.2f%%)',
-                array(
-                    $count['staticMethods'],
-                    $count['methods'] > 0 ? ($count['staticMethods'] / $count['methods']) * 100 : 0,
-                )
-            );
-            $lines['methodsVisibility'] = array(
-                '    Visibility',
-                array()
-            );
-            $lines['publicMethods'] = array(
-                '      Public Method                         %10d (%.2f%%)',
-                array(
-                    $count['publicMethods'],
-                    $count['methods'] > 0 ? ($count['publicMethods'] / $count['methods']) * 100 : 0,
-                )
-            );
-            $lines['protectedMethods'] = array(
-                '      Protected Method                      %10d (%.2f%%)',
-                array(
-                    $count['protectedMethods'],
-                    $count['methods'] > 0 ? ($count['protectedMethods'] / $count['methods']) * 100 : 0,
-                )
-            );
-            $lines['privateMethods'] = array(
-                '      Private Method                        %10d (%.2f%%)',
-                array(
-                    $count['privateMethods'],
-                    $count['methods'] > 0 ? ($count['privateMethods'] / $count['methods']) * 100 : 0,
-                )
-            );
-
-            $lines['functions'] = array(
-                '  Functions                                 %10d',
-                array($count['functions'])
-            );
-            $lines['namedFunctions'] = array(
-                '    Named Functions                         %10d (%.2f%%)',
-                array(
-                    $count['namedFunctions'],
-                    $count['functions'] > 0 ? ($count['namedFunctions'] / $count['functions']) * 100 : 0,
-                )
-            );
-            $lines['anonymousFunctions'] = array(
-                '    Anonymous Functions                     %10d (%.2f%%)',
-                array(
-                    $count['anonymousFunctions'],
-                    $count['functions'] > 0 ? ($count['anonymousFunctions'] / $count['functions']) * 100 : 0,
-                )
-            );
-
-            $lines['constants'] = array(
-                '  Constants                                 %10d',
-                array($count['constants'])
-            );
-            $lines['globalConstants'] = array(
-                '    Global Constants                        %10d (%.2f%%)',
-                array(
-                    $count['globalConstants'],
-                    $count['constants'] > 0 ? ($count['globalConstants'] / $count['constants']) * 100 : 0,
-                )
-            );
-            $lines['classConstants'] = array(
-                '    Class Constants                         %10d (%.2f%%)',
-                array(
-                    $count['classConstants'],
-                    $count['constants'] > 0 ? ($count['classConstants'] / $count['constants']) * 100 : 0,
-                )
-            );
-
             $printer = new Text;
-            $printer->write($output, $lines);
+
+            foreach ($analysers as $analyser) {
+                $printer->write($output, $analyser->toArray());
+            }
             return;
         }
 
