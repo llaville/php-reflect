@@ -42,12 +42,6 @@ class AnalyserRunCommand extends ProviderCommand
                 'If set, the source refers to its alias'
             )
             ->addOption(
-                'php',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Filter results on PHP version'
-            )
-            ->addOption(
                 'redraw-freq',
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -63,27 +57,6 @@ class AnalyserRunCommand extends ProviderCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $source = trim($input->getArgument('source'));
-        if ($input->getOption('alias')) {
-            $alias = $source;
-        } else {
-            $alias = false;
-        }
-
-        $php = $input->getOption('php');
-        if ($php) {
-            if (!preg_match(
-                '/^\s*(==|!=|[<>]=?)?\s*(.*)$/',
-                $php,
-                $matches
-            )) {
-                throw new \InvalidArgumentException(
-                    sprintf('Don\'t understand "%s" as a version number.', $php)
-                );
-            }
-            $php = array($matches[1], $matches[2]);
-        }
-
         $var = $this->getApplication()->getJsonConfigFile();
 
         if (!is_array($var)
@@ -93,6 +66,13 @@ class AnalyserRunCommand extends ProviderCommand
             throw new \Exception(
                 'The compatinfo.json file has an invalid format'
             );
+        }
+
+        $source = trim($input->getArgument('source'));
+        if ($input->getOption('alias')) {
+            $alias = $source;
+        } else {
+            $alias = false;
         }
 
         if (is_array($var['source-providers'])) {
