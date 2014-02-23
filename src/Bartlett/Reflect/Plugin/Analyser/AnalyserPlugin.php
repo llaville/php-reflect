@@ -17,6 +17,9 @@ namespace Bartlett\Reflect\Plugin\Analyser;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\Event;
 
+use Bartlett\Reflect\Command\AnalyserListCommand;
+use Bartlett\Reflect\Command\AnalyserRunCommand;
+
 /**
  * Plugin to analyse metrics of parsing results.
  *
@@ -46,6 +49,20 @@ class AnalyserPlugin implements EventSubscriberInterface
         }
         $this->analysers = $analyser;
         $this->metrics   = array();
+    }
+
+    /**
+     * Gets the commands available with this plugin.
+     *
+     * @return array An array of Command instances
+     */
+    public static function getCommands()
+    {
+        $commands   = array();
+        $commands[] = new AnalyserListCommand;
+        $commands[] = new AnalyserRunCommand;
+
+        return $commands;
     }
 
     /**

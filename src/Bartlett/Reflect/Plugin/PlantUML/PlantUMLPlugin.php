@@ -18,6 +18,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 use Bartlett\Reflect\Visitor\AbstractVisitor;
+use Bartlett\Reflect\Command\PlantUMLRunCommand;
 
 /**
  * Plugin to make PlantUML diagrams that reflect data source code analysed.
@@ -42,6 +43,19 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
     public function __construct()
     {
         $this->packages = array();
+    }
+
+    /**
+     * Gets the commands available with this plugin.
+     *
+     * @return array An array of Command instances
+     */
+    public static function getCommands()
+    {
+        $commands   = array();
+        $commands[] = new PlantUMLRunCommand;
+
+        return $commands;
     }
 
     /**
