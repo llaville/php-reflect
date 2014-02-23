@@ -135,7 +135,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                             );
                         }
 
-                    } catch (PhpParser\Error $e) {
+                    } catch (\PhpParser\Error $e) {
                         if ($this->getEventDispatcher()->hasListeners('reflect.error')) {
                             $this->dispatch(
                                 'reflect.error',
