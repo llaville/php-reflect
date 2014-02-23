@@ -127,13 +127,38 @@ class AnalyserRunCommand extends ProviderCommand
             );
             $reflect->addSubscriber($analyser);
 
+            $fmt = $this->getApplication()->getHelperSet()->get('formatter');
+
             if ($output->isVerbose()) {
                 $reflect->getEventDispatcher()->addListener(
                     'reflect.progress',
-                    function (GenericEvent $e) use ($progress) {
+                    function (GenericEvent $e) use ($progress, $output, $fmt) {
+
+                        if ($output->isVeryVerbose()) {
+                            static $current = 0;
+
+                            $output->writeln(
+                                $fmt->formatSection(
+                                    sprintf('%05d', ++$current),
+                                    $e['file']->getPathname()
+                                )
+                            );
+                            return;
+                        }
                         if ($progress instanceof ProgressHelper) {
                             $progress->advance();
                         }
+                    }
+                );
+            }
+            if ($output->isVeryVerbose()) {
+                $reflect->getEventDispatcher()->addListener(
+                    'reflect.error',
+                    function (GenericEvent $e) use ($output, $fmt) {
+
+                        $output->writeln(
+                            $fmt->formatBlock(array($e['error']), 'error')
+                        );
                     }
                 );
             }
