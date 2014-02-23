@@ -30,6 +30,11 @@ class AnalyserRunCommand extends ProviderCommand
                 InputArgument::REQUIRED,
                 'Path to the data source or its alias'
             )
+            ->addArgument(
+                'analysers',
+                InputArgument::IS_ARRAY,
+                'Add one or more analyser to run at end of process (case insensitive).'
+            )
             ->addOption(
                 'alias',
                 null,
@@ -83,6 +88,7 @@ class AnalyserRunCommand extends ProviderCommand
 
         if (!is_array($var)
             || !isset($var['source-providers'])
+            || !isset($var['analysers'])
         ) {
             throw new \Exception(
                 'The compatinfo.json file has an invalid format'
@@ -93,6 +99,40 @@ class AnalyserRunCommand extends ProviderCommand
             $providers = $var['source-providers'];
         } else {
             $providers = array($var['source-providers']);
+        }
+
+        $analysers = $input->getArgument('analysers');
+
+        if (is_array($var['analysers'])) {
+            $analysersInstalled = $var['analysers'];
+        } else {
+            $analysersInstalled = array($var['analysers']);
+        }
+
+        $plugins = array();
+        foreach ($analysers as $analyser) {
+            $found = false;
+            foreach ($analysersInstalled as $analyserInstalled) {
+                if (strcasecmp($analyserInstalled['name'], $analyser) === 0) {
+                    // analyser installed and available
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Analyser "%s" is not installed. Checks with analyser:list command.',
+                        $analyser
+                    )
+                );
+            }
+            $plugins[] = new $analyserInstalled['class'];
+        }
+        if (empty($analysers)) {
+            // at least, there is always this analyser to print structure
+            $plugins[]   = new Reflect\Analyser\StructureAnalyser;
+            $analysers[] = 'structure';
         }
 
         foreach ($providers as $provider) {
@@ -122,9 +162,7 @@ class AnalyserRunCommand extends ProviderCommand
             $reflect = new Reflect;
             $reflect->setProviderManager($pm);
 
-            $analyser = new AnalyserPlugin(
-                new StructureAnalyser
-            );
+            $analyser = new AnalyserPlugin($plugins);
             $reflect->addSubscriber($analyser);
 
             $fmt = $this->getApplication()->getHelperSet()->get('formatter');
