@@ -51,7 +51,7 @@
     "git-commit": "git_commit",
     "git-version": "package_version",
     "main": "bin/reflect",
-    "output": "phpreflect.phar",
+    "output": "phpreflect-@git-version@.phar",
     "stub": true,
     "web": false
 }
