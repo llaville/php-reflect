@@ -130,10 +130,11 @@ class Builder extends NodeVisitorAbstract
         } elseif ($node instanceof \PhpParser\Node\Expr\ConstFetch
             || $node instanceof \PhpParser\Node\Scalar\MagicConst
         ) {
-            $qualifiedName = $node->getName();
-
             if ($node instanceof \PhpParser\Node\Scalar\MagicConst) {
                 $nodeAttributes['magic'] = true;
+                $qualifiedName = $node->getName();
+            } else {
+                $qualifiedName = $node->name->__toString();
             }
 
             $model = $this->buildConstant($qualifiedName, $nodeAttributes);
