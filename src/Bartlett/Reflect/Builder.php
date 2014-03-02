@@ -188,7 +188,7 @@ class Builder extends NodeVisitorAbstract
             || $node instanceof \PhpParser\Node\Stmt\Interface_
             || $node instanceof \PhpParser\Node\Stmt\Trait_
         ) {
-            // @link http://fr.php.net/manual/fr/language.oop5.interfaces.php
+            // @link http://www.php.net/manual/en/language.oop5.interfaces.php
 
             $qualifiedClassName = $node->namespacedName->__toString();
 
@@ -283,7 +283,7 @@ class Builder extends NodeVisitorAbstract
                 }
 
                 if ($stmt instanceof \PhpParser\Node\Stmt\ClassConst) {
-                    // @link http://fr.php.net/manual/fr/language.oop5.constants.php
+                    // @link http://www.php.net/manual/en/language.oop5.constants.php
 
                     foreach ($stmt->consts as $const) {
                         if ($const->value instanceof \PhpParser\Node\Scalar) {
@@ -303,7 +303,7 @@ class Builder extends NodeVisitorAbstract
                     }
 
                 } elseif ($stmt instanceof \PhpParser\Node\Stmt\Property) {
-                    // @link http://fr.php.net/manual/fr/language.oop5.properties.php
+                    // @link http://www.php.net/manual/en/language.oop5.properties.php
 
                     $props = $stmt->props;
                     if ($props[0]->default) {
@@ -379,7 +379,7 @@ class Builder extends NodeVisitorAbstract
      * This method parses a echo-statement.
      *
      * @param object AST Node Statement
-     * @link  http://fr.php.net/manual/fr/language.basic-syntax.phpmode.php
+     * @link  http://www.php.net/manual/en/language.basic-syntax.phpmode.php
      */
     protected function parseEchoStatement($node)
     {
@@ -409,7 +409,7 @@ class Builder extends NodeVisitorAbstract
      * </code>
      *
      * @param object AST Node Expression
-     * @link  http://fr.php.net/manual/fr/language.oop5.php
+     * @link  http://www.php.net/manual/en/language.oop5.php
      */
     protected function parseNewStatement($node, $nodeAttributes)
     {
@@ -443,7 +443,7 @@ class Builder extends NodeVisitorAbstract
      * @param object $exprList AST node expressions for define arguments
      *
      * @return object AST Node Expression
-     * @link   http://fr.php.net/manual/fr/language.constants.php
+     * @link   http://www.php.net/manual/en/language.constants.php
      */
     protected function parseUserConstant($node, $nodeAttributes)
     {
@@ -459,7 +459,7 @@ class Builder extends NodeVisitorAbstract
     /**
      * This method parses any user function.
      *
-     * @link http://fr.php.net/manual/fr/functions.user-defined.php
+     * @link http://www.php.net/manual/en/functions.user-defined.php
      */
     protected function parseUserFunction($node, $nodeAttributes)
     {
@@ -488,7 +488,7 @@ class Builder extends NodeVisitorAbstract
      * This method parses any internal function.
      *
      * @return object AST Node Expression
-     * @link    http://fr.php.net/manual/fr/functions.internal.php
+     * @link    http://www.php.net/manual/en/functions.internal.php
      */
     protected function parseInternalFunction($node, $nodeAttributes)
     {
@@ -512,7 +512,7 @@ class Builder extends NodeVisitorAbstract
     }
 
     /**
-     * @link http://fr.php.net/manual/fr/functions.arguments.php
+     * @link http://www.php.net/manual/en/functions.arguments.php
      */
     protected function parseFunctionArguments($args)
     {
