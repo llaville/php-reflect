@@ -125,7 +125,7 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
         }
 
         if ($parent = $class->getParentClass()) {
-            $parent = $parent->getShortName();
+            $parent = $parent->getName();
         }
 
         $interfaces = array();
@@ -273,15 +273,23 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
         $className   = array_pop($parts);
         $packageName = implode('\\', $parts);
 
+        $eol  = "\n";
+        $diag = $eol;
+
+        $diag .= sprintf('set namespaceSeparator none%s%s', $eol, $eol);
+
         if (empty($packageName)) {
             $packageName = '+global';
+        } else {
+            $diag .= sprintf(
+                'namespace %s {%s',
+                str_replace('\\', '.', $packageName),
+                $eol
+            );
         }
 
         $packageValues = $this->packages[ md5($packageName) ];
         $classValues   = $packageValues['classes'][ md5($qualifiedClass) ];
-
-        $eol  = "\n";
-        $diag = $eol;
 
         $diag .= sprintf(
             '%s %s{%s',
@@ -310,13 +318,41 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
             );
         }
 
+        // end of class
         $diag .= sprintf('}%s', $eol);
+
+        if (!empty($packageName)) {
+            // end of class namespace
+            $diag .= sprintf('}%s', $eol);
+        }
 
         // prints inheritance (if exists)
         if ($classValues['parent']) {
+
+            $parts  = explode('\\', $classValues['parent']);
+            $parent = array_pop($parts);
+            $ns     = implode('\\', $parts);
+
+            if (count($parts) > 1) {
+                $diag .= sprintf(
+                    '%snamespace %s {%s',
+                    $eol,
+                    str_replace('\\', '.', $ns),
+                    $eol
+                );
+            }
+            $diag .= sprintf(
+                'class %s%s',
+                $parent,
+                $eol
+            );
+            if (count($parts) > 1) {
+                $diag .= sprintf('}%s', $eol);
+            }
+
             $diag .= sprintf(
                 '%s <|-- %s%s',
-                $classValues['parent'],
+                $parent,
                 $classValues['name'],
                 $eol
             );
@@ -324,13 +360,32 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
 
         // prints interfaces (if exists)
         foreach ($classValues['interfaces'] as $shortName => $longName) {
+
+            $parts = explode('\\', $longName);
+            array_pop($parts);
+            $ns    = implode('\\', $parts);
+
+            if (count($parts) > 1) {
+                $diag .= sprintf(
+                    '%snamespace %s {%s',
+                    $eol,
+                    str_replace('\\', '.', $ns),
+                    $eol
+                );
+
+            }
+
             // print signature just to be identified as interface
             $diag .= sprintf(
-                'interface %s {%s',
+                'interface %s%s',
                 $shortName,
                 $eol
             );
-            $diag .= sprintf('}%s', $eol);
+
+            if (count($parts) > 1) {
+                // end of interface namespace
+                $diag .= sprintf('}%s', $eol);
+            }
 
             $diag .= sprintf(
                 '%s <|.. %s%s',
