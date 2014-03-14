@@ -1,5 +1,5 @@
 {
-    "name": "pear-bartlett/PHP_Reflect",
+    "name": "bartlett/php-reflect",
     "description": "Adds the ability to reverse-engineer classes, interfaces, functions, constants, namespaces, traits and more.",
     "type": "library",
     "license": "BSD-3-Clause",
