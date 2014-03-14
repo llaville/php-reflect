@@ -20,7 +20,7 @@
         "ext-pcre": "*",
         "ext-spl": "*",
         "ext-json": "*",
-        "pear-phpunit/PHP_Timer": ">=1.0.0",
+        "pear-phpunit/php_timer": ">=1.0.0",
         "nikic/php-parser": "1.0.*@dev",
         "symfony/class-loader": ">=2.4",
         "symfony/event-dispatcher": ">=2.4",
@@ -28,7 +28,7 @@
         "symfony/console": ">=2.4"
     },
     "require-dev": {
-        "pear-phpunit/PHPUnit": ">=3.7"
+        "pear-phpunit/phpunit": ">=3.7"
     },
     "authors": [
         {
