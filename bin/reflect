@@ -9,11 +9,11 @@ $vendorDir = $baseDir . '/vendor';
 if (\Phar::running()) {
     require_once 'phar://phpreflect.phar/vendor/nikic/php-parser/lib/bootstrap.php';
     require_once 'phar://phpreflect.phar/vendor/symfony/class-loader/Symfony/Component/ClassLoader/UniversalClassLoader.php';
-    require_once 'phar://phpreflect.phar/vendor/pear-pear.phpunit.de/PHP_Timer/PHP/Timer.php';
+    require_once 'phar://phpreflect.phar/vendor/phpunit/php-timer/PHP/Timer.php';
 } else {
     require_once $vendorDir . '/nikic/php-parser/lib/bootstrap.php';
     require_once $vendorDir . '/symfony/class-loader/Symfony/Component/ClassLoader/UniversalClassLoader.php';
-    require_once $vendorDir . '/pear-pear.phpunit.de/PHP_Timer/PHP/Timer.php';
+    require_once $vendorDir . '/phpunit/php-timer/PHP/Timer.php';
 }
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
