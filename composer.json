@@ -37,5 +37,10 @@
             "Bartlett\\": "src/",
             "Bartlett\\Tests\\Reflect\\": "tests/"
         }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
     }
 }
