@@ -19,7 +19,7 @@
         },
         {
             "name": "*.php",
-            "in": "vendor/pear-pear.phpunit.de/PHP_Timer"
+            "in": "vendor/phpunit/php-timer"
         }
     ],
     "metadata": [
@@ -39,7 +39,7 @@
                             "finder": "2.4.2"
                         }
                     ],
-                    "pear-pear.phpunit.de": [
+                    "phpunit": [
                         {
                             "php-timer": "1.0.5"
                         }

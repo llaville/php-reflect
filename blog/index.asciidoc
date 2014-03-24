@@ -26,5 +26,8 @@ Subscribe to RSS feed icon:rss-square[size="lg",link="http://php5.laurent-lavill
 ** link:201402.html[February] [badge pull-right]#9#
 **********
 
+include::201403-Reflect-2.0.RC3-released.asciidoc[]
+
 include::201403-available-on-packagist.asciidoc[]
+
 include::201403-release-2.0.RC3-plantUMLplugin-classDiagram.asciidoc[]
