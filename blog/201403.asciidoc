@@ -1,0 +1,16 @@
+= Official Blog of PHP Reflect
+:description: Archives of Marth 2014
+:brand: https://github.com/llaville/php-reflect
+:rssref: http://php5.laurent-laville.org/reflect/blog/rss.xml
+:jumbotron-fullwidth:
+:icons!:
+:iconsfont: font-awesome
+:iconsfontdir: ./fonts/font-awesome
+:imagesdir: ./images
+:css-signature: blog
+
+include::201403-Reflect-2.0.RC3-released.asciidoc[]
+
+include::201403-available-on-packagist.asciidoc[]
+
+include::201403-release-2.0.RC3-plantUMLplugin-classDiagram.asciidoc[]
