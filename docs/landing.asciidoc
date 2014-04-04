@@ -58,28 +58,6 @@ including http://www.symfony.com/[Symfony] Finder, and EventDispatcher.
 Supported token parser is not enough for you ? Create your own. It is really simple!
 --
 
-== Documentation
-
-[role="partintro",cols="3,9"]
-.icon:book[size="7x"] [clearfix]#All documentation are available online and for download in several formats.#
---
-[medium]*Offline Reading*
-
-The [label label-primary]#Reflect# book is available in a selection of formats.
-You can download the documentation for offline reading.
-
-[options="header", cols="3,9", role="table table-bordered table-striped"]
-|===========================
-| Formats                             | Download links
-| icon:file-o[]      Single HTML file | link:{mandir}/en/[phpreflect-book.html.zip]
-| icon:files-o[]     Many HTML files  | link:{mandir}/en/[phpreflect-book.chunked.zip]
-| icon:file-text-o[] HTML Help file   | link:{mandir}/en/[phpreflect-book.chm.zip]
-| icon:file-text[]   PDF A4 file      | link:{mandir}/en/[phpreflect-book-a4.pdf]
-| icon:file-text[]   PDF US file      | link:{mandir}/en/[phpreflect-book-us.pdf]
-| icon:book[]        EPUB file        | link:{mandir}/en/[phpreflect-book.epub.zip]
-|===========================
---
-
 == License
 
 [role="partintro",cols="3,9"]
