@@ -94,10 +94,8 @@ class PlantUMLBuilder
             'classes' => array(),
         );
 
-        foreach($package as $element) {
-            if ($element instanceof ClassModel) {
-                $element->accept($this);
-            }
+        foreach ($package->getClasses() as $class) {
+            $class->accept($this);
         }
     }
 
@@ -144,7 +142,7 @@ class PlantUMLBuilder
         $this->packages = array();
 
         // explore elements results of data source parsed
-        foreach($reflect->getPackages() as $package) {
+        foreach ($reflect->getPackages() as $package) {
             $package->accept($this);
         }
     }
@@ -285,7 +283,7 @@ class PlantUMLBuilder
     public function visitClassModel( $class )
     {
         // ...
-        foreach($class->getMethods() as $method) {
+        foreach ($class->getMethods() as $method) {
             $method->accept($this);
         }    
     }

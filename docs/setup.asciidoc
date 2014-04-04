@@ -28,13 +28,9 @@ http://www.php.net/manual/en/book.spl.php[SPL].
 
 [medium]*Using PEAR*
 
-Once all of the dependencies have been installed, you can then install PHP [label label-primary]#Reflect#
-using the standard http://pear.php.net[PEAR] installer. Run the following commands as root (on Linux,
-OSX, and other UNIX-like operating systems) or as a user with administrator privileges on Windows.
-----
-$ pear channel-discover bartlett.laurent-laville.org
-$ pear install -o php_reflect
-----
+As PHP-Parser 1.0 is not planned to be distributed as a PEAR package
+(https://github.com/nikic/PHP-Parser/issues/97[read more]), Reflect 2.0 will not be available on
+the http://bartlett.laurent-laville.org[PEAR Bartlett Channel].
 
 [medium]*Using Composer*
 
@@ -42,14 +38,8 @@ Put a file named [label label-default]#composer.json# at the root of your projec
 ----
 {
     "require": {
-        "pear-bartlett/PHP_Reflect": "2.0.*"
-    },
-    "repositories": [
-        {
-            "type": "pear",
-            "url": "http://bartlett.laurent-laville.org"
-        }
-    ]
+        "bartlett/php-reflect": "2.0.0"
+    }
 }
 ----
 And run the following command:
@@ -64,17 +54,6 @@ wget http://bartlett.laurent-laville.org/get/phpreflect.phar
 chmod +x phpreflect.phar
 ----
 
-[medium]*Using on Linux distributions*
-
-PHP [label label-primary]#Reflect# could be installed as RPM, using the package installer.
-
-In Fedora, from official repository.
-
-In Enterprise Linux (RHEL, CentOS, Scientific Linux, Oracle Linux, ...), from
-the http://fedoraproject.org/wiki/EPEL[EPEL repository].
-----
-# yum install php-bartlett-PHP-Reflect
-----
 --
 
 == Autoloaders
@@ -98,14 +77,23 @@ Here are a minimum example, if you used a forked copy of GitHub source.
 .Symfony UniversalClassLoader
 ----
 <?php
-require_once 'Symfony/Component/ClassLoader/UniversalClassLoader.php';
+$baseDir   = dirname(__DIR__);
+$vendorDir = $baseDir . '/vendor';
+
+require_once $vendorDir . '/nikic/php-parser/lib/bootstrap.php';
+require_once $vendorDir . '/symfony/class-loader/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+require_once $vendorDir . '/phpunit/php-timer/PHP/Timer.php';
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
-    'Bartlett' => __DIR__ . DIRECTORY_SEPARATOR . 'src',
-    'Symfony'  => __DIR__ . DIRECTORY_SEPARATOR . 'vendor',
+    'Symfony\\Component\\Finder'          => $vendorDir . '/symfony/finder',
+    'Symfony\\Component\\EventDispatcher' => $vendorDir . '/symfony/event-dispatcher',
+    'Symfony\\Component\\Console'         => $vendorDir . '/symfony/console',
+    'Symfony\\Component\\ClassLoader'     => $vendorDir . '/symfony/class-loader',
+    'Bartlett\\Tests\\Reflect'            => $baseDir . '/tests',
+    'Bartlett'                            => $baseDir . '/src',
 ));
 $loader->register();
 ----

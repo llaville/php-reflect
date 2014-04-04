@@ -79,4 +79,12 @@
             10th Edition of User Manual that documents the final stable version 1.9.0
         </revremark>
     </revision>
+    <revision>
+        <revnumber>2.0.0</revnumber>
+        <date>April 4, 2014</date>
+        <authorinitials>LL</authorinitials>
+        <revremark>
+            11th Edition of User Manual that documents the final stable version 2.0.0
+        </revremark>
+    </revision>
 </revhistory>
