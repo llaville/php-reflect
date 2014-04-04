@@ -15,7 +15,7 @@
         "ext-spl": "*",
         "ext-json": "*",
         "phpunit/php-timer": ">=1.0.0",
-        "nikic/php-parser": "1.0.*@dev",
+        "nikic/php-parser": "1.0.0-beta1",
         "symfony/class-loader": ">=2.4",
         "symfony/event-dispatcher": ">=2.4",
         "symfony/finder": ">=2.4",
