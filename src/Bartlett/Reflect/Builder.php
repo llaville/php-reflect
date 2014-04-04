@@ -93,11 +93,7 @@ class Builder extends NodeVisitorAbstract
             $nodeAttributes['docComment'] = $doc->getText();
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Echo_) {
-
-            $this->parseEchoStatement($node);
-
-        } elseif ($node instanceof \PhpParser\Node\Expr\New_) {
+        if ($node instanceof \PhpParser\Node\Expr\New_) {
 
             $this->parseNewStatement($node, $nodeAttributes);
 
@@ -374,23 +370,6 @@ class Builder extends NodeVisitorAbstract
         }
     }
 
-
-    /**
-     * This method parses a echo-statement.
-     *
-     * @param object AST Node Statement
-     * @link  http://www.php.net/manual/en/language.basic-syntax.phpmode.php
-     */
-    protected function parseEchoStatement($node)
-    {
-        return ;
-        $expressions = array();
-
-        foreach ($node->exprs as $expr) {
-            $this->parseExpression($expr);
-        }
-    }
-
     /**
      * This method parses a new-statement.
      *
@@ -507,8 +486,6 @@ class Builder extends NodeVisitorAbstract
         $attributes = array('dependencies' => array($dep));
         $package = $this->buildPackage($this->namespace);
         $package->update($attributes);
-
-        //$this->parseFunctionArguments($node->args);
     }
 
     /**
@@ -538,20 +515,6 @@ class Builder extends NodeVisitorAbstract
             $params[] = new ParameterModel($param->name, $attr);
         }
         return $params;
-    }
-
-    /**
-     * @param object $exprNode
-     */
-    protected function parseExpression($exprNode)
-    {
-        if ($exprNode instanceof \PhpParser\Node\Expr\ConstFetch) {
-
-            $constant = $this->buildConstant(
-                $exprNode->name->__toString()
-            );
-            $constant->incCalls();
-        }
     }
 
     /**

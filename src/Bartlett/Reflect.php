@@ -115,7 +115,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
 
                 if (isset($event['notModified'])) {
                     // uses cached response
-                    $this->buildFromCache($event['notModified']);
+                    //$this->buildFromCache($event['notModified']);
                 } else {
                     // live request
                     try {
@@ -166,22 +166,13 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
         return $this->builder->getPackages();
     }
 
+    /**
+     * Gets list of files parsed.
+     *
+     * @return array
+     */
     public function getFiles()
     {
         return $this->files;
-    }
-
-    /**
-     * Build objects from a previous cached request
-     *
-     * @param array $cacheData List of models store in cache for the current
-     *                         file parsed
-     *
-     * @return void
-     */
-    private function buildFromCache($cacheData)
-    {
-        // TODO
-        return ;
     }
 }
