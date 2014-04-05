@@ -28,7 +28,7 @@ You can either :
 
 == Documentation
 
-The documentation for PHP Reflect 2.0 is only available online in
+The documentation for PHP Reflect 2.0 is only available online
 in http://php5.laurent-laville.org/reflect/manual/2.0/en/[English].
 
 AsciiDoc source code are available on `docs` folder of the repository.
