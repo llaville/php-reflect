@@ -143,9 +143,14 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
             'name'       => $class->getShortName(),
             'parent'     => $parent,
             'interfaces' => $interfaces,
+            'constants'  => array(),
             'properties' => array(),
             'methods'    => array(),
         );
+
+        foreach ($class->getConstants() as $constant) {
+            $constant->accept($this);
+        }
 
         foreach ($class->getProperties() as $property) {
             $property->accept($this);
@@ -202,8 +207,21 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
         );
     }
 
+    /**
+     * Explore all constants (ConstantModel) of each class.
+     *
+     * @param object $constant Reflect the current class' constant explored
+     *
+     * @return void
+     */
     public function visitConstantModel($constant)
     {
+        $visibility = '+';
+
+        $this->packages[$this->pkgid]['classes'][$this->clsid]['constants'][] = array(
+            'visibility' => $visibility,
+            'name'       => $constant->getShortName(),
+        );
     }
 
     public function visitFunctionModel($function)
@@ -298,6 +316,20 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
             $eol
         );
 
+        // prints class constants
+        foreach ($classValues['constants'] as $property) {
+            $diag .= sprintf(
+                '    %s%s%s',
+                $property['visibility'],
+                strtoupper($property['name']),
+                $eol
+            );
+        }
+        if (count($classValues['constants']) && count($classValues['properties'])) {
+            // print separator between constants and properties
+            $diag .= '    ..' . $eol;
+        }
+
         // prints class properties
         foreach ($classValues['properties'] as $property) {
             $diag .= sprintf(
@@ -306,6 +338,12 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
                 $property['name'],
                 $eol
             );
+        }
+        if (count($classValues['methods'])
+            && (count($classValues['properties']) || count($classValues['constants']))
+        ) {
+            // print separator between properties and methods or constants and methods
+            $diag .= '    --' . $eol;
         }
 
         // prints class methods
