@@ -1,0 +1,115 @@
+:css-signature: blog
+:icons!:
+:iconsfont: font-awesome
+:iconsfontdir: ./fonts/font-awesome
+:imagesdir: ./images
+:author: Laurent Laville
+:revdate: 2014-04-10
+:pubdate: Thu, 10 Apr 2014 10:32:01 +0200
+:summary: PlantUML plugin may now print all class constants in class diagram.
+
+== Enhance the plantUML plugin
+
+[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
+.icon:clock-o[size="4x"]
+--
+[role="lead"]
+{summary}
+
+I've just committed
+(https://github.com/llaville/php-reflect/commit/6dd49331c764cd93a4649ef4c30b149177efabc5[6dd4933])
+an improvement in the plantUML plugin. Class diagram display now class constants.
+
+.Run the command below
+----
+$ php bin/reflect --profile --plantUML:run --alias SFinder --class="Symfony\Component\Finder\Finder"
+----
+
+NOTE: Requires that your `reflect.json` configuration file declare the source Symfony/Finder.
+
+You will get such output.
+----
+set namespaceSeparator none
+
+namespace Symfony.Component.Finder {
+class Finder{
+    +IGNORE_VCS_FILES
+    +IGNORE_DOT_FILES
+    ..
+    -mode
+    -names
+    -notNames
+    -exclude
+    -filters
+    -depths
+    -sizes
+    -followLinks
+    -sort
+    -ignore
+    -dirs
+    -dates
+    -iterators
+    -contains
+    -notContains
+    -adapters
+    -paths
+    -notPaths
+    -ignoreUnreadableDirs
+    -vcsPatterns
+    --
+    +__construct()
+    +create()
+    +addAdapter()
+    +useBestAdapter()
+    +setAdapter()
+    +removeAdapters()
+    +getAdapters()
+    +directories()
+    +files()
+    +depth()
+    +date()
+    +name()
+    +notName()
+    +contains()
+    +notContains()
+    +path()
+    +notPath()
+    +size()
+    +exclude()
+    +ignoreDotFiles()
+    +ignoreVCS()
+    +addVCSPattern()
+    +sort()
+    +sortByName()
+    +sortByType()
+    +sortByAccessedTime()
+    +sortByChangedTime()
+    +sortByModifiedTime()
+    +filter()
+    +followLinks()
+    +ignoreUnreadableDirs()
+    +in()
+    +getIterator()
+    +append()
+    +count()
+    -sortAdapters()
+    -searchInDirectory()
+    -buildAdapter()
+    -resetAdapterSelection()
+}
+}
+interface IteratorAggregate
+IteratorAggregate <|.. Finder
+interface Countable
+Countable <|.. Finder
+----
+
+Put in in a file , e.g `classDiagram.plantuml`, and send the result to plantUML
+----
+$ java -jar plantuml.jar classDiagram.plantuml
+----
+
+That should give something like :
+
+image:symfony_finder.classdiagram.png[options="responsive"]
+--
