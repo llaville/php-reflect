@@ -7,27 +7,12 @@ $baseDir   = dirname(__DIR__);
 $vendorDir = $baseDir . '/vendor';
 
 if (\Phar::running()) {
-    require_once 'phar://phpreflect.phar/vendor/nikic/php-parser/lib/bootstrap.php';
-    require_once 'phar://phpreflect.phar/vendor/symfony/class-loader/Symfony/Component/ClassLoader/UniversalClassLoader.php';
-    require_once 'phar://phpreflect.phar/vendor/phpunit/php-timer/PHP/Timer.php';
+    $vendorDir = 'phar://phpreflect.phar/vendor';
 } else {
-    require_once $vendorDir . '/nikic/php-parser/lib/bootstrap.php';
-    require_once $vendorDir . '/symfony/class-loader/Symfony/Component/ClassLoader/UniversalClassLoader.php';
-    require_once $vendorDir . '/phpunit/php-timer/PHP/Timer.php';
+    $baseDir   = dirname(__DIR__);
+    $vendorDir = $baseDir . '/vendor';
 }
-
-use Symfony\Component\ClassLoader\UniversalClassLoader;
-
-$loader = new UniversalClassLoader();
-$loader->registerNamespaces(array(
-    'Symfony\\Component\\Finder'          => $vendorDir . '/symfony/finder',
-    'Symfony\\Component\\EventDispatcher' => $vendorDir . '/symfony/event-dispatcher',
-    'Symfony\\Component\\Console'         => $vendorDir . '/symfony/console',
-    'Symfony\\Component\\ClassLoader'     => $vendorDir . '/symfony/class-loader',
-    'Bartlett\\Tests\\Reflect'            => $baseDir . '/tests',
-    'Bartlett'                            => $baseDir . '/src',
-));
-$loader->register();
+require_once $vendorDir . '/autoload.php';
 
 if (PHP_SAPI !== 'cli') {
     return;
