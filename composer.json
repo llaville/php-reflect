@@ -32,6 +32,9 @@
             "role": "Lead"
         }
     ],
+    "bin": [
+        "bin/reflect"
+    ],
     "autoload": {
         "psr-0": {
             "Bartlett\\": "src/",
