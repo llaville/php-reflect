@@ -1,7 +1,18 @@
 #!/usr/bin/env php
 <?php
-// CLI version
-//putenv("REFLECT=/path/to/reflect.json");
+if (!getenv("REFLECT")) {
+    $files = array(
+        realpath('./reflect.json'),
+        getenv('HOME').'/.config/phpreflect.json',
+        '/etc/phpreflect.json',
+    );
+    foreach ($files as $file) {
+        if (file_exists($file)) {
+            putenv("REFLECT=$file");
+            break;
+        }
+    }
+}
 
 $baseDir   = dirname(__DIR__);
 $vendorDir = $baseDir . '/vendor';
