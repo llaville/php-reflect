@@ -56,6 +56,6 @@
     "git-version": "package_version",
     "main": "bin/reflect",
     "output": "phpreflect-@git-version@.phar",
-    "stub": true,
+    "stub": "phar-stub.php",
     "web": false
 }

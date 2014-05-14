@@ -1,11 +1,8 @@
 #!/usr/bin/env php
 <?php
-
-if (\Phar::running()) {
-    $vendorDir = 'phar://phpreflect.phar/vendor';
-} else {
-    $baseDir   = dirname(__DIR__);
-    $vendorDir = $baseDir . '/vendor';
+if (class_exists('Phar')) {
+    Phar::mapPhar('phpreflect.phar');
+    Phar::interceptFileFuncs();
 
     if (!getenv("REFLECT")) {
         $files = array(
@@ -20,14 +17,6 @@ if (\Phar::running()) {
             }
         }
     }
+    require 'phar://' . __FILE__ . '/bin/reflect';
 }
-require_once $vendorDir . '/autoload.php';
-
-if (PHP_SAPI !== 'cli') {
-    return;
-}
-
-use Bartlett\Reflect\ConsoleApplication as Application;
-
-$application = new Application();
-$application->run();
+__HALT_COMPILER();
