@@ -7,8 +7,8 @@ if (class_exists('Phar')) {
     if (!getenv("REFLECT")) {
         $files = array(
             realpath('./reflect.json'),
-            getenv('HOME').'/.config/phpreflect.json',
-            '/etc/phpreflect.json',
+            getenv('HOME').'/.config/reflect.json',
+            '/etc/reflect.json',
         );
         foreach ($files as $file) {
             if (file_exists($file)) {

@@ -145,11 +145,11 @@ class ConsoleApplication extends Application
      */
     public function getJsonConfigFile()
     {
-        $path = trim(getenv('REFLECT')) ? : './reflect.json';
+        $path = realpath(getenv('REFLECT'));
 
         if (!is_file($path)) {
             throw new \Exception(
-                'Configuration file "' . realpath($path) . '" does not exists.'
+                'Configuration file "' . $path . '" does not exists.'
             );
         }
         $json = file_get_contents($path);
