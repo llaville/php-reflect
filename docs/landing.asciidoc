@@ -67,9 +67,7 @@ Supported token parser is not enough for you ? Create your own. It is really sim
 
 The full legal text of the BSD 3-clause license is given below.
 ----
- Copyright (c) 2011-2013, Laurent Laville <pear@laurent-laville.org>
-
- Credits to Sebastian Bergmann on base concept from phpunit/PHP_Token_Stream
+ Copyright (c) 2011-2014, Laurent Laville <pear@laurent-laville.org>
 
  All rights reserved.
 
