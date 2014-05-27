@@ -37,18 +37,6 @@
         {
             "name": "Structure",
             "class": "Bartlett\\Reflect\\Analyser\\StructureAnalyser"
-        },
-        {
-            "name": "Size",
-            "class": "Bartlett\\Reflect\\Analyser\\SizeAnalyser"
-        },
-        {
-            "name": "Complexity",
-            "class": "Bartlett\\Reflect\\Analyser\\ComplexityAnalyser"
-        },
-        {
-            "name": "Dependency",
-            "class": "Bartlett\\Reflect\\Analyser\\DependencyAnalyser"
         }
     ]
 }
