@@ -32,7 +32,7 @@
         }
     ],
     "bin": [
-        "bin/reflect"
+        "bin/phpreflect"
     ],
     "autoload": {
         "psr-0": {
