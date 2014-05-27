@@ -17,6 +17,6 @@ if (class_exists('Phar')) {
             }
         }
     }
-    require 'phar://' . __FILE__ . '/bin/reflect';
+    require 'phar://' . __FILE__ . '/bin/phpreflect';
 }
 __HALT_COMPILER();
