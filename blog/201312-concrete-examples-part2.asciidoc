@@ -1,10 +1,14 @@
-:footer-fullwidth:
+:doctitle:    Reflect 2.0 preview
+:description: Examples
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2013-12-16
 :pubdate:   Mon, 16 Dec 2013 16:54:18 +0100
 :summary:   Concrete Examples - Part 2
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 [id="post-6"]
 == {summary}

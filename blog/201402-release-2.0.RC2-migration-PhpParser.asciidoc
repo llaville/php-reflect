@@ -1,10 +1,14 @@
-:footer-fullwidth:
+:doctitle:    Reflect 2.0 preview
+:description: PHP-Parser
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2014-02-13
 :pubdate:   Thu, 13 Feb 2014 17:35:16 +0100
 :summary:   PHP-Parser migration is over
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 [id="post-4"]
 == {summary}

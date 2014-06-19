@@ -1,10 +1,14 @@
-:footer-fullwidth:
+:doctitle:    Reflect 2.0 preview
+:description: PHP-Parser
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2014-02-12
 :pubdate:   Wed, 12 Feb 2014 14:40:53 +0100
 :summary:   A new parser for Reflect 2.0.0RC2
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 
 [id="post-3"]

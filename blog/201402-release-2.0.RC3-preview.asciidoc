@@ -1,10 +1,14 @@
-:footer-fullwidth:
+:doctitle:    Reflect 2.0 preview
+:description: Analysers
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2014-02-21
 :pubdate:   Fri, 21 Feb 2014 11:41:37 +0100
 :summary:   Analyser:run command with a structure report
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 
 [id="post-8"]

@@ -1,10 +1,14 @@
-:footer-fullwidth:
+:doctitle:    Official Blog
+:description: 
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2013-11-29
 :pubdate:   Fri, 29 Nov 2013 11:36:05 +0100
 :summary:   A blog official launch
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 
 [id="post-1"]

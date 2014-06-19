@@ -1,10 +1,14 @@
-:footer-fullwidth:
+:doctitle:    Reflect 2.0 preview
+:description: API
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2013-12-04
 :pubdate:   Wed, 04 Dec 2013 10:32:51 +0100
 :summary:   Handle Results
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 [id="post-3"]
 == {summary}

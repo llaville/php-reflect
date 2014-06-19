@@ -1,10 +1,14 @@
-:footer-fullwidth:
+:doctitle:    Reflect 2.0 preview
+:description: Data source providers
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2013-12-05
 :pubdate:   Thu, 05 Dec 2013 19:42:08 +0100
 :summary:   Data Source Provider
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 [id="post-4"]
 == {summary}

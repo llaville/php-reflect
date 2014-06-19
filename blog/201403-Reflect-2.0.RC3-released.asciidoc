@@ -1,10 +1,14 @@
-:footer-fullwidth:
+:doctitle:    Reflect 2.0 preview
+:description: Third milestone
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2014-03-24
 :pubdate:   Mon, 24 Mar 2014 20:32:16 +0100
 :summary:   Reflect 2.0.0RC3 has just been released.
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 [id="post-3"]
 == {summary}

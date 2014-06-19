@@ -1,10 +1,14 @@
-:footer-fullwidth:
+:doctitle:    Reflect 2.0 preview
+:description: Command-Line
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2014-02-03
 :pubdate:   Mon, 03 Feb 2014 14:14:48 +0100
 :summary:   Preview of the Command-Line part of Reflect 2.0.0RC2
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 
 [id="post-2"]

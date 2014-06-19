@@ -1,11 +1,14 @@
-:footer-fullwidth:
-:footer-fullwidth:
+:doctitle:    Reflect 2.0 preview
+:description: Second Milestone
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2014-02-18
 :pubdate:   Tue, 18 Feb 2014 14:13:31 +0100
 :summary:   Reflect 2.0.0RC2 has just been released.
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 [id="post-5"]
 == {summary}

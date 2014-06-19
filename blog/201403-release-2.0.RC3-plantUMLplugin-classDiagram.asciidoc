@@ -1,10 +1,14 @@
-:footer-fullwidth:
+:doctitle:    Reflect 2.0 preview
+:description: plantUML plugin
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2014-03-05
 :pubdate:   Wed, 05 Mar 2014 20:17:57 +0100
 :summary:   Enhance the plantUML plugin
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 [id="post-1"]
 == {summary}

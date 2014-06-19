@@ -1,10 +1,14 @@
-:footer-fullwidth:
+:doctitle:    Reflect 2.0 preview
+:description: 
 :iconsfont: font-awesome
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2014-03-14
 :pubdate:   Fri, 14 Mar 2014 23:57:28 +0100
 :summary:   Reflect has just been published on Packagist.
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
 
 [id="post-2"]
 == {summary}
