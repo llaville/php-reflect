@@ -1,20 +1,20 @@
-:css-signature: blog
-:icons!:
+:footer-fullwidth:
 :iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
-:author: Laurent Laville
-:revdate: 2013-12-03
-:pubdate: Tue, 03 Dec 2013 09:19:27 +0100
-:summary: Compare both Reflection API between PHP5 and Reflect.
+:author:    Laurent Laville
+:revdate:   2013-12-03
+:pubdate:   Tue, 03 Dec 2013 09:19:27 +0100
+:summary:   Zoom on Reflection API
 
-== Zoom on Reflection API
+[id="post-2"]
+== {summary}
 
-[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
-.icon:search-plus[size="4x"]
---
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/search-plus.png[alt="search",icon="search-plus",size="4x"]
+
 [role="lead"]
-{summary}
+Compare both Reflection API between PHP5 and Reflect.
 
 A big improvement was added to API on its way to exploit results.
 
@@ -24,4 +24,4 @@ A big improvement was added to API on its way to exploit results.
 Look at 
 http://php5.laurent-laville.org/reflect/manual/2.0/en/features-compared.html[Reflection API differences]
 between PHP5 and Reflect 2. 
---
+____

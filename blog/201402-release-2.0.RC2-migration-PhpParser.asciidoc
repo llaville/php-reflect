@@ -1,20 +1,20 @@
-:css-signature: blog
-:icons!:
+:footer-fullwidth:
 :iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
-:author: Laurent Laville
-:revdate: 2014-02-13
-:pubdate: Thu, 13 Feb 2014 17:35:16 +0100
-:summary: Reflect 2.0.0RC2 has adopted PHP-Parser 1.0-dev
+:author:    Laurent Laville
+:revdate:   2014-02-13
+:pubdate:   Thu, 13 Feb 2014 17:35:16 +0100
+:summary:   PHP-Parser migration is over
 
-== PHP-Parser migration is over
+[id="post-4"]
+== {summary}
 
-[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
-.icon:clock-o[size="4x"]
---
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/clock-o.png[alt="future",icon="clock-o",size="4x"]
+
 [role="lead"]
-{summary}
+Reflect 2.0.0RC2 has adopted PHP-Parser 1.0-dev
 
 I've just https://github.com/llaville/php-reflect/compare/78842e9370...61947829bd[published] 
 the migration code that adopt PHP-Parser 1.0-dev  
@@ -46,4 +46,4 @@ I will continue to test this base source code (that need again some minor fixes,
 with well known packages : Symfony, Zend Framework, and more ...
 
 Be ready monday to test it by yourself. All feedback are welcome !   
---
+____

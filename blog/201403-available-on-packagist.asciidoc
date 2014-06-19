@@ -1,20 +1,17 @@
-:css-signature: blog
-:icons!:
+:footer-fullwidth:
 :iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
-:author: Laurent Laville
-:revdate: 2014-03-14
-:pubdate: Fri, 14 Mar 2014 23:57:28 +0100
-:summary: Reflect has just been published on Packagist.
+:author:    Laurent Laville
+:revdate:   2014-03-14
+:pubdate:   Fri, 14 Mar 2014 23:57:28 +0100
+:summary:   Reflect has just been published on Packagist.
 
-== Now available on Packagist
+[id="post-2"]
+== {summary}
 
-[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
-.icon:rocket[size="4x"]
---
-[role="lead"]
-{summary}
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/rocket.png[alt="release",icon="rocket",size="4x"]
 
 If you want to use Reflect for your own project, you can add a dependency 
 in your `composer.json` file as follow:
@@ -34,4 +31,4 @@ in your `composer.json` file as follow:
 ----
 
 Visit Reflect on Packagist at https://packagist.org/packages/bartlett/php-reflect 
---
+____

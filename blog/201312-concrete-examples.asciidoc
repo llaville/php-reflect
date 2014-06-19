@@ -1,22 +1,22 @@
-:css-signature: blog
-:icons!:
+:footer-fullwidth:
 :iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
-:author: Laurent Laville
-:revdate: 2013-12-02
-:pubdate: Mon, 02 Dec 2013 12:56:29 +0100
-:summary: Discover how Reflect may be use in real condition.
+:author:    Laurent Laville
+:revdate:   2013-12-02
+:pubdate:   Mon, 02 Dec 2013 12:56:29 +0100
+:summary:   Concrete Examples
 
-== Concrete Examples
+[id="post-1"]
+== {summary}
 
-[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
-.icon:code[size="4x"]
---
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/code.png[alt="code",icon="code",size="4x"]
+
 [role="lead"]
-{summary}
+Discover how Reflect may be use in real condition.
 
 Here is the series of 
 http://php5.laurent-laville.org/reflect/manual/2.0/en/concrete-examples.html[concrete examples].
 We will learn with a first example how to create PlantUML package and class diagrams.
---
+____

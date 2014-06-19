@@ -1,20 +1,18 @@
-:css-signature: blog
-:icons!:
+:footer-fullwidth:
+:footer-fullwidth:
 :iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
-:author: Laurent Laville
-:revdate: 2014-02-18
-:pubdate: Tue, 18 Feb 2014 14:13:31 +0100
-:summary: Reflect 2.0.0RC2 has just been released.
+:author:    Laurent Laville
+:revdate:   2014-02-18
+:pubdate:   Tue, 18 Feb 2014 14:13:31 +0100
+:summary:   Reflect 2.0.0RC2 has just been released.
 
-== Reflect 2.0.0RC2 released
+[id="post-5"]
+== {summary}
 
-[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
-.icon:rocket[size="4x"]
---
-[role="lead"]
-{summary}
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/rocket.png[alt="release",icon="rocket",size="4x"]
 
 After many tries to have the more evolutive parser as possible, I've finally 
 adopted https://github.com/nikic/PHP-Parser[PHP-Parser 1.0-dev] 5 days ago.
@@ -85,5 +83,4 @@ http://php5.laurent-laville.org/reflect/manual/2.0/en/make-uml-diagrams.html[mak
 ************************************************
 
 link:http://bartlett.laurent-laville.org/get/phpreflect.phar[caption="Download the PHAR version",role="primary",icon="glyphicon-download-alt"]
-
---
+____

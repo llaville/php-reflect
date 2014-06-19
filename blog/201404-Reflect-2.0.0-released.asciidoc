@@ -1,20 +1,17 @@
-:css-signature: blog
-:icons!:
+:footer-fullwidth:
 :iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
-:author: Laurent Laville
-:revdate: 2014-04-04
-:pubdate: Fri, 04 Apr 2014 22:52:31 +0200
-:summary: Reflect 2.0.0 has just been released.
+:author:    Laurent Laville
+:revdate:   2014-04-04
+:pubdate:   Fri, 04 Apr 2014 22:52:31 +0200
+:summary:   Reflect 2.0.0 has just been released.
 
-== Reflect 2.0.0 released
+[id="post-1"]
+== {summary}
 
-[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
-.icon:rocket[size="4x"]
---
-[role="lead"]
-{summary}
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/rocket.png[alt="release",icon="rocket",size="4x"]
 
 After three releases candidate, here is the final stable version.
 
@@ -35,4 +32,4 @@ link:http://bartlett.laurent-laville.org/get/phpreflect.phar[caption="Download t
 
 Alternatively, you may use http://getcomposer.org/[Composer] and install it 
 via https://packagist.org/packages/bartlett/php-reflect/[Packagist].
---
+____

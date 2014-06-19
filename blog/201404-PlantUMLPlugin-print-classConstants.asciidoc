@@ -1,20 +1,17 @@
-:css-signature: blog
-:icons!:
+:footer-fullwidth:
 :iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
-:author: Laurent Laville
-:revdate: 2014-04-10
-:pubdate: Thu, 10 Apr 2014 10:32:01 +0200
-:summary: PlantUML plugin may now print all class constants in class diagram.
+:author:    Laurent Laville
+:revdate:   2014-04-10
+:pubdate:   Thu, 10 Apr 2014 10:32:01 +0200
+:summary:   Enhance the plantUML plugin.
 
-== Enhance the plantUML plugin
+[id="post-2"]
+== {summary}
 
-[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
-.icon:clock-o[size="4x"]
---
-[role="lead"]
-{summary}
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/clock-o.png[alt="future",icon="clock-o",size="4x"]
 
 I've just committed
 (https://github.com/llaville/php-reflect/commit/6dd49331c764cd93a4649ef4c30b149177efabc5[6dd4933])
@@ -111,5 +108,5 @@ $ java -jar plantuml.jar classDiagram.plantuml
 
 That should give something like :
 
-image:symfony_finder.classdiagram.png[options="responsive"]
---
+image::symfony_finder.classdiagram.png[options="responsive"]
+____

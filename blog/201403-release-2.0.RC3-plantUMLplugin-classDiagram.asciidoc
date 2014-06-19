@@ -1,32 +1,28 @@
-:css-signature: blog
-:icons!:
+:footer-fullwidth:
 :iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
-:author: Laurent Laville
-:revdate: 2014-03-05
-:pubdate: Wed, 05 Mar 2014 20:17:57 +0100
-:summary: plantUML:run command display namespaces in class diagram
+:author:    Laurent Laville
+:revdate:   2014-03-05
+:pubdate:   Wed, 05 Mar 2014 20:17:57 +0100
+:summary:   Enhance the plantUML plugin
 
-== Enhance the plantUML plugin
+[id="post-1"]
+== {summary}
 
-[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
-.icon:clock-o[size="4x"]
---
-[role="lead"]
-{summary}
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/clock-o.png[alt="future",icon="clock-o",size="4x"]
 
 I've just committed 
 (https://github.com/llaville/php-reflect/commit/f6947826ab8ca31b72d492cf1e8f0ba3d7e4802a[f694782]) 
 an improvement in the plantUML plugin. Class diagram display now namespaces.
-
 Compare both versions :
 
-Previously::
-image:bartlett_reflect.classdiagram.png[options="responsive"]
+.Previously
+image::bartlett_reflect.classdiagram.png[options="responsive"]
 
-Now::
-image:bartlett_reflect.classdiagramV2.png[options="responsive"]
+.Now
+image::bartlett_reflect.classdiagramV2.png[options="responsive"]
 
 See explains in previous post
 http://php5.laurent-laville.org/reflect/blog/201402-release-2.0.RC3-plantUMLplugin.html[2014-02-23]
@@ -68,5 +64,4 @@ Put in in a file , e.g `classDiagram.plantuml`, and send the result to plantUML
 ----
 $ java -jar plantuml.jar classDiagram.plantuml
 ----
-
---
+____

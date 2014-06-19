@@ -1,20 +1,20 @@
-:css-signature: blog
-:icons!:
+:footer-fullwidth:
 :iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
-:author: Laurent Laville
-:revdate: 2013-12-16
-:pubdate: Mon, 16 Dec 2013 16:54:18 +0100
-:summary: Discover how Reflect may measuring the size of a PHP project.
+:author:    Laurent Laville
+:revdate:   2013-12-16
+:pubdate:   Mon, 16 Dec 2013 16:54:18 +0100
+:summary:   Concrete Examples - Part 2
 
-== Concrete Examples - Part 2
+[id="post-6"]
+== {summary}
 
-[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
-.icon:code[size="4x"]
---
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/code.png[alt="code",icon="code",size="4x"]
+
 [role="lead"]
-{summary}
+Discover how Reflect may measuring the size of a PHP project.
 
 By continuing the series of
 http://php5.laurent-laville.org/reflect/manual/2.0/en/concrete-examples.html[concrete examples].
@@ -24,4 +24,4 @@ It's not a full solution as Sebastian Bergmann did with https://github.com/sebas
 because example display only the structure report.
 
 But we will see later how customize and extend Reflect to match our needs.
---
+____

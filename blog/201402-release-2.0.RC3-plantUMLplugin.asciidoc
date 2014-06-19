@@ -1,32 +1,32 @@
-:css-signature: blog
-:icons!:
+:footer-fullwidth:
 :iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
-:author: Laurent Laville
-:revdate: 2014-02-23
-:pubdate: Sun, 23 Feb 2014 20:52:14 +0100
-:summary: plantUML:run command to print UML diagrams
+:author:    Laurent Laville
+:revdate:   2014-02-23
+:pubdate:   Sun, 23 Feb 2014 20:52:14 +0100
+:summary:   plantUML:run command to print UML diagrams
 
-== Future release 2.0.0RC3 adopt another new command
+[id="post-9"]
+== {summary}
 
-[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
-.icon:clock-o[size="4x"]
---
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/clock-o.png[alt="future",icon="clock-o",size="4x"]
+
 [role="lead"]
-{summary}
+Future release 2.0.0RC3 adopt another new command
 
-After conversion of concrete example 
+After conversion of concrete example
 http://php5.laurent-laville.org/reflect/manual/2.0/en/measuring-size-project.html["Measuring the size of a PHP project"]
 to a new command (see http://php5.laurent-laville.org/reflect/blog/201402-release-2.0.RC3-preview.html[previous post]),
 I've decided to include in future release 2.0.0RC3 a new command *plantUML:run*
 (commit https://github.com/llaville/php-reflect/commit/566bf462e4c63321d47cb787192a4abc699f2e16[566bf46]).
 
-This plugin will replace the concrete example  
+This plugin will replace the concrete example
 http://php5.laurent-laville.org/reflect/manual/2.0/en/make-uml-diagrams.html["Make UML diagrams"].
- 
+
 With this plugin you can make package UML diagram (http://plantuml.sourceforge.net/classes.html#Using), e.g :
-with such simple `reflect.json` config file. 
+with such simple `reflect.json` config file.
 ----
 {
     "source-providers": [
@@ -43,12 +43,14 @@ with such simple `reflect.json` config file.
 }
 ----
 
-.Example 1: Run the command below
+.Run the command below
+====
 ----
 $ php bin/reflect --profile --plantUML:run --alias Reflect2RC2 --package="Bartlett\Reflect\Model"
 ----
+====
 
-You will get such output. 
+You will get such output.
 ----
 package "Bartlett\\Reflect\\Model" {
 abstract AbstractFunctionModel
@@ -65,18 +67,21 @@ class PropertyModel
 }
 ----
 
-Put in in a file , e.g `packageDiagram.plantuml`, and send the result to plantUML 
+Put in in a file , e.g `packageDiagram.plantuml`, and send the result to plantUML
 ----
 $ java -jar plantuml.jar packageDiagram.plantuml
 ----
 and you will get a PNG image as this one :
-image:bartlett_reflect_model.packagediagram.png[options="responsive"]
+
+image::bartlett_reflect_model.packagediagram.png[options="responsive"]
 
 
-.Example 2: Run the command below
+.Run the command below
+====
 ----
 $ php bin/reflect --profile --plantUML:run --alias Reflect2RC2 --class="Bartlett\Reflect"
 ----
+====
 
 You will get such output.
 ----
@@ -96,11 +101,11 @@ interface ManagerInterface {
 ManagerInterface <|.. Reflect
 ----
 
-Put in in a file , e.g `classDiagram.plantuml`, and send the result to plantUML 
+Put in in a file , e.g `classDiagram.plantuml`, and send the result to plantUML
 ----
 $ java -jar plantuml.jar classDiagram.plantuml
 ----
 and you will get a PNG image as this one :
-image:bartlett_reflect.classdiagram.png[options="responsive"]
 
---
+image::bartlett_reflect.classdiagram.png[options="responsive"]
+____

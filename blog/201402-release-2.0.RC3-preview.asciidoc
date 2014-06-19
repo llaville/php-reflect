@@ -1,20 +1,21 @@
-:css-signature: blog
-:icons!:
+:footer-fullwidth:
 :iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
 :imagesdir: ./images
-:author: Laurent Laville
-:revdate: 2014-02-21
-:pubdate: Fri, 21 Feb 2014 11:41:37 +0100
-:summary: Analyser:run command with a structure report
+:author:    Laurent Laville
+:revdate:   2014-02-21
+:pubdate:   Fri, 21 Feb 2014 11:41:37 +0100
+:summary:   Analyser:run command with a structure report
 
-== Future release 2.0.0RC3 will adopt a new command
 
-[role="blog",cols="3,9",halign="right",citetitle="Published by {author} on {revdate}"]
-.icon:clock-o[size="4x"]
---
+[id="post-8"]
+== {summary}
+
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/clock-o.png[alt="future",icon="clock-o",size="4x"]
+
 [role="lead"]
-{summary}
+Future release 2.0.0RC3 will adopt a new command
 
 Current version 2.0.0RC2 is a bit useless in CLI mode. I've decided to include in next
 Release Candidate
@@ -82,5 +83,4 @@ Structure
 
 Time: 4.05 seconds, Memory: 15.00Mb
 ----
-
---
+____

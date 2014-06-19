@@ -1,22 +1,43 @@
 = Official Blog of PHP Reflect
 :description: Archives of December 2013
-:brand: https://github.com/llaville/php-reflect
-:rssref: http://php5.laurent-laville.org/reflect/blog/rss.xml
+:brand:       https://github.com/llaville/php-reflect
+:rssref:      http://php5.laurent-laville.org/reflect/blog/rss.xml
+:jumbotron:
 :jumbotron-fullwidth:
+:footer-fullwidth:
 :icons!:
-:iconsfont: font-awesome
-:iconsfontdir: ./fonts/font-awesome
-:imagesdir: ./images
-:css-signature: blog
+:iconsfont:   font-awesome
+:imagesdir:   ./images
 
+
+[role="col-md-3"]
+====
+[panel,primary]
+.{toc-title}
+--
+* xref:post-6[Concrete Examples - Part 2]
+* xref:post-5[Reflect 2.0.0RC1 has been released]
+* xref:post-4[Data Source Provider]
+* xref:post-3[Handle Results]
+* xref:post-2[Zoom on Reflection API]
+* xref:post-1[Concrete Examples]
+--
+====
+
+[role="col-md-9"]
 include::201312-concrete-examples-part2.asciidoc[]
 
+[role="col-md-9 col-md-offset-3"]
 include::201312-Reflect-2.0.0RC1-released.asciidoc[]
 
+[role="col-md-9 col-md-offset-3"]
 include::201312-source-provider.asciidoc[]
 
+[role="col-md-9 col-md-offset-3"]
 include::201312-handle-results.asciidoc[]
 
+[role="col-md-9 col-md-offset-3"]
 include::201312-reflection-api-compare.asciidoc[]
 
+[role="col-md-9 col-md-offset-3"]
 include::201312-concrete-examples.asciidoc[]
