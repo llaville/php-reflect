@@ -1,11 +1,13 @@
 :author:      Laurent Laville
 :keywords:    PHP, reverse-engineer, reflexion
 :mandir:      http://php5.laurent-laville.org/reflect/manual/current
-:brand:       PHP Reflect {revnumber}
-:brandref:    https://github.com/llaville/php-reflect/tree/v2
+:brand:       PHP Reflect
+:brandref:    https://github.com/llaville/php-reflect
 :sidebar:     right
 :footer:
 :navinfo1:
-:iconsfont:    font-awesome
-:iconsfontdir: ./fonts/font-awesome
-:imagesdir:    ./images
+:iconsfont:   font-awesome
+:imagesdir:   ./images
+:idprefix:    _
+:gitbranch:   v2
+:rawbaseurl:  https://raw.githubusercontent.com/llaville/php-reflect/{gitbranch}
