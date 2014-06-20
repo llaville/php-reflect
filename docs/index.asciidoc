@@ -44,11 +44,11 @@ endif::[]
 It will become stable on July 4, 2014.
 
 ifdef::basebackend-bootstrap[]
-link:./manual/2.0/en/getting-started.html["Learn more",role="primary",options="block"]
+link:./manual/2.1/en/getting-started.html["Learn more",role="primary",options="block"]
 endif::[]
 
 ifndef::basebackend-bootstrap[]
-link:./manual/2.0/en/getting-started.html[Learn more]
+link:./manual/2.1/en/getting-started.html[Learn more]
 endif::[]
 --
 ====
