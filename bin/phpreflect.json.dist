@@ -1,0 +1,20 @@
+{
+    "source-providers": [
+        {
+            "in": ". as current",
+            "name": "/\\.(php|inc|phtml)$/"
+        }
+    ],
+    "plugins": [
+        {
+            "name": "Analyser",
+            "class": "Bartlett\\Reflect\\Plugin\\Analyser\\AnalyserPlugin"
+        }
+    ],
+    "analysers" : [
+        {
+            "name": "Structure",
+            "class": "Bartlett\\Reflect\\Analyser\\StructureAnalyser"
+        }
+    ]
+}
