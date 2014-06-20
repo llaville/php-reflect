@@ -1,0 +1,17 @@
+= Developer Guide
+:description: All you have to know about Reflect v2 architecture. 
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+:icons!:
+:iconsfont:   font-awesome
+:jumbotron:
+:jumbotron-fullwidth:
+:footer:
+:footer-fullwidth:
+
+[alert,danger]
+--
+.Section Pending !
+
+[big]#image:icons/font-awesome/frown-o.png[alt="Nothing Here",icon="frown-o",size="4x"] This guide is not yet available.#
+--

@@ -1,0 +1,17 @@
+= Migration Guide
+:description: Upgrade from an old version, and continue to keep your environment running. 
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+:icons!:
+:iconsfont:   font-awesome
+:jumbotron:
+:jumbotron-fullwidth:
+:footer:
+:footer-fullwidth:
+
+[alert,danger]
+--
+.Section Pending !
+
+[big]#image:icons/font-awesome/frown-o.png[alt="Nothing Here",icon="frown-o",size="4x"] This guide is not yet available.#
+--
