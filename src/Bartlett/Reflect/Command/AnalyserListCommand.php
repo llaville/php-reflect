@@ -29,6 +29,18 @@ class AnalyserListCommand extends Command
             );
         }
 
+        if (!isset($var['analysers'])) {
+            $fmt = $this->getApplication()->getHelperSet()->get('formatter');
+
+            $output->writeln(
+                $fmt->formatBlock(
+                    array('[Json Configuration]', 'No analysers detected.'),
+                    'error'
+                )
+            );
+            return;
+        }
+
         if (is_array($var['analysers'])) {
             $analysers = $var['analysers'];
         } else {
