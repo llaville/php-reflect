@@ -139,3 +139,29 @@ endif::[]
 ifndef::basebackend-bootstrap[]
 {brandref}[View the GitHub Project]
 endif::[]
+
+== License
+
+[role="col-md-6"]
+====
+[panel,success]
+--
+[bg-success]*Documentation*
+
+All documentation provided in +docs+ folder are
+in http://asciidoc.org[AsciiDoc] format (files with extension +.asciidoc+).
+They are built with a Python AsciiDoc backend that convert output to an html http:/getbootstrap.com[Bootstrap] renders.
+http://laurent-laville.org/asciidoc/bootstrap/manual/current/en/[AsciiDoc-Bootstrap]
+is released under the http://www.apache.org/licenses/LICENSE-2.0.html[Apache 2] license.
+--
+====
+
+[role="col-md-6"]
+====
+[panel,success]
+--
+[bg-success]*Code*
+
+All source code is licensed under http://opensource.org/licenses/BSD-3-Clause[BSD 3-Clause].
+--
+====
