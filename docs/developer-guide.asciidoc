@@ -9,9 +9,49 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
-[alert,danger]
---
-.Section Pending !
 
-[big]#image:icons/font-awesome/frown-o.png[alt="Nothing Here",icon="frown-o",size="4x"] This guide is not yet available.#
+[role="col-sm-3 hidden-xs"]
+image:icons/font-awesome/code.png[alt="API",icon="code",iconsfont="font-awesome",size="9x"]
+
+[role="col-sm-9"]
+====
+[panel,info]
+.API
 --
+[label label-primary]#Reflect# comes with a complete reflection API, link:api-compared.html[almost equivalent] to
+http://www.php.net/manual/en/book.reflection.php[PHP5 reflection].
+
+link:developer-guide&#45;&#45;api.html["Application Programming Interface",role="primary",icon="glyphicon-book",options="block"]
+--
+====
+
+[role="col-sm-3 hidden-xs"]
+image:icons/font-awesome/puzzle-piece.png[alt="Plugins",icon="puzzle-piece",iconsfont="font-awesome",size="9x"]
+
+[role="col-sm-9"]
+====
+[panel,info]
+.Plugins
+--
+[label label-primary]#Reflect# uses a Symfony http://symfony.com/doc/current/components/event_dispatcher/index.html[EventDispatcher] Component
+to allow you to easily extend the features list. 
+
+link:developer-guide&#45;&#45;plugins.html["Plugins",role="primary",icon="glyphicon-book",options="block"]
+--
+====
+
+[role="col-sm-3 hidden-xs"]
+image:icons/font-awesome/search-plus.png[alt="Analysers",icon="search-plus",iconsfont="font-awesome",size="9x"]
+
+[role="col-sm-9"]
+====
+[panel,info]
+.Analysers
+--
+[label label-primary]#Reflect# uses analysers that implements the 
+http://en.wikipedia.org/wiki/Visitor_pattern[Visitor] pattern in a simple and effective way 
+to make the render of your results truly customizable.
+
+link:developer-guide&#45;&#45;analysers.html["Analysers",role="primary",icon="glyphicon-book",options="block"]
+--
+====

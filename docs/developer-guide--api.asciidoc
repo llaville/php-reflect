@@ -1,0 +1,48 @@
+= API
+:description: Application Programming Interface
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+:icons!:
+:iconsfont:   font-awesome
+:jumbotron:
+:jumbotron-fullwidth:
+:footer:
+:footer-fullwidth:
+
+
+[role="col-md-3"]
+====
+[panel,primary]
+.{toc-title}
+--
+* xref:_source_provider[Source Provider]
+* xref:_handle_results[Handle Results]
+** xref:_study_case[Study Case]
+** xref:_enumerate_each_elements[Enumerate each elements]
+*** xref:_packages_or_namespaces[Packages or Namespaces]
+*** xref:_classes[Classes]
+*** xref:_interfaces[Interfaces]
+*** xref:_traits[Traits]
+*** xref:_functions[Functions]
+*** xref:_constants[Constants]
+*** xref:_includes[Includes]
+** xref:_exploit_each_elements[Exploit each elements]
+*** xref:_packages_or_namespaces_2[Packages or Namespaces]
+*** xref:_classes_2[Classes]
+*** xref:_interfaces_2[Interfaces]
+*** xref:_traits_2[Traits]
+*** xref:_functions_2[Functions]
+*** xref:_constants_2[Constants]
+*** xref:_includes_2[Includes]
+--
+====
+
+:leveloffset: 1
+
+[role="col-md-9"]
+include::developer-guide--source-provider.asciidoc[]
+
+[role="col-md-9 col-md-offset-3"]
+include::developer-guide--handle-results.asciidoc[]
+
+:leveloffset: 0

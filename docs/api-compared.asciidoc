@@ -1,0 +1,717 @@
+= API compared
+:description: Compare both Reflection API between PHP5 and Reflect
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+:icons!:
+:iconsfont:   font-awesome
+:jumbotron:
+:jumbotron-fullwidth:
+:footer:
+:footer-fullwidth:
+
+
+[role="col-md-3"]
+====
+[panel,primary]
+.{toc-title}
+--
+* xref:_class_reflection[Class Reflection]
+* xref:_constant_reflection[Constant Reflection]
+* xref:_function_reflection[Function Reflection]
+* xref:_function_abstract_reflection[Function Abstract Reflection]
+* xref:_method_reflection[Method Reflection]
+* xref:_parameter_reflection[Parameter Reflection]
+* xref:_property_reflection[Property Reflection]
+--
+====
+
+[role="col-md-9"]
+
+== Class Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about a class*
++
+http://www.php.net/manual/en/class.reflectionclass.php[]
++
+`Bartlett\Reflect\Model\ClassModel`
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__construct* - Constructs a ReflectionClass
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__toString* - Returns the string representation of the ReflectionClass object
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *export* - Exports a class
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getConstant* - Gets defined constant
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getConstants* - Gets constants
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getConstructor* - Gets the constructor of the class
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getDefaultProperties* - Gets default properties
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getDocComment* - Gets doc comments
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getEndLine* - Gets end line
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getExtension* - Gets a ReflectionExtension object for the extension which defined the class
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getExtensionName* - Gets the name of the extension which defined the class
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getFileName* - Gets the filename of the file in which the class has been defined
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getInterfaceNames* - Gets the interface names
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getInterfaces* -  Gets the interfaces
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getMethod* - Gets a ReflectionMethod for a class method
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getMethods* - Gets an array of methods
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getModifiers* - Gets modifiers
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getName* - Gets class name
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getNamespaceName* - Gets namespace name
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getParentClass* - Gets parent class
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getProperties* - Gets properties
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getProperty* - Gets a ReflectionProperty for a class's property
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getShortName* - Gets short name
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getStartLine* - Gets starting line number
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getStaticProperties* - Gets static properties
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getStaticPropertyValue* - Gets static property value
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getTraitAliases* - Returns an array of trait aliases
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getTraitNames* - Returns an array of names of traits used by this class
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getTraits* - Returns an array of traits used by this class
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *hasConstant* - Checks if constant is defined
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *hasMethod* - Checks if method is defined
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *hasProperty* - Checks if property is defined
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *implementsInterface* - Implements interface
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *inNamespace* - Checks if class in namespace
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isAbstract* - Checks if class is abstract
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isCloneable* - Returns whether this class is cloneable
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isFinal* - Checks if class is final
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *isInstance* - Checks class for instance
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isInstantiable* - Checks if the class is instantiable
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isInterface* - Checks if the class is an interface
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *isInternal* - Checks if class is defined internally by an extension, or the core
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isIterateable* - Checks if iterateable
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isSubclassOf* - Checks if a subclass
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isTrait* - Returns whether this is a trait
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isUserDefined* -  Checks if user defined
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *newInstance* - Creates a new class instance from given arguments
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *newInstanceArgs* - Creates a new class instance from given arguments
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *newInstanceWithoutConstructor* -  Creates a new class instance without invoking the constructor
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *setStaticPropertyValue* - Sets static property value
+
+|===========================
+
+[role="col-md-9 col-md-offset-3"]
+
+== Constant Reflection
+
+WARNING: Does not exist in PHP5 Reflection API
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about a constant*
++
+`Bartlett\Reflect\Model\ConstantModel`
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__construct* - Constructs a Reflection Constant
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__toString* - Returns the string representation of the Reflection Constant object
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getDocComment* - Gets doc comments
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getExtension* - Gets a ReflectionExtension object for the extension which defined the constant
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getExtensionName* - Gets the name of the extension which defined the constant
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getFileName* - Gets the filename of the file in which the constant has been defined
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getName* - Gets constant name
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getNamespaceName* - Gets namespace name
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getShortName* - Gets short name
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getValue* - Gets value
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *inNamespace* - Checks if in namespace
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isInternal* - Checks if constant is defined internally by an extension, or the core
+
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isMagic* - Checks whether it's a magic constant
+
+|===========================
+
+[role="col-md-9 col-md-offset-3"]
+
+== Function Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about a function*
++
+http://www.php.net/manual/en/class.reflectionfunction.php[]
++
+`Bartlett\Reflect\Model\FunctionModel`
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__construct* - Constructs a ReflectionFunction
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__toString* - Returns the string representation of the ReflectionFunction object
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *export* - Exports a function
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getClosure* - Returns a dynamically created closure for the function
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *invoke* - Invokes function
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *invokeArgs* - Invokes function with args
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *isDisabled* - Checks if function is disabled
+
+|===========================
+
+[role="col-md-9 col-md-offset-3"]
+
+== Function Abstract Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *A parent class to ReflectionFunction*
++
+http://www.php.net/manual/en/class.reflectionfunctionabstract.php[]
++
+`Bartlett\Reflect\Model\AbstractFunctionModel`
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *__clone* - Clones function
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getClosureScopeClass* - Returns the scope associated to the closure
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getClosureThis* - Returns this pointer bound to closure
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getDocComment* - Gets doc comments
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getEndLine* - Gets end line
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getExtension* - Gets a ReflectionExtension object for the extension which defined the function
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getExtensionName* - Gets the name of the extension which defined the function
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getFileName* - Gets the filename of the file in which the function has been defined
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getName* - Gets function name
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getNamespaceName* - Gets namespace name
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getNumberOfParameters* -  Gets number of parameters
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getNumberOfRequiredParameters* - Gets number of required parameters
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getParameters* -  Gets parameters
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getShortName* - Gets function short name
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getStartLine* - Gets starting line number
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getStaticVariables* - Gets static variables
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *inNamespace* - Checks if function in namespace
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isClosure* - Checks if closure
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *isDeprecated* - Checks if function deprecated
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *isGenerator* - Returns whether this function is a generator
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isInternal* - Checks if function is defined internally by an extension, or the core
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *isUserDefined* - Checks if user defined
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *returnsReference* - Checks if returns reference
+
+|===========================
+
+[role="col-md-9 col-md-offset-3"]
+
+== Method Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about a method*
++
+http://www.php.net/manual/en/class.reflectionmethod.php[]
++
+`Bartlett\Reflect\Model\MethodModel`
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__construct* - Constructs a ReflectionMethod
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__toString* - Returns the string representation of the ReflectionMethod object
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *export* - Exports a method
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getClosure* - Returns a dynamically created closure for the method
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getDeclaringClass* -  Gets declaring class for the reflected method
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getModifiers* - Gets the method modifiers
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getPrototype* -  Gets the method prototype
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *invoke* - Invokes method
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *invokeArgs* - Invokes method with args
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isAbstract* - Checks if method is abstract
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isConstructor* - Checks if method is a constructor
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isDestructor* - Checks if method is a destructor
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isFinal* - Checks if method is final
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isPrivate* - Checks if method is private
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isProtected* - Checks if method is protected
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isPublic* - Checks if method is public
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isStatic* - Checks if method is static
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *setAccessible* - Set method accessibility
+
+|===========================
+
+[role="col-md-9 col-md-offset-3"]
+
+== Parameter Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about a parameter*
++
+http://www.php.net/manual/en/class.reflectionparameter.php[]
++
+`Bartlett\Reflect\Model\ParameterModel`
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__construct* - Constructs a ReflectionParameter
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__toString* - Returns the string representation of the ReflectionParameter object
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *__clone* - Clones parameter
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *allowsNull* - Checks if null is allowed
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *canBePassedByValue* - Returns whether this parameter can be passed by value
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *export* - Exports a parameter
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getClass* - Gets class
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getDeclaringClass* -  Gets declaring class for the reflected parameter
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getDeclaringFunction* -  Gets declaring function for the reflected parameter
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getDefaultValue* - Gets default parameter value
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getDefaultValueConstantName* - Returns the default value's constant name if default value is constant or null
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getName* - Gets parameter name
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getPosition* - Gets parameter position
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isArray* - Checks if parameter expects an array
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *isCallable* - Returns whether parameter MUST be callable
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isDefaultValueAvailable* -  Checks if a default value is available
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *isDefaultValueConstant* - Returns whether the default value of this parameter is constant
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isOptional* - Checks if the parameter is optional
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isPassedByReference* - Checks if the parameter is passed in by reference
+
+|===========================
+
+[role="col-md-9 col-md-offset-3"]
+
+== Property Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about classes properties*
++
+http://www.php.net/manual/en/class.reflectionproperty.php[]
++
+`Bartlett\Reflect\Model\PropertyModel`
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__construct* - Constructs a ReflectionProperty
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *__toString* - Returns the string representation of the ReflectionProperty object
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *__clone* - Clones property
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *export* - Exports a property
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getDeclaringClass* -  Gets declaring class for the reflected property
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getDocComment* - Gets doc comments from a property
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *getModifiers* - Gets modifiers
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getName* - Gets property name
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getValue* - Gets property value
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isDefault* -  Checks if default value
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isPrivate* - Checks if property is private
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isProtected* - Checks if property is protected
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isPublic* - Checks if property is public
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *isStatic* - Checks if property is static
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *setAccessible* - Set property accessibility
+
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| *setValue* - Set property value
+|===========================
