@@ -1,5 +1,5 @@
 = User Guide
-:description: All you have to know about the command line interface
+:description: Start using Reflect without writing a line of code
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
 :icons!:
@@ -9,9 +9,42 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
-[alert,danger]
+[role="col-md-12"]
+====
+[panel,success]
+.For all users
 --
-.Section Pending !
+NOTE: First visit, you are highly recommended to follow chapters in following order.
 
-[big]#image:icons/font-awesome/frown-o.png[alt="Nothing Here",icon="frown-o",size="4x"] This guide is not yet available.#
+. link:user-guide&#45;&#45;installation.html[Installing] all necessary [label label-primary]#Reflect# components.
+. link:user-guide&#45;&#45;configuration.html[Configuring] your project and get ready for your first parsing.
+. link:user-guide&#45;&#45;commands.html[Running] your first parses with the Command-Line interface.
+
+link:user-guide&#45;&#45;installation.html["Installing PHP Reflect",role="primary",icon="glyphicon-step-forward",options="block"]
 --
+====
+
+unfloat::[]
+
+[role="col-md-6"]
+====
+[panel,info]
+.Migrating from Reflect 1.x to 2.x
+--
+CAUTION: All you have to know if you want to upgrade from a previous version 1.x easily.
+
+link:migration-guide.html["Migration Guide",role="primary",icon="glyphicon-book",options="block"]
+--
+====
+
+[role="col-md-6"]
+====
+[panel,danger]
+.For Developers Only
+--
+NOTE: Basic [label label-primary]#Reflect# features does not match your needs.
+Learn how to extend or change some features/behaviors.
+
+link:developer-guide.html["Developer Guide",role="primary",icon="glyphicon-book",options="block"]
+--
+====
