@@ -26,4 +26,6 @@ namespace Bartlett\Reflect\Analyser;
 interface AnalyserInterface
 {
     public function analyse($reflect);
+
+    public function toArray();
 }
