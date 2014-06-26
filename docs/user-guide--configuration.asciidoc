@@ -190,9 +190,9 @@ link:user-guide&#45;&#45;commands.html["The Command-Line Interface",role="primar
 For developers who want to extend or change Reflect features.
 
 * Want to create a new plugin,
-have a look on developer's guide in the link:developer-guide.html#plugins[Plugins] section.
+have a look on developer's guide in the link:developer-guide&#45;&#45;plugins.html[Plugins] section.
 
 * Want to create a new analyser,
-have a look on developer's guide in the link:developer-guide.html#analysers[Analysers] section.
+have a look on developer's guide in the link:developer-guide&#45;&#45;analysers.html[Analysers] section.
 
 ************************************************
