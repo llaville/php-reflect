@@ -84,6 +84,7 @@ include::enumerate-traits.asciidoc[]
 include::enumerate-functions.asciidoc[]
 include::enumerate-constants.asciidoc[]
 include::enumerate-includes.asciidoc[]
+include::enumerate-dependencies.asciidoc[]
 
 == Exploit each elements
 
@@ -94,3 +95,4 @@ include::exploit-traits.asciidoc[]
 include::exploit-functions.asciidoc[]
 include::exploit-constants.asciidoc[]
 include::exploit-includes.asciidoc[]
+include::exploit-dependencies.asciidoc[]
