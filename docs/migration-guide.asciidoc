@@ -1,5 +1,5 @@
 = Migration Guide
-:description: Upgrade from an old version, and continue to keep your environment running. 
+:description: Migrating from version 1.x to 2.x, and continue to keep your environment running.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
 :icons!:
@@ -9,9 +9,265 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
-[alert,danger]
---
-.Section Pending !
+[role="lead"]
+Because the version 2 is a full API rewrites, and used namespaces, your old code cannot migrate
+without a little change.
 
-[big]#image:icons/font-awesome/frown-o.png[alt="Nothing Here",icon="frown-o",size="4x"] This guide is not yet available.#
+We will try to explain how to do in few steps.
+
+== Containers
+
+[role="lead"]
+Version 1.x used customizable
+http://php5.laurent-laville.org/reflect/manual/1.9/en/configure.html#containers[containers]
+feature to store parsing results.
+
+For example, in [label label-success]*version 1.x* when we wanted to retrieve user functions, we could either do :
+
+[role="col-md-6"]
+.With standard container
+====
+[source,php]
+----
+<?php
+require_once 'Bartlett/PHP/Reflect/Autoload.php';
+
+$source = '/path/to/source_file.php';
+
+$options = array();
+
+$reflect = new PHP_Reflect($options);
+$reflect->scan($source);
+
+$functions = $reflect->getFunctions();
+// OR
+$functions = $reflect['functions'];
+----
+====
+
+[role="col-md-6"]
+.With a non standard container
+====
+[source,php]
+----
+<?php
+require_once 'Bartlett/PHP/Reflect/Autoload.php';
+
+$source = '/path/to/source_file.php';
+
+$options = array('containers' => array('function' => 'userFunctions');
+
+$reflect = new PHP_Reflect($options);
+$reflect->scan($source);
+
+$functions = $reflect->getUserFunctions();
+// OR
+$functions = $reflect['userFunctions'];
+----
+====
+
+In [label label-success]*version 2.x*, we have collections of data models that we can enumerate and exploit.
+
+[role="col-md-6"]
+****
+.See API in developer's guide
+
+* link:developer-guide--api.html#_packages_or_namespaces[Namespaces] collection
+* link:developer-guide--api.html#_classes[Classes] collection
+* link:developer-guide--api.html#_interfaces[Interfaces] collection
+* link:developer-guide--api.html#_traits[Traits] collection
+* link:developer-guide--api.html#_functions[Functions] collection
+* link:developer-guide--api.html#_constants[Constants] collection
+* link:developer-guide--api.html#_includes[Includes] collection
+* link:developer-guide--api.html#_dependencies[Dependencies] collection
+****
+
+[role="col-md-6"]
+.Enumerate each user functions
+====
+[source,php]
+----
+<?php
+require_once 'vendor/autoload.php';
+
+use Bartlett\Reflect;
+use Bartlett\Reflect\ProviderManager;
+use Bartlett\Reflect\Provider\SymfonyFinderProvider;
+
+use Symfony\Component\Finder\Finder;
+
+$finder = new Finder();
+$finder->files()
+    ->name('source_file.php')
+    ->in('/path/to/');
+
+// Identify Data Source
+$pm = new ProviderManager;
+$pm->set('Sample', new SymfonyFinderProvider($finder));
+
+$reflect = new Reflect;
+$reflect->setProviderManager($pm);
+$reflect->parse();
+
+// Exploit results
+foreach ($reflect->getPackages() as $package) {
+    $functions = $package->getFunctions();
+}
+----
+====
+
+== Properties
+
+[role="lead"]
+Version 1.x may provide a variable
+http://php5.laurent-laville.org/reflect/manual/1.9/en/configure.html#properties[properties] list.
+Version 2.x provides all properties anytime. It's up to you to decide to use them or not.
+
+For example, in [label label-success]*version 1.x* when we wanted to retrieve
+only keywords and signature of each class methods of a data source.
+
+[role="col-md-6"]
+.Configure interface, class and method properties
+====
+[source,php]
+----
+<?php
+require_once 'Bartlett/PHP/Reflect/Autoload.php';
+
+$source = '/path/to/PEAR-1.9.2/PEAR.php';
+
+$options = array(
+    'properties' => array(
+        'interface' => array(
+            'parent', 'methods'
+        ),
+        'class' => array(
+            'parent', 'methods', 'interfaces', 'package'
+        ),
+        'function' => array(
+            'signature'
+        ),
+    )
+);
+$reflect = new PHP_Reflect($options);
+$reflect->scan($source);
+
+$classes = $reflect->getClasses();
+
+print_r($classes['\\']['PEAR_Error']['methods']);
+----
+====
+
+[role="col-md-6"]
 --
+.Script output
+[source,php]
+----
+Array
+(
+    [PEAR_Error] => Array
+        (
+            [signature] => PEAR_Error($message = 'unknown error', $code = null,
+                        $mode = null, $options = null, $userinfo = null)
+        )
+
+    [getMode] => Array
+        (
+            [signature] => getMode()
+        )
+
+    [getCallback] => Array
+        (
+            [signature] => getCallback()
+        )
+
+    [getMessage] => Array
+        (
+            [signature] => getMessage()
+        )
+
+    [getCode] => Array
+        (
+            [signature] => getCode()
+        )
+
+    [getType] => Array
+        (
+            [signature] => getType()
+        )
+
+    [getUserInfo] => Array
+        (
+            [signature] => getUserInfo()
+        )
+
+    [getDebugInfo] => Array
+        (
+            [signature] => getDebugInfo()
+        )
+
+    [getBacktrace] => Array
+        (
+            [signature] => getBacktrace($frame = null)
+        )
+
+    [addUserInfo] => Array
+        (
+            [signature] => addUserInfo($info)
+        )
+
+    [__toString] => Array
+        (
+            [signature] => __toString()
+        )
+
+    [toString] => Array
+        (
+            [signature] => toString()
+        )
+)
+----
+--
+
+In [label label-success]*version 2.x*, when we did the same.
+
+[role="col-md-6"]
+.Properties on demand
+====
+[source,php]
+----
+include::migrate_properties.php.asciidoc[]
+----
+====
+
+[role="col-md-6"]
+--
+.Script output
+[source,php]
+----
+include::migrate_properties.out.asciidoc[]
+----
+--
+
+== Summary
+
+[role="lead"]
+Let's review what we've did :
+
+* Compared *Containers* configuration solutions, and how to do it with both versions [label label-success]*1.x* and [label label-success]*2.x*
+* Compared *Properties* configuration solutions, and how to do it with both versions [label label-success]*1.x* and [label label-success]*2.x*
+* Used some methods of the new *API* [label label-success]*2.x*, to enumerate and exploit parsing results.
+
+== Next
+
+[role="lead"]
+For PHP developers only.
+
+************************************************
+.Read more
+
+* Want to learn more about [label label-primary]#Reflect# API,
+to exploit results as you want,
+have a look on link:developer-guide.html[developer's guide].
+
+************************************************

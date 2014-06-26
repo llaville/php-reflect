@@ -1,0 +1,63 @@
+Array
+(
+    [PEAR_Error] => Array
+        (
+            [signature] => public PEAR_Error($message = 'unknown error',$code = null,$mode = null,$options = null,$userinfo = null)
+        )
+
+    [getMode] => Array
+        (
+            [signature] => public getMode()
+        )
+
+    [getCallback] => Array
+        (
+            [signature] => public getCallback()
+        )
+
+    [getMessage] => Array
+        (
+            [signature] => public getMessage()
+        )
+
+    [getCode] => Array
+        (
+            [signature] => public getCode()
+        )
+
+    [getType] => Array
+        (
+            [signature] => public getType()
+        )
+
+    [getUserInfo] => Array
+        (
+            [signature] => public getUserInfo()
+        )
+
+    [getDebugInfo] => Array
+        (
+            [signature] => public getDebugInfo()
+        )
+
+    [getBacktrace] => Array
+        (
+            [signature] => public getBacktrace($frame = null)
+        )
+
+    [addUserInfo] => Array
+        (
+            [signature] => public addUserInfo($info)
+        )
+
+    [__toString] => Array
+        (
+            [signature] => public __toString()
+        )
+
+    [toString] => Array
+        (
+            [signature] => public toString()
+        )
+
+)
