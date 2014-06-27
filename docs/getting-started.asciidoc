@@ -72,7 +72,7 @@ phpReflect version 2.0.0 build b45be1d0d1b5a46253f9cda894dd7717f0a64abd
 }
 ----
 Put it in your project's folder. Alternative locations are possible.
-Please refer to the link:#[documentation] for details on how to do this.
+Please refer to the link:user-guide&#45;&#45;configuration.html[documentation] for details on how to do this.
 
 
 [role="col-md-6"]
