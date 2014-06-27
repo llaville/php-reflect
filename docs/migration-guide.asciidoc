@@ -72,14 +72,14 @@ In [label label-success]*version 2.x*, we have collections of data models that w
 ****
 .See API in developer's guide
 
-* link:developer-guide--api.html#_packages_or_namespaces[Namespaces] collection
-* link:developer-guide--api.html#_classes[Classes] collection
-* link:developer-guide--api.html#_interfaces[Interfaces] collection
-* link:developer-guide--api.html#_traits[Traits] collection
-* link:developer-guide--api.html#_functions[Functions] collection
-* link:developer-guide--api.html#_constants[Constants] collection
-* link:developer-guide--api.html#_includes[Includes] collection
-* link:developer-guide--api.html#_dependencies[Dependencies] collection
+* link:developer-guide&#45;&#45;api.html#_packages_or_namespaces[Namespaces] collection
+* link:developer-guide&#45;&#45;api.html#_classes[Classes] collection
+* link:developer-guide&#45;&#45;api.html#_interfaces[Interfaces] collection
+* link:developer-guide&#45;&#45;api.html#_traits[Traits] collection
+* link:developer-guide&#45;&#45;api.html#_functions[Functions] collection
+* link:developer-guide&#45;&#45;api.html#_constants[Constants] collection
+* link:developer-guide&#45;&#45;api.html#_includes[Includes] collection
+* link:developer-guide&#45;&#45;api.html#_dependencies[Dependencies] collection
 ****
 
 [role="col-md-6"]
