@@ -3,6 +3,7 @@
 :mandir:      http://php5.laurent-laville.org/reflect/manual/current
 :brand:       PHP Reflect
 :brandref:    https://github.com/llaville/php-reflect
+:brandver:
 :sidebar:     right
 :footer:
 :navinfo1:
