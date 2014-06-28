@@ -1,0 +1,27 @@
+= PHP Reflect Book
+:description: The Complete Guide
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+
+
+This complete guide documents the final stable version {revnumber}
+
+include::getting-started.asciidoc[]
+
+include::user-guide.asciidoc[]
+include::user-guide--installation.asciidoc[]
+include::user-guide--configuration.asciidoc[]
+include::user-guide--commands.asciidoc[]
+
+include::migration-guide.asciidoc[]
+
+include::developer-guide.asciidoc[]
+:leveloffset: 1
+include::api-compared.asciidoc[]
+
+include::developer-guide--api.asciidoc[]
+
+include::developer-guide--plugins.asciidoc[]
+
+include::developer-guide--analysers.asciidoc[]
+:leveloffset: 0
