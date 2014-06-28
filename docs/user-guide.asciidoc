@@ -16,11 +16,18 @@ include::attributes.asciidoc[]
 --
 NOTE: First visit, you are highly recommended to follow chapters in following order.
 
+ifdef::basebackend-bootstrap[]
 . link:user-guide&#45;&#45;installation.html[Installing] all necessary [label label-primary]#Reflect# components.
 . link:user-guide&#45;&#45;configuration.html[Configuring] your project and get ready for your first parsing.
 . link:user-guide&#45;&#45;commands.html[Running] your first parses with the Command-Line interface.
 
 link:user-guide&#45;&#45;installation.html["Installing PHP Reflect",role="primary",icon="glyphicon-step-forward",options="block"]
+endif::[]
+ifndef::basebackend-bootstrap[]
+. Installing all necessary [label label-primary]#Reflect# components. See xref:_installation[]
+. Configuring your project and get ready for your first parsing. See xref:_the_json_configuration_file[]
+. Running your first parses with the Command-Line interface. See xref:_the_command_line[]
+endif::[]
 --
 ====
 
@@ -33,7 +40,12 @@ unfloat::[]
 --
 CAUTION: All you have to know if you want to upgrade from a previous version 1.x easily.
 
+ifdef::basebackend-bootstrap[]
 link:migration-guide.html["Migration Guide",role="primary",icon="glyphicon-book",options="block"]
+endif::[]
+ifndef::basebackend-bootstrap[]
+See xref:_migration_guide[]
+endif::[]
 --
 ====
 
@@ -45,6 +57,11 @@ link:migration-guide.html["Migration Guide",role="primary",icon="glyphicon-book"
 NOTE: Basic [label label-primary]#Reflect# features does not match your needs.
 Learn how to extend or change some features/behaviors.
 
+ifdef::basebackend-bootstrap[]
 link:developer-guide.html["Developer Guide",role="primary",icon="glyphicon-book",options="block"]
+endif::[]
+ifndef::basebackend-bootstrap[]
+See xref:_developer_guide[]
+endif::[]
 --
 ====

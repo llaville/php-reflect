@@ -18,10 +18,10 @@ all required dependencies of PHP [label label-primary]#Reflect# bundled in a sin
 
 ifdef::basebackend-bootstrap[]
 link:{pharstable}["Download the latest version",role="primary",icon="glyphicon-download-alt",options="block,white"]
-endif::[]
+endif::basebackend-bootstrap[]
 ifndef::basebackend-bootstrap[]
 link:{pharstable}[Download the latest version]
-endif::[]
+endif::basebackend-bootstrap[]
 
 Make it executable, and put it into your `$PATH`.
 ----
@@ -47,7 +47,14 @@ phpReflect version 2.0.0 build b45be1d0d1b5a46253f9cda894dd7717f0a64abd
 ====
 
 Other alternative installations are possible.
-Please refer to the link:user-guide&#45;&#45;installation.html[documentation] for details on how to do this.
+Please refer to the
+ifdef::basebackend-bootstrap[]
+link:user-guide&#45;&#45;installation.html[documentation]
+endif::basebackend-bootstrap[]
+ifndef::basebackend-bootstrap[]
+xref:_installation[]
+endif::basebackend-bootstrap[]
+for details on how to do this.
 
 [role="col-md-6"]
 == Configuration
@@ -75,8 +82,14 @@ Please refer to the link:user-guide&#45;&#45;installation.html[documentation] fo
 }
 ----
 Put it in your project's folder. Alternative locations are possible.
-Please refer to the link:user-guide&#45;&#45;configuration.html[documentation] for details on how to do this.
-
+Please refer to the
+ifdef::basebackend-bootstrap[]
+link:user-guide&#45;&#45;configuration.html[documentation]
+endif::basebackend-bootstrap[]
+ifndef::basebackend-bootstrap[]
+xref:_the_json_configuration_file[]
+endif::basebackend-bootstrap[]
+for details on how to do this.
 
 [role="col-md-6"]
 == Structure
@@ -142,13 +155,32 @@ Choose your way depending of your skill level.
 
 * Want to learn more about the command line interpreter (CLI) version, interface that do
 [label label-primary]#Reflect# an easy tool without to write a line of PHP code,
-have a look on link:user-guide.html[user's guide].
+have a look on
+ifdef::basebackend-bootstrap[]
+link:user-guide.html[user's guide]
+endif::basebackend-bootstrap[]
+ifndef::basebackend-bootstrap[]
+xref:_user_guide[]
+endif::basebackend-bootstrap[]
 
 * Want to learn more about [label label-primary]#Reflect# architecture and /or
 you want to extends it to match your needs,
-have a look on link:developer-guide.html[developer's guide].
+have a look on
+ifdef::basebackend-bootstrap[]
+link:developer-guide.html[developer's guide]
+endif::[]
+ifndef::basebackend-bootstrap[]
+xref:_developer_guide[]
+endif::basebackend-bootstrap[]
 
 * You are a user of previous version 1.9 that is really different, and want to
 upgrade to the new major version 2, and keep your old environment still running,
-have a look on link:migration-guide.html[migration's guide].
+have a look on
+ifdef::basebackend-bootstrap[]
+link:migration-guide.html[migration's guide]
+endif::basebackend-bootstrap[]
+ifndef::basebackend-bootstrap[]
+xref:_migration_guide[]
+endif::basebackend-bootstrap[]
+
 ************************************************

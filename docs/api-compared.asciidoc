@@ -9,6 +9,7 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
+ifdef::basebackend-bootstrap[]
 
 [role="col-md-3"]
 ====
@@ -24,6 +25,7 @@ include::attributes.asciidoc[]
 * xref:_property_reflection[Property Reflection]
 --
 ====
+endif::basebackend-bootstrap[]
 
 [role="col-md-9"]
 

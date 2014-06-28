@@ -1,5 +1,5 @@
 = Developer Guide
-:description: All you have to know about Reflect v2 architecture. 
+:description: All you have to know about Reflect v2 architecture.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
 :icons!:
@@ -18,10 +18,18 @@ image:icons/font-awesome/code.png[alt="API",icon="code",iconsfont="font-awesome"
 [panel,info]
 .API
 --
-[label label-primary]#Reflect# comes with a complete reflection API, link:api-compared.html[almost equivalent] to
-http://www.php.net/manual/en/book.reflection.php[PHP5 reflection].
+[label label-primary]#Reflect# comes with a complete reflection API,
+ifdef::basebackend-bootstrap[]
+link:api-compared.html[almost equivalent]
+endif::basebackend-bootstrap[]
+ifndef::basebackend-bootstrap[]
+almost equivalent
+endif::basebackend-bootstrap[]
+to http://www.php.net/manual/en/book.reflection.php[PHP5 reflection].
 
+ifdef::basebackend-bootstrap[]
 link:developer-guide&#45;&#45;api.html["Application Programming Interface",role="primary",icon="glyphicon-book",options="block"]
+endif::basebackend-bootstrap[]
 --
 ====
 
@@ -34,9 +42,11 @@ image:icons/font-awesome/puzzle-piece.png[alt="Plugins",icon="puzzle-piece",icon
 .Plugins
 --
 [label label-primary]#Reflect# uses a Symfony http://symfony.com/doc/current/components/event_dispatcher/index.html[EventDispatcher] Component
-to allow you to easily extend the features list. 
+to allow you to easily extend the features list.
 
+ifdef::basebackend-bootstrap[]
 link:developer-guide&#45;&#45;plugins.html["Plugins",role="primary",icon="glyphicon-book",options="block"]
+endif::basebackend-bootstrap[]
 --
 ====
 
@@ -48,10 +58,12 @@ image:icons/font-awesome/search-plus.png[alt="Analysers",icon="search-plus",icon
 [panel,info]
 .Analysers
 --
-[label label-primary]#Reflect# uses analysers that implements the 
-http://en.wikipedia.org/wiki/Visitor_pattern[Visitor] pattern in a simple and effective way 
+[label label-primary]#Reflect# uses analysers that implements the
+http://en.wikipedia.org/wiki/Visitor_pattern[Visitor] pattern in a simple and effective way
 to make the render of your results truly customizable.
 
+ifdef::basebackend-bootstrap[]
 link:developer-guide&#45;&#45;analysers.html["Analysers",role="primary",icon="glyphicon-book",options="block"]
+endif::basebackend-bootstrap[]
 --
 ====

@@ -1,3 +1,5 @@
+ifndef::basebackend-docbook[]
+
 = Handle Results
 :description: Learn how to explore and exploit parsing results.
 include::revision.asciidoc[]
@@ -9,6 +11,7 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
+endif::basebackend-docbook[]
 
 == Study case
 
@@ -44,8 +47,7 @@ function singleFunction( Array $someparam, stdClass $somethingelse, $lastone = N
 ----
 
 To explore and exploit results, we need first to parse the data source.
-You should be able to do it. If it's not the case, please refer to
-the link:quick-start.html[quick start] guide.
+You should be able to do it.
 
 Here are the solution how to parse the data source seen above :
 

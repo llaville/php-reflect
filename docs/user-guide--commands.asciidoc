@@ -1,3 +1,5 @@
+ifndef::basebackend-docbook[]
+
 = User Guide
 :description: The Command-Line Interface
 include::revision.asciidoc[]
@@ -9,6 +11,7 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
+endif::basebackend-docbook[]
 
 == The Command-Line
 
@@ -283,6 +286,7 @@ Let's review what we've learned about the command-line interface :
 * Default analyser produced results such as https://github.com/sebastianbergmann/phploc[PHPLoc] by Sebastian Bergmann.
 * May generate class and package UML diagrams with http://plantuml.sourceforge.net/[PlantUML].
 
+ifdef::basebackend-bootstrap[]
 == Next
 
 [role="lead"]
@@ -296,3 +300,4 @@ you want to extends it to match your needs,
 have a look on link:developer-guide.html[developer's guide].
 
 ************************************************
+endif::basebackend-bootstrap[]

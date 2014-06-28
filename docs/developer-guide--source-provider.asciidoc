@@ -1,3 +1,5 @@
+ifndef::basebackend-docbook[]
+
 = Source Provider
 :description: How to identify a data source and parse its contents.
 include::revision.asciidoc[]
@@ -9,6 +11,7 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
+endif::basebackend-docbook[]
 
 == Data Source Identification
 

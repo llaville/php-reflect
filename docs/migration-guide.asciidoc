@@ -72,6 +72,7 @@ In [label label-success]*version 2.x*, we have collections of data models that w
 ****
 .See API in developer's guide
 
+ifdef::basebackend-bootstrap[]
 * link:developer-guide&#45;&#45;api.html#_packages_or_namespaces[Namespaces] collection
 * link:developer-guide&#45;&#45;api.html#_classes[Classes] collection
 * link:developer-guide&#45;&#45;api.html#_interfaces[Interfaces] collection
@@ -80,6 +81,17 @@ In [label label-success]*version 2.x*, we have collections of data models that w
 * link:developer-guide&#45;&#45;api.html#_constants[Constants] collection
 * link:developer-guide&#45;&#45;api.html#_includes[Includes] collection
 * link:developer-guide&#45;&#45;api.html#_dependencies[Dependencies] collection
+endif::basebackend-bootstrap[]
+ifndef::basebackend-bootstrap[]
+* Namespaces collection. See xref:_packages_or_namespaces[]
+* Classes collection. See xref:_classes[]
+* Interfaces collection. See xref:_interfaces[]
+* Traits collection. See xref:_traits[]
+* Functions collection. See xref:_functions[]
+* Constants collection. See xref:_constants[]
+* Includes collection. See xref:_includes[]
+* Dependencies collection. See xref:_dependencies[]
+endif::basebackend-bootstrap[]
 ****
 
 [role="col-md-6"]
@@ -258,6 +270,7 @@ Let's review what we've did :
 * Compared *Properties* configuration solutions, and how to do it with both versions [label label-success]*1.x* and [label label-success]*2.x*
 * Used some methods of the new *API* [label label-success]*2.x*, to enumerate and exploit parsing results.
 
+ifdef::basebackend-bootstrap[]
 == Next
 
 [role="lead"]
@@ -271,3 +284,4 @@ to exploit results as you want,
 have a look on link:developer-guide.html[developer's guide].
 
 ************************************************
+endif::basebackend-bootstrap[]

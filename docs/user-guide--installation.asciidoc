@@ -1,3 +1,5 @@
+ifndef::basebackend-docbook[]
+
 = User Guide
 :description: Installing PHP Reflect
 include::revision.asciidoc[]
@@ -9,26 +11,34 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
+endif::basebackend-docbook[]
+
 == Installation
 
 [role="lead"]
 Reflect may be installed in several ways, choose your favorite.
 
-WARNING: Please read the link:migration-guide.html[migration guide] in case you 
-are upgrading from a version 1.x of PHP Reflect. 
+WARNING: Please read the
+ifdef::basebackend-bootstrap[]
+link:migration-guide.html[migration guide]
+endif::basebackend-bootstrap[]
+ifndef::basebackend-bootstrap[]
+xref:_migration_guide[]
+endif::basebackend-bootstrap[]
+in case you are upgrading from a version 1.x of PHP Reflect.
 
 === Requirements
 
 Before you install PHP [label label-primary]#Reflect#, you will need an operating system
 with http://www.php.net[PHP] 5.3.0 or later installed,
 
-[label label-primary]#Reflect# requires the 
+[label label-primary]#Reflect# requires the
 http://www.php.net/manual/en/book.json.php[json],
 http://www.php.net/manual/en/book.reflection.php[reflection],
 http://www.php.net/manual/en/book.tokenizer.php[tokenizer],
 http://www.php.net/manual/en/book.pcre.php[pcre], and
-http://www.php.net/manual/en/book.spl.php[spl] extensions. 
-These extensions are usually compiled and enabled by default. 
+http://www.php.net/manual/en/book.spl.php[spl] extensions.
+These extensions are usually compiled and enabled by default.
 
 === Composer
 
@@ -47,7 +57,7 @@ $ php composer.phar install
 
 [TIP]
 ====
-You can also use Composer to create a new project from an existing [label label-primary]#Reflect# package. 
+You can also use Composer to create a new project from an existing [label label-primary]#Reflect# package.
 This is the equivalent of doing a git clone checkout followed by a composer install of the vendors.
 
 ----
@@ -57,8 +67,8 @@ $ php composer.phar create-project bartlett/php-reflect 2.*
 
 === PHAR
 
-The recommended way for newbies, or just to have a look on features of this library, is to download  
-a PHP Archive that contain all required dependencies of PHP [label label-primary]#Reflect# 
+The recommended way for newbies, or just to have a look on features of this library, is to download
+a PHP Archive that contain all required dependencies of PHP [label label-primary]#Reflect#
 bundled in a single file.
 
 ----
@@ -71,9 +81,11 @@ $ phpreflect
 You can also immediately use the PHAR after you have downloaded it.
 ----
 $ wget http://bartlett.laurent-laville.org/get/phpreflect.phar
-$ php phpreflect.phar 
+$ php phpreflect.phar
 ----
 
-== Next 
+ifdef::basebackend-bootstrap[]
+== Next
 
 link:user-guide&#45;&#45;configuration.html["Configuring PHP Reflect",role="primary",icon="glyphicon-step-forward",options="block"]
+endif::basebackend-bootstrap[]

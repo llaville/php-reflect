@@ -1,3 +1,5 @@
+ifndef::basebackend-docbook[]
+
 = User Guide
 :description: Configuring PHP Reflect
 include::revision.asciidoc[]
@@ -8,6 +10,8 @@ include::attributes.asciidoc[]
 :jumbotron-fullwidth:
 :footer:
 :footer-fullwidth:
+
+endif::basebackend-docbook[]
 
 == The Json Configuration File
 
@@ -189,6 +193,7 @@ CAUTION: Each `name` key must be unique to avoid conflicts.
 The `class` key identify the name of the class that implement the analyser features.
 
 
+ifdef::basebackend-bootstrap[]
 == Next
 
 link:user-guide&#45;&#45;commands.html["The Command-Line Interface",role="primary",icon="glyphicon-step-forward",options="block"]
@@ -205,3 +210,4 @@ have a look on developer's guide in the link:developer-guide&#45;&#45;plugins.ht
 have a look on developer's guide in the link:developer-guide&#45;&#45;analysers.html[Analysers] section.
 
 ************************************************
+endif::[]

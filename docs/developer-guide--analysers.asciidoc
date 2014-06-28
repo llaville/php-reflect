@@ -11,7 +11,7 @@ include::attributes.asciidoc[]
 
 
 [role="lead"]
-Analysers implements the http://en.wikipedia.org/wiki/Visitor_pattern[Visitor] pattern 
+Analysers implements the http://en.wikipedia.org/wiki/Visitor_pattern[Visitor] pattern
 in a simple and effective way to make the render of your results truly customizable.
 
 == Visitor pattern
@@ -42,7 +42,7 @@ Each element that need to be explored by your analyser should have a visit metho
 * For includes, we need to implement a *visitIncludeModel* method.
 * For dependencies, we need to implement a *visitDependencyModel* method.
 
-NOTE: Abstract class `Bartlett\Reflect\Visitor\AbstractVisitor` 
+NOTE: Abstract class `Bartlett\Reflect\Visitor\AbstractVisitor`
 ( {rawbaseurl}/src/Bartlett/Reflect/Visitor/AbstractVisitor.php[source code] ),
 that implement interface +Bartlett\Reflect\Visitor\VisitorInterface+,
 holds a basic visitor.
@@ -108,14 +108,14 @@ class Analyser extends AbstractAnalyser
 == Print results
 
 Once you have used visit methods to explore parsing results, you will need to return
-formatted data ready to be print. 
+formatted data ready to be print.
 
 To do so, you should implement the +toArray+ method of +Bartlett\Reflect\Analyser\AnalyserInterface+.
 
 Implementation should follow only one rule. Return an array with :
 
-* free data identifier as key. 
-* data contents are an array with a string format 
+* free data identifier as key.
+* data contents are an array with a string format
 compatible http://www.php.net/manual/en/function.vsprintf.php[vsprintf] as first element, and the value as second element.
 
 .Console lines information (without data)
@@ -123,16 +123,16 @@ compatible http://www.php.net/manual/en/function.vsprintf.php[vsprintf] as first
 [source,php]
 ----
 <?php
-        
+
     $lines['dataSourceAnalysed'] = array(
         '<info>Data Source Analysed</info>%s',
         array(PHP_EOL)
     );
-    
+
     $lines['methodsScope'] = array(
         '    Scope',
         array()
-    );    
+    );
 ----
 ====
 
@@ -141,7 +141,7 @@ compatible http://www.php.net/manual/en/function.vsprintf.php[vsprintf] as first
 [source,php]
 ----
 <?php
-        
+
     $lines['methods'] = array(
         '  Methods                                   %10d',
         array($count['methods'])
@@ -154,7 +154,7 @@ compatible http://www.php.net/manual/en/function.vsprintf.php[vsprintf] as first
 [source,php]
 ----
 <?php
-        
+
     $lines['nonStaticMethods'] = array(
         '      Non-Static Methods                    %10d (%.2f%%)',
         array(

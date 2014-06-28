@@ -9,6 +9,7 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
+ifdef::basebackend-bootstrap[]
 
 [role="col-md-3"]
 ====
@@ -38,8 +39,8 @@ include::attributes.asciidoc[]
 *** xref:_dependencies_2[Dependencies]
 --
 ====
-
 :leveloffset: 1
+endif::basebackend-bootstrap[]
 
 [role="col-md-9"]
 include::developer-guide--source-provider.asciidoc[]
@@ -47,4 +48,6 @@ include::developer-guide--source-provider.asciidoc[]
 [role="col-md-9 col-md-offset-3"]
 include::developer-guide--handle-results.asciidoc[]
 
+ifdef::basebackend-bootstrap[]
 :leveloffset: 0
+endif::basebackend-bootstrap[]
