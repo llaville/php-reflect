@@ -1,0 +1,147 @@
+= PHPREFLECT(1)
+:doctype: manpage
+
+
+== NAME
+phpreflect - Reverse-engineer classes, interfaces, functions, constants, namespaces and more
+
+
+== SYNOPSIS
+*phpreflect* ['options'] 'command' ['arguments']
+
+
+== DESCRIPTION
+The phpreflect(1) command parse any data source, defined in a json configuration file, to find out
+elements, such as classes, interfaces, functions, constants, namespaces.
+
+
+== OPTIONS
+*-h, --help*::
+    Display this help message.
+
+*-q, --quiet*::
+    Do not output any message.
+
+*-v|vv|v, --verbose*::
+    Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug.
+
+*-V, --version*::
+    Display this application version.
+
+*--ansi*::
+    Force ANSI output.
+
+*--no-ansi*::
+    Disable ANSI output.
+
+*--profile*::
+    Display timing and memory usage information.
+
+
+== analyser:list COMMAND
+The phpreflect(1) 'analyser:list' command is used to show what analysers are installed
+(see <<X1,CONF FILES>> section).
+
+
+== analyser:run COMMAND
+The phpreflect(1) 'analyser:run' command is used to analyse a data source and display results.
+
+Usage:
+
+  phpreflect analyser:run [--alias] [--redraw-freq="..."] source [analysers1] ... [analysersN]
+
+Where:
+
+*source*::
+  Identify a data source declared in a json configuration file (see <<X1,CONF FILES>> section)
+
+*--alias*::
+  If set, the source refers to its alias
+
+*--redraw-freq*::
+  How many times should the progress bar be updated? (default: 1)
+
+*analysers1* ... *analysersN*::
+  Identify one or more analyser to execute. See 'analyser:list' command to know what analysers are available.
+
+
+== plugin:list COMMAND
+The phpreflect(1) 'plugin:list' command is used to show what plugins are installed
+(see <<X1,CONF FILES>> section).
+
+== provider:list COMMAND
+The phpreflect(1) 'provider:list' command is used to show what data sources are declared
+in a json configuration file (see <<X1,CONF FILES>> section).
+
+
+== provider:show COMMAND
+The phpreflect(1) 'provider:show' command is used to show files in data sources.
+
+Usage:
+
+  phpreflect provider:show [--alias] source
+
+Where:
+
+*source*::
+  Identify a data source declared in a json configuration file (see <<X1,CONF FILES>> section)
+
+*--alias*::
+  If set, the source refers to its alias
+
+
+== provider:display COMMAND
+The phpreflect(1) 'provider:display' command is used to show source code of a file in a data source.
+
+Usage:
+
+  phpreflect provider:display [--alias] source file
+
+Where:
+
+*source*::
+  Identify a data source declared in a json configuration file (see <<X1,CONF FILES>> section)
+
+*--alias*::
+  If set, the source refers to its alias
+
+*file*::
+  Relative path to a file in the data source
+
+
+== EXIT STATUS
+*0*::
+    Success
+
+*1*::
+    Failure (syntax or usage error; configuration error; unexpected error).
+
+[[X1]]
+== CONF FILES
+A configuration file contains data sources that can be analysed, but also optional plugins and analysers installed.
+Require configuration file is loaded in the following order:
+
+. The CONF_FILE specified by the environment variable `REFLECT`.
+. `phpreflect.json` from the current directory.
+. `phpreflect.json` from the User `$HOME/.config` directory.
+. `phpreflect.json` from the `/etc` directory.
+
+
+== BUGS
+Report any issue at <https://github.com/llaville/php-reflect/issues>
+
+
+== AUTHORS
+The Command-Line Interface (CLI) version was introduced in version 2.0 and is written by Laurent Laville.
+
+
+== SEE ALSO
+Main web site: <http://php5.laurent-laville.org/reflect/>
+
+
+== COPYRIGHT
+Copyright \(C) 2011-2014 Laurent Laville.
+
+
+== LICENSE
+Free use of this software is granted under the terms of the BSD 3-clause license.
