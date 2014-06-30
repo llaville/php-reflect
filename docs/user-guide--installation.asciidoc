@@ -22,9 +22,9 @@ WARNING: Please read the
 ifdef::basebackend-bootstrap[]
 link:migration-guide.html[migration guide]
 endif::basebackend-bootstrap[]
-ifndef::basebackend-bootstrap[]
+ifdef::basebackend-docbook[]
 xref:_migration_guide[]
-endif::basebackend-bootstrap[]
+endif::basebackend-docbook[]
 in case you are upgrading from a version 1.x of PHP Reflect.
 
 === Requirements

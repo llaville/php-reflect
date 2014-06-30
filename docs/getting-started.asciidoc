@@ -48,12 +48,12 @@ phpReflect version 2.0.0 build b45be1d0d1b5a46253f9cda894dd7717f0a64abd
 
 Other alternative installations are possible.
 Please refer to the
-ifdef::basebackend-bootstrap[]
+ifdef::basebackend-html[]
 link:user-guide&#45;&#45;installation.html[documentation]
-endif::basebackend-bootstrap[]
-ifndef::basebackend-bootstrap[]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
 xref:_installation[]
-endif::basebackend-bootstrap[]
+endif::basebackend-docbook[]
 for details on how to do this.
 
 [role="col-md-6"]
@@ -83,12 +83,12 @@ for details on how to do this.
 ----
 Put it in your project's folder. Alternative locations are possible.
 Please refer to the
-ifdef::basebackend-bootstrap[]
+ifdef::basebackend-html[]
 link:user-guide&#45;&#45;configuration.html[documentation]
-endif::basebackend-bootstrap[]
-ifndef::basebackend-bootstrap[]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
 xref:_the_json_configuration_file[]
-endif::basebackend-bootstrap[]
+endif::basebackend-docbook[]
 for details on how to do this.
 
 [role="col-md-6"]
@@ -156,31 +156,31 @@ Choose your way depending of your skill level.
 * Want to learn more about the command line interpreter (CLI) version, interface that do
 [label label-primary]#Reflect# an easy tool without to write a line of PHP code,
 have a look on
-ifdef::basebackend-bootstrap[]
+ifdef::basebackend-html[]
 link:user-guide.html[user's guide]
-endif::basebackend-bootstrap[]
-ifndef::basebackend-bootstrap[]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
 xref:_user_guide[]
-endif::basebackend-bootstrap[]
+endif::basebackend-docbook[]
 
 * Want to learn more about [label label-primary]#Reflect# architecture and /or
 you want to extends it to match your needs,
 have a look on
-ifdef::basebackend-bootstrap[]
+ifdef::basebackend-html[]
 link:developer-guide.html[developer's guide]
-endif::[]
-ifndef::basebackend-bootstrap[]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
 xref:_developer_guide[]
-endif::basebackend-bootstrap[]
+endif::basebackend-docbook[]
 
 * You are a user of previous version 1.9 that is really different, and want to
 upgrade to the new major version 2, and keep your old environment still running,
 have a look on
-ifdef::basebackend-bootstrap[]
+ifdef::basebackend-html[]
 link:migration-guide.html[migration's guide]
-endif::basebackend-bootstrap[]
-ifndef::basebackend-bootstrap[]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
 xref:_migration_guide[]
-endif::basebackend-bootstrap[]
+endif::basebackend-docbook[]
 
 ************************************************

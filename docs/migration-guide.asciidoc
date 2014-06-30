@@ -9,11 +9,18 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
+ifdef::basebackend-docbook[]
+[partintro]
+--
+endif::basebackend-docbook[]
 [role="lead"]
 Because the version 2 is a full API rewrites, and used namespaces, your old code cannot migrate
 without a little change.
 
 We will try to explain how to do in few steps.
+ifdef::basebackend-docbook[]
+--
+endif::basebackend-docbook[]
 
 == Containers
 
@@ -72,7 +79,7 @@ In [label label-success]*version 2.x*, we have collections of data models that w
 ****
 .See API in developer's guide
 
-ifdef::basebackend-bootstrap[]
+ifdef::basebackend-html[]
 * link:developer-guide&#45;&#45;api.html#_packages_or_namespaces[Namespaces] collection
 * link:developer-guide&#45;&#45;api.html#_classes[Classes] collection
 * link:developer-guide&#45;&#45;api.html#_interfaces[Interfaces] collection
@@ -81,8 +88,8 @@ ifdef::basebackend-bootstrap[]
 * link:developer-guide&#45;&#45;api.html#_constants[Constants] collection
 * link:developer-guide&#45;&#45;api.html#_includes[Includes] collection
 * link:developer-guide&#45;&#45;api.html#_dependencies[Dependencies] collection
-endif::basebackend-bootstrap[]
-ifndef::basebackend-bootstrap[]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
 * Namespaces collection. See xref:_packages_or_namespaces[]
 * Classes collection. See xref:_classes[]
 * Interfaces collection. See xref:_interfaces[]
@@ -91,7 +98,7 @@ ifndef::basebackend-bootstrap[]
 * Constants collection. See xref:_constants[]
 * Includes collection. See xref:_includes[]
 * Dependencies collection. See xref:_dependencies[]
-endif::basebackend-bootstrap[]
+endif::basebackend-docbook[]
 ****
 
 [role="col-md-6"]

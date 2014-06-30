@@ -3,8 +3,12 @@
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
 
+[preface]
+--
+This complete guide documents {brand} {revnumber}, published on {revdate}.
 
-This complete guide documents the final stable version {revnumber}
+This work is licensed under the http://creativecommons.org/licenses/by-sa/3.0/[Attribution-Share Alike 3.0 Unported] license.
+--
 
 include::getting-started.asciidoc[]
 

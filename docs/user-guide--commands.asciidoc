@@ -61,51 +61,46 @@ plugin:list::
 List all plugins configured (and correctly installed) in `plugins` section of your `phpreflect.json` config file.
 +
 .Without plugins, you will get
-====
 ----
 $ phpreflect plugin:list
 
  [Json Configuration]
  No plugins detected.
 ----
-====
 +
 .With only `Analyser` plugin configured, you will get
-====
 ----
 $ phpreflect plugin:list
 
  Plugin Name Plugin Class                                    Events Subscribed
  Analyser    Bartlett\Reflect\Plugin\Analyser\AnalyserPlugin reflect.complete
 ----
-====
 
 provider:list::
 List all data source providers configured in `source-providers` section of your `phpreflect.json` config file.
 +
 .Result may vary depending of your current directory, but you will get something like
-====
 ----
 $ phpreflect provider:list
 
  Source Alias   Files
  .      current     46
 ----
-====
 
 provider:show::
 Show list of files corresponding to the (Symfony) Finder rules defined.
 +
 .With Reflect source files
-====
 ----
 $ phpreflect provider:show .
 ----
++
 Possible alternative
++
 ----
 $ phpreflect provider:show --alias current
 ----
-
++
 ----
  Source                                                  Files
  .                                                       46
@@ -116,21 +111,21 @@ $ phpreflect provider:show --alias current
 
  <... more lines ...>
 ----
-====
 
 provider:display::
 Show source code of a file in one of the data source identified.
 +
 .With `Bartlett\Reflect.php` in the 'current' data source
-====
 ----
 $ phpreflect provider:display . Bartlett\Reflect.php
 ----
++
 Possible alternative
++
 ----
 $ phpreflect provider:display --alias current Bartlett\Reflect.php
 ----
-
++
 ----
  Source
  .
@@ -146,7 +141,6 @@ $ phpreflect provider:display --alias current Bartlett\Reflect.php
 
  <... more lines ...>
 ----
-====
 
 When the `Analyser` plugin is installed, following lines added into `analysers` section
 ----
@@ -162,42 +156,38 @@ analyser:list::
 List all analysers configured in `analysers` section of your `phpreflect.json` config file.
 +
 .Without analysers, you will get
-====
 ----
 $ phpreflect analyser:list
 
  [Json Configuration]
  No analysers detected.
 ----
-====
 +
 .With only `Analyser` plugin configured, you will get
-====
 ----
 $ phpreflect analyser:list
 
  Analyser Name Analyser Class
  Structure     Bartlett\Reflect\Analyser\StructureAnalyser
 ----
-====
 
 analyser:run::
 Parse a data source and display results. May wary depending of the data source and analyser used.
 +
 .With `structure` analyser and the Reflect source code, you will get something like
-====
 ----
 $ phpreflect analyser:run .
 ----
++
 Possible alternative
++
 ----
 $ phpreflect analyser:run --alias current
 ----
-
++
 ----
 include::structure_analysis.out.asciidoc[]
 ----
-====
 
 When the `plantUML` plugin is installed, following lines added into `plugins` section
 ----
@@ -214,68 +204,70 @@ Parse a data source and draw corresponding UML diagrams (package or class)
 with the http://plantuml.sourceforge.net/[PlantUML] syntax.
 +
 .Build a package diagram corresponding to `Bartlett\Reflect\Model`
-====
 ----
 $ phpreflect plantUML:run --package=Bartlett\Reflect\Model .
 ----
++
 Possible Alternative
++
 ----
 $ phpreflect plantUML:run --package=Bartlett\Reflect\Model --alias current
 ----
-
++
 ----
 PlantUML package diagram
 
 include::packageDiagram.plantuml[]
 ----
-====
 +
-****
-.Read more
-
 It's now time to produce PNG images. Put previous PlantUML code syntax into a text file (e.g named +packageDiagram.plantuml+),
 and run the following command.
-
++
 ----
 $ java -jar plantuml.jar packageDiagram.plantuml
 ----
-
++
 And you should obtain a PNG image like this one
-
++
+ifdef::basebackend-docbook[]
+image:plantUML_packageDiag.png[alt="Package UML diagram",scale="60"]
+endif::basebackend-docbook[]
+ifndef::basebackend-docbook[]
 image::plantUML_packageDiag.png[alt="Package UML diagram",options="responsive"]
-****
+endif::basebackend-docbook[]
 +
 .Build a class diagram corresponding to `Bartlett\Reflect\Builder`
-====
 ----
 $ phpreflect plantUML:run --class=Bartlett\Reflect\Builder .
 ----
++
 Possible Alternative
++
 ----
 $ phpreflect plantUML:run --class=Bartlett\Reflect\Builder --alias current
 ----
-
++
 ----
 PlantUML class diagram
 
 include::classDiagram.plantuml[]
 ----
-====
 +
-****
-.Read more
-
 It's now time to produce PNG images. Put previous PlantUML code syntax into a text file (e.g named +classDiagram.plantuml+),
 and run the following command.
-
++
 ----
 $ java -jar plantuml.jar classDiagram.plantuml
 ----
-
++
 And you should obtain a PNG image like this one
-
++
+ifdef::basebackend-docbook[]
+image:plantUML_classDiag.png[alt="Class UML diagram",scale="60"]
+endif::basebackend-docbook[]
+ifndef::basebackend-docbook[]
 image::plantUML_classDiag.png[alt="Class UML diagram",options="responsive"]
-****
+endif::basebackend-docbook[]
 
 == Summary
 
