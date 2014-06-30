@@ -54,3 +54,10 @@ REM --
 ECHO GENERATING ePUB FORMAT ...
 
 "%A2X_BIN%" %1 %2 --resource=./images -L --icons --stylesheet="%ASCIIDOC%"/stylesheets/docbook-xsl.css -d book -f epub phpreflect-book.asciidoc
+
+REM --
+REM -- Single xHTML page FORMAT
+REM --
+ECHO GENERATING Single xHTML page FORMAT ...
+
+"%A2X_BIN%" %1 %2 --resource=./images -L --icons --stylesheet="%ASCIIDOC%"/stylesheets/docbook-xsl.css -d book -f xhtml phpreflect-book.asciidoc
