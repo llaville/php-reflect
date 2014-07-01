@@ -11,6 +11,7 @@
 :footer-fullwidth:
 :cmdbaseurl: https://github.com/llaville/php-reflect/tree/v2/docs/build/
 
+[id="post-3"]
 == {summary}
 
 [quote,Published by {author} on {revdate}]

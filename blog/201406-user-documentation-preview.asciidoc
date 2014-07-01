@@ -11,6 +11,7 @@
 :footer-fullwidth:
 :docbaseurl: http://php5.laurent-laville.org/reflect/manual/2.1/en/
 
+[id="post-2"]
 == {summary}
 
 [quote,Published by {author} on {revdate}]

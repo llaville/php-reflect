@@ -30,14 +30,11 @@ Subscribe to http://php5.laurent-laville.org/reflect/blog/rss.xml[RSS feed].
 ** link:201402.html[February] [badge pull-right]#9#
 ** link:201403.html[Marth] [badge pull-right]#3#
 ** link:201404.html[April] [badge pull-right]#2#
+** link:201406.html[June] [badge pull-right]#3#
 --
 ====
 
 [role="col-md-9"]
-include::201406-build-user-documentation.asciidoc[]
+include::201407-release-2.1-planned.asciidoc[]
 
 [role="col-md-9 col-md-offset-3"]
-include::201406-user-documentation-preview.asciidoc[]
-
-[role="col-md-9 col-md-offset-3"]
-include::201406-user-documentation.asciidoc[]
