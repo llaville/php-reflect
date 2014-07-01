@@ -1,0 +1,52 @@
+= Cover
+:description: PHP Reflect Book
+:icons!:
+:iconsfont:   font-awesome
+:theme:       cerulean
+:stylesheet:  cover.css
+
+
+== PHP Reflect 2
+
+[role="cover"]
+--
+image:icons/font-awesome/code.png[alt="code",icon="code",iconsfont="font-awesome",size="5x"]
+image:icons/font-awesome/search-plus.png[alt="code",icon="search-plus",iconsfont="font-awesome",size="9x"]
+--
+
+[role="bg-info"]
+--
+[big]#The Book#
+--
+[pull-left]#Published with AsciiDoc-Bootstrap backend v4#
+[pull-right]#by Laurent Laville#
+
+unfloat::[]
+
+[role="col-md-6 panels"]
+====
+[panel,primary]
+.Read it online
+--
+* image:icons/font-awesome/files-o.png[alt="multiple html files",icon="files-o",iconsfont="font-awesome"] link:getting-started.html[Multiple HTML files]
+* image:icons/font-awesome/file-o.png[alt="single html file",icon="file-o",iconsfont="font-awesome"] link:phpreflect-book.html[Single HTML file]
+* image:icons/font-awesome/file-pdf-o.png[alt="pdf file",icon="file",iconsfont="font-awesome"] link:phpreflect-book-a4.pdf[PDF A4 file]
+* image:icons/font-awesome/file-pdf-o.png[alt="pdf file",icon="file",iconsfont="font-awesome"] link:phpreflect-book-us.pdf[PDF US file]
+* image:icons/font-awesome/book.png[alt="epub file",icon="book",iconsfont="font-awesome"] link:phpreflect-book.epub[ePub file]
+* image:icons/font-awesome/windows.png[alt="html help file",icon="windows",iconsfont="font-awesome"] [text-danger]*HTML Help file*
+--
+====
+
+[role="col-md-6 panels"]
+====
+[panel,info]
+.Read it offline (download a zip archive)
+--
+* image:icons/font-awesome/files-o.png[alt="multiple html files",icon="files-o",iconsfont="font-awesome"] link:phpreflect-book.chunked.zip[Multiple HTML files]
+* image:icons/font-awesome/file-o.png[alt="single html file",icon="file-o",iconsfont="font-awesome"] link:phpreflect-book.html.zip[Single HTML file]
+* image:icons/font-awesome/file-pdf-o.png[alt="pdf file",icon="file",iconsfont="font-awesome"] link:phpreflect-book.pdfa4.zip[PDF A4 file]
+* image:icons/font-awesome/file-pdf-o.png[alt="pdf file",icon="file",iconsfont="font-awesome"] link:phpreflect-book.pdfus.zip[PDF US file]
+* image:icons/font-awesome/book.png[alt="epub file",icon="book",iconsfont="font-awesome"] link:phpreflect-book.epub.zip[ePub file]
+* image:icons/font-awesome/windows.png[alt="html help file",icon="windows",iconsfont="font-awesome"] link:phpreflect-book.chm.zip[HTML Help file]
+--
+====
