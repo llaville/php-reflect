@@ -1,8 +1,9 @@
 = {title}
 :title:       PHP Reflect
 :description: Reverse-engineer classes, interfaces, functions, constants, namespaces and more.
+include::revision.asciidoc[]
 include::attributes.asciidoc[]
-:stable:      1.9.0
+:stable:      2.1.0
 :icons!:
 :iconsfont:   font-awesome
 :jumbotron:
@@ -17,10 +18,10 @@ _currently v{stable}_
 
 [role="col-md-6"]
 ====
-[panel,primary]
+[panel,info]
 .v1
 --
-[bg-primary]*Stable Release*
+[bg-info]*Stable Release*
 
 Last branch 1 release was published on October 12, 2013.
 
@@ -36,19 +37,19 @@ endif::[]
 
 [role="col-md-6"]
 ====
-[panel,danger]
+[panel,primary]
 .v2
 --
-[bg-danger]*Still Under Development*
+[bg-primary]*Stable Release*
 
-It will become stable on July 4, 2014.
+Last branch 2 release was published on July 4, 2014.
 
 ifdef::basebackend-bootstrap[]
-link:./manual/2.1/en/getting-started.html["Learn more",role="primary",options="block"]
+link:./manual/current/en/getting-started.html["Learn more",role="primary",options="block"]
 endif::[]
 
 ifndef::basebackend-bootstrap[]
-link:./manual/2.1/en/getting-started.html[Learn more]
+link:./manual/current/en/getting-started.html[Learn more]
 endif::[]
 --
 ====
