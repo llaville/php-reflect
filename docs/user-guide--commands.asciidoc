@@ -29,7 +29,7 @@ when you invoke the `phpreflect` command, you should obtain the following comman
 [role="cli-output"]
 ====
 ----
-phpReflect version 2.0.0-18-g4f82424 build 4f82424b0010e4f04fb3508f0bfa2fd8dbe28f6f
+phpReflect version 2.0.0 build b45be1d0d1b5a46253f9cda894dd7717f0a64abd
 
 Usage:
   [options] command [arguments]
