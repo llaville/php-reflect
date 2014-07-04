@@ -53,6 +53,16 @@ class PropertyModel extends AbstractModel implements Visitable
     }
 
     /**
+     * Gets class name for the reflected property.
+     *
+     * @return string
+     */
+    public function getClassName()
+    {
+        return $this->class_name;
+    }
+
+    /**
      * Gets Doc comment from the property.
      *
      * @return string
