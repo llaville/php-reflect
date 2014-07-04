@@ -669,6 +669,10 @@ http://www.php.net/manual/en/class.reflectionproperty.php[]
 | image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
 | *export* - Exports a property
 
+| image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+| image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+| *getClassName* -  Gets class name of the reflected property
+
 | image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
 | image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
 | *getDeclaringClass* -  Gets declaring class for the reflected property
