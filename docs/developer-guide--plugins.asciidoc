@@ -80,6 +80,7 @@ to specific events.
 <?php
 
 use Bartlett\Reflect;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 $reflect = new Reflect;
 
@@ -103,6 +104,7 @@ $reflect->getEventDispatcher()->addListener(
 <?php
 
 use Bartlett\Reflect;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 $reflect = new Reflect;
 
@@ -113,7 +115,7 @@ $reflect->getEventDispatcher()->addListener(
         printf(
             'Parsing Data source "%s", file "%s". AST = %s' . PHP_EOL,
             $e['source'],
-            $e['filename'],
+            $e['file'],
             print_r($ast, true)
         );
 
