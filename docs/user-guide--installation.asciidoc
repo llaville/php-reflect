@@ -33,6 +33,7 @@ Before you install PHP [label label-primary]#Reflect#, you will need an operatin
 with http://www.php.net[PHP] 5.3.0 or later installed,
 
 [label label-primary]#Reflect# requires the
+http://www.php.net/manual/en/book.datetime.php[date],
 http://www.php.net/manual/en/book.json.php[json],
 http://www.php.net/manual/en/book.reflection.php[reflection],
 http://www.php.net/manual/en/book.tokenizer.php[tokenizer],
@@ -63,7 +64,7 @@ This is the equivalent of doing a git clone checkout followed by a composer inst
 ----
 $ php composer.phar create-project bartlett/php-reflect path 2.*
 ----
-Where +path+ is your install directory. 
+Where +path+ is your install directory.
 ====
 
 === PHAR
