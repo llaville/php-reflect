@@ -86,7 +86,14 @@ class AnalyserRunCommand extends ProviderCommand
         }
 
         $analysers = array();
-        foreach ($input->getArgument('analysers') as $analyser) {
+
+        $analysersAsked = $input->getArgument('analysers');
+        if (empty($analysersAsked)) {
+            // default analyser
+            $analysersAsked = array('Structure');
+        }
+
+        foreach ($analysersAsked as $analyser) {
             $found = false;
             foreach ($analysersInstalled as $analyserInstalled) {
                 if (strcasecmp($analyserInstalled['name'], $analyser) === 0) {
@@ -104,10 +111,6 @@ class AnalyserRunCommand extends ProviderCommand
                 );
             }
             $analysers[] = new $analyserInstalled['class'];
-        }
-        if (empty($analysers)) {
-            // at least, there is always this analyser to print structure
-            $analysers[] = new Reflect\Analyser\StructureAnalyser;
         }
 
         foreach ($providers as $provider) {
