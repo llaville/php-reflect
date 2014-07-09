@@ -23,6 +23,7 @@ ifdef::basebackend-bootstrap[]
 ** xref:_event_subscribers[Event Subscribers]
 ** xref:_events_lifecycle[Events lifecycle]
 * xref:_console_commands[Console Commands]
+* xref:_register_plugins[Register Plugins]
 --
 ====
 endif::basebackend-bootstrap[]
@@ -213,3 +214,32 @@ class AnalyserPlugin implements EventSubscriberInterface
 
 CAUTION: If your plugin must not provide console command,
 your +getCommands()+ static method should return an empty php array.
+
+[role="col-md-9 col-md-offset-3"]
+== Register Plugins
+
+IMPORTANT: Don't forget to register a plugin with `addSubscriber()` method,
+if you want to use it.
+
+.Register the cache plugin
+====
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+use Bartlett\Reflect\Plugin\Cache\CachePlugin;
+
+$reflect = new Reflect;
+
+$reflect->addSubscriber( new CachePlugin($cache) );
+----
+====
+
+Learn more about the
+ifdef::basebackend-docbook[]
+cache plugin, see xref:_cache_plugin[]
+endif::basebackend-docbook[]
+ifdef::basebackend-html[]
+link:developer-guide&#45;&#45;cache-plugin.html[cache plugin].
+endif::basebackend-html[]
