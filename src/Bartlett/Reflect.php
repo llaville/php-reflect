@@ -114,8 +114,8 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                 $this->builder->setCurrentFile($file->getPathname());
 
                 if (isset($event['notModified'])) {
-                    // uses cached response
-                    //$this->buildFromCache($event['notModified']);
+                    // uses cached response (AST built by PHP-Parser)
+                    $traverser->traverse($event['notModified']);
                 } else {
                     // live request
                     try {

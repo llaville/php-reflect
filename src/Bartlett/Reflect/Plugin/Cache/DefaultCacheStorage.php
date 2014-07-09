@@ -97,7 +97,7 @@ class DefaultCacheStorage implements CacheStorageInterface
         $manifest = null;
         $entries  = unserialize($this->entries);
         foreach ($entries as $index => $entry) {
-            if ($entry['sourceFile'] === $request['filename']) {
+            if ($entry['sourceFile'] === $request['file']->getPathname()) {
                 $manifest = $entry;
                 break;  // we found entry in cache corresponding to current filename
             }
@@ -153,7 +153,7 @@ class DefaultCacheStorage implements CacheStorageInterface
                     // remove expired entry from the metadata
                     continue;
                 }
-                if ($entry['sourceFile'] === $request['filename']) {
+                if ($entry['sourceFile'] === $request['file']->getPathname()) {
                     // remove old cached content
                     $this->cache->delete($entry['cacheData']);
                 } else {
@@ -163,19 +163,19 @@ class DefaultCacheStorage implements CacheStorageInterface
         }
 
         // update the manifest
-        $key = sha1_file($request['filename']);
+        $key = sha1_file($request['file']->getPathname());
         array_push(
             $entries,
             array(
                 'expiration' => $currentTime + $this->maxlifetime,
                 'cacheData'  => $key,
-                'sourceFile' => $request['filename']
+                'sourceFile' => $request['file']->getPathname()
             )
         );
         $this->cache->save($this->key, serialize($entries));
 
         // save user data
-        $this->cache->save($key, serialize($request['data']));
+        $this->cache->save($key, $request['ast']);
     }
 
     /**
