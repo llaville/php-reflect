@@ -42,9 +42,10 @@ With both methods then you have this output :
 [role="cli-output"]
 ====
 ----
-phpReflect version 2.0.0 build b45be1d0d1b5a46253f9cda894dd7717f0a64abd
+phpReflect version 2.2.0 build ...
 ----
 ====
+NOTE: [big]#...# represents the Git commit hash of this version
 
 Other alternative installations are possible.
 Please refer to the
