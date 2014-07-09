@@ -654,38 +654,6 @@ class Builder extends NodeVisitorAbstract
     }
 
     /**
-     * Build objects from a previous cached request
-     *
-     * @param array $cacheData List of models store in cache for the current
-     *                         file parsed
-     *
-     * @return void
-     */
-    public function buildFromCache($cacheData)
-    {
-        while (!empty($cacheData)) {
-            $element = array_shift($cacheData);
-
-            if ($element instanceof ClassModel) {
-                $qualifiedName = $element->getName();
-                if ($element->isInterface()) {
-                    $this->interfaces[$qualifiedName] = $element;
-
-                } elseif ($element->isTrait()) {
-                    $this->traits[$qualifiedName] = $element;
-
-                } else {
-                    $this->classes[$qualifiedName] = $element;
-                }
-
-            } elseif ($element instanceof FunctionModel) {
-                $qualifiedName = $element->getName();
-                $this->functions[$qualifiedName] = $element;
-            }
-        }
-    }
-
-    /**
      * Returns list of packages built.
      *
      * @return array Array of PackageModel object
