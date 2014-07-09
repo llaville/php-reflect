@@ -26,6 +26,8 @@ This list (+$classes+) is an iterator, that can be traversed by a simple foreach
 
 use Bartlett\Reflect;
 
+$reflect = new Reflect;
+
 foreach ($reflect->getPackages() as $package) {
     foreach ($package->getClasses() as $class) {
         echo $class->getName(), PHP_EOL;
