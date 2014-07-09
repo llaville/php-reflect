@@ -29,6 +29,8 @@ to allow you to easily extend the features list.
 
 See xref:_plugins[]
 
+* See xref:_cache_plugin.[] to speed up future data source parsing.
+
 image:icons/font-awesome/search-plus.png[alt="Analysers",icon="search-plus",iconsfont="font-awesome",size="9x"]
 *Analysers*
 
@@ -84,6 +86,13 @@ endif::basebackend-bootstrap[]
 ifndef::basebackend-bootstrap[]
 link:developer-guide&#45;&#45;plugins.html[Plugins]
 endif::basebackend-bootstrap[]
+
+[options="header,autowidth", cols="3,5", role="table table-bordered table-striped"]
+|===========================
+| Plugin | Description
+
+| link:developer-guide&#45;&#45;cache-plugin.html[Cache] | speed up future data source parsing
+|===========================
 --
 ====
 
