@@ -45,6 +45,10 @@
 
 namespace Bartlett\Reflect\Analyser;
 
+use Bartlett\Reflect\Printer\Text;
+
+use Symfony\Component\Console\Output\OutputInterface;
+
 /**
  * This analyzer collects different count metrics for code artifacts like
  * classes, methods, functions, constants or packages.
@@ -90,11 +94,13 @@ class StructureAnalyser extends AbstractAnalyser
     }
 
     /**
-     * Returns a pre-formatted report
+     * Renders analyser report to output.
      *
-     * @return array
+     * @param object OutputInterface $output Console Output
+     *
+     * @return void
      */
-    public function toArray()
+    public function render(OutputInterface $output)
     {
         $count = $this->count;
 
@@ -250,7 +256,8 @@ class StructureAnalyser extends AbstractAnalyser
             )
         );
 
-        return $lines;
+        $printer = new Text;
+        $printer->write($output, $lines);
     }
 
     /**

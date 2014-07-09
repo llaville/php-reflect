@@ -15,7 +15,6 @@ use Bartlett\Reflect\Command\ProviderCommand;
 use Bartlett\Reflect\ProviderManager;
 use Bartlett\Reflect\Provider\SymfonyFinderProvider;
 use Bartlett\Reflect\Plugin\Analyser\AnalyserPlugin;
-use Bartlett\Reflect\Printer\Text;
 
 class AnalyserRunCommand extends ProviderCommand
 {
@@ -190,10 +189,8 @@ class AnalyserRunCommand extends ProviderCommand
                 return;
             }
 
-            $printer = new Text;
-
             foreach ($analysers as $analyser) {
-                $printer->write($output, $analyser->toArray());
+                $analyser->render($output);
             }
             return;
         }

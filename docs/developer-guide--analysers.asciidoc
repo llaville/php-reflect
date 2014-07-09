@@ -117,12 +117,16 @@ class Analyser extends AbstractAnalyser
 
 == Print results
 
-Once you have used visit methods to explore parsing results, you will need to return
-formatted data ready to be print.
+Once you have used visit methods to explore parsing results, you probably want to display it.
 
-To do so, you should implement the +toArray+ method of +Bartlett\Reflect\Analyser\AnalyserInterface+.
+To do so, you should implement the +render()+ method of +Bartlett\Reflect\Analyser\AnalyserInterface+.
 
-Implementation should follow only one rule. Return an array with :
+Each analyser is responsible to display results with the `render()` method.
+You can either used the `Bartlett\Reflect\Printer\Text` helper to produces report line by line,
+or any other solution.
+
+If you used the printer text helper, your implementation should follow only one rule.
+Return an array with :
 
 * free data identifier as key.
 * data contents are an array with a string format
