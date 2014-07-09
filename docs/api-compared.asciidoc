@@ -591,6 +591,10 @@ http://www.php.net/manual/en/class.reflectionparameter.php[]
 | {unchecked}
 | *getClass* - Gets class
 
+| {unchecked}
+| {checked}
+| *getTypeHint* - Gets the type of the parameter (callable, array, class name, or none)
+
 | {checked}
 | {unchecked}
 | *getDeclaringClass* -  Gets declaring class for the reflected parameter

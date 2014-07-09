@@ -64,6 +64,16 @@ class ParameterModel extends AbstractModel implements Visitable
     }
 
     /**
+     * Gets the type of the parameter.
+     *
+     * @return mixed Blank when none, 'callable', 'array', or class name.
+     */
+    public function getTypeHint()
+    {
+        return $this->struct['typeHint'];
+    }
+
+    /**
      * Checks whether the parameter allows NULL.
      *
      * If a type is defined, null is allowed only if default value is null.

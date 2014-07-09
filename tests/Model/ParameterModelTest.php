@@ -124,6 +124,26 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests type hinting of the parameter.
+     *
+     *  covers ParameterModel::getTypeHint
+     * @return void
+     */
+    public function testTypeHintAccessor()
+    {
+        $f = 0;  // function singleFunction
+        $p = 0;  // parameter $someparam
+
+        $parameters = self::$functions[$f]->getParameters();
+
+        $this->assertEquals(
+            'array',
+            $parameters[$p]->getTypeHint(),
+            self::$functions[$f]->getName() . ", parameter #$p type hint does not match."
+        );
+    }
+
+    /**
      * Tests whether the parameter allows NULL
      * when type hint is defined without default value for a class method.
      *
