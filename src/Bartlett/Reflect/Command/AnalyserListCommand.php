@@ -29,7 +29,7 @@ class AnalyserListCommand extends Command
             );
         }
 
-        if (!isset($var['analysers'])) {
+        if (!isset($var['analysers']) || empty($var['analysers'])) {
             $fmt = $this->getApplication()->getHelperSet()->get('formatter');
 
             $output->writeln(
