@@ -108,32 +108,6 @@ class StructureAnalyser extends AbstractAnalyser
 
         $lines = array();
 
-        if ($count['directories'] > 0) {
-            $lines['dataSourceAnalysed'] = array(
-                '<info>Data Source Analysed</info>%s',
-                array(PHP_EOL)
-            );
-            $lines['directories'] = array(
-                'Directories                                 %10d',
-                array($count['directories'])
-            );
-            $lines['files'] = array(
-                'Files                                       %10d',
-                array($count['files'])
-            );
-        }
-
-        if ($count['testClasses'] > 0) {
-            $lines['testClasses'] = array(
-                '  Classes                                   %10d',
-                array($count['testClasses'])
-            );
-            $lines['testMethods'] = array(
-                '  Methods                                   %10d',
-                array($count['testMethods'])
-            );
-        }
-
         $lines['structure'] = array(
             '%sStructure',
             array(PHP_EOL)

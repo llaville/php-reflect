@@ -191,7 +191,33 @@ class AnalyserRunCommand extends ProviderCommand
                 // No reports printed if there are no metrics.
                 return;
             }
+            $count = $metrics['DataSource'];
 
+            // print Data Source headers
+            if ($count['directories'] > 0) {
+                $text = sprintf(
+                    "\n" .
+                    "Directories                                 %10d\n" .
+                    "Files                                       %10d\n",
+                    $count['directories'],
+                    $count['files']
+                );
+            }
+            if (in_array('structure', $analysers)
+                && $count['testClasses'] > 0
+            ) {
+                $text .= sprintf(
+                    "\nTests\n" .
+                    "  Classes                                   %10d\n" .
+                    "  Methods                                   %10d\n",
+                    $count['testClasses'],
+                    $count['testMethods']
+                );
+            }
+            $output->writeln('<info>Data Source Analysed</info>');
+            $output->writeln($text);
+
+            // print each analyser report
             foreach ($analysers as $analyser) {
                 $analyser->render($output);
             }
