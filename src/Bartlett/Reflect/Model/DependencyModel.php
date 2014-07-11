@@ -42,9 +42,24 @@ class DependencyModel extends AbstractModel implements Visitable
         $this->name = $qualifiedName;
     }
 
+    /**
+     * Gets the name of the dependency.
+     *
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Gets the arguments list of an internal function.
+     *
+     * @return array
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
     }
 
     /**

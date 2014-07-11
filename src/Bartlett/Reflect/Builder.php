@@ -100,6 +100,9 @@ class Builder extends NodeVisitorAbstract
         } elseif ($node instanceof \PhpParser\Node\Expr\FuncCall
             && $node->name instanceof \PhpParser\Node\Name
         ) {
+            $nodeAttributes['arguments']
+                = $this->parseArguments($node->args);
+
             $this->parseInternalFunction($node, $nodeAttributes);
 
         } elseif ($node instanceof \PhpParser\Node\Stmt\Function_) {
@@ -513,6 +516,42 @@ class Builder extends NodeVisitorAbstract
                 );
             }
             $params[] = new ParameterModel($param->name, $attr);
+        }
+        return $params;
+    }
+
+    /**
+     * This method parses arguments of any internal function.
+     *
+     * @return array
+     */
+    protected function parseArguments($args)
+    {
+        $params = array();
+        foreach ($args as $param) {
+
+            $node = $param->value;
+
+            $typeClass = $node->getType();
+
+            if (in_array($typeClass, array('Scalar_String', 'Scalar_Encapsed'))) {
+                $value = $node->value;
+            }
+            elseif ('Expr_Variable' == $typeClass) {
+                $value = $node->name;
+            }
+            else {
+                $value = '';
+            }
+
+            $params[] = array(
+                'position'  => count($params),
+                'startLine' => $param->getAttribute('startLine'),
+                'endLine'   => $param->getAttribute('endLine'),
+                'byRef'     => $param->byRef,
+                'type'      => $typeClass,
+                'value'     => $value
+            );
         }
         return $params;
     }
