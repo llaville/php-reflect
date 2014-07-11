@@ -480,6 +480,13 @@ class Builder extends NodeVisitorAbstract
             return $this->parseUserConstant($node, $nodeAttributes);
         }
 
+        $hash = array(
+            $nodeAttributes['startLine'],
+            $nodeAttributes['endLine'],
+            $nodeAttributes['file']
+        );
+        $nodeAttributes['hash'] = sha1(serialize($hash));
+
         $dep = $this->buildDependency($functionName, $nodeAttributes);
         $dep->incCalls();
 
@@ -684,12 +691,16 @@ class Builder extends NodeVisitorAbstract
      */
     public function buildDependency($qualifiedName, array $attributes = array())
     {
-        if (!isset($this->dependencies[$qualifiedName])) {
+        if (!isset($attributes['hash'])) {
+            $attributes['hash'] = '';
+        }
+
+        if (!isset($this->dependencies[$qualifiedName . $attributes['hash']])) {
             $model = new DependencyModel($qualifiedName, $attributes);
             $model->setFile($this->file);
-            $this->dependencies[$qualifiedName] = $model;
+            $this->dependencies[$qualifiedName . $attributes['hash']] = $model;
         }
-        return $this->dependencies[$qualifiedName];
+        return $this->dependencies[$qualifiedName . $attributes['hash']];
     }
 
     /**
