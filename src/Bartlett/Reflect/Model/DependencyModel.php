@@ -59,7 +59,7 @@ class DependencyModel extends AbstractModel implements Visitable
      */
     public function getArguments()
     {
-        return $this->arguments;
+        return $this->struct['arguments'];
     }
 
     /**
