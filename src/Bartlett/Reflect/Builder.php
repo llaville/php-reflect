@@ -477,7 +477,7 @@ class Builder extends NodeVisitorAbstract
         $functionName = $node->name->__toString();
 
         if ('define' == $functionName) {
-            return $this->parseUserConstant($node, $nodeAttributes);
+            $this->parseUserConstant($node, $nodeAttributes);
         }
 
         $hash = array(
