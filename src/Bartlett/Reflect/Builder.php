@@ -402,20 +402,21 @@ class Builder extends NodeVisitorAbstract
     protected function parseMethodCall($node, $nodeAttributes)
     {
         $var = $node->var;
-        if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
-            if (!isset($this->aliases[$var->var->name .'_'. $var->name])) {
-                // class name resolver failure
-                return;
-            }
-            $qualifiedClassName = $this->aliases[$var->var->name .'_'. $var->name];
+        if ($var->name instanceof \PhpParser\Node\Name) {
+            if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
+                if (!isset($this->aliases[$var->var->name .'_'. $var->name])) {
+                    // class name resolver failure
+                    return;
+                }
+                $qualifiedClassName = $this->aliases[$var->var->name .'_'. $var->name];
 
-        } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
-            if (!isset($this->aliases[$var->name])) {
-                // class name resolver failure
-                return;
+            } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
+                if (!isset($this->aliases[$var->name])) {
+                    // class name resolver failure
+                    return;
+                }
+                $qualifiedClassName = $this->aliases[$var->name];
             }
-            $qualifiedClassName = $this->aliases[$var->name];
-
         }
 
         if (!isset($qualifiedClassName)) {
