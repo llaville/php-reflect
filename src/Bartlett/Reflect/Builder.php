@@ -86,12 +86,16 @@ class Builder extends NodeVisitorAbstract
         if ($node instanceof \PhpParser\Node\Expr\Assign
             && $node->expr instanceof \PhpParser\Node\Expr\New_
         ) {
-            $var = $node->var;
-            if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
-                $this->aliases[$var->var->name][$var->name] = $node->expr->class->__toString();
+            $var   = $node->var;
+            $class = $node->expr->class;
 
-            } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
-                $this->aliases[$var->name] = $node->expr->class->__toString();
+            if ($class instanceof \PhpParser\Node\Name) {
+                if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
+                    $this->aliases[$var->var->name .'_'. $var->name] = $class->__toString();
+
+                } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
+                    $this->aliases[$var->name] = $class->__toString();
+                }
             }
         }
 
@@ -399,11 +403,11 @@ class Builder extends NodeVisitorAbstract
     {
         $var = $node->var;
         if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
-            if (!isset($this->aliases[$var->var->name][$var->name])) {
+            if (!isset($this->aliases[$var->var->name .'_'. $var->name])) {
                 // class name resolver failure
                 return;
             }
-            $qualifiedClassName = $this->aliases[$var->var->name][$var->name];
+            $qualifiedClassName = $this->aliases[$var->var->name .'_'. $var->name];
 
         } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
             if (!isset($this->aliases[$var->name])) {
