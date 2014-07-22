@@ -40,6 +40,36 @@ class DependencyModel extends AbstractModel implements Visitable
         parent::__construct($attributes);
 
         $this->name = $qualifiedName;
+
+        if (strpos($qualifiedName, '::')) {
+            $this->struct['classMethod']      = true;
+            $this->struct['internalFunction'] = false;
+        } else {
+            $this->struct['classMethod']      = false;
+            $this->struct['internalFunction'] = true;
+        }
+    }
+
+    /**
+     * Gets the starting line number of the dependency.
+     *
+     * @return int
+     * @see    getEndLine()
+     */
+    public function getStartLine()
+    {
+        return $this->struct['startLine'];
+    }
+
+    /**
+     * Gets the ending line number of the dependency.
+     *
+     * @return int
+     * @see    getStartLine()
+     */
+    public function getEndLine()
+    {
+        return $this->struct['endLine'];
     }
 
     /**
@@ -70,6 +100,26 @@ class DependencyModel extends AbstractModel implements Visitable
     public function getFileName()
     {
         return $this->struct['file'];
+    }
+
+    /**
+     * Checks if the dependency is a class method.
+     *
+     * @return bool TRUE if the dependency is a class method, otherwise FALSE
+     */
+    public function isClassMethod()
+    {
+        return $this->struct['classMethod'];
+    }
+
+    /**
+     * Checks if the dependency is a php/extension function.
+     *
+     * @return bool TRUE if the dependency is an internal function, otherwise FALSE
+     */
+    public function isInternalFunction()
+    {
+        return $this->struct['internalFunction'];
     }
 
     /**

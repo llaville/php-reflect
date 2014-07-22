@@ -48,6 +48,7 @@ class Builder extends NodeVisitorAbstract
     private $constants    = array();
     private $includes     = array();
     private $dependencies = array();
+    private $aliases      = array();
     private $file;
 
     /**
@@ -82,6 +83,18 @@ class Builder extends NodeVisitorAbstract
             return;
         }
 
+        if ($node instanceof \PhpParser\Node\Expr\Assign
+            && $node->expr instanceof \PhpParser\Node\Expr\New_
+        ) {
+            $var = $node->var;
+            if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
+                $this->aliases[$var->var->name][$var->name] = $node->expr->class->__toString();
+
+            } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
+                $this->aliases[$var->name] = $node->expr->class->__toString();
+            }
+        }
+
         $doc = $node->getDocComment();
 
         $nodeAttributes = array(
@@ -93,7 +106,11 @@ class Builder extends NodeVisitorAbstract
             $nodeAttributes['docComment'] = $doc->getText();
         }
 
-        if ($node instanceof \PhpParser\Node\Expr\New_) {
+        if ($node instanceof \PhpParser\Node\Expr\MethodCall) {
+
+            $this->parseMethodCall($node, $nodeAttributes);
+
+        } elseif ($node instanceof \PhpParser\Node\Expr\New_) {
 
             $this->parseNewStatement($node, $nodeAttributes);
 
@@ -371,6 +388,50 @@ class Builder extends NodeVisitorAbstract
             $package = $this->buildPackage($this->namespace);
             $package->update($attributes);
         }
+    }
+
+    /**
+     * This method parses a method-call-expression.
+     *
+     * @param object AST Node Expression
+     */
+    protected function parseMethodCall($node, $nodeAttributes)
+    {
+        $var = $node->var;
+        if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
+            if (!isset($this->aliases[$var->var->name][$var->name])) {
+                // class name resolver failure
+                return;
+            }
+            $qualifiedClassName = $this->aliases[$var->var->name][$var->name];
+
+        } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
+            if (!isset($this->aliases[$var->name])) {
+                // class name resolver failure
+                return;
+            }
+            $qualifiedClassName = $this->aliases[$var->name];
+
+        }
+
+        if (!isset($qualifiedClassName)) {
+            // stop here if class name resolver failed
+            return;
+        }
+
+        $dep = $this->buildDependency(
+            $qualifiedClassName . '::' . $node->name,
+            $nodeAttributes
+        );
+        $dep->incCalls();
+
+        if ($dep->getCalls() > 1) {
+            return;
+        }
+        $attributes = array('dependencies' => array($dep));
+
+        $package = $this->buildPackage($this->namespace);
+        $package->update($attributes);
     }
 
     /**
