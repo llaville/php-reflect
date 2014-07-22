@@ -144,6 +144,23 @@ class DependencyModelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests the namespace name accessor.
+     *
+     *  covers DependencyModel::getNamespaceName
+     * @return void
+     */
+    public function testNamespaceNameAccessor()
+    {
+        $d = 0;  // DateTime::diff
+
+        $this->assertEquals(
+            '',
+            self::$dependencies[$d]->getNamespaceName(),
+            self::$dependencies[$d]->getName() . ' namespace does not match.'
+        );
+    }
+
+    /**
      * Tests if the dependency is a class method.
      *
      *  covers DependencyModel::isClassMethod

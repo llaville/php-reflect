@@ -83,6 +83,19 @@ class DependencyModel extends AbstractModel implements Visitable
     }
 
     /**
+     * Gets the namespace name.
+     *
+     * @return string
+     */
+    public function getNamespaceName()
+    {
+        $parts     = explode('\\', $this->getName());
+        $className = array_pop($parts);
+
+        return implode('\\', $parts);
+    }
+
+    /**
      * Gets the arguments list of an internal function.
      *
      * @return array
