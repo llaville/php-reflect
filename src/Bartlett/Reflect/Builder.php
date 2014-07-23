@@ -403,6 +403,11 @@ class Builder extends NodeVisitorAbstract
     {
         $var = $node->var;
 
+        if (!is_string($node->name)) {
+            // indirect method call
+            return;
+        }
+
         if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
             if (!isset($this->aliases[$var->var->name .'_'. $var->name])) {
                 // class name resolver failure
