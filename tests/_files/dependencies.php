@@ -7,3 +7,6 @@ $interval
 echo $interval->format('%R%a days');
 
 print_r( extension_loaded('date') );
+
+$finder = new Finder();
+$finder->{$constraint}();
