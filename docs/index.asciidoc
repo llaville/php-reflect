@@ -18,10 +18,10 @@ _currently v{stable}_
 
 [role="col-md-6"]
 ====
-[panel,info]
+[panel,warning]
 .v1
 --
-[bg-info]*Stable Release*
+[bg-warning]*Stable Release, now unmaintained*
 
 Last branch 1 release was published on October 12, 2013.
 
