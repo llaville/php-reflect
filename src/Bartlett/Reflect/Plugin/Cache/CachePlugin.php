@@ -30,10 +30,15 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class CachePlugin implements EventSubscriberInterface
 {
+    const STATS_HITS    = 'hits';
+    const STATS_MISSES  = 'misses';
+
     /**
      * @var CacheStorageInterface $cache Object used to cache parsing results
      */
     protected $storage;
+
+    protected $stats;
 
     /**
      * Initializes the cache plugin.
@@ -43,6 +48,21 @@ class CachePlugin implements EventSubscriberInterface
     public function __construct(CacheStorageInterface $cache)
     {
         $this->storage = $cache;
+        $this->stats   = array(
+            self::STATS_HITS   => 0,
+            self::STATS_MISSES => 0,
+        );
+    }
+
+    /**
+     * Gets the commands available with this plugin.
+     *
+     * @return array An array of Command instances
+     */
+    public static function getCommands()
+    {
+        $commands = array();
+        return $commands;
     }
 
     /**
@@ -68,6 +88,7 @@ class CachePlugin implements EventSubscriberInterface
     public function onReflectProgress(Event $event)
     {
         if ($response = $this->storage->fetch($event)) {
+            ++$this->stats[self::STATS_HITS];
             $event['notModified'] = $response;
         }
     }
@@ -81,6 +102,17 @@ class CachePlugin implements EventSubscriberInterface
      */
     public function onReflectSuccess(Event $event)
     {
+        ++$this->stats[self::STATS_MISSES];
         $this->storage->cache($event);
+    }
+
+    /**
+     * Retrieves cache statistics.
+     *
+     * @return array
+     */
+    public function getStats()
+    {
+        return $this->stats;
     }
 }

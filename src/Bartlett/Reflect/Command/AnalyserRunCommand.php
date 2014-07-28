@@ -15,6 +15,7 @@ use Bartlett\Reflect\Command\ProviderCommand;
 use Bartlett\Reflect\ProviderManager;
 use Bartlett\Reflect\Provider\SymfonyFinderProvider;
 use Bartlett\Reflect\Plugin\Analyser\AnalyserPlugin;
+use Bartlett\Reflect\Plugin\Cache\DefaultCacheStorage;
 
 class AnalyserRunCommand extends ProviderCommand
 {
@@ -77,6 +78,12 @@ class AnalyserRunCommand extends ProviderCommand
             $providers = $var['source-providers'];
         } else {
             $providers = array($var['source-providers']);
+        }
+
+        if (is_array($var['plugins'])) {
+            $pluginsInstalled = $var['plugins'];
+        } else {
+            $pluginsInstalled = array($var['plugins']);
         }
 
         if (is_array($var['analysers'])) {
@@ -142,6 +149,84 @@ class AnalyserRunCommand extends ProviderCommand
 
             $plugin = new AnalyserPlugin($analysers);
             $reflect->addSubscriber($plugin);
+
+            foreach ($pluginsInstalled as $pluginInstalled) {
+                if (stripos($pluginInstalled['class'], 'cacheplugin') === false) {
+                    continue;
+                }
+                // cache plugin found
+
+                if (isset($pluginInstalled['options']['adapter'])) {
+                    $adapterClass = $pluginInstalled['options']['adapter'];
+                } else {
+                    // default cache adapter
+                    $adapterClass = 'DoctrineCacheAdapter';
+                }
+                if (strpos($adapterClass, '\\') === false) {
+                    // add default namespace
+                    $adapterClass = "Bartlett\\Reflect\\Cache\\" . $adapterClass;
+                }
+                if (!class_exists($adapterClass)) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Adapter "%s" cannot be loaded.',
+                            $adapterClass
+                        )
+                    );
+                }
+
+                if (!isset($pluginInstalled['options']['backend']['class'])) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Backend is missing for %s',
+                            $adapterClass
+                        )
+                    );
+                }
+                $backendClass = $pluginInstalled['options']['backend']['class'];
+
+                if (!class_exists($backendClass)) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Backend "%s" cannot be loaded.',
+                            $backendClass
+                        )
+                    );
+                }
+                $rc = new \ReflectionClass($backendClass);
+
+                if (isset($pluginInstalled['options']['backend']['args'])
+                    && is_array($pluginInstalled['options']['backend']['args'])
+                ) {
+                    $args = $pluginInstalled['options']['backend']['args'];
+                } else {
+                    $args = array();
+                }
+
+                for ($a = 0, $max = count($args); $a < $max; $a++) {
+                    // Expands variable from Environment on each argument
+                    $count = preg_match_all("/%{([^}]*)}/", $args[$a], $reg);
+                    for ($i = 0 ; $i < $count ; $i++) {
+                        $val = getenv($reg[1][$i]);
+                        if ($val) {
+                            $args[$a] = str_replace(
+                                $reg[0][$i],
+                                $val,
+                                $args[$a]
+                            );
+                        }
+                    }
+                }
+                $backend = $rc->newInstanceArgs($args);
+
+                $cacheAdapter = new $adapterClass($backend);
+
+                $cache = new DefaultCacheStorage($cacheAdapter);
+
+                $cachePlugin = new $pluginInstalled['class']($cache);
+                $reflect->addSubscriber($cachePlugin);
+                break;
+            }
 
             $fmt = $this->getApplication()->getHelperSet()->get('formatter');
 
@@ -220,6 +305,20 @@ class AnalyserRunCommand extends ProviderCommand
             // print each analyser report
             foreach ($analysers as $analyser) {
                 $analyser->render($output);
+            }
+
+            if (isset($cachePlugin)
+                && $input->getOption('profile')
+            ) {
+                $stats = $cachePlugin->getStats();
+                $output->writeln(
+                    sprintf(
+                        '%s<info>Cache: %d hits, %d misses</info>',
+                        PHP_EOL,
+                        $stats['hits'],
+                        $stats['misses']
+                    )
+                );
             }
             return;
         }
