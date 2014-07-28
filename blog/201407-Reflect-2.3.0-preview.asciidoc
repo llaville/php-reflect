@@ -4,7 +4,7 @@
 :imagesdir: ./images
 :author:    Laurent Laville
 :revdate:   2014-07-28
-:pubdate:   Thu, 24 Jul 2014 14:07:12 +0200
+:pubdate:   Mon, 28 Jul 2014 14:01:00 +0200
 :summary:   A new command to validate json config file
 :jumbotron:
 :jumbotron-fullwidth:
