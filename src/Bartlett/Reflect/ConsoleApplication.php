@@ -24,6 +24,7 @@ use Bartlett\Reflect\Command\ProviderListCommand;
 use Bartlett\Reflect\Command\ProviderShowCommand;
 use Bartlett\Reflect\Command\ProviderDisplayCommand;
 use Bartlett\Reflect\Command\PluginListCommand;
+use Bartlett\Reflect\Command\ValidateCommand;
 
 /**
  * Console Application.
@@ -82,6 +83,7 @@ class ConsoleApplication extends Application
     protected function getDefaultCommands()
     {
         $commands   = parent::getDefaultCommands();
+        $commands[] = new ValidateCommand;
         $commands[] = new PluginListCommand;
         $commands[] = new ProviderListCommand;
         $commands[] = new ProviderShowCommand;

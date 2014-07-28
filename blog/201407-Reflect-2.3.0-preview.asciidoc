@@ -1,0 +1,40 @@
+:doctitle:    Reflect 2.3 preview
+:description: part 1
+:iconsfont: font-awesome
+:imagesdir: ./images
+:author:    Laurent Laville
+:revdate:   2014-07-28
+:pubdate:   Thu, 24 Jul 2014 14:07:12 +0200
+:summary:   A new command to validate json config file
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
+
+[id="post-4"]
+== {summary}
+
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/clock-o.png[alt="future",icon="clock-o",size="4x"]
+
+[WARNING]
+====
+The [label label-primary]#Reflect# Command-Line Interface always needs a file in http://json.org/[JSON] format to run.
+It should be found either in the current, `$HOME/.config/`, or `/etc` directory.
+
+By setting the `REFLECT` environment variable it is possible to set the filename
+of `phpreflect.json` to something else.
+
+E.g:  `REFLECT=my-phpreflect.json`
+====
+
+It's very usefull to validate structure of the json configuration file before to run any command
+of [label label-primary]#Reflect#
+
+.Just run the command below
+====
+----
+$ phpreflect validate
+----
+====
+____
