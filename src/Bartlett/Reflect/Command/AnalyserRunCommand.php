@@ -63,7 +63,7 @@ class AnalyserRunCommand extends ProviderCommand
             || !isset($var['analysers'])
         ) {
             throw new \Exception(
-                'The compatinfo.json file has an invalid format'
+                'The json configuration file has an invalid format'
             );
         }
 
