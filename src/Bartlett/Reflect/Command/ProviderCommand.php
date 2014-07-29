@@ -47,6 +47,16 @@ class ProviderCommand extends Command
             }
         }
 
+        if (substr($src[0], 0, 1) == '.') {
+            // relative local file
+            $src[0] = realpath($src[0]);
+
+            if (PATH_SEPARATOR == ';') {
+                // normalizes path to unix format
+                $src[0] = str_replace(DIRECTORY_SEPARATOR, '/', substr($src[0], 2));
+            }
+        }
+
         // found it
         $finder = new Finder();
         $finder->files()
