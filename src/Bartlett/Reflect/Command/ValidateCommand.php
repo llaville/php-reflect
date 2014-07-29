@@ -51,18 +51,19 @@ class ValidateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $file = $input->getArgument('file');
+        $file  = $input->getArgument('file');
+        $fname = realpath($file);
 
-        if (!file_exists($file)) {
+        if (!file_exists($fname)) {
             $output->writeln('<error>' . $file . ' not found.</error>');
             return 1;
         }
-        if (!is_readable($file)) {
+        if (!is_readable($fname)) {
             $output->writeln('<error>' . $file . ' is not readable.</error>');
             return 1;
         }
 
-        $json = file_get_contents($file);
+        $json = file_get_contents($fname);
 
         try {
             $parser = new JsonParser();
