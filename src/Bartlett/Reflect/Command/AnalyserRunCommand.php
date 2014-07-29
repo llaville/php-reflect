@@ -142,7 +142,7 @@ class AnalyserRunCommand extends ProviderCommand
             }
 
             $pm = new ProviderManager;
-            $pm->set('DataSource', new SymfonyFinderProvider($this->finder));
+            $pm->set($this->source[0], new SymfonyFinderProvider($this->finder));
 
             $reflect = new Reflect;
             $reflect->setProviderManager($pm);
@@ -276,7 +276,7 @@ class AnalyserRunCommand extends ProviderCommand
                 // No reports printed if there are no metrics.
                 return;
             }
-            $count = $metrics['DataSource'];
+            $count = $metrics[$this->source[0]];
 
             // print Data Source headers
             if ($count['directories'] > 0) {

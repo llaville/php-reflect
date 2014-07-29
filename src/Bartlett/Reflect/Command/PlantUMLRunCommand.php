@@ -104,7 +104,7 @@ class PlantUMLRunCommand extends ProviderCommand
             }
 
             $pm = new ProviderManager;
-            $pm->set('DataSource', new SymfonyFinderProvider($this->finder));
+            $pm->set($this->source[0], new SymfonyFinderProvider($this->finder));
 
             $reflect = new Reflect;
             $reflect->setProviderManager($pm);
