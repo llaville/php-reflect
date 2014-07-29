@@ -14,6 +14,8 @@
 
 namespace Bartlett\Reflect\Plugin\Cache;
 
+use Bartlett\Reflect\Command\CacheClearCommand;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -61,7 +63,8 @@ class CachePlugin implements EventSubscriberInterface
      */
     public static function getCommands()
     {
-        $commands = array();
+        $commands   = array();
+        $commands[] = new CacheClearCommand();
         return $commands;
     }
 

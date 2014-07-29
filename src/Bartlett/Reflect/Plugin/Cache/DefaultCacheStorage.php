@@ -183,20 +183,25 @@ class DefaultCacheStorage implements CacheStorageInterface
      *
      * @param array $request Request to delete from cache
      *
-     * @return void
+     * @return int
      */
     public function delete($request)
     {
+        $entriesCleared = 0;
+
         if ($this->exists($request)) {
             foreach (unserialize($this->entries) as $entry) {
                 if ($entry['cacheData']) {
                     // delete each results of the manifest
-                    $this->cache->delete($entry['cacheData']);
+                    if ($this->cache->delete($entry['cacheData'])) {
+                        $entriesCleared++;
+                    }
                 }
             }
             // delete the manifest of data source
             $this->cache->delete($this->key);
         }
+        return $entriesCleared;
     }
 
     /**
@@ -204,11 +209,11 @@ class DefaultCacheStorage implements CacheStorageInterface
      *
      * @param string $source Name that identify a data source
      *
-     * @return void
+     * @return int
      */
     public function purge($source)
     {
         $request = array('source' => $source);
-        $this->delete($request);
+        return $this->delete($request);
     }
 }
