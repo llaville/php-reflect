@@ -11,6 +11,7 @@
         "vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher/LICENSE",
         "vendor/symfony/finder/Symfony/Component/Finder/LICENSE",
         "vendor/phpunit/php-timer/LICENSE",
+        "vendor/seld/jsonlint/LICENSE",
         "vendor/autoload.php"
     ],
     "finder": [
@@ -30,6 +31,10 @@
         {
             "name": "*.php",
             "in": "vendor/phpunit/php-timer"
+        },
+        {
+            "name": "*.php",
+            "in": "vendor/seld/jsonlint"
         }
     ],
     "metadata": [
@@ -51,6 +56,11 @@
                     "phpunit": [
                         {
                             "php-timer": "1.0.5"
+                        }
+                    ],
+                    "seld": [
+                        {
+                            "jsonlint": "1.2.0"
                         }
                     ]
                 }
