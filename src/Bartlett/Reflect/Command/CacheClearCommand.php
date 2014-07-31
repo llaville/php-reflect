@@ -14,8 +14,6 @@
 
 namespace Bartlett\Reflect\Command;
 
-use Bartlett\Reflect\Plugin\Cache\DefaultCacheStorage;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -77,92 +75,12 @@ class CacheClearCommand extends ProviderCommand
             $providers = array($var['source-providers']);
         }
 
-        if (is_array($var['plugins'])) {
-            $pluginsInstalled = $var['plugins'];
-        } else {
-            $pluginsInstalled = array($var['plugins']);
-        }
-
         foreach ($providers as $provider) {
             if ($this->findProvider($provider, $source, $alias) === false) {
                 continue;
             }
-            $entriesCleared = 0;
-
-            foreach ($pluginsInstalled as $pluginInstalled) {
-                if (stripos($pluginInstalled['class'], 'cacheplugin') === false) {
-                    continue;
-                }
-                // cache plugin found
-
-                if (isset($pluginInstalled['options']['adapter'])) {
-                    $adapterClass = $pluginInstalled['options']['adapter'];
-                } else {
-                    // default cache adapter
-                    $adapterClass = 'DoctrineCacheAdapter';
-                }
-                if (strpos($adapterClass, '\\') === false) {
-                    // add default namespace
-                    $adapterClass = "Bartlett\\Reflect\\Cache\\" . $adapterClass;
-                }
-                if (!class_exists($adapterClass)) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'Adapter "%s" cannot be loaded.',
-                            $adapterClass
-                        )
-                    );
-                }
-
-                if (!isset($pluginInstalled['options']['backend']['class'])) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'Backend is missing for %s',
-                            $adapterClass
-                        )
-                    );
-                }
-                $backendClass = $pluginInstalled['options']['backend']['class'];
-
-                if (!class_exists($backendClass)) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'Backend "%s" cannot be loaded.',
-                            $backendClass
-                        )
-                    );
-                }
-                $rc = new \ReflectionClass($backendClass);
-
-                if (isset($pluginInstalled['options']['backend']['args'])
-                    && is_array($pluginInstalled['options']['backend']['args'])
-                ) {
-                    $args = $pluginInstalled['options']['backend']['args'];
-                } else {
-                    $args = array();
-                }
-
-                for ($a = 0, $max = count($args); $a < $max; $a++) {
-                    // Expands variable from Environment on each argument
-                    $count = preg_match_all("/%{([^}]*)}/", $args[$a], $reg);
-                    for ($i = 0 ; $i < $count ; $i++) {
-                        $val = getenv($reg[1][$i]);
-                        if ($val) {
-                            $args[$a] = str_replace(
-                                $reg[0][$i],
-                                $val,
-                                $args[$a]
-                            );
-                        }
-                    }
-                }
-                $backend = $rc->newInstanceArgs($args);
-
-                $cacheAdapter = new $adapterClass($backend);
-
-                $cache = new DefaultCacheStorage($cacheAdapter);
-
-                $entriesCleared = $cache->purge($this->source[0]);
+            if ($this->findCachePlugin($var['plugins'])) {
+                $entriesCleared = $this->cache->purge($this->source[0]);
 
                 $output->writeln(
                     sprintf(
@@ -172,6 +90,7 @@ class CacheClearCommand extends ProviderCommand
                 );
                 return;
             }
+            break;
         }
 
         throw new \Exception(

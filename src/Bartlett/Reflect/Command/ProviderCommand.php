@@ -2,6 +2,8 @@
 
 namespace Bartlett\Reflect\Command;
 
+use Bartlett\Reflect\Plugin\Cache\DefaultCacheStorage;
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Finder\Finder;
 
@@ -9,6 +11,8 @@ class ProviderCommand extends Command
 {
     protected $source;
     protected $finder;
+    protected $cache;
+    protected $cachePluginConf;
 
     /**
      * Find any provider that match optional criteria $source or $alias
@@ -96,5 +100,99 @@ class ProviderCommand extends Command
             }
         }
         return true;
+    }
+
+    /**
+     * Find if the cachePlugin is installed or not
+     *
+     * @param array $plugins Plugins list declared in json configuration file.
+     *
+     * @return bool TRUE if cache installed, FALSE otherwise
+     */
+    protected function findCachePlugin($plugins)
+    {
+        if (is_array($plugins)) {
+            $pluginsInstalled = $plugins;
+        } else {
+            $pluginsInstalled = array($plugins);
+        }
+
+        foreach ($pluginsInstalled as $pluginInstalled) {
+            if (stripos($pluginInstalled['class'], 'cacheplugin') === false) {
+                continue;
+            }
+            // cache plugin found
+            $this->cachePluginConf = $pluginInstalled;
+
+            if (isset($pluginInstalled['options']['adapter'])) {
+                $adapterClass = $pluginInstalled['options']['adapter'];
+            } else {
+                // default cache adapter
+                $adapterClass = 'DoctrineCacheAdapter';
+            }
+            if (strpos($adapterClass, '\\') === false) {
+                // add default namespace
+                $adapterClass = "Bartlett\\Reflect\\Cache\\" . $adapterClass;
+            }
+            if (!class_exists($adapterClass)) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Adapter "%s" cannot be loaded.',
+                        $adapterClass
+                    )
+                );
+            }
+
+            if (!isset($pluginInstalled['options']['backend']['class'])) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Backend is missing for %s',
+                        $adapterClass
+                    )
+                );
+            }
+            $backendClass = $pluginInstalled['options']['backend']['class'];
+
+            if (!class_exists($backendClass)) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Backend "%s" cannot be loaded.',
+                        $backendClass
+                    )
+                );
+            }
+            $rc = new \ReflectionClass($backendClass);
+
+            if (isset($pluginInstalled['options']['backend']['args'])
+                && is_array($pluginInstalled['options']['backend']['args'])
+            ) {
+                $args = $pluginInstalled['options']['backend']['args'];
+            } else {
+                $args = array();
+            }
+
+            for ($a = 0, $max = count($args); $a < $max; $a++) {
+                // Expands variable from Environment on each argument
+                $count = preg_match_all("/%{([^}]*)}/", $args[$a], $reg);
+                for ($i = 0 ; $i < $count ; $i++) {
+                    $val = getenv($reg[1][$i]);
+                    if ($val) {
+                        $args[$a] = str_replace(
+                            $reg[0][$i],
+                            $val,
+                            $args[$a]
+                        );
+                    }
+                }
+            }
+            $backend = $rc->newInstanceArgs($args);
+
+            $cacheAdapter = new $adapterClass($backend);
+
+            $this->cache = new DefaultCacheStorage($cacheAdapter);
+
+            return true;
+        }
+        return false;
     }
 }
