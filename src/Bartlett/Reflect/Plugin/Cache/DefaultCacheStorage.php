@@ -109,7 +109,9 @@ class DefaultCacheStorage implements CacheStorageInterface
         }
 
         // Ensure that the response is not expired
-        if ($manifest['expiration'] < time()) {
+        if ($manifest['expiration'] < time()
+            || $manifest['cacheData'] !== sha1_file($request['file']->getPathname())
+        ) {
             // results have expired
             $response = null;
         } else {
