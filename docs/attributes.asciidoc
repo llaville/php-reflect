@@ -4,7 +4,8 @@
 :brand:       PHP Reflect
 :brandref:    https://github.com/llaville/php-reflect
 :brandver:
-:sidebar:     right
+:toc2:
+:toc-placement: right
 :footer:
 :navinfo1:
 :iconsfont:   font-awesome
