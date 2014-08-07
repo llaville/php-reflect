@@ -12,16 +12,14 @@ include::attributes.asciidoc[]
 :footer-fullwidth:
 
 
-== Releases
-
-_currently v{stable}_
+== Releases _currently v{stable}_
 
 [role="col-md-6"]
 ====
 [panel,warning]
 .v1
 --
-[bg-warning]*Stable Release, now unmaintained*
+[bg-warning]*Deprecated*
 
 Last branch 1 release was published on October 12, 2013.
 
