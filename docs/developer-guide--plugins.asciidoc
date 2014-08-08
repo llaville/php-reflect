@@ -9,26 +9,8 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
-ifdef::basebackend-bootstrap[]
 
-[role="col-md-3"]
-====
-[panel,primary]
-.{toc-title}
---
-* xref:_events[Events]
-** xref:_event_dispatcher[Event Dispatcher]
-** xref:_getting_an_eventdispatcher[Getting an EventDispatcher]
-** xref:_adding_event_listeners[Adding Event Listeners]
-** xref:_event_subscribers[Event Subscribers]
-** xref:_events_lifecycle[Events lifecycle]
-* xref:_console_commands[Console Commands]
-* xref:_register_plugins[Register Plugins]
---
-====
-endif::basebackend-bootstrap[]
 
-[role="col-md-9"]
 == Events
 
 [role="lead"]
@@ -189,7 +171,6 @@ of the plugin is invoked.
 |===========================
 
 
-[role="col-md-9 col-md-offset-3"]
 == Console Commands
 
 If your plugin should be accessible on the command line, and provides some new commands,
@@ -215,7 +196,7 @@ class AnalyserPlugin implements EventSubscriberInterface
 CAUTION: If your plugin must not provide console command,
 your +getCommands()+ static method should return an empty php array.
 
-[role="col-md-9 col-md-offset-3"]
+
 == Register Plugins
 
 IMPORTANT: Don't forget to register a plugin with `addSubscriber()` method,

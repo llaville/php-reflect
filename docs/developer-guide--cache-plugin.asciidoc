@@ -9,22 +9,7 @@ include::attributes.asciidoc[]
 :footer:
 :footer-fullwidth:
 
-ifdef::basebackend-bootstrap[]
 
-[role="col-md-3"]
-====
-[panel,primary]
-.{toc-title}
---
-* xref:_register_plugin[Register Plugin]
-* xref:_doctrine_adapter[Doctrine Adapter]
-** xref:_file_cache[File cache]
---
-====
-endif::basebackend-bootstrap[]
-
-
-[role="col-md-9"]
 == Register Plugin
 
 [source,php]
@@ -44,7 +29,6 @@ NOTE: Use the `Bartlett\Reflect\Plugin\Cache\DefaultCacheStorage` object
 unless you want to change the cache storage behavior.
 
 
-[role="col-md-9 col-md-offset-3"]
 == Doctrine Adapter
 
 [role="lead"]
@@ -72,7 +56,6 @@ Where +$backend+ is an instance of object that must implement interface
 `Doctrine\Common\Cache\CacheProvider`.
 
 
-[role="col-md-9 col-md-offset-3"]
 == File cache
 
 [role="lead"]

@@ -11,25 +11,6 @@ include::attributes.asciidoc[]
 :checked:     image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
 :unchecked:   image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
 
-ifdef::basebackend-bootstrap[]
-
-[role="col-md-3"]
-====
-[panel,primary]
-.{toc-title}
---
-* xref:_class_reflection[Class Reflection]
-* xref:_constant_reflection[Constant Reflection]
-* xref:_function_reflection[Function Reflection]
-* xref:_function_abstract_reflection[Function Abstract Reflection]
-* xref:_method_reflection[Method Reflection]
-* xref:_parameter_reflection[Parameter Reflection]
-* xref:_property_reflection[Property Reflection]
---
-====
-endif::basebackend-bootstrap[]
-
-[role="col-md-9"]
 
 == Class Reflection
 
@@ -241,7 +222,6 @@ http://www.php.net/manual/en/class.reflectionclass.php[]
 
 |===========================
 
-[role="col-md-9 col-md-offset-3"]
 
 == Constant Reflection
 
@@ -309,7 +289,6 @@ WARNING: Does not exist in PHP5 Reflection API
 
 |===========================
 
-[role="col-md-9 col-md-offset-3"]
 
 == Function Reflection
 
@@ -353,7 +332,6 @@ http://www.php.net/manual/en/class.reflectionfunction.php[]
 
 |===========================
 
-[role="col-md-9 col-md-offset-3"]
 
 == Function Abstract Reflection
 
@@ -461,7 +439,6 @@ http://www.php.net/manual/en/class.reflectionfunctionabstract.php[]
 
 |===========================
 
-[role="col-md-9 col-md-offset-3"]
 
 == Method Reflection
 
@@ -549,7 +526,6 @@ http://www.php.net/manual/en/class.reflectionmethod.php[]
 
 |===========================
 
-[role="col-md-9 col-md-offset-3"]
 
 == Parameter Reflection
 
@@ -645,7 +621,6 @@ http://www.php.net/manual/en/class.reflectionparameter.php[]
 
 |===========================
 
-[role="col-md-9 col-md-offset-3"]
 
 == Property Reflection
 
