@@ -29,7 +29,7 @@ to allow you to easily extend the features list.
 
 See xref:_plugins[]
 
-* See xref:_cache_plugin.[] to speed up future data source parsing.
+* Use cache plugin to speed up future data source parsing.
 
 image:icons/font-awesome/search-plus.png[alt="Analysers",icon="search-plus",iconsfont="font-awesome",size="9x"]
 *Analysers*
