@@ -60,7 +60,7 @@ analysers::
 this entry list all analysers that may be used with the `analyser:run` command.
 
 
-=== Source Providers
+=== section Source Providers
 
 [role="lead"]
 There are lot of way to filter your data source. Each rule follow the syntax
@@ -136,7 +136,7 @@ By default, the Finder recursively traverse directories.
 ----
 
 
-=== Plugins
+=== section Plugins
 
 [role="lead"]
 There are a number of optional plugins you can use along with Reflect to add more capabilities.
@@ -160,7 +160,7 @@ The `class` key identify the name of the class that implement the plugin feature
 E.g: AnalyserPlugin footnote:[{rawurl}/src/Bartlett/Reflect/Plugin/Analyser/AnalyserPlugin.php]
 
 
-=== Analysers
+=== section Analysers
 
 [role="lead"]
 There are a number of optional analysers you can use along with the Reflect Analyser Plugin.
