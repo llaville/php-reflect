@@ -5,7 +5,9 @@ include::revision.asciidoc[]
 include::attributes.asciidoc[]
 :stable:      2.2.0
 :icons!:
+:toc!:
 :toc2!:
+:navbar!:
 :iconsfont:   font-awesome
 :jumbotron:
 :jumbotron-fullwidth:
