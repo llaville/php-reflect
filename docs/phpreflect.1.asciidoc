@@ -45,6 +45,19 @@ elements, such as classes, interfaces, functions, constants, namespaces.
     Display timing and memory usage information.
 
 
+== validate COMMAND
+The phpreflect(1) 'validate' command is used to check syntax of your json configuration file
+
+Usage:
+
+  phpreflect validate [file]
+
+Where:
+
+*file*::
+  Path to `phpreflect.json` file (optional)
+
+
 == analyser:list COMMAND
 The phpreflect(1) 'analyser:list' command is used to show what analysers are installed
 (see <<X1,CONF FILES>> section).
