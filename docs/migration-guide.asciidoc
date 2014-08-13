@@ -179,8 +179,8 @@ print_r($classes['\\']['PEAR_Error']['methods']);
 
 [role="col-md-6"]
 --
+[role="output"]
 .Script output
-[source,php]
 ----
 Array
 (
@@ -261,8 +261,8 @@ include::migrate_properties.php.asciidoc[]
 
 [role="col-md-6"]
 --
+[role="output"]
 .Script output
-[source,php]
 ----
 include::migrate_properties.out.asciidoc[]
 ----

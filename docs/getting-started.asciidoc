@@ -24,6 +24,7 @@ link:{pharstable}[Download the latest version]
 endif::basebackend-bootstrap[]
 
 Make it executable, and put it into your `$PATH`.
+[source,bash]
 ----
 $ chmod +x phpreflect.phar
 $ mv phpreflect.phar /usr/local/bin/phpreflect
@@ -32,6 +33,7 @@ $ phpreflect --version
 ----
 
 You can also immediately use the PHAR after you have downloaded it.
+[source,bash]
 ----
 $ wget http://bartlett.laurent-laville.org/get/phpreflect.phar
 $ php phpreflect.phar --version
@@ -39,10 +41,10 @@ $ php phpreflect.phar --version
 
 With both methods then you have this output :
 
-[role="cli-output"]
+[role="output"]
 ====
 ----
-phpReflect version 2.2.0 build ...
+phpReflect version 2.3.0-beta build ...
 ----
 ====
 NOTE: [big]#...# represents the Git commit hash of this version
@@ -59,6 +61,7 @@ for details on how to do this.
 
 [role="col-md-6"]
 == Configuration
+[source,json]
 .With the minimalist JSON file +phpreflect.json+
 ----
 {
@@ -103,6 +106,7 @@ this entry provide list of your data sources to parse.
 Like [label label-primary]#Reflect# always needs a JSON file to run, Remi Collet
 https://github.com/llaville/php-compat-info/issues/120#issuecomment-46188900[shared]
 a workaround solution exposed here that allows to run :
+[source,bash]
 ----
 $ phpreflect analyser:run .
 ----
@@ -124,12 +128,13 @@ IMPORTANT: Don't miss it, else you could not run the `analyser:run` command.
 
 With a default +phpreflect.json+ as detailed above, put in the +src/+ folder of the
 [label label-primary]#Reflect# source code, and invoke the following command :
+[source,bash]
 ----
 $ phpreflect analyser:run .
 ----
 and you should obtain something like this :
 
-[role="cli-output"]
+[role="output"]
 ====
 ----
 include::structure_analysis.out.asciidoc[]
