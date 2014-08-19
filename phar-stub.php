@@ -5,9 +5,10 @@ if (class_exists('Phar')) {
     Phar::interceptFileFuncs();
 
     if (!getenv("REFLECT")) {
+        $home  = defined('PHP_WINDOWS_VERSION_BUILD') ? 'USERPROFILE' : 'HOME';
         $files = array(
             realpath('./phpreflect.json'),
-            getenv('HOME').'/.config/phpreflect.json',
+            getenv($home).'/.config/phpreflect.json',
             '/etc/phpreflect.json',
         );
         foreach ($files as $file) {
