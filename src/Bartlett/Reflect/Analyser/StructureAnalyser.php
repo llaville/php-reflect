@@ -10,7 +10,7 @@
  * Directories                                         50
  * Files                                              374
  *
- * Structure
+ * Structure Analysis
  *   Namespaces                                         1
  *   Interfaces                                        15
  *   Traits                                             0
@@ -108,10 +108,6 @@ class StructureAnalyser extends AbstractAnalyser
 
         $lines = array();
 
-        $lines['structure'] = array(
-            '%sStructure',
-            array(PHP_EOL)
-        );
         $lines['namespaces'] = array(
             '  Namespaces                                %10d',
             array($count['namespaces'])
@@ -230,6 +226,7 @@ class StructureAnalyser extends AbstractAnalyser
             )
         );
 
+        $output->writeln('<info>Structure Analysis</info>');
         $printer = new Text;
         $printer->write($output, $lines);
     }
