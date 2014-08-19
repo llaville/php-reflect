@@ -70,7 +70,16 @@ class ConsoleApplication extends Application
                 'Display timing and memory usage information.'
             )
         );
-
+        if (\Phar::running()) {
+            $definition->addOption(
+                new InputOption(
+                    '--manifest',
+                    null,
+                    InputOption::VALUE_NONE,
+                    'Show which versions of dependencies are bundled.'
+                )
+            );
+        }
         return $definition;
     }
 
@@ -124,6 +133,21 @@ class ConsoleApplication extends Application
 
     public function doRun(InputInterface $input, OutputInterface $output)
     {
+        if (\Phar::running()
+            && true === $input->hasParameterOption('--manifest')
+        ) {
+            $manifest = 'phar://phpreflect.phar/manifest.txt';
+
+            if (file_exists($manifest)) {
+                $out = file_get_contents($manifest);
+            } else {
+                $fmt = $this->getHelperSet()->get('formatter');
+                $out = $fmt->formatBlock('No manifest defined', 'error');
+            }
+            $output->writeln($out);
+            return 0;
+        }
+
         $exitCode = parent::doRun($input, $output);
 
         if (true === $input->hasParameterOption('--profile')) {
