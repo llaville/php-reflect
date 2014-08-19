@@ -19,7 +19,6 @@ namespace Bartlett;
 use Bartlett\Reflect\Event\AbstractDispatcher;
 use Bartlett\Reflect\ManagerInterface;
 use Bartlett\Reflect\ProviderManager;
-use Bartlett\Reflect\Model\PackageModel;
 use Bartlett\Reflect\Builder;
 
 use PhpParser\Parser;
