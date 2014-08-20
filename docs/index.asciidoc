@@ -129,11 +129,11 @@ unfloat::[]
 {brand} is open source. It's hosted, developed, and maintained on GitHub.
 
 ifdef::basebackend-bootstrap[]
-link:{brandref}["View the GitHub Project",role="primary",options="block"]
+link:{gitproject}["View the GitHub Project",role="primary",options="block"]
 endif::[]
 
 ifndef::basebackend-bootstrap[]
-{brandref}[View the GitHub Project]
+{gitproject}[View the GitHub Project]
 endif::[]
 
 == License
