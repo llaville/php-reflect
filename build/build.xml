@@ -96,6 +96,7 @@
 
     <fileset dir="${adoc.sourcedir}" id="adoc-sources">
         <include name="index.asciidoc" />
+        <include name="cover.asciidoc" />
         <include name="user-guide**.asciidoc" />
         <include name="developer-guide**.asciidoc" />
         <include name="api-compared.asciidoc" />
