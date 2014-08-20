@@ -2,12 +2,6 @@
 :description: Migrating from version 1.x to 2.x, and continue to keep your environment running.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
-:icons!:
-:iconsfont:   font-awesome
-:jumbotron:
-:jumbotron-fullwidth:
-:footer:
-:footer-fullwidth:
 
 ifdef::basebackend-docbook[]
 [partintro]

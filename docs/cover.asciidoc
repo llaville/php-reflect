@@ -1,8 +1,10 @@
 = Cover
 :description: PHP Reflect Book
-:icons!:
-:iconsfont:   font-awesome
-:theme:       cerulean
+include::attributes.asciidoc[]
+:navbar!:
+:jumbotron!:
+:toc!:
+:toc2!:
 :stylesheet:  cover.css
 
 

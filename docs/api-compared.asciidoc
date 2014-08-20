@@ -2,12 +2,6 @@
 :description: Compare both Reflection API between PHP5 and Reflect
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
-:icons!:
-:iconsfont:   font-awesome
-:jumbotron:
-:jumbotron-fullwidth:
-:footer:
-:footer-fullwidth:
 :checked:     image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
 :unchecked:   image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
 

@@ -2,14 +2,19 @@
 :keywords:    PHP, reverse-engineer, reflexion
 :mandir:      http://php5.laurent-laville.org/reflect/manual/current
 :brand:       PHP Reflect
-:brandref:    https://github.com/llaville/php-reflect
+:brandref:    http://php5.laurent-laville.org/reflect/
 :brandver:
 :toc2:
 :toc-placement: right
+:jumbotron:
+:jumbotron-fullwidth:
 :footer:
+:footer-fullwidth:
 :navinfo1:
+:icons!:
 :iconsfont:   font-awesome
 :imagesdir:   ./images
 :idprefix:    _
 :gitbranch:   v2
 :rawbaseurl:  https://raw.githubusercontent.com/llaville/php-reflect/{gitbranch}
+:gitproject:  https://github.com/llaville/php-reflect
