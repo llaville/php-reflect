@@ -126,6 +126,9 @@ class PackageModel extends AbstractModel implements Visitable
 
     /**
      * Gets internal components provided by PHP extensions.
+     *
+     * @return iterator that list DependencyModel objects reflecting each
+     *         internal components.
      */
     public function getDependencies()
     {
@@ -195,7 +198,7 @@ class PackageModel extends AbstractModel implements Visitable
     }
 
     /**
-     * Checks if the package is imported or declared
+     * Checks if the package is imported or declared.
      *
      * @return bool
      */

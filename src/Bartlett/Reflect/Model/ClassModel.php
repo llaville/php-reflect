@@ -130,7 +130,7 @@ class ClassModel extends AbstractModel implements Visitable
     }
 
     /**
-     * Gets the parent class
+     * Gets the parent class.
      *
      * @return mixed a ClassModel instance if parent exists, false otherwise
      */
