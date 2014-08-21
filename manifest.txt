@@ -1,4 +1,4 @@
-bartlett/php-reflect: v2@aa704f4ab8dd1a6b2b8c0db65c6796717784a29d
+bartlett/php-reflect: 2.3.0
 doctrine/cache: v1.3.0
 nikic/php-parser: v1.0.0beta1
 phpunit/php-timer: 1.0.5

@@ -22,7 +22,7 @@ when you invoke the `phpreflect` command, you should obtain the following comman
 
 [role="output"]
 ----
-phpReflect version 2.3.0-beta build ...
+phpReflect version 2.3.0 build ...
 
 Usage:
   [options] command [arguments]

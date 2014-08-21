@@ -1,0 +1,44 @@
+:doctitle:    Reflect 2.3 stable
+:description:
+:iconsfont: font-awesome
+:imagesdir: ./images
+:author:    Laurent Laville
+:revdate:   2014-08-21
+:pubdate:   Thu, 21 Aug 2014 19:04:15 +0200
+:summary:   Reflect 2.3.0 has just been released.
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
+
+[id="post-4"]
+== {summary}
+
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/rocket.png[alt="release",icon="rocket",size="4x"]
+
+News :
+
+* add new `--manifest` option for PHAR distribution to show dependencies bundled
+* add new `validate` command to check syntax of your JSON configuration file
+
+Changes :
+
+* `HOME` syntax is compatible both Linux and Windows to look for JSON configuration file, and file cache location (see cache plugin)
+* clean-up code (removed unused Use statements)
+* Cache plugin may now be used with all API (including CLI)
+* Cache in CLI mode provide a new command `cache:clear` to clean selective contents (by data source) of previous cached results
+* Cache in CLI mode is verbose when you used the `--profile` option
+* remove `require-dev` entries in composer.json
+
+Bugs :
+
+* invalidate a cache entry when source code is modified (Thanks to Remi Collet to notice me issue)
+
+Download :
+
+link:http://bartlett.laurent-laville.org/get/phpreflect-2.3.0.phar[caption="Download the PHAR version",role="primary",icon="glyphicon-download-alt"]
+
+Alternatively, you may use http://getcomposer.org/[Composer] and install it
+via https://packagist.org/packages/bartlett/php-reflect/[Packagist].
+____

@@ -165,7 +165,7 @@ E.g: AnalyserPlugin footnote:[{rawurl}/src/Bartlett/Reflect/Plugin/Analyser/Anal
 
 ==== Cache Plugin
 
-WARNING: Available only since version 2.3.0-beta
+WARNING: Available only since version 2.3.0
 
 In your +phpreflect.json+ configuration file, add in `plugins` section the following entry:
 [source,json]
@@ -178,13 +178,15 @@ In your +phpreflect.json+ configuration file, add in `plugins` section the follo
             "backend": {
                 "class": "Doctrine\\Common\\Cache\\FilesystemCache",
                 "args": [
-                    "%{TEMP}/phpreflect"
+                    "%{TEMP}/bartlett/cache"
                 ]
             }
         }
     }
 ----
 TIP: You may use any environment variable that will be replaced, at run-time, by their value. E.g: `TEMP`, `HOME`
+
+NOTE: Since release 2.3.0, the `HOME` syntax is compatible Linux/Windows.
 
 In previous configuration we used the Doctrine Cache adapter and its File system backend.
 See the same configuration applied with other SAPI, in
