@@ -91,7 +91,7 @@ $reflect->getEventDispatcher()->addListener(
         printf(
             'Parsing Data source "%s", file "%s". AST = %s' . PHP_EOL,
             $e['source'],
-            $e['file'],
+            $e['file']->getPathname(),
             print_r($ast, true)
         );
 
