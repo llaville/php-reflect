@@ -29,7 +29,7 @@ use Psr\Log\LogLevel;
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version  Release: @package_version@
  * @link     http://php5.laurent-laville.org/reflect/
- * @since    Class available since Release 2.3.0
+ * @since    Class available since Release 2.4.0
  */
 class LogPlugin implements EventSubscriberInterface
 {
@@ -66,6 +66,11 @@ class LogPlugin implements EventSubscriberInterface
                 'template' => 'AST built.',
                 'context'  => true,
             ),
+            'reflect.cache'  => array(
+                'level'    => LogLevel::INFO,
+                'template' => 'AST built by a previous request.',
+                'context'  => true,
+            ),
             'reflect.error'    => array(
                 'level'    => LogLevel::ERROR,
                 'template' => 'Parser has detected an error on file "{file}". "{error}"',
@@ -97,6 +102,7 @@ class LogPlugin implements EventSubscriberInterface
         return array(
             'reflect.progress' => 'onReflectProgress',
             'reflect.success'  => 'onReflectSuccess',
+            'reflect.cache'    => 'onReflectCache',
             'reflect.error'    => 'onReflectError',
             'reflect.complete' => 'onReflectComplete',
         );
@@ -111,8 +117,7 @@ class LogPlugin implements EventSubscriberInterface
      */
     public function onReflectProgress(GenericEvent $event)
     {
-        $context = array('source' => $event['source']);
-        $this->log($event, $context);
+        $this->log($event);
     }
 
     /**
@@ -123,6 +128,18 @@ class LogPlugin implements EventSubscriberInterface
      * @return void
      */
     public function onReflectSuccess(GenericEvent $event)
+    {
+        $this->log($event);
+    }
+
+    /**
+     * Logs 'reflect.cache' event.
+     *
+     * @param Event $event Current event emitted by the manager (Reflect class)
+     *
+     * @return void
+     */
+    public function onReflectCache(GenericEvent $event)
     {
         $this->log($event);
     }
