@@ -123,28 +123,24 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                         );
                         $stmts = $traverser->traverse($stmts);
 
-                        if ($this->getEventDispatcher()->hasListeners('reflect.success')) {
-                            $this->dispatch(
-                                'reflect.success',
-                                array(
-                                    'source'   => $alias,
-                                    'file'     => $file,
-                                    'ast'      => serialize($stmts)
-                                )
-                            );
-                        }
+                        $this->dispatch(
+                            'reflect.success',
+                            array(
+                                'source'   => $alias,
+                                'file'     => $file,
+                                'ast'      => serialize($stmts)
+                            )
+                        );
 
                     } catch (\PhpParser\Error $e) {
-                        if ($this->getEventDispatcher()->hasListeners('reflect.error')) {
-                            $this->dispatch(
-                                'reflect.error',
-                                array(
-                                    'source'   => $alias,
-                                    'file'     => $file,
-                                    'error'    => $e->getMessage()
-                                )
-                            );
-                        }
+                        $this->dispatch(
+                            'reflect.error',
+                            array(
+                                'source'   => $alias,
+                                'file'     => $file,
+                                'error'    => $e->getMessage()
+                            )
+                        );
                     }
                 }
             }
