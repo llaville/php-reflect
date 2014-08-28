@@ -24,7 +24,9 @@
         "seld/jsonlint": "~1.1"
     },
     "suggest": {
-        "doctrine/cache": "Allow caching results"
+        "doctrine/cache": "Allow caching results",
+        "psr/log": "Allow logging events with the LogPlugin",
+        "monolog/monolog": "Allow logging events with the LogPlugin"
     },
     "authors": [
         {
