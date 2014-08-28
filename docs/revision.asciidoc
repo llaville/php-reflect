@@ -1,2 +1,2 @@
-:revdate:    2014-08-21
-:revnumber:  2.3.0
+:revdate:    2014-09-24
+:revnumber:  2.4.0-beta

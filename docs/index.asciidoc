@@ -3,7 +3,7 @@
 :description: Reverse-engineer classes, interfaces, functions, constants, namespaces and more.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
-:stable:      2.3.0
+:stable:      2.4.0-beta
 :toc!:
 :toc2!:
 :navbar!:
