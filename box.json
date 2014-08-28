@@ -14,6 +14,7 @@
         "vendor/phpunit/php-timer/LICENSE",
         "vendor/seld/jsonlint/LICENSE",
         "vendor/doctrine/cache/LICENSE",
+        "vendor/psr/log/LICENSE",
         "vendor/autoload.php"
     ],
     "finder": [
@@ -36,11 +37,15 @@
         },
         {
             "name": "*.php",
-            "in": "vendor/seld/jsonlint"
+            "in": "vendor/seld/jsonlint/src"
         },
         {
             "name": "*.php",
             "in": "vendor/doctrine/cache/lib"
+        },
+        {
+            "name": "*.php",
+            "in": "vendor/psr/log/Psr"
         }
     ],
     "git-commit": "git_commit",
