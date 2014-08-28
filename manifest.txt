@@ -1,7 +1,9 @@
-bartlett/php-reflect: 2.3.0
+bartlett/php-reflect: v2@580f46c0f0c3fa6b62a3a7d5ba6d450a9a33f51d
 doctrine/cache: v1.3.0
+monolog/monolog: 1.10.0
 nikic/php-parser: v1.0.0beta1
 phpunit/php-timer: 1.0.5
+psr/log: 1.0.0
 seld/jsonlint: 1.2.0
 symfony/console: v2.5.3
 symfony/event-dispatcher: v2.5.3
