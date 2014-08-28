@@ -161,3 +161,23 @@ $opt = array();
 $reflect = new Reflect;
 $reflect->addSubscriber( new LogPlugin($logger, $opt) );
 ----
+
+WARNING: If you want to use Monolog with [label label-primary]#Reflect# on CLI mode,
+then you should use a wrapper like this.
+
+[source,php]
+----
+<?php
+
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+class YourLogger extends Logger
+{
+    public function __construct($name = 'YourLoggerChannel')
+    {
+        $stream = new StreamHandler('/var/logs/phpreflect.log');
+        parent::__construct($name, array($stream));
+    }
+}
+----
