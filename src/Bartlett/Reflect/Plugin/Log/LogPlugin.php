@@ -84,7 +84,7 @@ class LogPlugin implements EventSubscriberInterface
         );
 
         if (isset($options)) {
-            $options = array_merge($default, $options);
+            $options = array_replace_recursive($default, $options);
         } else {
             $options = $default;
         }
