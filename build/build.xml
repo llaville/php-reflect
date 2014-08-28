@@ -52,7 +52,7 @@
         <include name="vendor/symfony/**/*.php" />
         <exclude name="**/Tests/**" />
         <include name="vendor/phpunit/php-timer/**/*.php" />
-        <include name="vendor/seld/jsonlint/**/*.php" />
+        <include name="vendor/seld/jsonlint/src/**/*.php" />
         <include name="vendor/doctrine/cache/lib/**/*.php" />
         <include name="vendor/psr/log/Psr/**/*.php" />
         <include name="vendor/monolog/monolog/src/**/*.php" />
