@@ -198,6 +198,70 @@ xref:_file_cache[]
 endif::basebackend-docbook[]
 
 
+==== Log Plugin
+
+WARNING: Available only since version 2.4.0
+
+In your +phpreflect.json+ configuration file, add in `plugins` section the following entry:
+[source,json]
+----
+    {
+        "name": "Log",
+        "class": "Bartlett\\Reflect\\Plugin\\Log\\LogPlugin",
+        "options": {
+            "logger": {
+                "class": "YourLogger"
+            },
+            "conf": []
+        }
+    }
+----
+Where `YourLogger` identify your class logger (fully qualified. E.g `YourNamespace\YourLogger`).
+
+See the Developer Guide for definition examples of some loggers
+ifdef::basebackend-html[]
+link:developer-guide&#45;&#45;log-plugin.html#_using_your_private_logger[using private logger] or
+link:developer-guide&#45;&#45;log-plugin.html#_using_monolog[using monolog]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
+xref:_using_your_private_logger[] or
+xref:_using_monolog[]
+endif::basebackend-docbook[]
+
+
+And `conf` entry are custom plugin options to apply.
+
+For example, to suppress logging of `reflect.success` event, and remove contextual data
+on `reflect.complete` event, modify your +phpreflect.json+ configuration file as follow :
+
+[source,json]
+----
+    {
+        "name": "Log",
+        "class": "Bartlett\\Reflect\\Plugin\\Log\\LogPlugin",
+        "options": {
+            "logger": {
+                "class": "YourLogger"
+            },
+            "conf": {
+                "reflect.success": false,
+                "reflect.complete": {
+                    "context": false
+                }
+            }
+        }
+    }
+----
+
+All configuration options are available, see
+ifdef::basebackend-html[]
+link:developer-guide&#45;&#45;log-plugin.html#_register_plugin[Register Plugin] of Log section.
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
+xref:_register_plugin[]
+endif::basebackend-docbook[]
+
+
 === section Analysers
 
 [role="lead"]

@@ -146,6 +146,13 @@ class AnalyserRunCommand extends ProviderCommand
                 $cachePlugin = new $this->cachePluginConf['class']($this->cache);
                 $reflect->addSubscriber($cachePlugin);
             }
+            if ($this->findLogPlugin($var['plugins'])) {
+                $logPlugin = new $this->logPluginConf['class'](
+                    $this->logger,
+                    $this->logPluginConf['options']['conf']
+                );
+                $reflect->addSubscriber($logPlugin);
+            }
 
             $fmt = $this->getApplication()->getHelperSet()->get('formatter');
 

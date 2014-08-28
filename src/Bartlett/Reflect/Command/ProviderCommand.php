@@ -13,6 +13,8 @@ class ProviderCommand extends Command
     protected $finder;
     protected $cache;
     protected $cachePluginConf;
+    protected $logger;
+    protected $logPluginConf;
 
     /**
      * Find any provider that match optional criteria $source or $alias
@@ -194,6 +196,67 @@ class ProviderCommand extends Command
             $cacheAdapter = new $adapterClass($backend);
 
             $this->cache = new DefaultCacheStorage($cacheAdapter);
+
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Find if the logPlugin is installed or not
+     *
+     * @param array $plugins Plugins list declared in json configuration file.
+     *
+     * @return bool TRUE if installed, FALSE otherwise
+     */
+    protected function findLogPlugin($plugins)
+    {
+        if (is_array($plugins)) {
+            $pluginsInstalled = $plugins;
+        } else {
+            $pluginsInstalled = array($plugins);
+        }
+
+        foreach ($pluginsInstalled as $pluginInstalled) {
+            if (stripos($pluginInstalled['class'], 'logplugin') === false) {
+                continue;
+            }
+            // log plugin found
+            $this->logPluginConf = $pluginInstalled;
+
+            if (!isset($pluginInstalled['options']['logger']['class'])) {
+                throw new \InvalidArgumentException(
+                    'Logger is undefined.'
+                );
+            }
+            $loggerClass = $pluginInstalled['options']['logger']['class'];
+
+            if (!class_exists($loggerClass)) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Logger "%s" cannot be loaded.',
+                        $loggerClass
+                    )
+                );
+            }
+
+            if (isset($pluginInstalled['options']['conf'])) {
+                if (!is_array($pluginInstalled['options']['conf'])) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'LogPlugin configuration options are invalid. ' .
+                            'Expected array, got %s',
+                            gettype($pluginInstalled['options']['conf'])
+                        )
+                    );
+                }
+            } else {
+                $pluginInstalled['options']['conf'] = array();
+            }
+            $this->logPluginConf['options']['conf'] = $pluginInstalled['options']['conf'];
+
+            $this->logger = new $loggerClass;
 
             return true;
         }
