@@ -69,6 +69,10 @@ class Builder extends NodeVisitorAbstract
     public function enterNode(Node $node)
     {
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
+            if (! isset($node->name)) {
+                echo "Warning: No name node in ", $this->file, ' on line ', $node->getLine(), "\n";
+                $node->name = new Node\Name(uniqid());
+            }                
             $this->namespace = $node->name->__toString();
         }
 
