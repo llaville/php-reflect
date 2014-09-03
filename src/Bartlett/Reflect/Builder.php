@@ -70,8 +70,9 @@ class Builder extends NodeVisitorAbstract
     {
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
             if (! isset($node->name)) {
+                // Namespace without name
                 $node->name = new Node\Name('');
-            }                
+            }
             $this->namespace = $node->name->__toString();
         }
 
