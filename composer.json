@@ -17,7 +17,7 @@
         "ext-date": "*",
         "ext-reflection": "*",
         "phpunit/php-timer": ">=1.0.0",
-        "nikic/php-parser": "1.0.0",
+        "nikic/php-parser": "~1.0",
         "symfony/event-dispatcher": "~2.5",
         "symfony/finder": "~2.5",
         "symfony/console": "~2.5",
