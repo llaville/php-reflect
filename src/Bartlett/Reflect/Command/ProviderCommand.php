@@ -82,6 +82,7 @@ class ProviderCommand extends Command
         }
 
         $constraints = array(
+            'exclude',                  // Exclude directories
             'name', 'notName',          // File name constraints
             'path', 'notPath',          // Path constraints
             'size',                     // File size constraints
