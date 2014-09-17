@@ -6,3 +6,4 @@ blog/rssbuilder.php
 blog/rss.xml
 *.plantuml
 composer.lock
+phpunit.xml
