@@ -1,5 +1,5 @@
-bartlett/php-reflect: v2@00450d9b44439dd29901921bc7f5c9810eb723b3
-doctrine/cache: v1.3.0
+bartlett/php-reflect: v2@92ea5679af7bcdc70b034284ad8bca0528cd7b5d
+doctrine/cache: v1.3.1
 monolog/monolog: 1.10.0
 nikic/php-parser: v1.0.0
 phpunit/php-timer: 1.0.5
