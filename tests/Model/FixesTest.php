@@ -10,7 +10,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    GIT: $Id$
  * @link       http://php5.laurent-laville.org/reflect/
- * @since      Class available since Release 2.0.0RC1
+ * @since      Class available since Release 2.4.0
  */
 
 namespace Bartlett\Tests\Reflect\Model;
@@ -29,11 +29,12 @@ if (!defined('TEST_FILES_PATH')) {
 }
 
 /**
- * Unit Test Case that covers Bartlett\Reflect\Model\FunctionModel
+ * Unit Test Case that covers namespace and instance of variable attribute
  *
  * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
+ * @author     Eric Colinet
  * @author     Laurent Laville <pear@laurent-laville.org>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -41,9 +42,7 @@ if (!defined('TEST_FILES_PATH')) {
  */
 class FixesTest extends \PHPUnit_Framework_TestCase
 {
-    protected static $interfaces;
     protected static $classes;
-    protected static $functions;
 
     /**
      * Sets up the shared fixture.
@@ -75,11 +74,24 @@ class FixesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Handle namespaces without name
+     *
+     * @return void
+     * @link   https://github.com/llaville/php-reflect/pull/4
+     */
     public function testFix()
     {
-        $this->assertInstanceOf('Bartlett\Reflect\Model\DependencyModel', self::$classes[0][0]);
+        $this->assertInstanceOf(
+            'Bartlett\Reflect\Model\DependencyModel',
+            self::$classes[0][0]
+        );
         $this->assertSame('stdClass', self::$classes[0][0]->getName());
-        $this->assertInstanceOf('Bartlett\Reflect\Model\ClassModel', self::$classes[0][1]);
-        $this->assertSame('MyGlobalClass', self::$classes[0][1]->getName());        
+
+        $this->assertInstanceOf(
+            'Bartlett\Reflect\Model\ClassModel',
+            self::$classes[0][1]
+        );
+        $this->assertSame('MyGlobalClass', self::$classes[0][1]->getName());
     }
 }
