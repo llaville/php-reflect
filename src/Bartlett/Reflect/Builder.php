@@ -69,6 +69,10 @@ class Builder extends NodeVisitorAbstract
     public function enterNode(Node $node)
     {
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
+            if (! isset($node->name)) {
+                // Namespace without name
+                $node->name = new Node\Name('');
+            }
             $this->namespace = $node->name->__toString();
         }
 
@@ -91,7 +95,13 @@ class Builder extends NodeVisitorAbstract
 
             if ($class instanceof \PhpParser\Node\Name) {
                 if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
-                    $this->aliases[$var->var->name .'_'. $var->name] = $class->__toString();
+                    if ($var->name instanceof \PhpParser\Node\Expr\Variable) {
+                        $varName = '$' . $var->name->name;
+                    } else {
+                        $varName = (string) $var->name;
+                    }
+
+                    $this->aliases[$var->var->name .'_'. $varName] = $class->__toString();
 
                 } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
                     $this->aliases[$var->name] = $class->__toString();
@@ -409,11 +419,17 @@ class Builder extends NodeVisitorAbstract
         }
 
         if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
-            if (!isset($this->aliases[$var->var->name .'_'. $var->name])) {
+            if ($var->name instanceof \PhpParser\Node\Expr\Variable) {
+                $varName = '$' . $var->name->name;
+            } else {
+                $varName = (string) $var->name;
+            }
+
+            if (!isset($this->aliases[$var->var->name .'_'. $varName])) {
                 // class name resolver failure
                 return;
             }
-            $qualifiedClassName = $this->aliases[$var->var->name .'_'. $var->name];
+            $qualifiedClassName = $this->aliases[$var->var->name .'_'. $varName];
 
         } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
             if (!isset($this->aliases[$var->name])) {
