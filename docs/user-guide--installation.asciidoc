@@ -72,17 +72,17 @@ bundled in a single file.
 
 [source,bash]
 ----
-$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.4.0-beta.phar
-$ chmod +x phpreflect-2.4.0-beta.phar
-$ mv phpreflect-2.4.0-beta.phar /usr/local/bin/phpreflect
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.4.0.phar
+$ chmod +x phpreflect-2.4.0.phar
+$ mv phpreflect-2.4.0.phar /usr/local/bin/phpreflect
 $ phpreflect
 ----
 
 You can also immediately use the PHAR after you have downloaded it.
 [source,bash]
 ----
-$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.4.0-beta.phar
-$ php phpreflect-2.4.0-beta.phar
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.4.0.phar
+$ php phpreflect-2.4.0.phar
 ----
 
 ifdef::basebackend-bootstrap[]

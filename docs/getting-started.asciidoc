@@ -2,7 +2,7 @@
 :description: How to download, configure and use it in a basic way.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
-:pharstable:  http://bartlett.laurent-laville.org/get/phpreflect-2.4.0-beta.phar
+:pharstable:  http://bartlett.laurent-laville.org/get/phpreflect-2.4.0.phar
 
 
 == Download
@@ -20,8 +20,8 @@ endif::basebackend-bootstrap[]
 Make it executable, and put it into your `$PATH`.
 [source,bash]
 ----
-$ chmod +x phpreflect-2.4.0-beta.phar
-$ mv phpreflect-2.4.0-beta.phar /usr/local/bin/phpreflect
+$ chmod +x phpreflect-2.4.0.phar
+$ mv phpreflect-2.4.0.phar /usr/local/bin/phpreflect
 
 $ phpreflect --version
 ----
@@ -29,8 +29,8 @@ $ phpreflect --version
 You can also immediately use the PHAR after you have downloaded it.
 [source,bash]
 ----
-$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.4.0-beta.phar
-$ php phpreflect-2.4.0-beta.phar --version
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.4.0.phar
+$ php phpreflect-2.4.0.phar --version
 ----
 
 With both methods then you have this output :
@@ -38,7 +38,7 @@ With both methods then you have this output :
 [role="output"]
 ====
 ----
-phpReflect version 2.4.0-beta build ...
+phpReflect version 2.4.0 build ...
 ----
 ====
 NOTE: [big]#...# represents the Git commit hash of this version
