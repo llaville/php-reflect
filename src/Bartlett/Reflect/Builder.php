@@ -425,11 +425,11 @@ class Builder extends NodeVisitorAbstract
                 $varName = (string) $var->name;
             }
 
-            if (!isset($this->aliases[$var->var->name .'_'. $varName])) {
+            if (!isset($this->aliases[$varName])) {
                 // class name resolver failure
                 return;
             }
-            $qualifiedClassName = $this->aliases[$var->var->name .'_'. $varName];
+            $qualifiedClassName = $this->aliases[$varName];
 
         } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
             if (!isset($this->aliases[$var->name])) {
