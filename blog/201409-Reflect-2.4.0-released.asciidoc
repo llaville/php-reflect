@@ -1,0 +1,37 @@
+:doctitle:    Reflect 2.4 stable
+:description:
+:iconsfont: font-awesome
+:imagesdir: ./images
+:author:    Laurent Laville
+:revdate:   2014-09-19
+:pubdate:   Fri, 19 Sep 2014 15:03:40 +0200
+:summary:   Reflect 2.4.0 has just been released.
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
+
+[id="post-1"]
+== {summary}
+
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/rocket.png[alt="release",icon="rocket",size="4x"]
+
+News :
+
+* add a new plugin to log events
+* can now detect conditional code (`function_exists`, `extension_loaded`, `defined`, `method_exists`, `class_exists`, `interface_exists`, `trait_exists`)
+* add exclude location Symfony feature on source finder. See request https://github.com/llaville/php-reflect/issues/5[GH-5].
+* add `reflect.cache` event to learn if result came from cached or live request.
+
+Bugs :
+
+* https://github.com/llaville/php-compat-info/issues/123 (Thanks to Eric Colinet for his contribution)
+
+Download :
+
+link:http://bartlett.laurent-laville.org/get/phpreflect-2.4.0.phar[caption="Download the PHAR version",role="primary",icon="glyphicon-download-alt"]
+
+Alternatively, you may use http://getcomposer.org/[Composer] and install it
+via https://packagist.org/packages/bartlett/php-reflect/[Packagist].
+____

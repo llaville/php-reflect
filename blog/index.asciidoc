@@ -37,5 +37,6 @@ Subscribe to http://php5.laurent-laville.org/reflect/blog/rss.xml[RSS feed].
 ====
 
 [role="col-md-9"]
+include::201409-Reflect-2.4.0-released.asciidoc[]
 
 [role="col-md-9 col-md-offset-3"]
