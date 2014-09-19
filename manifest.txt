@@ -1,4 +1,4 @@
-bartlett/php-reflect: v2@92ea5679af7bcdc70b034284ad8bca0528cd7b5d
+bartlett/php-reflect: 2.4.0
 doctrine/cache: v1.3.1
 monolog/monolog: 1.10.0
 nikic/php-parser: v1.0.0
