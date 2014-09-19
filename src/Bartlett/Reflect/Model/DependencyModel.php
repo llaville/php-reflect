@@ -136,6 +136,16 @@ class DependencyModel extends AbstractModel implements Visitable
     }
 
     /**
+     * Checks if the function is a conditional code.
+     *
+     * @return bool TRUE if conditional code, otherwise FALSE
+     */
+    public function isConditionalFunction()
+    {
+        return $this->struct['conditionalFunction'];
+    }
+
+    /**
      * Returns the string representation of the DependencyModel object.
      *
      * @return string

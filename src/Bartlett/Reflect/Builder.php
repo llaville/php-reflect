@@ -573,6 +573,19 @@ class Builder extends NodeVisitorAbstract
         );
         $nodeAttributes['hash'] = sha1(serialize($hash));
 
+        $nodeAttributes['conditionalFunction'] = in_array(
+            $functionName,
+            array(
+                'extension_loaded',
+                'function_exists',
+                'method_exists',
+                'class_exists',
+                'interface_exists',
+                'trait_exists',
+                'defined'
+            )
+        );
+
         $dep = $this->buildDependency($functionName, $nodeAttributes);
         $dep->incCalls();
 
@@ -779,6 +792,9 @@ class Builder extends NodeVisitorAbstract
     {
         if (!isset($attributes['hash'])) {
             $attributes['hash'] = '';
+        }
+        if (!isset($attributes['conditionalFunction'])) {
+            $attributes['conditionalFunction'] = false;
         }
 
         if (!isset($this->dependencies[$qualifiedName . $attributes['hash']])) {
