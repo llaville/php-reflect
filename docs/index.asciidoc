@@ -37,7 +37,7 @@ endif::[]
 --
 [bg-primary]*Stable Release*
 
-Last branch 2 release was published on August 21, 2014.
+Last branch 2 release was published on September 19, 2014.
 
 ifdef::basebackend-bootstrap[]
 link:./manual/current/en/getting-started.html["Learn more",role="primary",options="block"]
