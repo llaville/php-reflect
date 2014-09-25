@@ -16,7 +16,7 @@
         "ext-json": "*",
         "ext-date": "*",
         "ext-reflection": "*",
-        "phpunit/php-timer": ">=1.0.0",
+        "phpunit/php-timer": "~1.0",
         "nikic/php-parser": "~1.0",
         "symfony/event-dispatcher": "~2.5",
         "symfony/finder": "~2.5",
@@ -47,7 +47,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-v2": "2.0-dev"
+            "dev-v2": "2.4-dev"
         }
     }
 }
