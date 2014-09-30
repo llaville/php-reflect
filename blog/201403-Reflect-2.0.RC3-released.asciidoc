@@ -1,0 +1,43 @@
+:doctitle:    Reflect 2.0 preview
+:description: Third milestone
+:iconsfont: font-awesome
+:imagesdir: ./images
+:author:    Laurent Laville
+:revdate:   2014-03-24
+:pubdate:   Mon, 24 Mar 2014 20:32:16 +0100
+:summary:   Reflect 2.0.0RC3 has just been released.
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
+
+[id="post-3"]
+== {summary}
+
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/rocket.png[alt="release",icon="rocket",size="4x"]
+
+Here are additions and changes since RC2:
+
+* adds a new command *analyser:run* that display a structure report.
+* adds a new command *plantUML:run* to make PlantUML diagrams (package or class).
+* fixes `composer.json` syntax file.
+* phar version is now a single file with all dependencies bundled.
+* can use all file informations into `reflect.progress`, `reflect.success` and `reflect.error` events.
+* fixes PHP-Parser namespace error.
+* prints progress filenames and optional errors on verbose level 2.
+* prevent error on plugin:list command if json config file does not have a _plugins_ entry.
+* each plugin is now really plug-and-play (should provide additional commands).
+* console application respect now plug-and-play protocol.
+* fixes plugin:list command render when multiple plugins are available.
+
+*This is the last RC before final stable version planned for Fri, 4 April 2014.*
+
+.Tasks to do:
+************************************************
+* Fixes issues if users found something wrong.
+* Finish documentation.
+************************************************
+
+link:http://bartlett.laurent-laville.org/get/phpreflect-2.0.0RC3.phar[caption="Download the PHAR version",role="primary",icon="glyphicon-download-alt"]
+____

@@ -1,0 +1,31 @@
+:doctitle:    Reflect 2.1 preview
+:description: Documentation
+:iconsfont: font-awesome
+:imagesdir: ./images
+:author:    Laurent Laville
+:revdate:   2014-06-30
+:pubdate:   Mon, 30 Jun 2014 16:31:30 +0200
+:summary:   How to build the Documentation
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
+:cmdbaseurl: https://github.com/llaville/php-reflect/tree/v2/docs/build/
+
+[id="post-3"]
+== {summary}
+
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/book.png[alt="eBooks",icon="book",size="4x",width=56]
+
+[role="lead"]
+Today, documentation in all formats are ready to be release for upcoming version 2.1
+
+Windows CMD scripts were just committed 
+https://github.com/llaville/php-reflect/commit/c3e028e422e971563ec3ba81297fd68b34c4bfc5[c3e028e].
+There are provided "as is" without warranty.
+
+- a {cmdbaseurl}html5-bootstrap3.bat[] script to build all pages of documentation in HTML 5 / Boostrap 3 format (like online doc).
+- a {cmdbaseurl}html5.bat[] script to build all pages of documentation in HTML 5 format.
+- a {cmdbaseurl}epub.bat[] script to build all pages of documentation in HTML chunked / HTML Help / ePUB / PDF (a4 and us) format.
+____

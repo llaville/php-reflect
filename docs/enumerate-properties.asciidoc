@@ -1,0 +1,27 @@
+
+=== Properties
+[role="lead"]
+Your next collection returned could be the list of class properties defined in a package, if any.
+
+[label label-primary]#Reflect# returns a list of class properties with the +getProperties()+ method.
+
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+
+$reflect = new Reflect;
+
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getClasses() as $class) {
+        printf( 'Processing class "%s" ...' . PHP_EOL, $class->getName() );
+        $properties = array();
+
+        foreach ($class->getProperties() as $property) {
+            $properties[] = $property->getName();
+        }
+        printf( 'Properties are : %s' . PHP_EOL, print_r($properties, true) );
+    }
+}
+----

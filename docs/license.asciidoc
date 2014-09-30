@@ -1,0 +1,25 @@
+= License
+:description: The full details of how Reflect is licensed.
+:jumbotron:
+:icons!:
+:iconsfont: font-awesome
+:iconsfontdir: ./fonts/font-awesome
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+
+[role="lead"]
+[label label-primary]#Reflect# is open source.
+You can use it for commercial projects, and open source projects.
+
+== Documentation Licence
+
+All documentation files (extension +.asciidoc+) provided in +docs+ folder are 
+in http://asciidoc.org[AsciiDoc] format. They are built with a Python AsciiDoc backend 
+maintained by myself, that convert output to an html http:/getbootstrap.com[Bootstrap] renders. 
+http://laurent-laville.org/asciidoc/bootstrap/manual/current/en/[AsciiDoc-Bootstrap] 
+is released under the http://www.apache.org/licenses/LICENSE-2.0.html[Apache 2] license.
+
+== Source License
+
+As previous API 1.0, the source code is still under the 
+http://opensource.org/licenses/BSD-3-Clause[BSD 3-Clause] license.

@@ -1,0 +1,31 @@
+
+=== Parameters
+
+[role="lead"]
+Your next collection returned could be the list of function parameters defined, if any.
+
+[label label-primary]#Reflect# returns a list of function parameters with the +getParameters()+ method.
+
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+
+$reflect = new Reflect;
+
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getClasses() as $class) {
+        printf( 'Processing class "%s" ...' . PHP_EOL, $class->getName() );
+
+        foreach ($class->getMethods() as $method) {
+            $parameters = array();
+
+            foreach ($method->getParameters() as $parameter) {
+                $parameters[] = $parameter->getName();
+            }
+            printf( 'Parameters are : %s' . PHP_EOL, print_r($parameters, true) );
+        }
+    }
+}
+----

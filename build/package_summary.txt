@@ -1,1 +1,0 @@
-Adds the ability to reverse-engineer classes, interfaces, functions, constants, namespaces, traits and more.

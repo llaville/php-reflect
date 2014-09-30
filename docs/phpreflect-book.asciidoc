@@ -1,0 +1,35 @@
+= PHP Reflect Book
+:description: The Complete Guide
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+
+[preface]
+--
+This complete guide documents {brand} {revnumber}, published on {revdate}.
+
+This work is licensed under the http://creativecommons.org/licenses/by-sa/3.0/[Attribution-Share Alike 3.0 Unported] license.
+--
+
+include::getting-started.asciidoc[]
+
+include::user-guide.asciidoc[]
+include::user-guide--installation.asciidoc[]
+include::user-guide--configuration.asciidoc[]
+include::user-guide--commands.asciidoc[]
+
+include::migration-guide.asciidoc[]
+
+include::developer-guide.asciidoc[]
+:leveloffset: 1
+include::api-compared.asciidoc[]
+
+include::developer-guide--api.asciidoc[]
+
+include::developer-guide--plugins.asciidoc[]
+
+include::developer-guide--cache-plugin.asciidoc[]
+
+include::developer-guide--log-plugin.asciidoc[]
+
+include::developer-guide--analysers.asciidoc[]
+:leveloffset: 0

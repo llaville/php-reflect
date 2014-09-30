@@ -1,0 +1,36 @@
+=== Classes
+[role="lead"]
+Your second collection returned could be the list of classes defined in a package, if any.
+
+[label label-primary]#Reflect# returns a list of classes with the +getClasses()+ method.
+
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+
+$reflect = new Reflect;
+
+foreach ($reflect->getPackages() as $package) {
+    $classes = $package->getClasses();
+}
+----
+
+This list (+$classes+) is an iterator, that can be traversed by a simple foreach loop.
+
+[source,php]
+.Easy exploit classes
+----
+<?php
+
+use Bartlett\Reflect;
+
+$reflect = new Reflect;
+
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getClasses() as $class) {
+        echo $class->getName(), PHP_EOL;
+    }
+}
+----

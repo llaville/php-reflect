@@ -1,0 +1,34 @@
+=== Functions
+[role="lead"]
+Your next collection returned could be the list of functions defined in a package, if any.
+
+[label label-primary]#Reflect# returns a list of user functions with the +getFunctions()+ method.
+
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+
+$reflect = new Reflect;
+
+foreach ($reflect->getPackages() as $package) {
+    $functions = $package->getFunctions();
+}
+----
+
+This list (+$functions+) is an iterator, that can be traversed by a simple foreach loop.
+
+[source,php]
+.Easy exploit functions
+----
+<?php
+
+use Bartlett\Reflect;
+
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getFunctions() as $function) {
+        echo $function->getName(), PHP_EOL;
+    }
+}
+----

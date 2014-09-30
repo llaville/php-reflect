@@ -1,0 +1,35 @@
+=== Packages or Namespaces
+[role="lead"]
+Your first collection returned could be the list of packages defined in your source code, if any.
+
+Packages or Namespaces are used to organize software elements to avoid conflicts.
+
+Indifferently, we will use the term package or namespace as an alias of the other.
+Main reason is that PHP5 provides only namespace and not package element as Java.
+
+[label label-primary]#Reflect# returns a list of namespaces/packages with the +getPackages()+ method.
+
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+
+$reflect = new Reflect;
+
+$packages = $reflect->getPackages();
+----
+
+This list (+$packages+) is an iterator, that can be traversed by a simple foreach loop.
+
+[source,php]
+.Easy exploit namespaces
+----
+<?php
+
+use Bartlett\Reflect;
+
+foreach ($reflect->getPackages() as $package) {
+    echo $package->getName(), PHP_EOL;
+}
+----

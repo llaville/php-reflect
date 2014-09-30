@@ -1,29 +1,36 @@
 <div class="row">
-    <div class="span3">
-        <ul class="nav nav-list">
-            <li class="nav-header"><i class="icon-tag"></i> About</li>
-            <li><a href="CHANGELOG.html">Changelog</a></li>
-            <li><a href="LICENSE.html">License</a></li>
-            <li class="divider"></li>
-            <li>Version <span class="badge badge-success">{revnumber}</span></li>
-            <li>{docdate} {doctime}</li>
+    <div class="col-md-3">
+        <h3>Links</h3>
+        <ul>
+            <li><a href="{gitproject}/issues">Report an issue</a></li>
+            <li><a href="http://php5.laurent-laville.org/reflect/blog/">Blog</a></li>
+            </li>
         </ul>
     </div>
-    <div class="span3">
-        <ul class="nav nav-list">
-            <li class="nav-header"><i class="icon-book"></i> Get Started</li>
-            <li><a href="http://bartlett.laurent-laville.org/get/PHP_Reflect-{revnumber}.tgz">Download</a></li>
-            <li><a href="INSTALL.html">Installation</a></li>
-            <li><a href="phpreflect-book.html">User Guide</a></li>
-        </ul>
+    <div class="col-md-9">
+        <h3>About Us</h3>
+        <p>
+Thanks to Nikita Popov who wrote a marvellous <a href="https://github.com/nikic/PHP-Parser">PHP Parser</a>
+and simplify the job of PHP Reflect v2.
+        </p>
+        <p>
+Laurent Laville has written all remaining architecture.
+        </p>
     </div>
-    <div class="span3">
-        <ul class="nav nav-list">
-            <li class="nav-header"><i class="icon-comment"></i> Get Help</li>
-            <li><a href="https://github.com/llaville/php-reflect/issues">Report an issue</a></li>
-        </ul>
+</div>
+<div class="row">&nbsp;</div>
+<div class="row">
+    <div class="col-md-9">
+        <div id="footer-text">
+            Version <span class="badge">{revnumber}</span><br>
+            Last updated {docdate} {doctime}<br>
+            Built with <a href="https://github.com/llaville/asciidoc-bootstrap-backend">AsciiDoc-Bootstrap backend</a> {bootstrap-backend-version}
+        </div>
     </div>
-    <div class="span3">
-        <a href="#" class="btn btn-success btn-block"><i class="icon-arrow-up icon-white"></i> Back to top</a>
+    <div class="col-md-3">
+        <div id="footer-badges">
+            Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+            and <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>.
+        </div>
     </div>
 </div>

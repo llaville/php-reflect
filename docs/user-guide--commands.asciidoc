@@ -1,0 +1,321 @@
+ifndef::basebackend-docbook[]
+
+= User Guide
+:description: The Command-Line Interface
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+
+endif::basebackend-docbook[]
+
+== The Command-Line
+
+[role="lead"]
+The command-line interface is the easiest way to try and learn the basic Reflect features.
+
+NOTE: For all users.
+
+
+=== Command-Line Options
+
+Without +plugins+ and +analysers+ sections in your `phpreflect.json` configuration file,
+when you invoke the `phpreflect` command, you should obtain the following commands and options :
+
+[role="output"]
+----
+phpReflect version 2.4.0 build ...
+
+Usage:
+  [options] command [arguments]
+
+Options:
+  --help           -h Display this help message.
+  --quiet          -q Do not output any message.
+  --verbose        -v|vv|vvv Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+  --version        -V Display this application version.
+  --ansi              Force ANSI output.
+  --no-ansi           Disable ANSI output.
+  --no-interaction -n Do not ask any interactive question.
+  --profile           Display timing and memory usage information.
+
+Available commands:
+  help               Displays help for a command
+  list               Lists commands
+plugin
+  plugin:list        List all plugins installed.
+provider
+  provider:display   Show source of a file in a data source.
+  provider:list      List all data source providers.
+  provider:show      Show list of files in a data source.
+----
+
+[horizontal]
+plugin:list::
+List all plugins configured (and correctly installed) in `plugins` section of your `phpreflect.json` config file.
++
+[source,bash]
+.Without plugins, you will get
+----
+$ phpreflect plugin:list
+----
++
+[role="output"]
+----
+ [Json Configuration]
+ No plugins detected.
+----
++
+[source,bash]
+.With only `Analyser` plugin configured, you will get
+----
+$ phpreflect plugin:list
+----
++
+[role="output"]
+----
+ Plugin Name Plugin Class                                    Events Subscribed
+ Analyser    Bartlett\Reflect\Plugin\Analyser\AnalyserPlugin reflect.complete
+----
+
+provider:list::
+List all data source providers configured in `source-providers` section of your `phpreflect.json` config file.
++
+[source,bash]
+.Result may vary depending of your current directory, but you will get something like
+----
+$ phpreflect provider:list
+----
++
+[role="output"]
+----
+ Source Alias   Files
+ .      current     46
+----
+
+provider:show::
+Show list of files corresponding to the (Symfony) Finder rules defined.
++
+[source,bash]
+.With Reflect source files
+----
+$ phpreflect provider:show .
+----
++
+[source,bash]
+.Possible alternative
+----
+$ phpreflect provider:show --alias current
+----
++
+[role="output"]
+----
+ Source                                                  Files
+ .                                                       46
+ Relative Path Name                                      Date                      Size
+ Bartlett\Reflect\Analyser\AbstractAnalyser.php          2014-02-03T17:25:07+01:00    3475
+ Bartlett\Reflect\Analyser\AnalyserInterface.php         2014-02-03T17:26:50+01:00     835
+ Bartlett\Reflect\Analyser\StructureAnalyser.php         2014-02-23T17:31:16+01:00   12798
+
+ <... more lines ...>
+----
+
+provider:display::
+Show source code of a file in one of the data source identified.
++
+[source,bash]
+.With `Bartlett\Reflect.php` in the 'current' data source
+----
+$ phpreflect provider:display . Bartlett\Reflect.php
+----
++
+[source,bash]
+.Possible alternative
+----
+$ phpreflect provider:display --alias current Bartlett\Reflect.php
+----
++
+[role="output"]
+----
+ Source
+ .
+ Relative Path Name Date Size
+ Id    Token                          Line  Text
+     0 T_OPEN_TAG                         1 <?php
+     1 T_DOC_COMMENT                      2 /** * Reflect * Reverse-engineer
+     2 T_WHITESPACE                      15
+     3 T_NAMESPACE                       17 namespace
+     4 T_WHITESPACE                      17
+     5 T_STRING                          17 Bartlett
+     6 T_SEMICOLON                       17 ;
+
+ <... more lines ...>
+----
+
+When the `Analyser` plugin is installed, following lines added into `analysers` section
+[source,json]
+----
+    {
+        "name": "Analyser",
+        "class": "Bartlett\\Reflect\\Plugin\\Analyser\\AnalyserPlugin"
+    }
+----
+you will get two additionnal commands.
+
+[horizontal]
+analyser:list::
+List all analysers configured in `analysers` section of your `phpreflect.json` config file.
++
+[source,bash]
+.Without analysers, you will get
+----
+$ phpreflect analyser:list
+----
++
+[role="output"]
+----
+ [Json Configuration]
+ No analysers detected.
+----
++
+[source,bash]
+.With only `Analyser` plugin configured, you will get
+----
+$ phpreflect analyser:list
+----
++
+[role="output"]
+----
+ Analyser Name Analyser Class
+ Structure     Bartlett\Reflect\Analyser\StructureAnalyser
+----
+
+analyser:run::
+Parse a data source and display results. May wary depending of the data source and analyser used.
++
+[source,bash]
+.With `structure` analyser and the Reflect source code, you will get something like
+----
+$ phpreflect analyser:run .
+----
++
+[source,bash]
+.Possible alternative
+----
+$ phpreflect analyser:run --alias current
+----
++
+[role="output"]
+----
+include::structure_analysis.out.asciidoc[]
+----
+
+When the `plantUML` plugin is installed, following lines added into `plugins` section
+[source,json]
+----
+    {
+        "name": "PlantUML",
+        "class": "Bartlett\\Reflect\\Plugin\\PlantUML\\PlantUMLPlugin"
+    }
+----
+you will get one additionnal command.
+
+[horizontal]
+plantUML:run::
+Parse a data source and draw corresponding UML diagrams (package or class)
+with the http://plantuml.sourceforge.net/[PlantUML] syntax.
++
+[source,bash]
+.Build a package diagram corresponding to `Bartlett\Reflect\Model`
+----
+$ phpreflect plantUML:run --package=Bartlett\Reflect\Model .
+----
++
+[source,bash]
+.Possible Alternative
+----
+$ phpreflect plantUML:run --package=Bartlett\Reflect\Model --alias current
+----
++
+[role="output"]
+----
+PlantUML package diagram
+
+include::packageDiagram.plantuml[]
+----
++
+It's now time to produce PNG images. Put previous PlantUML code syntax into a text file (e.g named +packageDiagram.plantuml+),
+and run the following command.
++
+[source,bash]
+----
+$ java -jar plantuml.jar packageDiagram.plantuml
+----
++
+And you should obtain a PNG image like this one
++
+ifdef::basebackend-docbook[]
+image:plantUML_packageDiag.png[alt="Package UML diagram",scale="60"]
+endif::basebackend-docbook[]
+ifndef::basebackend-docbook[]
+image::plantUML_packageDiag.png[alt="Package UML diagram",options="responsive"]
+endif::basebackend-docbook[]
++
+[source,bash]
+.Build a class diagram corresponding to `Bartlett\Reflect\Builder`
+----
+$ phpreflect plantUML:run --class=Bartlett\Reflect\Builder .
+----
++
+[source,bash]
+.Possible Alternative
+----
+$ phpreflect plantUML:run --class=Bartlett\Reflect\Builder --alias current
+----
++
+[role="output"]
+----
+PlantUML class diagram
+
+include::classDiagram.plantuml[]
+----
++
+It's now time to produce PNG images. Put previous PlantUML code syntax into a text file (e.g named +classDiagram.plantuml+),
+and run the following command.
++
+[source,bash]
+----
+$ java -jar plantuml.jar classDiagram.plantuml
+----
++
+And you should obtain a PNG image like this one
++
+ifdef::basebackend-docbook[]
+image:plantUML_classDiag.png[alt="Class UML diagram",scale="60"]
+endif::basebackend-docbook[]
+ifndef::basebackend-docbook[]
+image::plantUML_classDiag.png[alt="Class UML diagram",options="responsive"]
+endif::basebackend-docbook[]
+
+== Summary
+
+[role="lead"]
+Let's review what we've learned about the command-line interface :
+
+* It's a Symfony http://symfony.com/doc/current/components/console/index.html[Console Component] that can be extended to infinite via plugins and analysers.
+* Default analyser produced results such as https://github.com/sebastianbergmann/phploc[PHPLoc] by Sebastian Bergmann.
+* May generate class and package UML diagrams with http://plantuml.sourceforge.net/[PlantUML].
+
+ifdef::basebackend-bootstrap[]
+== Next
+
+[role="lead"]
+For PHP developers only.
+
+************************************************
+.Read more
+
+* Want to learn more about [label label-primary]#Reflect# architecture and /or
+you want to extends it to match your needs,
+have a look on link:developer-guide.html[developer's guide].
+
+************************************************
+endif::basebackend-bootstrap[]

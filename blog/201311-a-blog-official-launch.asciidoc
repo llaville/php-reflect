@@ -1,0 +1,30 @@
+:doctitle:    Official Blog
+:description: 
+:iconsfont: font-awesome
+:imagesdir: ./images
+:author:    Laurent Laville
+:revdate:   2013-11-29
+:pubdate:   Fri, 29 Nov 2013 11:36:05 +0100
+:summary:   A blog official launch
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
+
+
+[id="post-1"]
+== {summary}
+
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/rocket.png[alt="release",icon="rss-square",size="4x"]
+
+[role="lead"]
+At one month of end of year 2013, I've decided to open officially the blog dedicated to PHP Reflect.
+
+After few weeks of development to rewrite a new major API 2.0, that make,
+it will be more easy exploit parsing results,
+I think it's now time allow readers to follow my work.
+
+Before the launch of first release candidate, I'll introduce in next days the features
+of this new version.
+____

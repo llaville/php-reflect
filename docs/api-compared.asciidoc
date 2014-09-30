@@ -1,0 +1,698 @@
+= API compared
+:description: Compare both Reflection API between PHP5 and Reflect
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+:checked:     image:icons/font-awesome/check-square-o.png[alt="checked",icon="check-square-o",size="lg"]
+:unchecked:   image:icons/font-awesome/square-o.png[alt="unchecked",icon="square-o",size="lg"]
+
+
+== Class Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about a class*
++
+http://www.php.net/manual/en/class.reflectionclass.php[]
++
+`Bartlett\Reflect\Model\ClassModel`
+
+| {checked}
+| {checked}
+| *__construct* - Constructs a ReflectionClass
+
+| {checked}
+| {checked}
+| *__toString* - Returns the string representation of the ReflectionClass object
+
+| {checked}
+| {unchecked}
+| *export* - Exports a class
+
+| {checked}
+| {checked}
+| *getConstant* - Gets defined constant
+
+| {checked}
+| {checked}
+| *getConstants* - Gets constants
+
+| {checked}
+| {unchecked}
+| *getConstructor* - Gets the constructor of the class
+
+| {checked}
+| {unchecked}
+| *getDefaultProperties* - Gets default properties
+
+| {checked}
+| {checked}
+| *getDocComment* - Gets doc comments
+
+| {checked}
+| {checked}
+| *getEndLine* - Gets end line
+
+| {checked}
+| {checked}
+| *getExtension* - Gets a ReflectionExtension object for the extension which defined the class
+
+| {checked}
+| {checked}
+| *getExtensionName* - Gets the name of the extension which defined the class
+
+| {checked}
+| {checked}
+| *getFileName* - Gets the filename of the file in which the class has been defined
+
+| {checked}
+| {checked}
+| *getInterfaceNames* - Gets the interface names
+
+| {checked}
+| {checked}
+| *getInterfaces* -  Gets the interfaces
+
+| {checked}
+| {checked}
+| *getMethod* - Gets a ReflectionMethod for a class method
+
+| {checked}
+| {checked}
+| *getMethods* - Gets an array of methods
+
+| {checked}
+| {unchecked}
+| *getModifiers* - Gets modifiers
+
+| {checked}
+| {checked}
+| *getName* - Gets class name
+
+| {checked}
+| {checked}
+| *getNamespaceName* - Gets namespace name
+
+| {checked}
+| {checked}
+| *getParentClass* - Gets parent class
+
+| {checked}
+| {checked}
+| *getProperties* - Gets properties
+
+| {checked}
+| {checked}
+| *getProperty* - Gets a ReflectionProperty for a class's property
+
+| {checked}
+| {checked}
+| *getShortName* - Gets short name
+
+| {checked}
+| {checked}
+| *getStartLine* - Gets starting line number
+
+| {checked}
+| {checked}
+| *getStaticProperties* - Gets static properties
+
+| {checked}
+| {checked}
+| *getStaticPropertyValue* - Gets static property value
+
+| {checked}
+| {unchecked}
+| *getTraitAliases* - Returns an array of trait aliases
+
+| {checked}
+| {unchecked}
+| *getTraitNames* - Returns an array of names of traits used by this class
+
+| {checked}
+| {unchecked}
+| *getTraits* - Returns an array of traits used by this class
+
+| {checked}
+| {checked}
+| *hasConstant* - Checks if constant is defined
+
+| {checked}
+| {checked}
+| *hasMethod* - Checks if method is defined
+
+| {checked}
+| {checked}
+| *hasProperty* - Checks if property is defined
+
+| {checked}
+| {unchecked}
+| *implementsInterface* - Implements interface
+
+| {checked}
+| {checked}
+| *inNamespace* - Checks if class in namespace
+
+| {checked}
+| {checked}
+| *isAbstract* - Checks if class is abstract
+
+| {checked}
+| {checked}
+| *isCloneable* - Returns whether this class is cloneable
+
+| {checked}
+| {checked}
+| *isFinal* - Checks if class is final
+
+| {checked}
+| {unchecked}
+| *isInstance* - Checks class for instance
+
+| {checked}
+| {checked}
+| *isInstantiable* - Checks if the class is instantiable
+
+| {checked}
+| {checked}
+| *isInterface* - Checks if the class is an interface
+
+| {checked}
+| {unchecked}
+| *isInternal* - Checks if class is defined internally by an extension, or the core
+
+| {checked}
+| {checked}
+| *isIterateable* - Checks if iterateable
+
+| {checked}
+| {checked}
+| *isSubclassOf* - Checks if a subclass
+
+| {checked}
+| {checked}
+| *isTrait* - Returns whether this is a trait
+
+| {checked}
+| {checked}
+| *isUserDefined* -  Checks if user defined
+
+| {checked}
+| {unchecked}
+| *newInstance* - Creates a new class instance from given arguments
+
+| {checked}
+| {unchecked}
+| *newInstanceArgs* - Creates a new class instance from given arguments
+
+| {checked}
+| {unchecked}
+| *newInstanceWithoutConstructor* -  Creates a new class instance without invoking the constructor
+
+| {checked}
+| {unchecked}
+| *setStaticPropertyValue* - Sets static property value
+
+|===========================
+
+
+== Constant Reflection
+
+WARNING: Does not exist in PHP5 Reflection API
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about a constant*
++
+`Bartlett\Reflect\Model\ConstantModel`
+
+| {unchecked}
+| {checked}
+| *__construct* - Constructs a Reflection Constant
+
+| {unchecked}
+| {checked}
+| *__toString* - Returns the string representation of the Reflection Constant object
+
+| {unchecked}
+| {checked}
+| *getDocComment* - Gets doc comments
+
+| {unchecked}
+| {checked}
+| *getExtension* - Gets a ReflectionExtension object for the extension which defined the constant
+
+| {unchecked}
+| {checked}
+| *getExtensionName* - Gets the name of the extension which defined the constant
+
+| {unchecked}
+| {checked}
+| *getFileName* - Gets the filename of the file in which the constant has been defined
+
+| {unchecked}
+| {checked}
+| *getName* - Gets constant name
+
+| {unchecked}
+| {checked}
+| *getNamespaceName* - Gets namespace name
+
+| {unchecked}
+| {checked}
+| *getShortName* - Gets short name
+
+| {unchecked}
+| {checked}
+| *getValue* - Gets value
+
+| {unchecked}
+| {checked}
+| *inNamespace* - Checks if in namespace
+
+| {unchecked}
+| {checked}
+| *isInternal* - Checks if constant is defined internally by an extension, or the core
+
+| {unchecked}
+| {checked}
+| *isMagic* - Checks whether it's a magic constant
+
+|===========================
+
+
+== Function Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about a function*
++
+http://www.php.net/manual/en/class.reflectionfunction.php[]
++
+`Bartlett\Reflect\Model\FunctionModel`
+
+| {checked}
+| {checked}
+| *__construct* - Constructs a ReflectionFunction
+
+| {checked}
+| {checked}
+| *__toString* - Returns the string representation of the ReflectionFunction object
+
+| {checked}
+| {unchecked}
+| *export* - Exports a function
+
+| {checked}
+| {unchecked}
+| *getClosure* - Returns a dynamically created closure for the function
+
+| {checked}
+| {unchecked}
+| *invoke* - Invokes function
+
+| {checked}
+| {unchecked}
+| *invokeArgs* - Invokes function with args
+
+| {checked}
+| {unchecked}
+| *isDisabled* - Checks if function is disabled
+
+|===========================
+
+
+== Function Abstract Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *A parent class to ReflectionFunction*
++
+http://www.php.net/manual/en/class.reflectionfunctionabstract.php[]
++
+`Bartlett\Reflect\Model\AbstractFunctionModel`
+
+| {checked}
+| {unchecked}
+| *__clone* - Clones function
+
+| {checked}
+| {unchecked}
+| *getClosureScopeClass* - Returns the scope associated to the closure
+
+| {checked}
+| {unchecked}
+| *getClosureThis* - Returns this pointer bound to closure
+
+| {checked}
+| {checked}
+| *getDocComment* - Gets doc comments
+
+| {checked}
+| {checked}
+| *getEndLine* - Gets end line
+
+| {checked}
+| {checked}
+| *getExtension* - Gets a ReflectionExtension object for the extension which defined the function
+
+| {checked}
+| {checked}
+| *getExtensionName* - Gets the name of the extension which defined the function
+
+| {checked}
+| {checked}
+| *getFileName* - Gets the filename of the file in which the function has been defined
+
+| {checked}
+| {checked}
+| *getName* - Gets function name
+
+| {checked}
+| {checked}
+| *getNamespaceName* - Gets namespace name
+
+| {checked}
+| {checked}
+| *getNumberOfParameters* -  Gets number of parameters
+
+| {checked}
+| {checked}
+| *getNumberOfRequiredParameters* - Gets number of required parameters
+
+| {checked}
+| {checked}
+| *getParameters* -  Gets parameters
+
+| {checked}
+| {checked}
+| *getShortName* - Gets function short name
+
+| {checked}
+| {checked}
+| *getStartLine* - Gets starting line number
+
+| {checked}
+| {unchecked}
+| *getStaticVariables* - Gets static variables
+
+| {checked}
+| {checked}
+| *inNamespace* - Checks if function in namespace
+
+| {checked}
+| {checked}
+| *isClosure* - Checks if closure
+
+| {checked}
+| {unchecked}
+| *isDeprecated* - Checks if function deprecated
+
+| {checked}
+| {unchecked}
+| *isGenerator* - Returns whether this function is a generator
+
+| {checked}
+| {checked}
+| *isInternal* - Checks if function is defined internally by an extension, or the core
+
+| {checked}
+| {unchecked}
+| *isUserDefined* - Checks if user defined
+
+| {checked}
+| {unchecked}
+| *returnsReference* - Checks if returns reference
+
+|===========================
+
+
+== Method Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about a method*
++
+http://www.php.net/manual/en/class.reflectionmethod.php[]
++
+`Bartlett\Reflect\Model\MethodModel`
+
+| {checked}
+| {checked}
+| *__construct* - Constructs a ReflectionMethod
+
+| {checked}
+| {checked}
+| *__toString* - Returns the string representation of the ReflectionMethod object
+
+| {checked}
+| {unchecked}
+| *export* - Exports a method
+
+| {checked}
+| {unchecked}
+| *getClosure* - Returns a dynamically created closure for the method
+
+| {checked}
+| {unchecked}
+| *getDeclaringClass* -  Gets declaring class for the reflected method
+
+| {checked}
+| {unchecked}
+| *getModifiers* - Gets the method modifiers
+
+| {checked}
+| {unchecked}
+| *getPrototype* -  Gets the method prototype
+
+| {checked}
+| {unchecked}
+| *invoke* - Invokes method
+
+| {checked}
+| {unchecked}
+| *invokeArgs* - Invokes method with args
+
+| {checked}
+| {checked}
+| *isAbstract* - Checks if method is abstract
+
+| {checked}
+| {checked}
+| *isConstructor* - Checks if method is a constructor
+
+| {checked}
+| {checked}
+| *isDestructor* - Checks if method is a destructor
+
+| {checked}
+| {checked}
+| *isFinal* - Checks if method is final
+
+| {checked}
+| {checked}
+| *isPrivate* - Checks if method is private
+
+| {checked}
+| {checked}
+| *isProtected* - Checks if method is protected
+
+| {checked}
+| {checked}
+| *isPublic* - Checks if method is public
+
+| {checked}
+| {checked}
+| *isStatic* - Checks if method is static
+
+| {checked}
+| {unchecked}
+| *setAccessible* - Set method accessibility
+
+|===========================
+
+
+== Parameter Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about a parameter*
++
+http://www.php.net/manual/en/class.reflectionparameter.php[]
++
+`Bartlett\Reflect\Model\ParameterModel`
+
+| {checked}
+| {checked}
+| *__construct* - Constructs a ReflectionParameter
+
+| {checked}
+| {checked}
+| *__toString* - Returns the string representation of the ReflectionParameter object
+
+| {checked}
+| {unchecked}
+| *__clone* - Clones parameter
+
+| {checked}
+| {checked}
+| *allowsNull* - Checks if null is allowed
+
+| {checked}
+| {unchecked}
+| *canBePassedByValue* - Returns whether this parameter can be passed by value
+
+| {checked}
+| {unchecked}
+| *export* - Exports a parameter
+
+| {checked}
+| {unchecked}
+| *getClass* - Gets class
+
+| {unchecked}
+| {checked}
+| *getTypeHint* - Gets the type of the parameter (callable, array, class name, or none)
+
+| {checked}
+| {unchecked}
+| *getDeclaringClass* -  Gets declaring class for the reflected parameter
+
+| {checked}
+| {unchecked}
+| *getDeclaringFunction* -  Gets declaring function for the reflected parameter
+
+| {checked}
+| {checked}
+| *getDefaultValue* - Gets default parameter value
+
+| {checked}
+| {unchecked}
+| *getDefaultValueConstantName* - Returns the default value's constant name if default value is constant or null
+
+| {checked}
+| {checked}
+| *getName* - Gets parameter name
+
+| {checked}
+| {checked}
+| *getPosition* - Gets parameter position
+
+| {checked}
+| {checked}
+| *isArray* - Checks if parameter expects an array
+
+| {checked}
+| {unchecked}
+| *isCallable* - Returns whether parameter MUST be callable
+
+| {checked}
+| {checked}
+| *isDefaultValueAvailable* -  Checks if a default value is available
+
+| {checked}
+| {unchecked}
+| *isDefaultValueConstant* - Returns whether the default value of this parameter is constant
+
+| {checked}
+| {checked}
+| *isOptional* - Checks if the parameter is optional
+
+| {checked}
+| {checked}
+| *isPassedByReference* - Checks if the parameter is passed in by reference
+
+|===========================
+
+
+== Property Reflection
+
+[options="header,autowidth", cols="5,2,2", role="table table-bordered table-striped"]
+|===========================
+| PHP5 | Reflect | Description
+
+3+| *Class reports information about classes properties*
++
+http://www.php.net/manual/en/class.reflectionproperty.php[]
++
+`Bartlett\Reflect\Model\PropertyModel`
+
+| {checked}
+| {checked}
+| *__construct* - Constructs a ReflectionProperty
+
+| {checked}
+| {checked}
+| *__toString* - Returns the string representation of the ReflectionProperty object
+
+| {checked}
+| {unchecked}
+| *__clone* - Clones property
+
+| {checked}
+| {unchecked}
+| *export* - Exports a property
+
+| {unchecked}
+| {checked}
+| *getClassName* -  Gets class name of the reflected property
+
+| {checked}
+| {unchecked}
+| *getDeclaringClass* -  Gets declaring class for the reflected property
+
+| {checked}
+| {checked}
+| *getDocComment* - Gets doc comments from a property
+
+| {checked}
+| {unchecked}
+| *getModifiers* - Gets modifiers
+
+| {checked}
+| {checked}
+| *getName* - Gets property name
+
+| {checked}
+| {checked}
+| *getValue* - Gets property value
+
+| {checked}
+| {checked}
+| *isDefault* -  Checks if default value
+
+| {checked}
+| {checked}
+| *isPrivate* - Checks if property is private
+
+| {checked}
+| {checked}
+| *isProtected* - Checks if property is protected
+
+| {checked}
+| {checked}
+| *isPublic* - Checks if property is public
+
+| {checked}
+| {checked}
+| *isStatic* - Checks if property is static
+
+| {checked}
+| {unchecked}
+| *setAccessible* - Set property accessibility
+
+| {checked}
+| {unchecked}
+| *setValue* - Set property value
+|===========================

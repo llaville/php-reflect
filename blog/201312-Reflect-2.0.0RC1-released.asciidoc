@@ -1,0 +1,31 @@
+:doctitle:    Reflect 2.0 preview
+:description: First Milestone
+:iconsfont: font-awesome
+:imagesdir: ./images
+:author:    Laurent Laville
+:revdate:   2013-12-13
+:pubdate:   Fri, 13 Dec 2013 21:51:59 +0100
+:summary:   Reflect 2.0.0RC1 has been released
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
+
+[id="post-5"]
+== {summary}
+
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/rocket.png[alt="release",icon="rocket",size="4x"]
+
+First Release Candidate of
+http://php5.laurent-laville.org/reflect/manual/2.0/en/landing.html[Reflect 2.0]
+has just been released.
+
+After several long weeks of development, I'm proud today to propose you,
+the next major API of PHP Reflect.
+
+Documentation is not yet complete, and offline versions are not yet available.
+Be patient, it should come for the beginning of year 2014.
+
+The final stable version is planned to be released on February 2014.
+____

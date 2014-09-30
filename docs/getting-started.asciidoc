@@ -1,0 +1,186 @@
+= Getting Started
+:description: How to download, configure and use it in a basic way.
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+:pharstable:  http://bartlett.laurent-laville.org/get/phpreflect-2.4.0.phar
+
+
+== Download
+
+We distribute a http://www.php.net/phar[PHP Archive] (PHAR) that contains
+all required dependencies of PHP [label label-primary]#Reflect# bundled in a single file.
+
+ifdef::basebackend-bootstrap[]
+link:{pharstable}["Download the latest version",role="primary",icon="glyphicon-download-alt",options="block,white"]
+endif::basebackend-bootstrap[]
+ifndef::basebackend-bootstrap[]
+link:{pharstable}[Download the latest version]
+endif::basebackend-bootstrap[]
+
+Make it executable, and put it into your `$PATH`.
+[source,bash]
+----
+$ chmod +x phpreflect-2.4.0.phar
+$ mv phpreflect-2.4.0.phar /usr/local/bin/phpreflect
+
+$ phpreflect --version
+----
+
+You can also immediately use the PHAR after you have downloaded it.
+[source,bash]
+----
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.4.0.phar
+$ php phpreflect-2.4.0.phar --version
+----
+
+With both methods then you have this output :
+
+[role="output"]
+====
+----
+phpReflect version 2.4.0 build ...
+----
+====
+NOTE: [big]#...# represents the Git commit hash of this version
+
+Other alternative installations are possible.
+Please refer to the
+ifdef::basebackend-html[]
+link:user-guide&#45;&#45;installation.html[documentation]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
+xref:_installation[]
+endif::basebackend-docbook[]
+for details on how to do this.
+
+[role="col-md-6"]
+== Configuration
+[source,json]
+.With the minimalist JSON file +phpreflect.json+
+----
+{
+    "source-providers": [
+        {
+            "in": ". as current",
+            "name": "/\\.(php|inc|phtml)$/"
+        }
+    ],
+    "plugins": [
+        {
+            "name": "Analyser",
+            "class": "Bartlett\\Reflect\\Plugin\\Analyser\\AnalyserPlugin"
+        }
+    ],
+    "analysers" : [
+        {
+            "name": "Structure",
+            "class": "Bartlett\\Reflect\\Analyser\\StructureAnalyser"
+        }
+    ]
+}
+----
+Put it in your project's folder. Alternative locations are possible.
+Please refer to the
+ifdef::basebackend-html[]
+link:user-guide&#45;&#45;configuration.html[documentation]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
+xref:_the_json_configuration_file[]
+endif::basebackend-docbook[]
+for details on how to do this.
+
+[role="col-md-6"]
+== Structure
+
+source-providers::
+this entry provide list of your data sources to parse.
++
+[TIP]
+====
+Like [label label-primary]#Reflect# always needs a JSON file to run, Remi Collet
+https://github.com/llaville/php-compat-info/issues/120#issuecomment-46188900[shared]
+a workaround solution exposed here that allows to run :
+[source,bash]
+----
+$ phpreflect analyser:run .
+----
+====
+
+plugins::
+this entry list all plugins added to the core base code of PHP Reflect.
++
+CAUTION: Don't forget to add at least this default content, else the `analyser:run`
+and `analyser:list` commands wouldn't be available.
+
+analysers::
+this entry list all analysers that may be used with the `analyser:run` command.
++
+IMPORTANT: Don't miss it, else you could not run the `analyser:run` command.
+
+[role="col-md-12 clearfix"]
+== Execution
+
+With a default +phpreflect.json+ as detailed above, put in the +src/+ folder of the
+[label label-primary]#Reflect# source code, and invoke the following command :
+[source,bash]
+----
+$ phpreflect analyser:run .
+----
+and you should obtain something like this :
+
+[role="output"]
+====
+----
+include::structure_analysis.out.asciidoc[]
+----
+====
+
+
+== Summary
+
+[role="lead"]
+Let's review what we've done :
+
+* downloaded the latest stable PHAR version.
+* prepared your JSON configuration file that is required to run [label label-primary]#Reflect# commands.
+* executed your first parse on the [label label-primary]#Reflect# data source.
+
+== Next
+
+[role="lead"]
+Choose your way depending of your skill level.
+
+************************************************
+.Read more
+
+* Want to learn more about the command line interpreter (CLI) version, interface that do
+[label label-primary]#Reflect# an easy tool without to write a line of PHP code,
+have a look on
+ifdef::basebackend-html[]
+link:user-guide.html[user's guide]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
+xref:_user_guide[]
+endif::basebackend-docbook[]
+
+* Want to learn more about [label label-primary]#Reflect# architecture and /or
+you want to extends it to match your needs,
+have a look on
+ifdef::basebackend-html[]
+link:developer-guide.html[developer's guide]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
+xref:_developer_guide[]
+endif::basebackend-docbook[]
+
+* You are a user of previous version 1.9 that is really different, and want to
+upgrade to the new major version 2, and keep your old environment still running,
+have a look on
+ifdef::basebackend-html[]
+link:migration-guide.html[migration's guide]
+endif::basebackend-html[]
+ifdef::basebackend-docbook[]
+xref:_migration_guide[]
+endif::basebackend-docbook[]
+
+************************************************

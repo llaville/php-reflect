@@ -1,0 +1,90 @@
+:doctitle:    Reflect 2.0 preview
+:description: Analysers
+:iconsfont: font-awesome
+:imagesdir: ./images
+:author:    Laurent Laville
+:revdate:   2014-02-21
+:pubdate:   Fri, 21 Feb 2014 11:41:37 +0100
+:summary:   Analyser:run command with a structure report
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
+
+
+[id="post-8"]
+== {summary}
+
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/clock-o.png[alt="future",icon="clock-o",size="4x"]
+
+[role="lead"]
+Future release 2.0.0RC3 will adopt a new command
+
+Current version 2.0.0RC2 is a bit useless in CLI mode. I've decided to include in next
+Release Candidate
+(commit https://github.com/llaville/php-reflect/commit/f99c2bfebb1c73e49d0777157087bb01cc851be9[f99c2bf])
+a new command *analyser:run* that will display a structure report
+equivalent to Sebastian Bergmann https://github.com/sebastianbergmann/phploc[phploc] solution.
+
+With a such `reflect.json` config file:
+----
+{
+    "source-providers": [
+        {
+            "in": "phar:///var/dist/PHP_Reflect-1.0.0.tar as Reflect1",
+            "path": "PHP/",
+            "name": "*.php"
+        }
+    "plugins": [
+        {
+            "name": "Analyser",
+            "class": "Bartlett\\Reflect\\Plugin\\Analyser\\AnalyserPlugin"
+        }
+    ],
+    "analysers" : [
+        {
+            "name": "Structure",
+            "class": "Bartlett\\Reflect\\Analyser\\StructureAnalyser"
+        }
+    ]
+}
+----
+
+Run the command below:
+----
+$ php bin/reflect --profile --analyser:run --alias Reflect1
+----
+
+You will get such output.
+----
+Data Source Analysed
+
+Directories                                          2
+Files                                                3
+
+Structure
+  Namespaces                                         1
+  Interfaces                                         0
+  Traits                                             0
+  Classes                                          158
+    Abstract Classes                                 4 (2.53%)
+    Concrete Classes                               154 (97.47%)
+  Methods                                           37
+    Scope
+      Non-Static Methods                            37 (100.00%)
+      Static Methods                                 0 (0.00%)
+    Visibility
+      Public Method                                 34 (91.89%)
+      Protected Method                               3 (8.11%)
+      Private Method                                 0 (0.00%)
+  Functions                                          1
+    Named Functions                                  1 (100.00%)
+    Anonymous Functions                              0 (0.00%)
+  Constants                                         70
+    Global Constants                                70 (100.00%)
+    Class Constants                                  0 (0.00%)
+
+Time: 4.05 seconds, Memory: 15.00Mb
+----
+____

@@ -1,0 +1,64 @@
+<?php
+require_once 'vendor/autoload.php';
+
+use Bartlett\Reflect;
+use Bartlett\Reflect\ProviderManager;
+use Bartlett\Reflect\Provider\SymfonyFinderProvider;
+
+use Symfony\Component\Finder\Finder;
+
+$finder = new Finder();
+$finder->files()
+    ->name('PEAR.php')
+    ->in('/path/to/PEAR-1.9.2/');
+
+// Identify Data Source
+$pm = new ProviderManager;
+$pm->set('PEAR192', new SymfonyFinderProvider($finder));
+
+$reflect = new Reflect;
+$reflect->setProviderManager($pm);
+$reflect->parse();
+
+// Exploit results
+$out = array();
+
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getClasses() as $class) {
+    
+        if ($class->getShortName() !== 'PEAR_Error') {
+            continue;
+        }
+        
+        foreach ($class->getMethods() as $method) {
+
+            if ($method->isPrivate()) {
+                $visibility = 'private';
+            } elseif ($method->isProtected()) {
+                $visibility = 'protected';
+            } else {
+                $visibility = 'public';
+            }
+            
+            $name = $method->getShortName();
+            
+            $parameters = $method->getParameters();
+            $args       = array();
+            
+            foreach ($parameters as $parameter) {
+            
+                $args[] = sprintf(
+                    '%s%s%s',
+                    $parameter->isPassedByReference() ? '&' : '',
+                    '$' . $parameter->getName(),
+                    $parameter->isDefaultValueAvailable() ? ' = ' . $parameter->getDefaultValue() : ''
+                );
+            }
+
+            $out[$name] = array(
+                'signature' => sprintf('%s %s(%s)', $visibility, $name, implode(',', $args))
+            );
+        }
+    }
+}
+print_r($out);

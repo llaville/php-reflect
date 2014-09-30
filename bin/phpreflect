@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+
+if (\Phar::running()) {
+    $vendorDir = 'phar://phpreflect.phar/vendor';
+} else {
+    $baseDir   = dirname(__DIR__);
+    $vendorDir = $baseDir . '/vendor';
+
+    if (!getenv("REFLECT")) {
+        $home  = defined('PHP_WINDOWS_VERSION_BUILD') ? 'USERPROFILE' : 'HOME';
+        $files = array(
+            realpath('./phpreflect.json'),
+            getenv($home).'/.config/phpreflect.json',
+            '/etc/phpreflect.json',
+        );
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                putenv("REFLECT=$file");
+                break;
+            }
+        }
+    }
+}
+$loader = require_once $vendorDir . '/autoload.php';
+$loader->setUseIncludePath(true);
+
+if (PHP_SAPI !== 'cli') {
+    return;
+}
+
+use Bartlett\Reflect\ConsoleApplication as Application;
+
+$application = new Application();
+$application->run();

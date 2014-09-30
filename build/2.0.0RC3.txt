@@ -1,0 +1,21 @@
+New major version and API rewritten specially for PHP 5.3 and greater.
+
+Additions and changes since RC2:
+
+* adds a new command *analyser:run* that display a structure report.
+* adds a new command *plantUML:run* to make PlantUML diagrams (package or class).
+* fixes `composer.json` syntax file.
+* phar version is now a single file with all dependencies bundled.
+* can use all file informations into into `reflect.progress`, `reflect.success` and `reflect.error` events.
+* fixes PHP-Parser namespace error.
+* prints progress filenames and optional errors on verbose level 2.
+* prevent error on plugin:list command if json config file does not have a _plugins_ entry.
+* each plugin is now really plug-and-play (should provide additional commands).
+* console application respect now plug-and-play protocol.
+* fixes plugin:list command render when multiple plugins are available.
+
+Issues since RC2:
+
+* GH-3: fix vendor paths between source composer and phar version.
+
+*This is the last RC before final stable version planned for Fri, 4 April 2014.*

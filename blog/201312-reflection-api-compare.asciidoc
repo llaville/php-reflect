@@ -1,0 +1,31 @@
+:doctitle:    Reflect 2.0 preview
+:description: Reflection API
+:iconsfont: font-awesome
+:imagesdir: ./images
+:author:    Laurent Laville
+:revdate:   2013-12-03
+:pubdate:   Tue, 03 Dec 2013 09:19:27 +0100
+:summary:   Zoom on Reflection API
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
+
+[id="post-2"]
+== {summary}
+
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/search-plus.png[alt="search",icon="search-plus",size="4x"]
+
+[role="lead"]
+Compare both Reflection API between PHP5 and Reflect.
+
+A big improvement was added to API on its way to exploit results.
+
+- API 1.0 provides a raw array structure that is difficult to exploit. 
+- API 2.0 provides an OOP like PHP5 that is very simple to explore and exploit.
+
+Look at 
+http://php5.laurent-laville.org/reflect/manual/2.0/en/features-compared.html[Reflection API differences]
+between PHP5 and Reflect 2. 
+____

@@ -1,0 +1,98 @@
+ifndef::basebackend-docbook[]
+
+= Handle Results
+:description: Learn how to explore and exploit parsing results.
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+
+endif::basebackend-docbook[]
+
+== Study case
+
+We are suppose in the following, study the source code below, script named +StudyCase1.php+ :
+
+[source,php]
+----
+<?php
+include '/path/to/test1.php';
+include_once 'test2.php';
+require 'test3.php';
+// test four
+require_once
+    'test4.php';
+
+class Foo implements SplObserver
+{
+    const FOO = 'default FOO value';
+
+    public function __construct()
+    {
+    }
+
+    public function update(SplSubject $subject) {
+    }
+}
+
+define('SOURCE1_ROOT', __DIR__);
+
+function singleFunction( Array $someparam, stdClass $somethingelse, $lastone = NULL )
+{
+}
+----
+
+To explore and exploit results, we need first to parse the data source.
+You should be able to do it.
+
+Here are the solution how to parse the data source seen above :
+
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+use Bartlett\Reflect\ProviderManager;
+use Bartlett\Reflect\Provider\SymfonyFinderProvider;
+use Symfony\Component\Finder\Finder;
+
+$dirs = dirname(__DIR__) . '/sources';
+
+$finder = new Finder();
+$finder->files()
+    ->name('StudyCase1.php')
+    ->in($dirs);
+
+$provider = new SymfonyFinderProvider($finder);
+
+$pm = new ProviderManager;
+$pm->set('StudyCase1', $provider);
+
+$reflect = new Reflect;
+$reflect->setProviderManager($pm);
+$reflect->parse();
+----
+
+== Enumerate each elements
+
+include::enumerate-packages.asciidoc[]
+include::enumerate-classes.asciidoc[]
+include::enumerate-interfaces.asciidoc[]
+include::enumerate-traits.asciidoc[]
+include::enumerate-properties.asciidoc[]
+include::enumerate-parameters.asciidoc[]
+include::enumerate-functions.asciidoc[]
+include::enumerate-constants.asciidoc[]
+include::enumerate-includes.asciidoc[]
+include::enumerate-dependencies.asciidoc[]
+
+== Exploit each elements
+
+include::exploit-packages.asciidoc[]
+include::exploit-classes.asciidoc[]
+include::exploit-interfaces.asciidoc[]
+include::exploit-traits.asciidoc[]
+include::exploit-properties.asciidoc[]
+include::exploit-parameters.asciidoc[]
+include::exploit-functions.asciidoc[]
+include::exploit-constants.asciidoc[]
+include::exploit-includes.asciidoc[]
+include::exploit-dependencies.asciidoc[]

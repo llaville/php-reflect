@@ -1,5 +1,0 @@
-<phpunit bootstrap="../PHP/Reflect/Autoload.php">
-    <testsuite name="PHP_Reflect Test Suite">
-        <directory>./Token</directory>
-    </testsuite>
-</phpunit>
