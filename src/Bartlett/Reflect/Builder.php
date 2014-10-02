@@ -230,10 +230,11 @@ class Builder extends NodeVisitorAbstract
                 }
                 $parent = $parent->__toString();
 
-                if (isset($this->classes[$parent])) {
-                    // load the parent model
-                    $parent = $this->classes[$parent];
+                if (!isset($this->classes[$parent])) {
+                    $this->classes[$parent] = $this->buildClass($parent, array());
                 }
+                // load the parent model
+                $parent = $this->classes[$parent];
 
             } else {
                 $parent = false;
