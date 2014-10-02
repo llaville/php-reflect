@@ -136,9 +136,6 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getParentClass()
     {
-        if (is_string($this->struct['parent'])) {
-            return false;
-        }
         return $this->struct['parent'];
     }
 
