@@ -20,6 +20,7 @@ use Bartlett\Reflect\Event\AbstractDispatcher;
 use Bartlett\Reflect\ManagerInterface;
 use Bartlett\Reflect\ProviderManager;
 use Bartlett\Reflect\Builder;
+use Bartlett\Reflect\PhpParser\Lexer\TokenOffsets;
 
 use PhpParser\Parser;
 use PhpParser\Lexer;
@@ -82,7 +83,8 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
     {
         $this->builder = new Builder;
 
-        $parser    = new Parser(new Lexer\Emulative);
+        $lexer     = new TokenOffsets();
+        $parser    = new Parser($lexer);
         $traverser = new NodeTraverser;
         $traverser->addVisitor(new NameResolver);
         $traverser->addVisitor($this->builder);
@@ -131,6 +133,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                         $stmts = $parser->parse(
                             file_get_contents($file->getPathname())
                         );
+                        $this->builder->setTokens($lexer->getTokens());
                         $stmts = $traverser->traverse($stmts);
 
                         $this->dispatch(

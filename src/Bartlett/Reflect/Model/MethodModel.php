@@ -39,6 +39,7 @@ class MethodModel extends AbstractFunctionModel implements Visitable
     {
         $struct = array(
             'modifiers' => array(),
+            'implicitlyPublic' => true,
         );
         $struct = array_merge($struct, $attributes);
         parent::__construct($struct);
@@ -140,6 +141,16 @@ class MethodModel extends AbstractFunctionModel implements Visitable
     public function isPublic()
     {
         return $this->struct['visibility'] === 'public';
+    }
+
+    /**
+     * Checks if the method is implicitly public (PHP4 syntax).
+     *
+     * @return bool
+     */
+    public function isImplicitlyPublic()
+    {
+        return $this->struct['implicitlyPublic'];
     }
 
     /**
