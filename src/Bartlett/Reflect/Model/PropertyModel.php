@@ -42,6 +42,7 @@ class PropertyModel extends AbstractModel implements Visitable
             'compileTime' => true,
             'modifiers'   => array(),
             'visibility'  => 'public',
+            'implicitlyPublic' => true,
         );
         $struct = array_merge($struct, $attributes);
         parent::__construct($struct);
@@ -141,6 +142,16 @@ class PropertyModel extends AbstractModel implements Visitable
     public function isStatic()
     {
         return in_array('static', $this->struct['modifiers']);
+    }
+
+    /**
+     * Checks if the property is implicitly public (PHP4 syntax).
+     *
+     * @return bool
+     */
+    public function isImplicitlyPublic()
+    {
+        return $this->struct['implicitlyPublic'];
     }
 
     /**

@@ -26,6 +26,8 @@ use Bartlett\Reflect\Model\DependencyModel;
 
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node;
+use PhpParser\Node\Stmt\Property;
+use PhpParser\Node\Stmt\ClassMethod;
 
 /**
  * Concrete Builder.
@@ -55,6 +57,34 @@ class Builder extends NodeVisitorAbstract
      * @var null|Name Current namespace
      */
     private $namespace;
+
+    private $tokens;
+
+    private function isImplicitlyPublicProperty(array $tokens, Property $prop)
+    {
+        $i = $prop->getAttribute('startOffset');
+        return isset($tokens[$i]) && $tokens[$i][0] == T_VAR;
+    }
+
+    private function isImplicitlyPublicFunction(array $tokens, ClassMethod $method)
+    {
+        $i = $method->getAttribute('startOffset');
+        for ($c = count($tokens); $i < $c; ++$i) {
+            $t = $tokens[$i];
+            if ($t[0] == T_PUBLIC || $t[0] == T_PROTECTED || $t[0] == T_PRIVATE) {
+                return false;
+            }
+            if ($t[0] == T_FUNCTION) {
+                break;
+            }
+        }
+        return true;
+    }
+
+    public function setTokens(array $tokens)
+    {
+        $this->tokens = $tokens;
+    }
 
     public function setCurrentFile($path)
     {
@@ -311,6 +341,15 @@ class Builder extends NodeVisitorAbstract
                 }
                 if (is_string($attr = $visibility($stmt))) {
                     $stmtAttributes['visibility'] = $attr;
+                }
+                if ($stmt instanceof Property) {
+                    $stmtAttributes['implicitlyPublic'] =
+                        $this->isImplicitlyPublicProperty($this->tokens, $stmt);
+
+                }
+                if ($stmt instanceof ClassMethod) {
+                    $stmtAttributes['implicitlyPublic'] =
+                        $this->isImplicitlyPublicFunction($this->tokens, $stmt);
                 }
 
                 if ($stmt instanceof \PhpParser\Node\Stmt\ClassConst) {
