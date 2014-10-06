@@ -23,7 +23,6 @@ use Bartlett\Reflect\Builder;
 use Bartlett\Reflect\PhpParser\Lexer\TokenOffsets;
 
 use PhpParser\Parser;
-use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 
@@ -115,6 +114,10 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                 $this->builder->setCurrentFile($file->getPathname());
 
                 if (isset($event['notModified'])) {
+                    $tokens = @token_get_all(
+                        file_get_contents($file->getPathname())
+                    );
+                    $this->builder->setTokens($tokens);
                     // uses cached response (AST built by PHP-Parser)
                     $stmts = $traverser->traverse($event['notModified']);
 
