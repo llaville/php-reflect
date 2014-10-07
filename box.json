@@ -48,7 +48,6 @@
             "in": "vendor/psr/log/Psr"
         }
     ],
-    "git-commit": "git_commit",
     "git-version": "package_version",
     "main": "bin/phpreflect",
     "output": "phpreflect-@git-version@.phar",
