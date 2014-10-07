@@ -25,8 +25,6 @@ use Bartlett\Reflect\Command\ProviderDisplayCommand;
 use Bartlett\Reflect\Command\PluginListCommand;
 use Bartlett\Reflect\Command\ValidateCommand;
 
-use SebastianBergmann\Version;
-
 /**
  * Console Application.
  *
@@ -52,7 +50,7 @@ class ConsoleApplication extends Application
         $version = $this->getVersion();
 
         if ('@' . 'package_version@' == $version) {
-            $version = new Version('2.5.0', dirname(dirname(dirname(__DIR__))));
+            $version = new \SebastianBergmann\Version('2.5.0', dirname(dirname(dirname(__DIR__))));
             $version = $version->getVersion();
         }
 
