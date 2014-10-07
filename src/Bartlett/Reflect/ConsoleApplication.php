@@ -52,7 +52,7 @@ class ConsoleApplication extends Application
         $version = $this->getVersion();
 
         if ('@' . 'package_version@' == $version) {
-            $version = new Version('3.5.0', dirname(dirname(dirname(__DIR__))));
+            $version = new Version('2.5.0', dirname(dirname(dirname(__DIR__))));
             $version = $version->getVersion();
         }
 
