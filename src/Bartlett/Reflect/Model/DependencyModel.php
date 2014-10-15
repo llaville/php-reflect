@@ -37,6 +37,10 @@ class DependencyModel extends AbstractModel implements Visitable
      */
     public function __construct($qualifiedName, $attributes)
     {
+        if (!isset($attributes['arguments'])) {
+            $attributes['arguments'] = array();
+        }
+
         parent::__construct($attributes);
 
         $this->name = $qualifiedName;
