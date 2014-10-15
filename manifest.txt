@@ -1,7 +1,7 @@
-bartlett/php-reflect: master@bae9de8dd01652703fbb63f47e34dadb76f0cf68
+bartlett/php-reflect: master@f08976e4752cccb96ceeb5c7b5aef15ab383491d
 doctrine/cache: v1.3.1
 monolog/monolog: 1.11.0
-nikic/php-parser: v1.0.0
+nikic/php-parser: v1.0.1
 phpunit/php-timer: 1.0.5
 psr/log: 1.0.0
 seld/jsonlint: 1.3.0
