@@ -1,0 +1,36 @@
+:doctitle:    Reflect 2.5 stable
+:description:
+:iconsfont: font-awesome
+:imagesdir: ./images
+:author:    Laurent Laville
+:revdate:   2014-10-16
+:pubdate:   Thu, 16 Oct 2014 13:55:15 +0200
+:summary:   Reflect 2.5.0 has just been released.
+:jumbotron:
+:jumbotron-fullwidth:
+:footer-fullwidth:
+
+[id="post-1"]
+== {summary}
+
+[quote,Published by {author} on {revdate}]
+____
+image:icons/font-awesome/rocket.png[alt="release",icon="rocket",size="4x"]
+
+News :
+
+* Distinct public visibility in class methods and class properties https://github.com/llaville/php-reflect/issues/7[].
+* Added `Sebastian\Version` dependency to display current version with source code (and VCS info).
+* Update DependencyModel to fix CompatInfo issue https://github.com/llaville/php-compat-info/issues/132[GH-132].
+
+Bugs :
+
+* Running CLI in local composer installation fails. See commit https://github.com/llaville/php-reflect/commit/9aad40b1360fdb11ce891dc20d0322add38edb03[9aad40b].
+
+Download :
+
+link:http://bartlett.laurent-laville.org/get/phpreflect-2.5.0.phar[caption="Download the PHAR version",role="primary",icon="glyphicon-download-alt"]
+
+Alternatively, you may use http://getcomposer.org/[Composer] and install it
+via https://packagist.org/packages/bartlett/php-reflect/[Packagist].
+____
