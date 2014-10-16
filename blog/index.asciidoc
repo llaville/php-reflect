@@ -33,10 +33,10 @@ Subscribe to http://php5.laurent-laville.org/reflect/blog/rss.xml[RSS feed].
 ** link:201406.html[June] [badge pull-right]#3#
 ** link:201407.html[July] [badge pull-right]#4#
 ** link:201408.html[August] [badge pull-right]#5#
+** link:201409.html[September] [badge pull-right]#1#
 --
 ====
 
 [role="col-md-9"]
-include::201409-Reflect-2.4.0-released.asciidoc[]
 
 [role="col-md-9 col-md-offset-3"]
