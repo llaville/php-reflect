@@ -65,7 +65,7 @@ class PlantUMLRunCommand extends ProviderCommand
             $alias = false;
         }
 
-        $var = $this->getApplication()->getJsonConfigFile();
+        $var = $this->getApplication()->getEnv()->getJsonConfigFile();
 
         if (!is_array($var)
             || !isset($var['source-providers'])

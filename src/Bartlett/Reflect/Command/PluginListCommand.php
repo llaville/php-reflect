@@ -19,7 +19,7 @@ class PluginListCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $var = $this->getApplication()->getJsonConfigFile();
+        $var = $this->getApplication()->getEnv()->getJsonConfigFile();
 
         if (!is_array($var)) {
             throw new \Exception(

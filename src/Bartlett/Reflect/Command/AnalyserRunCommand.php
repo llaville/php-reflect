@@ -54,7 +54,7 @@ class AnalyserRunCommand extends ProviderCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $var = $this->getApplication()->getJsonConfigFile();
+        $var = $this->getApplication()->getEnv()->getJsonConfigFile();
 
         if (!is_array($var)
             || !isset($var['source-providers'])

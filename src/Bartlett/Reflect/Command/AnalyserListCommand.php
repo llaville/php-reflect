@@ -19,13 +19,7 @@ class AnalyserListCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $var = $this->getApplication()->getJsonConfigFile();
-
-        if (!is_array($var)) {
-            throw new \Exception(
-                'The json configuration file has an invalid format'
-            );
-        }
+        $var = $this->getApplication()->getEnv()->getJsonConfigFile();
 
         if (!isset($var['analysers']) || empty($var['analysers'])) {
             $fmt = $this->getApplication()->getHelperSet()->get('formatter');

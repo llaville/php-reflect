@@ -40,9 +40,18 @@ class ConsoleApplication extends Application
 {
     const VERSION = '@package_version@';
 
+    private $env;
+
     public function __construct()
     {
+        $this->env = new Environment();
+
         parent::__construct('phpReflect', self::VERSION);
+    }
+
+    public function getEnv()
+    {
+        return $this->env;
     }
 
     public function getVersion()
@@ -105,7 +114,7 @@ class ConsoleApplication extends Application
         $commands[] = new ProviderDisplayCommand;
 
         try {
-            $var = $this->getJsonConfigFile();
+            $var = $this->env->getJsonConfigFile();
         } catch (\Exception $e) {
             // stop here if json config file is missing or invalid
         }
@@ -171,31 +180,5 @@ class ConsoleApplication extends Application
             }
         }
         return $exitCode;
-    }
-
-    /**
-     * Gets the json contents of REFLECT configuration file
-     *
-     * @return array
-     * @throws \Exception if configuration file does not exists or is invalid
-     */
-    public function getJsonConfigFile()
-    {
-        $path = realpath(getenv('REFLECT'));
-
-        if (!is_file($path)) {
-            throw new \Exception(
-                'Configuration file "' . $path . '" does not exists.'
-            );
-        }
-        $json = file_get_contents($path);
-        $var  = json_decode($json, true);
-
-        if (null === $var) {
-            throw new \Exception(
-                'The json configuration file has an invalid format.'
-            );
-        }
-        return $var;
     }
 }
