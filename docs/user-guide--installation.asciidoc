@@ -54,6 +54,14 @@ $ php composer.phar install
 
 [TIP]
 ====
+With composer `install` or `create-project` commands,
+if you want to disable installation of require-dev packages
+(`doctrine/cache`, `psr/log`, `monolog/monolog`, `bartlett/phpunit-loggertestlistener`),
+don't forget to specify the `--no-dev` option.
+====
+
+[TIP]
+====
 You can also use Composer to create a new project from an existing [label label-primary]#Reflect# package.
 This is the equivalent of doing a git clone checkout followed by a composer install of the vendors.
 
