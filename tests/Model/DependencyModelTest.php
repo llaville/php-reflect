@@ -79,7 +79,7 @@ class DependencyModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testStartLineAccessor()
     {
-        $d = 0;  // DateTime::diff
+        $d = 1;  // DateTime::diff
 
         $this->assertEquals(
             5,
@@ -97,7 +97,7 @@ class DependencyModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testEndLineAccessor()
     {
-        $d = 0;  // DateTime::diff
+        $d = 1;  // DateTime::diff
 
         $this->assertEquals(
             6,
@@ -115,7 +115,7 @@ class DependencyModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testFileNameAccessor()
     {
-        $d = 0;  // DateTime::diff
+        $d = 1;  // DateTime::diff
 
         $this->assertEquals(
             TEST_FILES_PATH . 'dependencies.php',
@@ -133,7 +133,7 @@ class DependencyModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNameAccessor()
     {
-        $d = 0;  // DateTime::diff
+        $d = 1;  // DateTime::diff
 
         $this->assertEquals(
             'DateTime::diff',
@@ -151,7 +151,7 @@ class DependencyModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNamespaceNameAccessor()
     {
-        $d = 0;  // DateTime::diff
+        $d = 1;  // DateTime::diff
 
         $this->assertEquals(
             '',
@@ -168,7 +168,7 @@ class DependencyModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testClassMethod()
     {
-        $d = 0;  // DateTime::diff
+        $d = 1;  // DateTime::diff
 
         $this->assertTrue(
             self::$dependencies[$d]->isClassMethod(),
@@ -184,7 +184,7 @@ class DependencyModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testInternalFunction()
     {
-        $d = 2;  // extension_loaded
+        $d = 3;  // extension_loaded
 
         $this->assertTrue(
             self::$dependencies[$d]->isInternalFunction(),
@@ -200,7 +200,7 @@ class DependencyModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testArgumentsAccessor()
     {
-        $d = 2;  // extension_loaded
+        $d = 3;  // extension_loaded
         $p = 0;
 
         $args = self::$dependencies[$d]->getArguments();
