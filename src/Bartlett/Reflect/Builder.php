@@ -532,7 +532,7 @@ class Builder extends NodeVisitorAbstract
         if ($dep->getCalls() > 1) {
             return;
         }
-        $attributes = array('classes' => array($dep));
+        $attributes = array('dependencies' => array($dep));
         $package = $this->buildPackage($this->namespace);
         $package->update($attributes);
     }
