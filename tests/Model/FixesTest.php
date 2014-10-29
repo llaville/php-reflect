@@ -83,15 +83,9 @@ class FixesTest extends \PHPUnit_Framework_TestCase
     public function testFix()
     {
         $this->assertInstanceOf(
-            'Bartlett\Reflect\Model\DependencyModel',
+            'Bartlett\Reflect\Model\ClassModel',
             self::$classes[0][0]
         );
-        $this->assertSame('stdClass', self::$classes[0][0]->getName());
-
-        $this->assertInstanceOf(
-            'Bartlett\Reflect\Model\ClassModel',
-            self::$classes[0][1]
-        );
-        $this->assertSame('MyGlobalClass', self::$classes[0][1]->getName());
+        $this->assertSame('MyGlobalClass', self::$classes[0][0]->getName());
     }
 }
