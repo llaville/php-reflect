@@ -16,7 +16,7 @@ $loader->addClassMap(
 );
 
 use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\GrowlHandler;
 use Monolog\Handler\AdvancedFilterHandler;
 
@@ -29,7 +29,8 @@ class Psr3Logger extends Logger
             return (preg_match('/^TestSuite(.*)ended\. Tests/', $record['message']) === 1);
         };
 
-        $stream = new StreamHandler('/var/logs/phpreflect.log');
+        $stream = new RotatingFileHandler('/var/logs/phpreflect.log', 30);
+        $stream->setFilenameFormat('{filename}-{date}', 'Ymd');
         $growl  = new GrowlHandler(array(), Logger::NOTICE);
 
         $filterGrowl = new AdvancedFilterHandler(
