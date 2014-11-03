@@ -22,7 +22,8 @@ class TokenOffsets extends \PhpParser\Lexer\Emulative
         return $token;
     }
 
-    public function getTokens() {
+    public function getTokens()
+    {
         return $this->tokens;
     }
 }

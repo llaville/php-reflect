@@ -114,7 +114,7 @@ class PlantUMLRunCommand extends ProviderCommand
             if ($output->isVerbose()) {
                 $reflect->getEventDispatcher()->addListener(
                     'reflect.progress',
-                    function (GenericEvent $e) use($progress) {
+                    function (GenericEvent $e) use ($progress) {
                         if ($progress instanceof ProgressHelper) {
                             $progress->advance();
                         }

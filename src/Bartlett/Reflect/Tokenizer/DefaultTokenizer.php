@@ -6,7 +6,7 @@ class DefaultTokenizer
 {
     protected $tokenStack;
     protected $file;
-    
+
     protected static $customTokens = array(
         '(' => 'T_OPEN_BRACKET',
         ')' => 'T_CLOSE_BRACKET',
@@ -58,7 +58,6 @@ class DefaultTokenizer
         $tokens = token_get_all($source);
 
         foreach ($tokens as $id => $token) {
-
             if (is_array($token)) {
                 $text      = $token[1];
                 $tokenName = token_name($token[0]);

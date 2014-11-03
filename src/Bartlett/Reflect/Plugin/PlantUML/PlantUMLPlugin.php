@@ -366,7 +366,6 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
 
         // prints inheritance (if exists)
         if ($classValues['parent']) {
-
             $parts  = explode('\\', $classValues['parent']);
             $parent = array_pop($parts);
             $ns     = implode('\\', $parts);
@@ -398,7 +397,6 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
 
         // prints interfaces (if exists)
         foreach ($classValues['interfaces'] as $shortName => $longName) {
-
             $parts = explode('\\', $longName);
             array_pop($parts);
             $ns    = implode('\\', $parts);

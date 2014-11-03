@@ -177,7 +177,7 @@ class ProviderCommand extends Command
             for ($a = 0, $max = count($args); $a < $max; $a++) {
                 // Expands variable from Environment on each argument
                 $count = preg_match_all("/%{([^}]*)}/", $args[$a], $reg);
-                for ($i = 0 ; $i < $count ; $i++) {
+                for ($i = 0; $i < $count; $i++) {
                     if ($reg[1][$i] == 'HOME') {
                         $reg[1][$i] = defined('PHP_WINDOWS_VERSION_BUILD')
                             ? 'USERPROFILE' : 'HOME';

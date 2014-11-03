@@ -151,11 +151,9 @@ class Builder extends NodeVisitorAbstract
         }
 
         if ($node instanceof \PhpParser\Node\Expr\MethodCall) {
-
             $this->parseMethodCall($node, $nodeAttributes);
 
         } elseif ($node instanceof \PhpParser\Node\Expr\New_) {
-
             $this->parseNewStatement($node, $nodeAttributes);
 
         } elseif ($node instanceof \PhpParser\Node\Expr\FuncCall
@@ -167,11 +165,9 @@ class Builder extends NodeVisitorAbstract
             $this->parseInternalFunction($node, $nodeAttributes);
 
         } elseif ($node instanceof \PhpParser\Node\Stmt\Function_) {
-
             $this->parseUserFunction($node, $nodeAttributes);
 
         } elseif ($node instanceof \PhpParser\Node\Expr\Closure) {
-
             $nodeAttributes['closure'] = true;
             $this->parseUserFunction($node, $nodeAttributes);
 
@@ -218,11 +214,9 @@ class Builder extends NodeVisitorAbstract
         }
 
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
-
             $this->buildPackage($node->name->__toString(), $nodeAttributes);
 
         } elseif ($node instanceof \PhpParser\Node\Expr\Include_) {
-
             if ($node->type === 1) {
                 $type = 'include';
             } elseif ($node->type === 2) {
@@ -324,7 +318,6 @@ class Builder extends NodeVisitorAbstract
             $methods    = array();
 
             foreach ($node->stmts as $stmt) {
-
                 $doc = $stmt->getDocComment();
 
                 $stmtAttributes = array(
@@ -388,7 +381,6 @@ class Builder extends NodeVisitorAbstract
                     );
 
                 } elseif ($stmt instanceof \PhpParser\Node\Stmt\ClassMethod) {
-
                     $stmtAttributes['arguments']
                         = $this->parseFunctionArguments($stmt->params);
 
@@ -675,18 +667,15 @@ class Builder extends NodeVisitorAbstract
     {
         $params = array();
         foreach ($args as $param) {
-
             $node = $param->value;
 
             $typeClass = $node->getType();
 
             if (in_array($typeClass, array('Scalar_String', 'Scalar_Encapsed'))) {
                 $value = $node->value;
-            }
-            elseif ('Expr_Variable' == $typeClass) {
+            } elseif ('Expr_Variable' == $typeClass) {
                 $value = $node->name;
-            }
-            else {
+            } else {
                 $value = '';
             }
 
