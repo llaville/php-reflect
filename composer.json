@@ -49,7 +49,11 @@
     ],
     "autoload": {
         "psr-0": {
-            "Bartlett\\": "src/",
+            "Bartlett\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
             "Bartlett\\Tests\\Reflect\\": "tests/"
         }
     }
