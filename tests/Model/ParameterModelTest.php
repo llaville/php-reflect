@@ -271,6 +271,26 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Checks if the parameter is variadic.
+     *
+     *  covers ParameterModel::isVariadic
+     * @link http://php.net/manual/en/migration56.new-features.php#migration56.new-features.variadics
+     * @return void
+     */
+    public function testIsVariadic()
+    {
+        $f = 1;  // function myprocess
+        $p = 2;  // parameter $opt
+
+        $parameters = self::$functions[$f]->getParameters();
+
+        $this->assertTrue(
+            $parameters[$p]->isVariadic(),
+            self::$functions[$f]->getName() . ", parameter #$p is not variadic."
+        );
+    }
+
+    /**
      * Tests if the parameter expects an array.
      *
      *  covers ParameterModel::isArray

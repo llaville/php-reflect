@@ -653,6 +653,7 @@ class Builder extends NodeVisitorAbstract
                 'startLine' => $param->getAttribute('startLine'),
                 'endLine'   => $param->getAttribute('endLine'),
                 'byRef'     => $param->byRef,
+                'variadic'  => $param->variadic,
                 'typeHint'  => $param->type instanceof \PhpParser\Node\Name
                     ? $param->type->__toString() : $param->type,
             );

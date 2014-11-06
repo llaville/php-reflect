@@ -20,7 +20,7 @@ function singleFunction ( Array $someparam, stdClass $somethingelse, $lastone = 
 {
 }
 
-function myprocess ( $param, &$myresult )
+function myprocess ( $param, &$myresult, ...$opt  )
 {
     return 0;
 }

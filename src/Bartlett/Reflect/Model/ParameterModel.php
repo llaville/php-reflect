@@ -112,6 +112,16 @@ class ParameterModel extends AbstractModel implements Visitable
     }
 
     /**
+     * Checks if the parameter is variadic.
+     *
+     * @return bool TRUE if the parameter is variadic, otherwise FALSE
+     */
+    public function isVariadic()
+    {
+        return $this->struct['variadic'];
+    }
+
+    /**
      * Checks if the parameter expects an array.
      *
      * @return bool TRUE if an array is expected, FALSE otherwise.
