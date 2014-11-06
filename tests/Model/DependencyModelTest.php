@@ -212,4 +212,36 @@ class DependencyModelTest extends \PHPUnit_Framework_TestCase
             . " argument #$p value does not match."
         );
     }
+
+    /**
+     * Tests if the dependency is a conditional function.
+     *
+     *  covers DependencyModel::isConditionalFunction
+     * @return void
+     */
+    public function testConditionalFunction()
+    {
+        $d = 3;  // extension_loaded
+
+        $this->assertTrue(
+            self::$dependencies[$d]->isConditionalFunction(),
+            self::$dependencies[$d]->getName() . ' is not a conditional function.'
+        );
+    }
+
+    /**
+     * Tests if the dependency is a class (introduced by the new statement).
+     *
+     *  covers DependencyModel::isClass
+     * @return void
+     */
+    public function testClass()
+    {
+        $d = 4;  // new Finder
+
+        $this->assertTrue(
+            self::$dependencies[$d]->isClass(),
+            self::$dependencies[$d]->getName() . ' is not a class.'
+        );
+    }
 }

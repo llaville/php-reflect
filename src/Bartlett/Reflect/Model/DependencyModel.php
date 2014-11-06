@@ -40,17 +40,24 @@ class DependencyModel extends AbstractModel implements Visitable
         if (!isset($attributes['arguments'])) {
             $attributes['arguments'] = array();
         }
+        if (!isset($attributes['class'])) {
+            $attributes['class'] = false;
+        }
+        if (!isset($attributes['conditionalFunction'])) {
+            $attributes['conditionalFunction'] = false;
+        }
+        if (!isset($attributes['internalFunction'])) {
+            $attributes['internalFunction'] = false;
+        }
 
         parent::__construct($attributes);
 
         $this->name = $qualifiedName;
 
         if (strpos($qualifiedName, '::')) {
-            $this->struct['classMethod']      = true;
-            $this->struct['internalFunction'] = false;
+            $this->struct['classMethod'] = true;
         } else {
-            $this->struct['classMethod']      = false;
-            $this->struct['internalFunction'] = true;
+            $this->struct['classMethod'] = false;
         }
     }
 
@@ -147,6 +154,16 @@ class DependencyModel extends AbstractModel implements Visitable
     public function isConditionalFunction()
     {
         return $this->struct['conditionalFunction'];
+    }
+
+    /**
+     * Checks whether the dependency is a class.
+     *
+     * @return bool TRUE if the class is an interface, otherwise FALSE
+     */
+    public function isClass()
+    {
+        return $this->struct['class'] !== false;
     }
 
     /**

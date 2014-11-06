@@ -394,6 +394,7 @@ class Builder extends NodeVisitorAbstract
 
             $deps = array();
             // interfaces implemented are collected as interface dependency
+            $nodeAttributes['interface'] = true;
             foreach ($interfaces as $interfaceName) {
                 $dep = $this->buildDependency($interfaceName, $nodeAttributes);
                 $dep->incCalls();
@@ -427,6 +428,7 @@ class Builder extends NodeVisitorAbstract
                 if (is_array($modifiers = $modifiers($node))) {
                     $nodeAttributes['modifiers'] = $modifiers;
                 }
+                $nodeAttributes['interface'] = false;
                 $model = $this->buildClass($qualifiedClassName, $nodeAttributes);
                 $attributes = array('classes' => array($model));
             }
@@ -517,6 +519,8 @@ class Builder extends NodeVisitorAbstract
             return;
         }
         $qualifiedClassName = $node->class->__toString();
+
+        $nodeAttributes['class'] = true;
 
         $dep = $this->buildDependency($qualifiedClassName, $nodeAttributes);
         $dep->incCalls();
@@ -617,6 +621,7 @@ class Builder extends NodeVisitorAbstract
                 'defined'
             )
         );
+        $nodeAttributes['internalFunction'] = true;
 
         $dep = $this->buildDependency($functionName, $nodeAttributes);
         $dep->incCalls();
@@ -821,9 +826,6 @@ class Builder extends NodeVisitorAbstract
     {
         if (!isset($attributes['hash'])) {
             $attributes['hash'] = '';
-        }
-        if (!isset($attributes['conditionalFunction'])) {
-            $attributes['conditionalFunction'] = false;
         }
 
         if (!isset($this->dependencies[$qualifiedName . $attributes['hash']])) {
