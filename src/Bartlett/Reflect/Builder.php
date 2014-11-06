@@ -176,7 +176,14 @@ class Builder extends NodeVisitorAbstract
 
             $const = $node->consts[0];
             $qualifiedName = $const->namespacedName->__toString();
-            $nodeAttributes['value'] = $const->value->value;
+            if ($const->value instanceof \PhpParser\Node\Scalar) {
+                $nodeAttributes['scalar'] = true;
+                $nodeAttributes['value']  = $const->value->value;
+            } else {
+                $nodeAttributes['scalar'] = false;
+                // Expr value not yet implemented
+                $nodeAttributes['value'] = '';
+            }
             $model = $this->buildConstant($qualifiedName, $nodeAttributes);
 
             $attributes = array('constants' => array($model));

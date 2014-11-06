@@ -42,6 +42,7 @@ class ConstantModel extends AbstractModel implements Visitable
         $struct = array(
             'magic'      => false,
             'namespace'  => false,
+            'scalar'     => false,
             'value'      => null,
         );
         $struct = array_merge($struct, $attributes);
@@ -195,6 +196,17 @@ class ConstantModel extends AbstractModel implements Visitable
     public function isMagic()
     {
         return $this->struct['magic'];
+    }
+
+    /**
+     * Checks whether it's a scalar constant.
+     *
+     * @link http://php.net/manual/en/migration56.new-features.php#migration56.new-features.const-scalar-exprs
+     * @return bool TRUE if it's scalar, otherwise FALSE
+     */
+    public function isScalar()
+    {
+        return $this->struct['scalar'];
     }
 
     /**

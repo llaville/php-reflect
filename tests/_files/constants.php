@@ -23,3 +23,5 @@ error_log(__NAMESPACE__ . ' in ' . __DIR__);
 trait PeanutButter {
     function traitName() {echo __TRAIT__;}
 }
+
+const TWO = ONE +1;

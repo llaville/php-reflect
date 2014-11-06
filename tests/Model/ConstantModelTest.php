@@ -369,6 +369,22 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests whether a constant is scalar.
+     *
+     *  covers ConstantModel::isScalar
+     * @return void
+     */
+    public function testIsScalar()
+    {
+        $c = 10;  // sandbox\TWO
+
+        $this->assertFalse(
+            self::$constants[$c]->isScalar(),
+            self::$constants[$c]->getName() . ' is a scalar constant.'
+        );
+    }
+
+    /**
      * Tests string representation of the FunctionModel object
      *
      *  covers ConstantModel::__toString
