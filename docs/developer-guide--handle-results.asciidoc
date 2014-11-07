@@ -74,6 +74,7 @@ $reflect->parse();
 == Enumerate each elements
 
 include::enumerate-packages.asciidoc[]
+include::enumerate-uses.asciidoc[]
 include::enumerate-classes.asciidoc[]
 include::enumerate-interfaces.asciidoc[]
 include::enumerate-traits.asciidoc[]
@@ -87,6 +88,7 @@ include::enumerate-dependencies.asciidoc[]
 == Exploit each elements
 
 include::exploit-packages.asciidoc[]
+include::exploit-uses.asciidoc[]
 include::exploit-classes.asciidoc[]
 include::exploit-interfaces.asciidoc[]
 include::exploit-traits.asciidoc[]

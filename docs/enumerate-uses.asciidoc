@@ -1,0 +1,36 @@
+
+=== Uses
+
+[role="lead"]
+Your last collection returned could be the list of use statements defined in a package, if any.
+
+[label label-primary]#Reflect# returns a list of use statements with the +getUses()+ method.
+
+[source,php]
+----
+<?php
+
+use Bartlett\Reflect;
+
+$reflect = new Reflect;
+
+foreach ($reflect->getPackages() as $package) {
+    $uses = $package->getUses();
+}
+----
+
+This list (+$uses+) is an iterator, that can be traversed by a simple foreach loop.
+
+[source,php]
+.Easy exploit uses
+----
+<?php
+
+use Bartlett\Reflect;
+
+foreach ($reflect->getPackages() as $package) {
+    foreach ($package->getUses() as $use) {
+        printf('%s with alias %s%s', $use->getName(), $use->getShortName(), PHP_EOL);
+    }
+}
+----
