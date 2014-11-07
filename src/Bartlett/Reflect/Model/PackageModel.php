@@ -39,6 +39,7 @@ class PackageModel extends AbstractModel implements Visitable
         $struct = array(
             'import'       => false,
             'alias'        => '',
+            'uses'         => array(),
             'classes'      => array(),
             'interfaces'   => array(),
             'traits'       => array(),
@@ -55,13 +56,27 @@ class PackageModel extends AbstractModel implements Visitable
 
     public function update($data)
     {
-        $keys = array('classes', 'interfaces', 'traits', 'functions', 'constants', 'includes', 'dependencies');
+        $keys = array(
+            'uses',
+            'classes', 'interfaces', 'traits',
+            'functions', 'constants', 'includes', 'dependencies'
+        );
 
         foreach ($data as $index => $values) {
             if (in_array($index, $keys)) {
                 $this->struct[$index] = array_merge($this->struct[$index], $values);
             }
         }
+    }
+
+    /**
+     * Gets the uses defined on this namespace.
+     *
+     * @return iterator that list UseModel objects reflecting each use statement.
+     */
+    public function getUses()
+    {
+        return $this->struct['uses'];
     }
 
     /**

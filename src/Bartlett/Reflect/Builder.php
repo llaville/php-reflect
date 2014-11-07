@@ -15,6 +15,7 @@
 namespace Bartlett\Reflect;
 
 use Bartlett\Reflect\Model\PackageModel;
+use Bartlett\Reflect\Model\UseModel;
 use Bartlett\Reflect\Model\ClassModel;
 use Bartlett\Reflect\Model\MethodModel;
 use Bartlett\Reflect\Model\FunctionModel;
@@ -43,6 +44,7 @@ use PhpParser\Node\Stmt\ClassMethod;
 class Builder extends NodeVisitorAbstract
 {
     private $packages     = array();
+    private $uses         = array();
     private $classes      = array();
     private $interfaces   = array();
     private $traits       = array();
@@ -203,6 +205,23 @@ class Builder extends NodeVisitorAbstract
             $model = $this->buildConstant($qualifiedName, $nodeAttributes);
 
             $attributes = array('constants' => array($model));
+            $package = $this->buildPackage($this->namespace);
+            $package->update($attributes);
+
+        } elseif ($node instanceof \PhpParser\Node\Stmt\Use_) {
+            $uses = array();
+            foreach ($node->uses as $use) {
+                $attributes = array(
+                    'startLine'  => $use->getAttribute('startLine'),
+                    'endLine'    => $use->getAttribute('endLine'),
+                    'type'       => $node->type,
+                    'alias'      => $use->alias,
+                );
+                $use = $this->buildUse($use->name->__toString(), $attributes);
+                $use->incCalls();
+                $uses[] = $use;
+            }
+            $attributes = array('uses' => $uses);
             $package = $this->buildPackage($this->namespace);
             $package->update($attributes);
         }
@@ -719,6 +738,23 @@ class Builder extends NodeVisitorAbstract
             $this->packages[$qualifiedName] = $model;
         }
         return $this->packages[$qualifiedName];
+    }
+
+    /**
+     * Build a unique use model defined by its qualified name.
+     *
+     * @param string $qualifiedName Full qualified name of a use statement
+     *
+     * @return UseModel
+     */
+    public function buildUse($qualifiedName, array $attributes = array())
+    {
+        if (!isset($this->uses[$qualifiedName])) {
+            $model = new UseModel($qualifiedName, $attributes);
+            $model->setFile($this->file);
+            $this->uses[$qualifiedName] = $model;
+        }
+        return $this->uses[$qualifiedName];
     }
 
     /**
