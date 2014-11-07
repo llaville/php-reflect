@@ -732,6 +732,9 @@ class Builder extends NodeVisitorAbstract
      */
     public function buildPackage($qualifiedName, array $attributes = array())
     {
+        if (empty($qualifiedName)) {
+            $qualifiedName = '+global';
+        }
         if (!isset($this->packages[$qualifiedName])) {
             $model = new PackageModel($qualifiedName, $attributes);
             $model->setFile($this->file);
