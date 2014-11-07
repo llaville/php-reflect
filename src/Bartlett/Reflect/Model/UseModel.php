@@ -25,7 +25,7 @@ use Bartlett\Reflect\Model\AbstractModel;
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version  Release: @package_version@
  * @link     http://php5.laurent-laville.org/reflect/
- * @since    Class available since Release 3.6.0
+ * @since    Class available since Release 2.6.0
  */
 class UseModel extends AbstractModel implements Visitable
 {
