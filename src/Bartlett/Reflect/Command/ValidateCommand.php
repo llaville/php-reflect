@@ -14,7 +14,9 @@
 
 namespace Bartlett\Reflect\Command;
 
-use Bartlett\Reflect\Environment;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Console command to validate structure of the JSON configuration file.
@@ -27,8 +29,33 @@ use Bartlett\Reflect\Environment;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.3.0
  */
-class ValidateCommand extends AbstractValidateCommand
+class ValidateCommand extends ProviderCommand
 {
-    protected $jsonFile = Environment::JSON_FILE;
-    protected $env      = Environment::ENV;
+    protected function configure()
+    {
+        $env  = $this->getApplication()->getEnv();
+        $file = $env->getJsonFilename();
+
+        $this
+            ->setName('validate')
+            ->setDescription('Validates a ' . $file)
+            ->addArgument(
+                'file',
+                InputArgument::OPTIONAL,
+                'Path to ' . $file . ' file',
+                getenv($env->getEnv()) ? : './' . $file
+            )
+        ;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $var = parent::execute($input, $output);
+
+        if (is_int($var)) {
+            // json config file is missing or invalid
+            return $var;
+        }
+        $output->writeln('<info>' . $input->getArgument('file') . ' is valid</info>');
+    }
 }

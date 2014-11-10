@@ -2,12 +2,11 @@
 
 namespace Bartlett\Reflect\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\TableHelper;
 
-class PluginListCommand extends Command
+class PluginListCommand extends ProviderCommand
 {
     protected function configure()
     {
@@ -19,15 +18,14 @@ class PluginListCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $var = $this->getApplication()->getEnv()->getJsonConfigFile();
+        $var = parent::execute($input, $output);
 
-        if (!is_array($var)) {
-            throw new \Exception(
-                'The json configuration file has an invalid format'
-            );
+        if (is_int($var)) {
+            // json config file is missing or invalid
+            return $var;
         }
 
-        if (!isset($var['plugins'])) {
+        if (empty($var['plugins'])) {
             $fmt = $this->getApplication()->getHelperSet()->get('formatter');
 
             $output->writeln(
@@ -39,15 +37,9 @@ class PluginListCommand extends Command
             return;
         }
 
-        if (is_array($var['plugins'])) {
-            $plugins = $var['plugins'];
-        } else {
-            $plugins = array($var['plugins']);
-        }
-
         $headers = array('Plugin Name', 'Plugin Class', 'Events Subscribed');
         $rows = array();
-        foreach ($plugins as $plugin) {
+        foreach ($var['plugins'] as $plugin) {
             $classPlugin = $plugin['class'];
             $events = $classPlugin::getSubscribedEvents();
             $first  = true;

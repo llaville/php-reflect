@@ -54,15 +54,11 @@ class AnalyserRunCommand extends ProviderCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $var = $this->getApplication()->getEnv()->getJsonConfigFile();
+        $var = parent::execute($input, $output);
 
-        if (!is_array($var)
-            || !isset($var['source-providers'])
-            || !isset($var['analysers'])
-        ) {
-            throw new \Exception(
-                'The json configuration file has an invalid format'
-            );
+        if (is_int($var)) {
+            // json config file is missing or invalid
+            return $var;
         }
 
         $source = trim($input->getArgument('source'));
@@ -70,18 +66,6 @@ class AnalyserRunCommand extends ProviderCommand
             $alias = $source;
         } else {
             $alias = false;
-        }
-
-        if (is_array($var['source-providers'])) {
-            $providers = $var['source-providers'];
-        } else {
-            $providers = array($var['source-providers']);
-        }
-
-        if (is_array($var['analysers'])) {
-            $analysersInstalled = $var['analysers'];
-        } else {
-            $analysersInstalled = array($var['analysers']);
         }
 
         $analysers = array();
@@ -94,7 +78,7 @@ class AnalyserRunCommand extends ProviderCommand
 
         foreach ($analysersAsked as $analyser) {
             $found = false;
-            foreach ($analysersInstalled as $analyserInstalled) {
+            foreach ($var['analysers'] as $analyserInstalled) {
                 if (strcasecmp($analyserInstalled['name'], $analyser) === 0) {
                     // analyser installed and available
                     $found = true;
@@ -112,7 +96,7 @@ class AnalyserRunCommand extends ProviderCommand
             $analysers[] = new $analyserInstalled['class'];
         }
 
-        foreach ($providers as $provider) {
+        foreach ($var['source-providers'] as $provider) {
             if ($this->findProvider($provider, $source, $alias) === false) {
                 continue;
             }

@@ -2,6 +2,9 @@
 
 namespace Bartlett\Reflect;
 
+use Seld\JsonLint\JsonParser;
+use Seld\JsonLint\ParsingException;
+
 /**
  * Application Environment.
  *
@@ -16,28 +19,61 @@ namespace Bartlett\Reflect;
 abstract class AbstractEnvironment
 {
     /**
-     * Gets the contents of a JSON configuration file.
+     * Gets the name of json config file
      *
-     * @return array
-     * @throws \Exception if configuration file does not exists or is invalid
+     * @return string
      */
-    public function getJsonConfigFile()
+    public function getJsonFilename()
     {
-        $path = realpath(getenv(static::ENV));
+        return static::JSON_FILE;
+    }
 
-        if (!is_file($path)) {
-            throw new \Exception(
-                'Configuration file "' . $path . '" does not exists.'
-            );
-        }
-        $json = file_get_contents($path);
-        $var  = json_decode($json, true);
+    /**
+     * Gets the name of environment variable that identify
+     * the json config file
+     *
+     * @return string
+     */
+    public function getEnv()
+    {
+        return static::ENV;
+    }
 
-        if (null === $var || !is_array($var)) {
-            throw new \Exception(
-                'Configuration file "' . $path . '" has an invalid JSON format.'
-            );
+    /**
+     * Validates the syntax of a JSON file
+     *
+     * @param string $file The JSON file to check
+     *
+     * @return mixed JSON data if no error found
+     *
+     * @throws ParsingException  containing all details of JSON error syntax
+     * @throws \RuntimeException if file not found or not readable
+     */
+    public function validateSyntax($file)
+    {
+        $fname = realpath($file);
+
+        if (!file_exists($fname)) {
+            throw new \RuntimeException('File "' . $file . '" not found.');
         }
-        return $var;
+        if (!is_readable($fname)) {
+            throw new \RuntimeException('File "' . $file . '" is not readable.');
+        }
+
+        $json = file_get_contents($fname);
+
+        $parser = new JsonParser();
+        $result = $parser->lint($json);
+        if (null === $result) {
+            if (defined('JSON_ERROR_UTF8')
+                && JSON_ERROR_UTF8 === json_last_error()
+            ) {
+                throw new ParsingException(
+                    '"' . $file . '" is not UTF-8, could not parse as JSON'
+                );
+            }
+            return $json;
+        }
+        throw $result;
     }
 }

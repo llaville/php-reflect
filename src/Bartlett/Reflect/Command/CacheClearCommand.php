@@ -53,12 +53,11 @@ class CacheClearCommand extends ProviderCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $var = $this->getApplication()->getEnv()->getJsonConfigFile();
+        $var = parent::execute($input, $output);
 
-        if (!is_array($var)) {
-            throw new \Exception(
-                'The json configuration file has an invalid format'
-            );
+        if (is_int($var)) {
+            // json config file is missing or invalid
+            return $var;
         }
 
         $source = trim($input->getArgument('source'));
@@ -68,13 +67,7 @@ class CacheClearCommand extends ProviderCommand
             $alias = false;
         }
 
-        if (is_array($var['source-providers'])) {
-            $providers = $var['source-providers'];
-        } else {
-            $providers = array($var['source-providers']);
-        }
-
-        foreach ($providers as $provider) {
+        foreach ($var['source-providers'] as $provider) {
             if ($this->findProvider($provider, $source, $alias) === false) {
                 continue;
             }

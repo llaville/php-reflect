@@ -2,12 +2,11 @@
 
 namespace Bartlett\Reflect\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\TableHelper;
 
-class AnalyserListCommand extends Command
+class AnalyserListCommand extends ProviderCommand
 {
     protected function configure()
     {
@@ -19,9 +18,14 @@ class AnalyserListCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $var = $this->getApplication()->getEnv()->getJsonConfigFile();
+        $var = parent::execute($input, $output);
 
-        if (!isset($var['analysers']) || empty($var['analysers'])) {
+        if (is_int($var)) {
+            // json config file is missing or invalid
+            return $var;
+        }
+
+        if (empty($var['analysers'])) {
             $fmt = $this->getApplication()->getHelperSet()->get('formatter');
 
             $output->writeln(
@@ -33,15 +37,9 @@ class AnalyserListCommand extends Command
             return;
         }
 
-        if (is_array($var['analysers'])) {
-            $analysers = $var['analysers'];
-        } else {
-            $analysers = array($var['analysers']);
-        }
-
         $headers = array('Analyser Name', 'Analyser Class');
         $rows = array();
-        foreach ($analysers as $analyser) {
+        foreach ($var['analysers'] as $analyser) {
             $rows[] = array($analyser['name'], $analyser['class']);
         }
         sort($rows);

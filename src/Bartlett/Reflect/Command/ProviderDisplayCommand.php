@@ -38,6 +38,13 @@ class ProviderDisplayCommand extends ProviderCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $var = parent::execute($input, $output);
+
+        if (is_int($var)) {
+            // json config file is missing or invalid
+            return $var;
+        }
+
         $source = trim($input->getArgument('source'));
         if ($input->getOption('alias')) {
             $alias = $source;
@@ -45,23 +52,7 @@ class ProviderDisplayCommand extends ProviderCommand
             $alias = false;
         }
 
-        $var = $this->getApplication()->getEnv()->getJsonConfigFile();
-
-        if (!is_array($var)
-            || !isset($var['source-providers'])
-        ) {
-            throw new \Exception(
-                'The json configuration file has an invalid format'
-            );
-        }
-
-        if (is_array($var['source-providers'])) {
-            $providers = $var['source-providers'];
-        } else {
-            $providers = array($var['source-providers']);
-        }
-
-        foreach ($providers as $provider) {
+        foreach ($var['source-providers'] as $provider) {
             if ($this->findProvider($provider, $source, $alias) === false) {
                 continue;
             }

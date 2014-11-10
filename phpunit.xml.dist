@@ -12,6 +12,9 @@
     strict="true"
     verbose="false"
 >
+    <php>
+        <env name="REFLECT" value="bin/phpreflect.json.dist" />
+    </php>
     <filter>
         <whitelist>
             <directory suffix=".php">src/</directory>

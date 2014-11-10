@@ -4,8 +4,13 @@ namespace Bartlett\Reflect\Command;
 
 use Bartlett\Reflect\Plugin\Cache\DefaultCacheStorage;
 
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+
+use Seld\JsonLint\ParsingException;
 
 class ProviderCommand extends Command
 {
@@ -15,6 +20,86 @@ class ProviderCommand extends Command
     protected $cachePluginConf;
     protected $logger;
     protected $logPluginConf;
+
+    /**
+     * Construct a Reflect base command
+     *
+     * @param string      $name (optional) Not used, but kept for compatibility with Symfony Command
+     * @param Application $app  (optional) Instance of current Application
+     *                    for commands to need to know it before configure a new command
+     */
+    public function __construct($name = null, Application $app = null)
+    {
+        if ($app) {
+            $this->setApplication($app);
+        }
+        parent::__construct($name);
+    }
+
+    /**
+     * Checks JSON configuration file before to execute any command.
+     *
+     * @return int|array exit code if error, json string decoded otherwise
+     * @throws \RuntimeException if configuration file does not exists or not readable
+     * @throws ParsingException  if configuration file is invalid format
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $file = $input->hasArgument('file') ? $input->getArgument('file') : null;
+
+        try {
+            $out = $this->getJsonConfigFile($file);
+
+        } catch (\RuntimeException $e) {
+            $output->writeln('<error>' . $e->getMessage() . '</error>');
+            $out = 1;
+
+        } catch (ParsingException $e) {
+            $fmt = $this->getApplication()->getHelperSet()->get('formatter');
+
+            $output->writeln(
+                $fmt->formatBlock(
+                    explode("\n", $e->getMessage()),
+                    'error'
+                )
+            );
+            $out = 1;
+        }
+        return $out;
+    }
+
+    /**
+     * Gets the contents of a JSON configuration file.
+     *
+     * @param string $file (optional) Path to a JSON file
+     *
+     * @return array
+     * @throws \RuntimeException if configuration file does not exists or not readable
+     * @throws ParsingException  if configuration file is invalid format
+     */
+    public function getJsonConfigFile($file = null)
+    {
+        $env = $this->getApplication()->getEnv();
+
+        if (is_null($file)) {
+            $file = getenv($env->getEnv());
+        }
+
+        $json = $env->validateSyntax($file);
+
+        $var = json_decode($json, true);
+
+        if (!is_array($var['source-providers'])) {
+            $var['source-providers'] = array($var['source-providers']);
+        }
+        if (!is_array($var['analysers'])) {
+            $var['analysers'] = array($var['analysers']);
+        }
+        if (!is_array($var['plugins'])) {
+            $var['plugins'] = array($var['plugins']);
+        }
+        return $var;
+    }
 
     /**
      * Find any provider that match optional criteria $source or $alias
@@ -202,7 +287,6 @@ class ProviderCommand extends Command
         }
         return false;
     }
-
 
     /**
      * Find if the logPlugin is installed or not

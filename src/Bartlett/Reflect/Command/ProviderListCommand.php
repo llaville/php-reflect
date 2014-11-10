@@ -18,24 +18,15 @@ class ProviderListCommand extends ProviderCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $var = $this->getApplication()->getEnv()->getJsonConfigFile();
+        $var = parent::execute($input, $output);
 
-        if (!is_array($var)
-            || !isset($var['source-providers'])
-        ) {
-            throw new \Exception(
-                'The json configuration file has an invalid format'
-            );
-        }
-
-        if (is_array($var['source-providers'])) {
-            $providers = $var['source-providers'];
-        } else {
-            $providers = array($var['source-providers']);
+        if (is_int($var)) {
+            // json config file is missing or invalid
+            return $var;
         }
 
         $rows = array();
-        foreach ($providers as $provider) {
+        foreach ($var['source-providers'] as $provider) {
             if ($this->findProvider($provider, false, false) === false) {
                 continue;
             }
