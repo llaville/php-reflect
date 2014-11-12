@@ -55,6 +55,10 @@ class Analyser extends AbstractVisitor
     {
     }
 
+    public function visitUseModel($use)
+    {
+    }
+
     public function visitClassModel($class)
     {
     }
