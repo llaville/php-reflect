@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "nikic/php-parser",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "b9a60372f26356feb85b4b9ca50a395a5f0d7f34"
+                "reference": "a8ffc6fcfcbae268656c8acf1298e378ac1ee5f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/b9a60372f26356feb85b4b9ca50a395a5f0d7f34",
-                "reference": "b9a60372f26356feb85b4b9ca50a395a5f0d7f34",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/a8ffc6fcfcbae268656c8acf1298e378ac1ee5f1",
+                "reference": "a8ffc6fcfcbae268656c8acf1298e378ac1ee5f1",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2014-10-14 19:40:07"
+            "time": "2014-11-04 22:12:46"
         },
         {
             "name": "phpunit/php-timer",
