@@ -1,5 +1,5 @@
-bartlett/php-reflect: master@93ce95e4811701dbcf56e046b10e38a5591de475
-nikic/php-parser: v1.0.1
+bartlett/php-reflect: master@472b7b9db1010fd1a4657806d496584c764d2eac
+nikic/php-parser: v1.0.2
 phpunit/php-timer: 1.0.5
 sebastian/version: 1.0.3
 seld/jsonlint: 1.3.0
