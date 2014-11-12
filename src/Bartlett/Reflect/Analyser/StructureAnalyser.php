@@ -358,8 +358,4 @@ class StructureAnalyser extends AbstractAnalyser
     {
         $this->count['globalConstants']++;
     }
-
-    public function visitDependencyModel($dependency)
-    {
-    }
 }

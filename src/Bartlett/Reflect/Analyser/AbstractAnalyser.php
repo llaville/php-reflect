@@ -120,4 +120,36 @@ abstract class AbstractAnalyser extends AbstractVisitor implements AnalyserInter
             }
         }
     }
+
+    public function visitConstantModel($constant)
+    {
+    }
+
+    public function visitDependencyModel($dependency)
+    {
+    }
+
+    public function visitFunctionModel($function)
+    {
+    }
+
+    public function visitIncludeModel($include)
+    {
+    }
+
+    public function visitMethodModel($method)
+    {
+    }
+
+    public function visitParameterModel($parameter)
+    {
+    }
+
+    public function visitPropertyModel($property)
+    {
+    }
+
+    public function visitUseModel($use)
+    {
+    }
 }
