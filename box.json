@@ -5,6 +5,7 @@
     "extract": false,
     "compression": "GZ",
     "files": [
+        "bin/phpreflect-schema.json",
         "manifest.txt",
         "LICENSE",
         "vendor/nikic/php-parser/LICENSE",
@@ -13,6 +14,7 @@
         "vendor/symfony/finder/Symfony/Component/Finder/LICENSE",
         "vendor/phpunit/php-timer/LICENSE",
         "vendor/seld/jsonlint/LICENSE",
+        "vendor/justinrainbow/json-schema/LICENSE",
         "vendor/doctrine/cache/LICENSE",
         "vendor/psr/log/LICENSE",
         "vendor/autoload.php"
@@ -38,6 +40,10 @@
         {
             "name": "*.php",
             "in": "vendor/seld/jsonlint/src"
+        },
+        {
+            "name": "*.php",
+            "in": "vendor/justinrainbow/json-schema/src"
         },
         {
             "name": "*.php",
