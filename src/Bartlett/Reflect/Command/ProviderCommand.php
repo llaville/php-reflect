@@ -87,6 +87,14 @@ class ProviderCommand extends Command
 
         $json = $env->validateSyntax($file);
 
+        $schemaFile = dirname(dirname(dirname(dirname(__DIR__)))) . '/bin/'
+            . $env->getJsonSchemaFilename();
+
+        if (file_exists($schemaFile)) {
+            // validate against schema only if available
+            $env->validateSchema($json, $schemaFile);
+        }
+
         $var = json_decode($json, true);
 
         if (!is_array($var['source-providers'])) {

@@ -15,6 +15,7 @@ namespace Bartlett\Reflect;
  */
 class Environment extends AbstractEnvironment
 {
-    const JSON_FILE = 'phpreflect.json';
-    const ENV       = 'REFLECT';
+    const JSON_FILE   = 'phpreflect.json';
+    const JSON_SCHEMA = 'phpreflect-schema.json';
+    const ENV         = 'REFLECT';
 }

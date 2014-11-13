@@ -1,0 +1,67 @@
+{
+    "name": "Config",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "source-providers": {
+            "type": "array",
+            "description": "List of data sources to parse.",
+            "items": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                    "in": {
+                        "type": "string",
+                        "description": "Path to the data source (with or without its alias).",
+                        "required": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Provider filename filter.",
+                        "required": true
+                    }
+                }
+            }
+        },
+        "plugins": {
+            "type": "array",
+            "description": "List of plugins to install.",
+            "items": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the plugin.",
+                        "required": true
+                    },
+                    "class": {
+                        "type": "string",
+                        "description": "Fully Qualified Class Name of the plugin.",
+                        "required": true
+                    }
+                }
+            }
+        },
+        "analysers": {
+            "type": "array",
+            "description": "List of analysers to install.",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the analyser.",
+                        "required": true
+                    },
+                    "class": {
+                        "type": "string",
+                        "description": "Fully Qualified Class Name of the analyser.",
+                        "required": true
+                    }
+                }
+            }
+        }
+    }
+}

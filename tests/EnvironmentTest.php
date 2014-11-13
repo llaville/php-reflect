@@ -87,13 +87,43 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $e) {
             $this->fail(
                 'An unexpected ' . get_class($e) . ' exception has been raised with message. '
-                . '"' . $e->getMessage() . '"'
+                . $e->getMessage()
             );
         }
 
         $this->assertJson(
             $json,
             "Environment JSON config is not a valid JSON string."
+        );
+    }
+
+    /**
+     *  covers Bartlett\Reflect\AbstractEnvironment::validateSchema
+     *
+     * @return void
+     */
+    public function testValidateSchemaJsonConfigFile()
+    {
+        try {
+            $file = dirname(__DIR__) . DIRECTORY_SEPARATOR
+                . getenv(self::$env->getEnv());
+            $json = self::$env->validateSyntax($file);
+
+            $schema = dirname(__DIR__) . DIRECTORY_SEPARATOR
+                . 'bin' . DIRECTORY_SEPARATOR
+                . self::$env->getJsonSchemaFilename();
+            $result = self::$env->validateSchema($json, $schema);
+
+        } catch (\Exception $e) {
+            $this->fail(
+                'An unexpected ' . get_class($e) . ' exception has been raised with message. '
+                . $e->getMessage()
+            );
+        }
+
+        $this->assertNull(
+            $result,
+            'Config file "$file" does not match the expected JSON schema ("$schema").'
         );
     }
 
