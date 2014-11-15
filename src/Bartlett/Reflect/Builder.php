@@ -219,7 +219,9 @@ class Builder extends NodeVisitorAbstract
                 );
                 $use = $this->buildUse($use->name->__toString(), $attributes);
                 $use->incCalls();
-                $uses[] = $use;
+                if ($use->getCalls() == 1) {
+                    $uses[] = $use;
+                }
             }
             $attributes = array('uses' => $uses);
             $package = $this->buildPackage($this->namespace);
