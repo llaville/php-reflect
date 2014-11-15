@@ -263,13 +263,7 @@ class Builder extends NodeVisitorAbstract
                     // multiple direct inheritance is not allowed in PHP, but PHP-Parser ?
                     $parent = $parent[0];
                 }
-                $parent = $parent->__toString();
-
-                if (!isset($this->classes[$parent])) {
-                    $this->classes[$parent] = $this->buildClass($parent, array());
-                }
-                // load the parent model
-                $parent = $this->classes[$parent];
+                $parent = $this->buildClass($parent->__toString());
 
             } else {
                 $parent = false;
@@ -439,12 +433,8 @@ class Builder extends NodeVisitorAbstract
                     $nodeAttributes['modifiers'] = $modifiers;
                 }
                 $nodeAttributes['interface'] = false;
-                $model = $this->buildClass($qualifiedClassName, $nodeAttributes);
-                $attributes = array('classes' => array($model));
+                $this->buildClass($qualifiedClassName, $nodeAttributes);
             }
-
-            $package = $this->buildPackage($this->namespace);
-            $package->update($attributes);
         }
     }
 
@@ -753,7 +743,12 @@ class Builder extends NodeVisitorAbstract
             $model = new ClassModel($qualifiedName, $attributes);
             $model->setFile($this->file);
             $this->classes[$qualifiedName] = $model;
+
+            $attributes = array('classes' => array($model));
+            $package = $this->buildPackage($this->namespace);
+            $package->update($attributes);
         }
+        $this->classes[$qualifiedName]->incCalls();
         return $this->classes[$qualifiedName];
     }
 
