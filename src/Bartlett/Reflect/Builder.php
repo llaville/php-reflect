@@ -200,7 +200,6 @@ class Builder extends NodeVisitorAbstract
             $this->buildConstant($qualifiedName, $nodeAttributes);
 
         } elseif ($node instanceof \PhpParser\Node\Stmt\Use_) {
-            $uses = array();
             foreach ($node->uses as $use) {
                 $attributes = array(
                     'startLine'  => $use->getAttribute('startLine'),
@@ -208,15 +207,8 @@ class Builder extends NodeVisitorAbstract
                     'type'       => $node->type,
                     'alias'      => $use->alias,
                 );
-                $use = $this->buildUse($use->name->__toString(), $attributes);
-                $use->incCalls();
-                if ($use->getCalls() == 1) {
-                    $uses[] = $use;
-                }
+                $this->buildUse($use->name->__toString(), $attributes);
             }
-            $attributes = array('uses' => $uses);
-            $package = $this->buildPackage($this->namespace);
-            $package->update($attributes);
         }
     }
 
@@ -739,7 +731,12 @@ class Builder extends NodeVisitorAbstract
             $model = new UseModel($qualifiedName, $attributes);
             $model->setFile($this->file);
             $this->uses[$qualifiedName] = $model;
+
+            $attributes = array('uses' => array($model));
+            $package = $this->buildPackage($this->namespace);
+            $package->update($attributes);
         }
+        $this->uses[$qualifiedName]->incCalls();
         return $this->uses[$qualifiedName];
     }
 
