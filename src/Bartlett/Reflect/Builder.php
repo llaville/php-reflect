@@ -440,8 +440,7 @@ class Builder extends NodeVisitorAbstract
 
             } elseif ($node instanceof \PhpParser\Node\Stmt\Trait_) {
                 $nodeAttributes['trait'] = true;
-                $model = $this->buildTrait($qualifiedClassName, $nodeAttributes);
-                $attributes = array('traits' => array($model));
+                $this->buildTrait($qualifiedClassName, $nodeAttributes);
 
             } else {
                 if (is_array($modifiers = $modifiers($node))) {
@@ -791,7 +790,12 @@ class Builder extends NodeVisitorAbstract
             $model = new ClassModel($qualifiedName, $attributes);
             $model->setFile($this->file);
             $this->traits[$qualifiedName] = $model;
+
+            $attributes = array('traits' => array($model));
+            $package = $this->buildPackage($this->namespace);
+            $package->update($attributes);
         }
+        $this->traits[$qualifiedName]->incCalls();
         return $this->traits[$qualifiedName];
     }
 
