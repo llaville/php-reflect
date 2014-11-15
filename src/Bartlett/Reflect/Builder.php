@@ -421,8 +421,7 @@ class Builder extends NodeVisitorAbstract
 
             if ($node instanceof \PhpParser\Node\Stmt\Interface_) {
                 $nodeAttributes['interface'] = true;
-                $model = $this->buildInterface($qualifiedClassName, $nodeAttributes);
-                $attributes = array('interfaces' => array($model));
+                $this->buildInterface($qualifiedClassName, $nodeAttributes);
 
             } elseif ($node instanceof \PhpParser\Node\Stmt\Trait_) {
                 $nodeAttributes['trait'] = true;
@@ -765,7 +764,12 @@ class Builder extends NodeVisitorAbstract
             $model = new ClassModel($qualifiedName, $attributes);
             $model->setFile($this->file);
             $this->interfaces[$qualifiedName] = $model;
+
+            $attributes = array('interfaces' => array($model));
+            $package = $this->buildPackage($this->namespace);
+            $package->update($attributes);
         }
+        $this->interfaces[$qualifiedName]->incCalls();
         return $this->interfaces[$qualifiedName];
     }
 
