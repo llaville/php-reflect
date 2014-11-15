@@ -243,11 +243,7 @@ class Builder extends NodeVisitorAbstract
                 ';'
             );
             $nodeAttributes['type'] = $type;
-            $model = $this->buildInclude($filepath, $nodeAttributes);
-
-            $attributes = array('includes' => array($model));
-            $package = $this->buildPackage($this->namespace);
-            $package->update($attributes);
+            $this->buildInclude($filepath, $nodeAttributes);
 
         } elseif ($node instanceof \PhpParser\Node\Stmt\Class_
             || $node instanceof \PhpParser\Node\Stmt\Interface_
@@ -852,7 +848,12 @@ class Builder extends NodeVisitorAbstract
             $model = new IncludeModel($path, $attributes);
             $model->setFile($this->file);
             $this->includes[$path] = $model;
+
+            $attributes = array('includes' => array($model));
+            $package = $this->buildPackage($this->namespace);
+            $package->update($attributes);
         }
+        $this->includes[$path]->incCalls();
         return $this->includes[$path];
     }
 
