@@ -186,11 +186,7 @@ class Builder extends NodeVisitorAbstract
                 // Expr value not yet implemented
                 $nodeAttributes['value'] = '';
             }
-            $model = $this->buildConstant($qualifiedName, $nodeAttributes);
-
-            $attributes = array('constants' => array($model));
-            $package = $this->buildPackage($this->namespace);
-            $package->update($attributes);
+            $this->buildConstant($qualifiedName, $nodeAttributes);
 
         } elseif ($node instanceof \PhpParser\Node\Expr\ConstFetch
             || $node instanceof \PhpParser\Node\Scalar\MagicConst
@@ -201,12 +197,7 @@ class Builder extends NodeVisitorAbstract
             } else {
                 $qualifiedName = $node->name->__toString();
             }
-
-            $model = $this->buildConstant($qualifiedName, $nodeAttributes);
-
-            $attributes = array('constants' => array($model));
-            $package = $this->buildPackage($this->namespace);
-            $package->update($attributes);
+            $this->buildConstant($qualifiedName, $nodeAttributes);
 
         } elseif ($node instanceof \PhpParser\Node\Stmt\Use_) {
             $uses = array();
@@ -581,11 +572,7 @@ class Builder extends NodeVisitorAbstract
     {
         $qualifiedName = $node->args[0]->value->value;
         $nodeAttributes['value'] = $node->args[1]->value->value;
-        $model = $this->buildConstant($qualifiedName, $nodeAttributes);
-
-        $attributes = array('constants' => array($model));
-        $package = $this->buildPackage($this->namespace);
-        $package->update($attributes);
+        $this->buildConstant($qualifiedName, $nodeAttributes);
     }
 
     /**
@@ -843,7 +830,12 @@ class Builder extends NodeVisitorAbstract
             $model = new ConstantModel($qualifiedName, $attributes);
             $model->setFile($this->file);
             $this->constants[$qualifiedName] = $model;
+
+            $attributes = array('constants' => array($model));
+            $package = $this->buildPackage($this->namespace);
+            $package->update($attributes);
         }
+        $this->constants[$qualifiedName]->incCalls();
         return $this->constants[$qualifiedName];
     }
 
