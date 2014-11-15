@@ -592,15 +592,10 @@ class Builder extends NodeVisitorAbstract
                 $nodeAttributes['endLine']
             );
         }
-
         $nodeAttributes['arguments']
             = $this->parseFunctionArguments($node->params);
 
-        $model = $this->buildFunction($qualifiedName, $nodeAttributes);
-
-        $attributes = array('functions' => array($model));
-        $package = $this->buildPackage($this->namespace);
-        $package->update($attributes);
+        $this->buildFunction($qualifiedName, $nodeAttributes);
     }
 
     /**
@@ -813,7 +808,12 @@ class Builder extends NodeVisitorAbstract
             $model = new FunctionModel($qualifiedName, $attributes);
             $model->setFile($this->file);
             $this->functions[$qualifiedName] = $model;
+
+            $attributes = array('functions' => array($model));
+            $package = $this->buildPackage($this->namespace);
+            $package->update($attributes);
         }
+        $this->functions[$qualifiedName]->incCalls();
         return $this->functions[$qualifiedName];
     }
 
