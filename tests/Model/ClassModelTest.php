@@ -22,14 +22,6 @@ use Bartlett\Reflect\Provider\SymfonyFinderProvider;
 use Bartlett\Reflect\Exception\ModelException;
 use Symfony\Component\Finder\Finder;
 
-if (!defined('TEST_FILES_PATH')) {
-    define(
-        'TEST_FILES_PATH',
-        dirname(__DIR__) . DIRECTORY_SEPARATOR .
-        '_files' . DIRECTORY_SEPARATOR
-    );
-}
-
 /**
  * Unit Test Case that covers Bartlett\Reflect\Model\ClassModel
  *
@@ -43,6 +35,7 @@ if (!defined('TEST_FILES_PATH')) {
  */
 class ClassModelTest extends \PHPUnit_Framework_TestCase
 {
+    protected static $fixtures;
     protected static $interfaces;
     protected static $classes;
 
@@ -54,10 +47,13 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
+        self::$fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
+            . '_files' . DIRECTORY_SEPARATOR;
+
         $finder = new Finder();
         $finder->files()
             ->name('classes.php')
-            ->in(TEST_FILES_PATH);
+            ->in(self::$fixtures);
 
         $pm = new ProviderManager;
         $pm->set('test_files', new SymfonyFinderProvider($finder));
@@ -139,7 +135,7 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class Foo implements iB
 
         $this->assertEquals(
-            TEST_FILES_PATH . 'classes.php',
+            self::$fixtures . 'classes.php',
             self::$classes[$c]->getFileName(),
             self::$classes[$c]->getName() . ' file name does not match.'
         );
@@ -635,7 +631,7 @@ Class [ <user> class Bar ] {
 
 EOS;
         $this->expectOutputString(
-            str_replace('%path%', TEST_FILES_PATH, $expected)
+            str_replace('%path%', self::$fixtures, $expected)
         );
 
         print(

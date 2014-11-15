@@ -22,14 +22,6 @@ use Bartlett\Reflect\Provider\SymfonyFinderProvider;
 use Bartlett\Reflect\Exception\ModelException;
 use Symfony\Component\Finder\Finder;
 
-if (!defined('TEST_FILES_PATH')) {
-    define(
-        'TEST_FILES_PATH',
-        dirname(__DIR__) . DIRECTORY_SEPARATOR .
-        '_files' . DIRECTORY_SEPARATOR
-    );
-}
-
 /**
  * Unit Test Case that covers Bartlett\Reflect\Model\ParameterModel
  *
@@ -43,6 +35,7 @@ if (!defined('TEST_FILES_PATH')) {
  */
 class ParameterModelTest extends \PHPUnit_Framework_TestCase
 {
+    protected static $fixtures;
     protected static $interfaces;
     protected static $classes;
     protected static $functions;
@@ -55,10 +48,13 @@ class ParameterModelTest extends \PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
+        self::$fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
+            . '_files' . DIRECTORY_SEPARATOR;
+
         $finder = new Finder();
         $finder->files()
             ->name('functions.php')
-            ->in(TEST_FILES_PATH);
+            ->in(self::$fixtures);
 
         $pm = new ProviderManager;
         $pm->set('test_files', new SymfonyFinderProvider($finder));
