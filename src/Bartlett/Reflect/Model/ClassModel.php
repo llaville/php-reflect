@@ -103,7 +103,11 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getInterfaceNames()
     {
-        return $this->struct['interfaces'];
+        $interfaces = array();
+        for ($i = 0, $m = count($this->struct['interfaces']); $i < $m; $i++) {
+            $interfaces[] = $this->struct['interfaces'][$i]->getName();
+        }
+        return $interfaces;
     }
 
     /**
@@ -200,7 +204,7 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getInterfaces()
     {
-        return array_values($this->struct['interfaces']);
+        return $this->struct['interfaces'];
     }
 
     /**
@@ -445,7 +449,7 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function isIterateable()
     {
-        $interfaces = $this->struct['interfaces'];
+        $interfaces = $this->getInterfaceNames();
 
         if (!$this->isInterface()) {
             $parent = $this->getParentClass();

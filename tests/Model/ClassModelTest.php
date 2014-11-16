@@ -36,6 +36,7 @@ use Symfony\Component\Finder\Finder;
 class ClassModelTest extends \PHPUnit_Framework_TestCase
 {
     protected static $fixtures;
+    protected static $fixture;
     protected static $interfaces;
     protected static $classes;
 
@@ -50,9 +51,11 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
         self::$fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
             . '_files' . DIRECTORY_SEPARATOR;
 
+        self::$fixture = self::$fixtures . 'classes.php';
+
         $finder = new Finder();
         $finder->files()
-            ->name('classes.php')
+            ->name(basename(self::$fixture))
             ->in(self::$fixtures);
 
         $pm = new ProviderManager;
@@ -135,7 +138,7 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class Foo implements iB
 
         $this->assertEquals(
-            self::$fixtures . 'classes.php',
+            self::$fixture,
             self::$classes[$c]->getFileName(),
             self::$classes[$c]->getName() . ' file name does not match.'
         );

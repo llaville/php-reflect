@@ -217,6 +217,7 @@ class Builder extends NodeVisitorAbstract
         $doc = $node->getDocComment();
 
         $nodeAttributes = array(
+            'file'       => $this->file,
             'startLine'  => $node->getAttribute('startLine'),
             'endLine'    => $node->getAttribute('endLine'),
         );
@@ -259,7 +260,11 @@ class Builder extends NodeVisitorAbstract
                     // multiple direct inheritance is not allowed in PHP, but PHP-Parser ?
                     $parent = $parent[0];
                 }
-                $parent = $this->buildClass($parent->__toString());
+                if ($node instanceof \PhpParser\Node\Stmt\Class_) {
+                    $parent = $this->buildClass($parent->__toString());
+                } else {
+                    $parent = $this->buildInterface($parent->__toString());
+                }
 
             } else {
                 $parent = false;
@@ -735,11 +740,11 @@ class Builder extends NodeVisitorAbstract
             $model->setFile($this->file);
             $this->classes[$qualifiedName] = $model;
 
-            $attributes = array('classes' => array($model));
+            $attr = array('classes' => array($model));
             $package = $this->buildPackage($this->namespace);
-            $package->update($attributes);
+            $package->update($attr);
         }
-        $this->classes[$qualifiedName]->incCalls();
+        $this->classes[$qualifiedName]->incCalls($attributes);
         return $this->classes[$qualifiedName];
     }
 
@@ -757,11 +762,11 @@ class Builder extends NodeVisitorAbstract
             $model->setFile($this->file);
             $this->interfaces[$qualifiedName] = $model;
 
-            $attributes = array('interfaces' => array($model));
+            $attr = array('interfaces' => array($model));
             $package = $this->buildPackage($this->namespace);
-            $package->update($attributes);
+            $package->update($attr);
         }
-        $this->interfaces[$qualifiedName]->incCalls();
+        $this->interfaces[$qualifiedName]->incCalls($attributes);
         return $this->interfaces[$qualifiedName];
     }
 
