@@ -52,7 +52,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
 
         $finder = new Finder();
         $finder->files()
-            ->name('constants.php')
+            ->name(basename(self::$fixture))
             ->in($fixtures);
 
         $pm = new ProviderManager;
