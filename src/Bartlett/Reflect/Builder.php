@@ -784,11 +784,11 @@ class Builder extends NodeVisitorAbstract
             $model->setFile($this->file);
             $this->traits[$qualifiedName] = $model;
 
-            $attributes = array('traits' => array($model));
+            $attr = array('traits' => array($model));
             $package = $this->buildPackage($this->namespace);
-            $package->update($attributes);
+            $package->update($attr);
         }
-        $this->traits[$qualifiedName]->incCalls();
+        $this->traits[$qualifiedName]->incCalls($attributes);
         return $this->traits[$qualifiedName];
     }
 
@@ -806,11 +806,11 @@ class Builder extends NodeVisitorAbstract
             $model->setFile($this->file);
             $this->functions[$qualifiedName] = $model;
 
-            $attributes = array('functions' => array($model));
+            $attr = array('functions' => array($model));
             $package = $this->buildPackage($this->namespace);
-            $package->update($attributes);
+            $package->update($attr);
         }
-        $this->functions[$qualifiedName]->incCalls();
+        $this->functions[$qualifiedName]->incCalls($attributes);
         return $this->functions[$qualifiedName];
     }
 
@@ -850,11 +850,11 @@ class Builder extends NodeVisitorAbstract
             $model->setFile($this->file);
             $this->includes[$path] = $model;
 
-            $attributes = array('includes' => array($model));
+            $attr = array('includes' => array($model));
             $package = $this->buildPackage($this->namespace);
-            $package->update($attributes);
+            $package->update($attr);
         }
-        $this->includes[$path]->incCalls();
+        $this->includes[$path]->incCalls($attributes);
         return $this->includes[$path];
     }
 
