@@ -47,7 +47,7 @@ abstract class AbstractModel
             'extension'  => 'user',
         );
         $this->struct = array_merge($struct, $attributes);
-        $this->calls  = 0;
+        $this->calls  = array();
     }
 
     /**
@@ -66,22 +66,43 @@ abstract class AbstractModel
     /**
      * Increments number of element uses
      *
+     * @param array $attributes Call stack (file / line)
+     *
      * @return self for fluent interface
      */
-    public function incCalls()
+    public function incCalls(array $attributes = null)
     {
-        $this->calls++;
+        if (empty($attributes)) {
+            $call = array(
+                'file' => $this->struct['file'],
+                'line' => $this->struct['startLine']
+            );
+        } else {
+            $call = array(
+                'file' => $attributes['file'],
+                'line' => $attributes['startLine']
+            );
+        }
+        $this->calls[] = $call;
         return $this;
     }
 
     /**
      * Returns number of current element uses
      *
-     * @return int
+     * @param bool $count (optional) if TRUE return only the number of call,
+     *                    otherwise return the full stack (file/line) of calls.
+     *
+     * @return mixed
      */
-    public function getCalls()
+    public function getCalls($count = true)
     {
-        return $this->calls;
+        if ($count === true) {
+            $calls = count($this->calls);
+        } else {
+            $calls = $this->calls;
+        }
+        return $calls;
     }
 
     /**

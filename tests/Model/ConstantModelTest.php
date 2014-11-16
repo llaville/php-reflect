@@ -34,7 +34,7 @@ use Symfony\Component\Finder\Finder;
  */
 class ConstantModelTest extends \PHPUnit_Framework_TestCase
 {
-    protected static $fixtures;
+    protected static $fixture;
     protected static $constants;
 
     /**
@@ -45,13 +45,15 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
-        self::$fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
+        $fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
             . '_files' . DIRECTORY_SEPARATOR;
+
+        self::$fixture = $fixtures . 'constants.php';
 
         $finder = new Finder();
         $finder->files()
             ->name('constants.php')
-            ->in(self::$fixtures);
+            ->in($fixtures);
 
         $pm = new ProviderManager;
         $pm->set('test_files', new SymfonyFinderProvider($finder));
@@ -97,7 +99,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // sandbox\CONNECT_OK
 
         $this->assertEquals(
-            self::$fixtures . 'constants.php',
+            self::$fixture,
             self::$constants[$c]->getFileName(),
             self::$constants[$c]->getName() . ' file name does not match.'
         );
@@ -210,7 +212,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testDirMagicConstantValueAccessor()
     {
-        $c = 8;  // __DIR__
+        $c = 7;  // __DIR__
 
         $this->assertNull(
             self::$constants[$c]->getValue(),
@@ -242,11 +244,33 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testLineMagicConstantValueAccessor()
     {
-        $c = 6;  // __LINE__ from sandbox\connect()
+        $c = 4;  // __LINE__ from sandbox\Connection::connect()
 
         $this->assertNull(
             self::$constants[$c]->getValue(),
             self::$constants[$c]->getName() . ' magic constant value does not match.'
+        );
+    }
+
+    /**
+     * Tests calls accessor on the __LINE__ magic constant.
+     *
+     *  covers ConstantModel::getCalls
+     * @return void
+     */
+    public function testLineMagicConstantCallsAccessor()
+    {
+        $c = 4;  // __LINE__ from sandbox\Connection::connect()
+
+        $callStack = array(
+            array('file' => self::$fixture, 'line' => 12),
+            array('file' => self::$fixture, 'line' => 17),
+        );
+
+        $this->assertEquals(
+            $callStack,
+            self::$constants[$c]->getCalls(false),
+            self::$constants[$c]->getName() . ' magic constant calls stack does not match.'
         );
     }
 
@@ -274,7 +298,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testNamespaceMagicConstantValueAccessor()
     {
-        $c = 7;  // __NAMESPACE__
+        $c = 6;  // __NAMESPACE__
 
         $this->assertNull(
             self::$constants[$c]->getValue(),
@@ -290,7 +314,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testTraitMagicConstantValueAccessor()
     {
-        $c = 9;  // __TRAIT__ from sandbox\PeanutButter::traitName()
+        $c = 8;  // __TRAIT__ from sandbox\PeanutButter::traitName()
 
         $this->assertNull(
             self::$constants[$c]->getValue(),
@@ -372,7 +396,7 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsScalar()
     {
-        $c = 10;  // sandbox\TWO
+        $c = 9;  // sandbox\TWO
 
         $this->assertFalse(
             self::$constants[$c]->isScalar(),

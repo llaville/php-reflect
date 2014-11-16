@@ -823,11 +823,11 @@ class Builder extends NodeVisitorAbstract
             $model->setFile($this->file);
             $this->constants[$qualifiedName] = $model;
 
-            $attributes = array('constants' => array($model));
+            $attr = array('constants' => array($model));
             $package = $this->buildPackage($this->namespace);
-            $package->update($attributes);
+            $package->update($attr);
         }
-        $this->constants[$qualifiedName]->incCalls();
+        $this->constants[$qualifiedName]->incCalls($attributes);
         return $this->constants[$qualifiedName];
     }
 
