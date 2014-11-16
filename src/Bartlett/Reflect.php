@@ -17,6 +17,7 @@
 namespace Bartlett;
 
 use Bartlett\Reflect\Event\AbstractDispatcher;
+use Bartlett\Reflect\Events;
 use Bartlett\Reflect\ManagerInterface;
 use Bartlett\Reflect\ProviderManager;
 use Bartlett\Reflect\Builder;
@@ -104,7 +105,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
             // creates the data model of sources referenced by the $alias name
             foreach ($provider as $uri => $file) {
                 $event = $this->dispatch(
-                    'reflect.progress',
+                    Events::PROGRESS,
                     array(
                         'source'   => $alias,
                         'file'     => $file,
@@ -122,7 +123,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                     $stmts = $traverser->traverse($event['notModified']);
 
                     $event = $this->dispatch(
-                        'reflect.cache',
+                        Events::CACHE,
                         array(
                             'source'   => $alias,
                             'file'     => $file,
@@ -140,7 +141,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                         $stmts = $traverser->traverse($stmts);
 
                         $this->dispatch(
-                            'reflect.success',
+                            Events::SUCCESS,
                             array(
                                 'source'   => $alias,
                                 'file'     => $file,
@@ -150,7 +151,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
 
                     } catch (\PhpParser\Error $e) {
                         $this->dispatch(
-                            'reflect.error',
+                            Events::ERROR,
                             array(
                                 'source'   => $alias,
                                 'file'     => $file,
@@ -161,7 +162,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
                 }
             }
             // end of parsing the data source provider
-            $this->dispatch('reflect.complete', array('source' => $alias));
+            $this->dispatch(Events::COMPLETE, array('source' => $alias));
         }
 
         return $this;

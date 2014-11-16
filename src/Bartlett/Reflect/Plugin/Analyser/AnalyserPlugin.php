@@ -17,6 +17,7 @@ namespace Bartlett\Reflect\Plugin\Analyser;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\Event;
 
+use Bartlett\Reflect\Events;
 use Bartlett\Reflect\Command\AnalyserListCommand;
 use Bartlett\Reflect\Command\AnalyserRunCommand;
 
@@ -93,7 +94,7 @@ class AnalyserPlugin implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'reflect.complete' => 'onReflectComplete',
+            Events::COMPLETE => 'onReflectComplete',
         );
     }
 

@@ -14,6 +14,7 @@
 
 namespace Bartlett\Reflect\Plugin\Cache;
 
+use Bartlett\Reflect\Events;
 use Bartlett\Reflect\Command\CacheClearCommand;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -76,8 +77,8 @@ class CachePlugin implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'reflect.progress' => 'onReflectProgress',
-            'reflect.success'  => 'onReflectSuccess',
+            Events::PROGRESS => 'onReflectProgress',
+            Events::SUCCESS  => 'onReflectSuccess',
         );
     }
 

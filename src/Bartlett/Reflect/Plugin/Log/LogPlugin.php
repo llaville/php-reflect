@@ -14,6 +14,8 @@
 
 namespace Bartlett\Reflect\Plugin\Log;
 
+use Bartlett\Reflect\Events;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -56,27 +58,27 @@ class LogPlugin implements EventSubscriberInterface
     public function __construct(LoggerInterface $logger, array $options = null)
     {
         $default = array(
-            'reflect.progress' => array(
+            Events::PROGRESS => array(
                 'level'    => LogLevel::INFO,
                 'template' => 'Parsing file "{file}" in progress.',
                 'context'  => true,
             ),
-            'reflect.success'  => array(
+            Events::SUCCESS => array(
                 'level'    => LogLevel::INFO,
                 'template' => 'AST built.',
                 'context'  => true,
             ),
-            'reflect.cache'  => array(
+            Events::CACHE  => array(
                 'level'    => LogLevel::INFO,
                 'template' => 'AST built by a previous request.',
                 'context'  => true,
             ),
-            'reflect.error'    => array(
+            Events::ERROR => array(
                 'level'    => LogLevel::ERROR,
                 'template' => 'Parser has detected an error on file "{file}". "{error}"',
                 'context'  => true,
             ),
-            'reflect.complete' => array(
+            Events::COMPLETE => array(
                 'level'    => LogLevel::NOTICE,
                 'template' => 'Parsing data source "{source}" completed.',
                 'context'  => true,
@@ -100,16 +102,16 @@ class LogPlugin implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'reflect.progress' => 'onReflectProgress',
-            'reflect.success'  => 'onReflectSuccess',
-            'reflect.cache'    => 'onReflectCache',
-            'reflect.error'    => 'onReflectError',
-            'reflect.complete' => 'onReflectComplete',
+            Events::PROGRESS => 'onReflectProgress',
+            Events::SUCCESS  => 'onReflectSuccess',
+            Events::CACHE    => 'onReflectCache',
+            Events::ERROR    => 'onReflectError',
+            Events::COMPLETE => 'onReflectComplete',
         );
     }
 
     /**
-     * Logs 'reflect.progress' event.
+     * Logs PROGRESS event.
      *
      * @param Event $event Current event emitted by the manager (Reflect class)
      *
@@ -121,7 +123,7 @@ class LogPlugin implements EventSubscriberInterface
     }
 
     /**
-     * Logs 'reflect.success' event.
+     * Logs SUCCESS event.
      *
      * @param Event $event Current event emitted by the manager (Reflect class)
      *
@@ -133,7 +135,7 @@ class LogPlugin implements EventSubscriberInterface
     }
 
     /**
-     * Logs 'reflect.cache' event.
+     * Logs CACHE event.
      *
      * @param Event $event Current event emitted by the manager (Reflect class)
      *
@@ -145,7 +147,7 @@ class LogPlugin implements EventSubscriberInterface
     }
 
     /**
-     * Logs 'reflect.error' event.
+     * Logs ERROR event.
      *
      * @param Event $event Current event emitted by the manager (Reflect class)
      *
@@ -157,7 +159,7 @@ class LogPlugin implements EventSubscriberInterface
     }
 
     /**
-     * Logs 'reflect.complete' event.
+     * Logs COMPLETE event.
      *
      * @param Event $event Current event emitted by the manager (Reflect class)
      *

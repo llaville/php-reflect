@@ -10,6 +10,7 @@ use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Bartlett\Reflect;
+use Bartlett\Reflect\Events;
 use Bartlett\Reflect\Command\ProviderCommand;
 use Bartlett\Reflect\ProviderManager;
 use Bartlett\Reflect\Provider\SymfonyFinderProvider;
@@ -104,7 +105,7 @@ class PlantUMLRunCommand extends ProviderCommand
 
             if ($output->isVerbose()) {
                 $reflect->getEventDispatcher()->addListener(
-                    'reflect.progress',
+                    Events::PROGRESS,
                     function (GenericEvent $e) use ($progress) {
                         if ($progress instanceof ProgressHelper) {
                             $progress->advance();
