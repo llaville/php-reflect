@@ -14,6 +14,7 @@
 
 namespace Bartlett\Reflect;
 
+use Bartlett\Reflect\Events;
 use Bartlett\Reflect\Model\PackageModel;
 use Bartlett\Reflect\Model\UseModel;
 use Bartlett\Reflect\Model\ClassModel;
@@ -54,6 +55,13 @@ class Builder extends NodeVisitorAbstract
     private $dependencies = array();
     private $aliases      = array();
     private $file;
+
+    private $subject;
+
+    public function __construct($reflect)
+    {
+        $this->subject = $reflect;
+    }
 
     /**
      * @var null|Name Current namespace
@@ -96,10 +104,26 @@ class Builder extends NodeVisitorAbstract
     public function beforeTraverse(array $nodes)
     {
         $this->namespace = '+global';
+
+        $this->subject->dispatch(
+            Events::BUILD,
+            array(
+                'method' => __METHOD__,
+                'args'   => func_get_args()
+            )
+        );
     }
 
     public function enterNode(Node $node)
     {
+        $this->subject->dispatch(
+            Events::BUILD,
+            array(
+                'method' => __METHOD__,
+                'args'   => func_get_args()
+            )
+        );
+
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
             if (! isset($node->name)) {
                 // Namespace without name
@@ -214,6 +238,14 @@ class Builder extends NodeVisitorAbstract
 
     public function leaveNode(Node $node)
     {
+        $this->subject->dispatch(
+            Events::BUILD,
+            array(
+                'method' => __METHOD__,
+                'args'   => func_get_args()
+            )
+        );
+
         $doc = $node->getDocComment();
 
         $nodeAttributes = array(

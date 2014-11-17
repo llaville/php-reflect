@@ -81,4 +81,15 @@ final class Events
      */
     const COMPLETE = 'reflect.complete';
 
+    /**
+     * The BUILD event allows you to learn what are processes applied during AST building.
+     *
+     * The event listener method receives a Symfony\Component\EventDispatcher\GenericEvent
+     * instance with following arguments :
+     * - `method` current process
+     * - `args`   arguments given as input of the process
+     *
+     * @var string
+     */
+    const BUILD = 'ast.build';
 }

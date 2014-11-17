@@ -81,7 +81,7 @@ class Reflect extends AbstractDispatcher implements ManagerInterface
      */
     public function parse(array $providers = null)
     {
-        $this->builder = new Builder;
+        $this->builder = new Builder($this);
 
         $lexer     = new TokenOffsets();
         $parser    = new Parser($lexer);

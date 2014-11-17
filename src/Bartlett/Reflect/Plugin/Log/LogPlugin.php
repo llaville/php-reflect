@@ -83,6 +83,11 @@ class LogPlugin implements EventSubscriberInterface
                 'template' => 'Parsing data source "{source}" completed.',
                 'context'  => true,
             ),
+            Events::BUILD => array(
+                'level'    => LogLevel::DEBUG,
+                'template' => 'Building AST, process {method} {with}',
+                'context'  => true
+            )
         );
 
         if (isset($options)) {
@@ -107,6 +112,7 @@ class LogPlugin implements EventSubscriberInterface
             Events::CACHE    => 'onReflectCache',
             Events::ERROR    => 'onReflectError',
             Events::COMPLETE => 'onReflectComplete',
+            Events::BUILD    => 'onAstBuild',
         );
     }
 
@@ -171,6 +177,26 @@ class LogPlugin implements EventSubscriberInterface
     }
 
     /**
+     * Logs BUILD event.
+     *
+     * @param Event $event Current event emitted by the builder
+     *
+     * @return void
+     */
+    public function onAstBuild(GenericEvent $event)
+    {
+        $context = $event->getArguments();
+
+        if (!is_array($event['args'][0])) {
+            $event['with'] = $event['args'][0]->getType();
+            $context['nodeAttributes'] = $event['args'][0]->getAttributes();
+        }
+        $context['node'] = $event['args'][0];
+        unset($context['method'], $context['args']);
+        $this->log($event, $context);
+    }
+
+    /**
      * Logs an event as specified.
      *
      * @param Event $event   Current event
@@ -220,17 +246,19 @@ class LogPlugin implements EventSubscriberInterface
         return preg_replace_callback(
             '/{\s*([A-Za-z_\-\.0-9]+)\s*}/',
             function (array $matches) use ($event) {
-
-                switch ($matches[1]) {
-                    case 'source':
-                    case 'error':
-                        $result = $event[$matches[1]];
-                        break;
-                    case 'file':
-                        $result = $event[$matches[1]]->getPathname();
-                        break;
-                    default:
-                        $result = '';
+                $result = '';
+                if (isset($event[$matches[1]])) {
+                    switch ($matches[1]) {
+                        case 'source':
+                        case 'error':
+                        case 'method':
+                        case 'with':
+                            $result = $event[$matches[1]];
+                            break;
+                        case 'file':
+                            $result = $event[$matches[1]]->getPathname();
+                            break;
+                    }
                 }
                 return $result;
             },
