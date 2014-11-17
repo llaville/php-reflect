@@ -56,19 +56,19 @@ class Builder extends NodeVisitorAbstract
     private $aliases      = array();
     private $file;
 
-    private $subject;
-
-    public function __construct($reflect)
-    {
-        $this->subject = $reflect;
-    }
-
     /**
      * @var null|Name Current namespace
      */
     private $namespace;
 
     private $tokens;
+
+    private $subject;
+
+    public function __construct($reflect)
+    {
+        $this->subject = $reflect;
+    }
 
     private function isImplicitlyPublicProperty(array $tokens, Property $prop)
     {
