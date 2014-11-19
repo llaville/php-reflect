@@ -44,6 +44,8 @@ use PhpParser\Node\Stmt\ClassMethod;
  */
 class Builder extends NodeVisitorAbstract
 {
+    const GLOBAL_NAMESPACE = '+global';
+
     private $packages     = array();
     private $uses         = array();
     private $classes      = array();
@@ -103,7 +105,7 @@ class Builder extends NodeVisitorAbstract
 
     public function beforeTraverse(array $nodes)
     {
-        $this->namespace = '+global';
+        $this->namespace = self::GLOBAL_NAMESPACE;
 
         $this->subject->dispatch(
             Events::BUILD,
@@ -726,7 +728,7 @@ class Builder extends NodeVisitorAbstract
     public function buildPackage($qualifiedName, array $attributes = array())
     {
         if (empty($qualifiedName)) {
-            $qualifiedName = '+global';
+            $qualifiedName = self::GLOBAL_NAMESPACE;
         }
         if (!isset($this->packages[$qualifiedName])) {
             $model = new PackageModel($qualifiedName, $attributes);
