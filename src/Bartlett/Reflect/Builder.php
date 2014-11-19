@@ -126,12 +126,24 @@ class Builder extends NodeVisitorAbstract
             )
         );
 
+        $doc = $node->getDocComment();
+
+        $nodeAttributes = array(
+            'file'       => $this->file,
+            'startLine'  => $node->getAttribute('startLine'),
+            'endLine'    => $node->getAttribute('endLine'),
+        );
+        if ($doc instanceof \PhpParser\Comment) {
+            $nodeAttributes['docComment'] = $doc->getText();
+        }
+
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
             if (! isset($node->name)) {
                 // Namespace without name
                 $node->name = new Node\Name(self::GLOBAL_NAMESPACE);
             }
             $this->namespace = $node->name->__toString();
+            $this->buildPackage($this->namespace, $nodeAttributes);
         }
 
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_
@@ -165,17 +177,6 @@ class Builder extends NodeVisitorAbstract
                     $this->aliases[$var->name] = $class->__toString();
                 }
             }
-        }
-
-        $doc = $node->getDocComment();
-
-        $nodeAttributes = array(
-            'file'       => $this->file,
-            'startLine'  => $node->getAttribute('startLine'),
-            'endLine'    => $node->getAttribute('endLine'),
-        );
-        if ($doc instanceof \PhpParser\Comment) {
-            $nodeAttributes['docComment'] = $doc->getText();
         }
 
         if ($node instanceof \PhpParser\Node\Expr\MethodCall) {
