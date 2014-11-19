@@ -141,6 +141,22 @@ class PackageModelTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Tests name accessor.
+     *
+     *  covers PackageModel::getName
+     * @return void
+     */
+    public function testNameAccessor()
+    {
+        $n = 0;    // empty namespace
+
+        $this->assertEquals(
+            '+global',
+            self::$namespaces[$n]->getName(),
+            self::$namespaces[$n]->getName() . ' namespace, name does not match.'
+        );
+    }
 
     /**
      * Tests string representation of the PackageModel object

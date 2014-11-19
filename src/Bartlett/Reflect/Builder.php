@@ -146,8 +146,7 @@ class Builder extends NodeVisitorAbstract
             $this->buildPackage($this->namespace, $nodeAttributes);
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Namespace_
-            || $node instanceof \PhpParser\Node\Expr\Include_
+        if ($node instanceof \PhpParser\Node\Expr\Include_
             || $node instanceof \PhpParser\Node\Stmt\Class_
             || $node instanceof \PhpParser\Node\Stmt\Interface_
             || $node instanceof \PhpParser\Node\Stmt\Trait_
@@ -260,10 +259,7 @@ class Builder extends NodeVisitorAbstract
             $nodeAttributes['docComment'] = $doc->getText();
         }
 
-        if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
-            $this->buildPackage($node->name->__toString(), $nodeAttributes);
-
-        } elseif ($node instanceof \PhpParser\Node\Expr\Include_) {
+        if ($node instanceof \PhpParser\Node\Expr\Include_) {
             if ($node->type === 1) {
                 $type = 'include';
             } elseif ($node->type === 2) {
