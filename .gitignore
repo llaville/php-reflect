@@ -2,7 +2,5 @@ Thumbs.db
 *.tgz
 html/
 vendor/
-blog/rssbuilder.php
-blog/rss.xml
 *.plantuml
 phpunit.xml
