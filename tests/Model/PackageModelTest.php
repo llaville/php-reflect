@@ -38,6 +38,7 @@ class PackageModelTest extends \PHPUnit_Framework_TestCase
     protected static $fixtures;
     protected static $fixture;
     protected static $namespaces;
+    protected static $classes;
 
     /**
      * Sets up the shared fixture.
@@ -68,6 +69,10 @@ class PackageModelTest extends \PHPUnit_Framework_TestCase
 
         foreach ($reflect->getPackages() as $package) {
             self::$namespaces[$n] = $package;
+
+            foreach ($package->getClasses() as $rc) {
+                self::$classes[$n][] = $rc;
+            }
             $n++;
         }
     }
@@ -181,5 +186,23 @@ EOS;
         print(
             self::$namespaces[$n]->__toString()
         );
+    }
+
+    /**
+     * Handle namespaces without name
+     *
+     * @return void
+     * @link   https://github.com/llaville/php-reflect/pull/4 by Eric Colinet
+     */
+    public function testHandleEmptyNamespace()
+    {
+        $n = 0;    // empty namespace
+        $c = 0;    // class MyGlobalClass
+
+        $this->assertInstanceOf(
+            'Bartlett\Reflect\Model\ClassModel',
+            self::$classes[$n][$c]
+        );
+        $this->assertEquals('MyGlobalClass', self::$classes[$n][$c]->getName());
     }
 }
