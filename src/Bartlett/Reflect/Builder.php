@@ -129,7 +129,7 @@ class Builder extends NodeVisitorAbstract
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
             if (! isset($node->name)) {
                 // Namespace without name
-                $node->name = new Node\Name('');
+                $node->name = new Node\Name(self::GLOBAL_NAMESPACE);
             }
             $this->namespace = $node->name->__toString();
         }
@@ -727,9 +727,6 @@ class Builder extends NodeVisitorAbstract
      */
     public function buildPackage($qualifiedName, array $attributes = array())
     {
-        if (empty($qualifiedName)) {
-            $qualifiedName = self::GLOBAL_NAMESPACE;
-        }
         if (!isset($this->packages[$qualifiedName])) {
             $model = new PackageModel($qualifiedName, $attributes);
             $model->setFile($this->file);
