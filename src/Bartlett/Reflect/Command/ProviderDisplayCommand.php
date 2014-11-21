@@ -23,7 +23,7 @@ class ProviderDisplayCommand extends ProviderCommand
                 'Path to the data source or its alias'
             )
             ->addArgument(
-                'file',
+                'path',
                 InputArgument::REQUIRED,
                 'Relative path to a file in the data source'
             )
@@ -63,7 +63,7 @@ class ProviderDisplayCommand extends ProviderCommand
             $rows[] = array('<info>Relative Path Name</info>', '<info>Date</info>', '<info>Size</info>');
 
             foreach ($this->finder as $file) {
-                if ($file->getRelativePathname() == $input->getArgument('file')) {
+                if ($file->getRelativePathname() == $input->getArgument('path')) {
                     $rows[] = array(
                         $file->getRelativePathname(),
                         date(\DateTime::W3C, $file->getMTime()),
