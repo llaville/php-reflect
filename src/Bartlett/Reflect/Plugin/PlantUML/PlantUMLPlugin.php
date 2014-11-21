@@ -17,6 +17,7 @@ namespace Bartlett\Reflect\Plugin\PlantUML;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\Event;
 
+use Bartlett\Reflect\Events;
 use Bartlett\Reflect\Visitor\AbstractVisitor;
 use Bartlett\Reflect\Command\PlantUMLRunCommand;
 
@@ -66,7 +67,7 @@ class PlantUMLPlugin extends AbstractVisitor implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'reflect.complete' => 'onReflectComplete',
+            Events::COMPLETE => 'onReflectComplete',
         );
     }
 
