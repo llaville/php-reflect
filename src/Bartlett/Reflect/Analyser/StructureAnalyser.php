@@ -247,6 +247,14 @@ class StructureAnalyser extends AbstractAnalyser
             $class->accept($this);
         }
 
+        foreach ($package->getInterfaces() as $interface) {
+            $interface->accept($this);
+        }
+
+        foreach ($package->getTraits() as $trait) {
+            $trait->accept($this);
+        }
+
         foreach ($package->getFunctions() as $function) {
             $function->accept($this);
         }
