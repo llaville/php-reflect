@@ -494,6 +494,7 @@ class Builder extends NodeVisitorAbstract
             $propertyName = $caller->name;
             if ($caller->var instanceof \PhpParser\Node\Expr\Variable
                 && is_string($caller->var->name)
+                && isset($this->aliases[$caller->var->name . '_' . $propertyName])
             ) {
                 $qualifiedClassName = $this->aliases[$caller->var->name . '_' . $propertyName];
             } else {
