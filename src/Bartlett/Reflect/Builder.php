@@ -252,7 +252,14 @@ class Builder extends NodeVisitorAbstract
             }
 
         } elseif ($node instanceof Node\Expr\Array_) {
-            $this->parseArrayExpression($node, $nodeAttributes);
+            if ($this->isShortArraySyntax($this->tokens, $node)) {
+                $this->phpFeatureExpression('ArrayShortSyntax', $nodeAttributes);
+            }
+
+        } elseif ($node instanceof Node\Expr\ArrayDimFetch
+            && $node->var instanceof Node\Expr\FuncCall
+        ) {
+            $this->phpFeatureExpression('ArrayDereferencing', $nodeAttributes);
         }
     }
 
@@ -584,14 +591,11 @@ class Builder extends NodeVisitorAbstract
         $package->update($attributes);
     }
 
-    protected function parseArrayExpression($node, $nodeAttributes)
+    protected function phpFeatureExpression($phpFeatureId, $nodeAttributes)
     {
-        if (!$this->isShortArraySyntax($this->tokens, $node)) {
-            return;
-        }
         $nodeAttributes['phpFeature'] = true;
 
-        $dep = $this->buildDependency('ArrayShortSyntax', $nodeAttributes);
+        $dep = $this->buildDependency($phpFeatureId, $nodeAttributes);
         $dep->incCalls();
 
         if ($dep->getCalls() > 1) {
