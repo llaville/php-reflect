@@ -30,6 +30,7 @@ use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Expr\Array_;
 
 /**
  * Concrete Builder.
@@ -91,6 +92,12 @@ class Builder extends NodeVisitorAbstract
             }
         }
         return true;
+    }
+
+    private function isShortArraySyntax(array $tokens, Array_ $array)
+    {
+        $i = $array->getAttribute('startOffset');
+        return is_string($tokens[$i]);
     }
 
     public function setTokens(array $tokens)
@@ -243,6 +250,9 @@ class Builder extends NodeVisitorAbstract
                 );
                 $this->buildUse($use->name->__toString(), $attributes);
             }
+
+        } elseif ($node instanceof Node\Expr\Array_) {
+            $this->parseArrayExpression($node, $nodeAttributes);
         }
     }
 
@@ -564,6 +574,24 @@ class Builder extends NodeVisitorAbstract
         $nodeAttributes['class'] = true;
 
         $dep = $this->buildDependency($qualifiedClassName, $nodeAttributes);
+        $dep->incCalls();
+
+        if ($dep->getCalls() > 1) {
+            return;
+        }
+        $attributes = array('dependencies' => array($dep));
+        $package = $this->buildPackage($this->namespace);
+        $package->update($attributes);
+    }
+
+    protected function parseArrayExpression($node, $nodeAttributes)
+    {
+        if (!$this->isShortArraySyntax($this->tokens, $node)) {
+            return;
+        }
+        $nodeAttributes['phpFeature'] = true;
+
+        $dep = $this->buildDependency('ArrayShortSyntax', $nodeAttributes);
         $dep->incCalls();
 
         if ($dep->getCalls() > 1) {
