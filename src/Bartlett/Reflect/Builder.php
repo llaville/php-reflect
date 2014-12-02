@@ -159,22 +159,30 @@ class Builder extends NodeVisitorAbstract
         if ($node instanceof \PhpParser\Node\Expr\Assign
             && $node->expr instanceof \PhpParser\Node\Expr\New_
         ) {
-            $var   = $node->var;
             $class = $node->expr->class;
 
-            if ($class instanceof \PhpParser\Node\Name) {
-                if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
-                    if ($var->name instanceof \PhpParser\Node\Expr\Variable) {
-                        $varName = '$' . $var->name->name;
-                    } else {
-                        $varName = (string) $var->name;
+            if (!$class instanceof \PhpParser\Node\Name) {
+                return;
+            }
+            $assign = $node->var;
+            if ($assign instanceof \PhpParser\Node\Expr\PropertyFetch) {
+                if (is_string($assign->name)) {
+                    $property = $assign->name;
+
+                    if ($assign->var instanceof \PhpParser\Node\Expr\Variable
+                        && is_string($assign->var->name)
+                        && is_string($property)
+                    ) {
+                        $object = $assign->var->name;
+
+                        $this->aliases[$object .'_'. $property] = $class->__toString();
                     }
-
-                    $this->aliases[$var->var->name .'_'. $varName] = $class->__toString();
-
-                } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
-                    $this->aliases[$var->name] = $class->__toString();
                 }
+
+            } elseif ($assign instanceof \PhpParser\Node\Expr\Variable
+                && is_string($assign->name)
+            ) {
+                $this->aliases[$assign->name] = $class->__toString();
             }
         }
 
@@ -472,32 +480,37 @@ class Builder extends NodeVisitorAbstract
      */
     protected function parseMethodCall($node, $nodeAttributes)
     {
-        $var = $node->var;
-
         if (!is_string($node->name)) {
             // indirect method call
             return;
         }
+        $caller = $node->var;
 
-        if ($var instanceof \PhpParser\Node\Expr\PropertyFetch) {
-            if ($var->name instanceof \PhpParser\Node\Expr\Variable) {
-                $varName = '$' . $var->name->name;
+        if ($caller instanceof \PhpParser\Node\Expr\PropertyFetch) {
+            if (!is_string($caller->name)) {
+                // indirect method call
+                return;
+            }
+            $propertyName = $caller->name;
+            if ($caller->var instanceof \PhpParser\Node\Expr\Variable
+                && is_string($caller->var->name)
+            ) {
+                $qualifiedClassName = $this->aliases[$caller->var->name . '_' . $propertyName];
             } else {
-                $varName = (string) $var->name;
-            }
-
-            if (!isset($this->aliases[$varName])) {
                 // class name resolver failure
                 return;
             }
-            $qualifiedClassName = $this->aliases[$varName];
 
-        } elseif ($var instanceof \PhpParser\Node\Expr\Variable) {
-            if (!isset($this->aliases[$var->name])) {
+        } elseif ($caller instanceof \PhpParser\Node\Expr\Variable) {
+            if (!is_string($caller->name)) {
+                // indirect method call
+                return;
+            }
+            if (!isset($this->aliases[$caller->name])) {
                 // class name resolver failure
                 return;
             }
-            $qualifiedClassName = $this->aliases[$var->name];
+            $qualifiedClassName = $this->aliases[$caller->name];
         }
 
         if (!isset($qualifiedClassName)) {
