@@ -67,7 +67,7 @@ This is the equivalent of doing a git clone checkout followed by a composer inst
 
 [source,bash]
 ----
-$ php composer.phar create-project bartlett/php-reflect /path/to 2.6.0
+$ php composer.phar create-project bartlett/php-reflect /path/to 2.6.1
 ----
 Where +/path/to+ is your install directory.
 ====
@@ -80,17 +80,17 @@ bundled in a single file.
 
 [source,bash]
 ----
-$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.6.0.phar
-$ chmod +x phpreflect-2.6.0.phar
-$ mv phpreflect-2.6.0.phar /usr/local/bin/phpreflect
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.6.1.phar
+$ chmod +x phpreflect-2.6.1.phar
+$ mv phpreflect-2.6.1.phar /usr/local/bin/phpreflect
 $ phpreflect
 ----
 
 You can also immediately use the PHAR after you have downloaded it.
 [source,bash]
 ----
-$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.6.0.phar
-$ php phpreflect-2.6.0.phar
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.6.1.phar
+$ php phpreflect-2.6.1.phar
 ----
 
 ifdef::basebackend-bootstrap[]

@@ -15,8 +15,8 @@ Have a look on master branch for previous stable API 1.0
 
 You can either :
 
-* download the phar version http://bartlett.laurent-laville.org/get/phpreflect-2.6.0.phar[2.6.0]
-* install via https://packagist.org/packages/bartlett/php-reflect/[packagist] the current source dev-master or the stable version 2.6.0
+* download the phar version http://bartlett.laurent-laville.org/get/phpreflect-2.6.1.phar[2.6.1]
+* install via https://packagist.org/packages/bartlett/php-reflect/[packagist] the current source dev-master or the stable version 2.6.1
 
 == Documentation
 
