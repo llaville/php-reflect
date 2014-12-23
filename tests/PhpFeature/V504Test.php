@@ -35,7 +35,6 @@ use Symfony\Component\Finder\Finder;
 class V504Test extends \PHPUnit_Framework_TestCase
 {
     protected static $fixtures;
-    protected static $fixture;
     protected static $dependencies;
 
     /**
@@ -49,11 +48,9 @@ class V504Test extends \PHPUnit_Framework_TestCase
         self::$fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
             . '_files' . DIRECTORY_SEPARATOR;
 
-        self::$fixture = self::$fixtures . 'gh15.php';
-
         $finder = new Finder();
         $finder->files()
-            ->name(basename(self::$fixture))
+            ->name('gh15.php')
             ->in(self::$fixtures);
         ;
 
@@ -66,7 +63,9 @@ class V504Test extends \PHPUnit_Framework_TestCase
 
         foreach ($reflect->getPackages() as $package) {
             foreach ($package->getDependencies() as $dep) {
-                self::$dependencies[] = $dep;
+                if ($dep->isPhpFeature()) {
+                    self::$dependencies[] = $dep;
+                }
             }
         }
     }
@@ -78,7 +77,7 @@ class V504Test extends \PHPUnit_Framework_TestCase
      */
     public function testDependencyCount()
     {
-        $this->assertCount(5, self::$dependencies);
+        $this->assertCount(4, self::$dependencies);
     }
 
     /**
@@ -90,11 +89,6 @@ class V504Test extends \PHPUnit_Framework_TestCase
     public function testClassMemberAccessOnDirectInstantiation()
     {
         $d = 0;  // (new Foo)->bar();
-
-        $this->assertTrue(
-            self::$dependencies[$d]->isPhpFeature(),
-            self::$dependencies[$d]->getName() . ' is not a PHP Feature.'
-        );
 
         $this->assertEquals(
             'ClassMemberAccessOnDirectInstantiation',
@@ -112,12 +106,7 @@ class V504Test extends \PHPUnit_Framework_TestCase
      */
     public function testClassMemberAccessOnIndirectInstantiation()
     {
-        $d = 3;  // (new $a())->bar();
-
-        $this->assertTrue(
-            self::$dependencies[$d]->isPhpFeature(),
-            self::$dependencies[$d]->getName() . ' is not a PHP Feature.'
-        );
+        $d = 2;  // (new $a())->bar();
 
         $this->assertEquals(
             'ClassMemberAccessOnIndirectInstantiation',
