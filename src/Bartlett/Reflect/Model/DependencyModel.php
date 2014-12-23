@@ -50,7 +50,8 @@ class DependencyModel extends AbstractModel implements Visitable
             $attributes['internalFunction'] = false;
         }
         if (!isset($attributes['phpFeature'])) {
-            $attributes['phpFeature'] = false;
+            $attributes['phpFeature']     = false;
+            $attributes['phpFeatureName'] = null;
         }
 
         parent::__construct($attributes);
@@ -177,6 +178,16 @@ class DependencyModel extends AbstractModel implements Visitable
     public function isPhpFeature()
     {
         return $this->struct['phpFeature'];
+    }
+
+    /**
+     * Return the name of php feature. E.g: ArrayShortSyntax, ...
+     *
+     * @return string
+     */
+    public function getPhpFeature()
+    {
+        return $this->struct['phpFeatureName'];
     }
 
     /**

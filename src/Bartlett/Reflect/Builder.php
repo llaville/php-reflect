@@ -253,13 +253,13 @@ class Builder extends NodeVisitorAbstract
 
         } elseif ($node instanceof Node\Expr\Array_) {
             if ($this->isShortArraySyntax($this->tokens, $node)) {
-                $this->phpFeatureExpression('ArrayShortSyntax', $nodeAttributes);
+                $this->phpFeatureExpression($node, 'ArrayShortSyntax', $nodeAttributes);
             }
 
         } elseif ($node instanceof Node\Expr\ArrayDimFetch
             && $node->var instanceof Node\Expr\FuncCall
         ) {
-            $this->phpFeatureExpression('ArrayDereferencing', $nodeAttributes);
+            $this->phpFeatureExpression($node, 'ArrayDereferencing', $nodeAttributes);
         }
     }
 
@@ -503,6 +503,16 @@ class Builder extends NodeVisitorAbstract
         }
         $caller = $node->var;
 
+        if ($caller instanceof Node\Expr\New_) {
+            if ($caller->class instanceof Node\Name) {
+                $phpFeatureId = 'ClassMemberAccessOnDirectInstantiation';
+            } else {
+                $phpFeatureId = 'ClassMemberAccessOnIndirectInstantiation';
+            }
+            $this->phpFeatureExpression($node, $phpFeatureId, $nodeAttributes);
+            return;
+        }
+
         if ($caller instanceof \PhpParser\Node\Expr\PropertyFetch) {
             if (!is_string($caller->name)) {
                 // indirect method call
@@ -591,11 +601,19 @@ class Builder extends NodeVisitorAbstract
         $package->update($attributes);
     }
 
-    protected function phpFeatureExpression($phpFeatureId, $nodeAttributes)
+    protected function phpFeatureExpression($node, $phpFeatureId, $nodeAttributes)
     {
-        $nodeAttributes['phpFeature'] = true;
+        $nodeAttributes['phpFeature']     = true;
+        $nodeAttributes['phpFeatureName'] = $phpFeatureId;
 
-        $dep = $this->buildDependency($phpFeatureId, $nodeAttributes);
+        $prettyPrinter = new \PhpParser\PrettyPrinter\Standard;
+        // keep original signature
+        $depName = trim(
+            $prettyPrinter->prettyPrint(array($node)),
+            ';'
+        );
+
+        $dep = $this->buildDependency($depName, $nodeAttributes);
         $dep->incCalls();
 
         if ($dep->getCalls() > 1) {
