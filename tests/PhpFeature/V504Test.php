@@ -51,6 +51,7 @@ class V504Test extends \PHPUnit_Framework_TestCase
         $finder = new Finder();
         $finder->files()
             ->name('gh15.php')
+            ->name('php504ArrayFeatures.php')
             ->in(self::$fixtures);
         ;
 
@@ -77,7 +78,7 @@ class V504Test extends \PHPUnit_Framework_TestCase
      */
     public function testDependencyCount()
     {
-        $this->assertCount(4, self::$dependencies);
+        $this->assertCount(6, self::$dependencies);
     }
 
     /**
@@ -113,6 +114,42 @@ class V504Test extends \PHPUnit_Framework_TestCase
             self::$dependencies[$d]->getPhpFeature(),
             self::$dependencies[$d]->getName()
             . ' is not a class member access on indirect instantiation.'
+        );
+    }
+
+    /**
+     * Test Array Short Syntax.
+     *
+     * @depends testDependencyCount
+     * @return void
+     */
+    public function testArrayShortSyntax()
+    {
+        $d = 4;  // ['one', 'two', 'three']
+
+        $this->assertEquals(
+            'ArrayShortSyntax',
+            self::$dependencies[$d]->getPhpFeature(),
+            self::$dependencies[$d]->getName()
+            . ' is not a short array syntax.'
+        );
+    }
+
+    /**
+     * Test Array Dereferencing syntax.
+     *
+     * @depends testDependencyCount
+     * @return void
+     */
+    public function testArrayDereferencing()
+    {
+        $d = 5;  // returnArray()[0]
+
+        $this->assertEquals(
+            'ArrayDereferencing',
+            self::$dependencies[$d]->getPhpFeature(),
+            self::$dependencies[$d]->getName()
+            . ' is not an array dereferencing.'
         );
     }
 }
