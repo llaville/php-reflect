@@ -32,7 +32,7 @@ use Bartlett\Reflect\Client;
  */
 class IssueTest extends \PHPUnit_Framework_TestCase
 {
-    const GH = 'packages.php';
+    const GH4 = 'packages.php';
 
     protected static $fixtures;
     protected static $api;
@@ -54,7 +54,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Regression test for bug GH#
+     * Regression test for bug GH#4
      *
      * @link https://github.com/llaville/php-reflect/issues/
      *       "Handle namespaces without name"
@@ -64,7 +64,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
      */
     public function testBugGH()
     {
-        $dataSource = self::$fixtures . self::GH;
+        $dataSource = self::$fixtures . self::GH4;
         $analysers  = array('reflection');
         $metrics    = self::$api->run($dataSource, $analysers);
         $models     = $metrics['ReflectionAnalyser'];
