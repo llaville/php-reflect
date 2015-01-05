@@ -59,7 +59,7 @@ class ConsoleApplication extends Application
         $version = parent::getVersion();
 
         if ('@' . 'package_version@' == $version) {
-            $version = new \SebastianBergmann\Version('2.6.1', dirname(dirname(dirname(__DIR__))));
+            $version = new \SebastianBergmann\Version('2.6.2', dirname(dirname(dirname(__DIR__))));
             $version = $version->getVersion();
         }
         return $version;
