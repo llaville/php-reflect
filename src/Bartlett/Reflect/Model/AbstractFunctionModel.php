@@ -15,7 +15,8 @@
 namespace Bartlett\Reflect\Model;
 
 use Bartlett\Reflect\Model\AbstractModel;
-use Bartlett\Reflect\Exception\ModelException;
+
+use PhpParser\Node;
 
 /**
  * A parent class for concrete FunctionModel.
@@ -30,39 +31,7 @@ use Bartlett\Reflect\Exception\ModelException;
  */
 abstract class AbstractFunctionModel extends AbstractModel
 {
-    protected $short_name;
-
-    /**
-     * Get a Doc comment from a function.
-     *
-     * @return string
-     */
-    public function getDocComment()
-    {
-        return $this->struct['docComment'];
-    }
-
-    /**
-     * Gets the starting line number of the function.
-     *
-     * @return int
-     * @see    AbstractFunctionModel::getEndLine()
-     */
-    public function getStartLine()
-    {
-        return $this->struct['startLine'];
-    }
-
-    /**
-     * Gets the ending line number of the function.
-     *
-     * @return int
-     * @see    AbstractFunctionModel::getStartLine()
-     */
-    public function getEndLine()
-    {
-        return $this->struct['endLine'];
-    }
+    private $parameters;
 
     /**
      * Gets the file name from a user-defined function.
@@ -75,49 +44,7 @@ abstract class AbstractFunctionModel extends AbstractModel
         if ($this->isInternal()) {
             return false;
         }
-        return $this->struct['file'];
-    }
-
-    /**
-     * Gets the extension information of a function.
-     *
-     * @return ReflectionExtension instance that contains the extension information
-     * @throws ModelException if extension does not exist (user(405) or not loaded(404))
-     */
-    public function getExtension()
-    {
-        if ($this->struct['extension'] === 'user') {
-            throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.',
-                405
-            );
-        } elseif (!extension_loaded($this->struct['extension'])) {
-            throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.',
-                404
-            );
-        }
-
-        return new \ReflectionExtension($this->struct['extension']);
-    }
-
-    /**
-     * Gets the extension name of the function.
-     *
-     * @return string
-     */
-    public function getExtensionName()
-    {
-        try {
-            $name = $this->getExtension()->getName();
-
-        } catch (ModelException $e) {
-            if ($e->getCode() === 404) {
-                throw $e;  // re-throws original exception
-            }
-            $name = 'user';
-        }
-        return $name;
+        return parent::getFileName();
     }
 
     /**
@@ -127,7 +54,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      */
     public function getName()
     {
-        return $this->name;
+        return $this->node->namespacedName;
     }
 
     /**
@@ -138,8 +65,7 @@ abstract class AbstractFunctionModel extends AbstractModel
     public function getNamespaceName()
     {
         $parts = explode('\\', $this->getName());
-        $functionName = array_pop($parts);
-
+        array_pop($parts);
         return implode('\\', $parts);
     }
 
@@ -150,7 +76,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      */
     public function getShortName()
     {
-        return $this->short_name;
+        return $this->node->name;
     }
 
     /**
@@ -161,10 +87,8 @@ abstract class AbstractFunctionModel extends AbstractModel
      */
     public function getNumberOfParameters()
     {
-        $args = isset($this->struct['arguments'])
-            ? $this->struct['arguments'] : array();
-
-        return count($args);
+        $parameters = $this->getParameters();
+        return count($parameters);
     }
 
     /**
@@ -174,26 +98,34 @@ abstract class AbstractFunctionModel extends AbstractModel
      */
     public function getNumberOfRequiredParameters()
     {
-        $args = isset($this->struct['arguments'])
-            ? $this->struct['arguments'] : array();
+        $parameters = $this->getParameters();
+        $required   = 0;
 
-        $count = 0;
-        foreach ($args as $arg) {
-            if (!$arg->isDefaultValueAvailable()) {
-                $count++;
+        foreach ($parameters as $param) {
+            if (!$param->isOptional()) {
+                $required++;
             }
         }
-        return $count;
+        return $required;
     }
 
     /**
-     * Get the parameters as an array of ParameterModel.
+     * Get the parameters.
      *
-     * @return array
+     * @return array of ParameterModel
      */
     public function getParameters()
     {
-        return $this->struct['arguments'];
+        if ($this->parameters === null) {
+            // lazy load function parameters list
+            $this->parameters = array();
+            foreach ($this->node->params as $pos => $param) {
+                if ($param instanceof Node\Param) {
+                    $this->parameters[] = new ParameterModel($param, $pos);
+                }
+            }
+        }
+        return $this->parameters;
     }
 
     /**
@@ -203,7 +135,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      */
     public function inNamespace()
     {
-        return (!empty($this->struct['namespace']));
+        return $this->getName()->isQualified();
     }
 
     /**
@@ -213,7 +145,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      */
     public function isClosure()
     {
-        return $this->struct['closure'];
+        return $this->node instanceof Node\Expr\Closure;
     }
 
     /**

@@ -14,11 +14,8 @@
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Visitor\VisitorInterface;
-
 /**
- * AbstractModel is used to declare base accept operation
- * if no element implementation is provided.
+ * A base class for all Model objects.
  *
  * @category PHP
  * @package  PHP_Reflect
@@ -30,100 +27,73 @@ use Bartlett\Reflect\Visitor\VisitorInterface;
  */
 abstract class AbstractModel
 {
-    protected $name;
-    protected $struct;
-    protected $calls;
+    protected $node;
+    protected $extension;
 
     /**
      * Base Model class constructor
      */
-    public function __construct($attributes)
+    public function __construct($node)
     {
-        $struct = array(
-            'docComment' => null,
-            'startLine'  => 0,
-            'endLine'    => 0,
-            'file'       => null,
-            'extension'  => 'user',
-        );
-        $this->struct = array_merge($struct, $attributes);
-        $this->calls  = array();
-    }
+        $this->node = $node;
 
-    /**
-     * Sets the file path where this model is defined
-     *
-     * @param string $path
-     *
-     * @return self for fluent interface
-     */
-    public function setFile($path)
-    {
-        $this->struct['file'] = $path;
-        return $this;
-    }
-
-    /**
-     * Increments number of element uses
-     *
-     * @param array $attributes Call stack (file / line)
-     *
-     * @return self for fluent interface
-     */
-    public function incCalls(array $attributes = null)
-    {
-        if (empty($attributes)) {
-            $call = array(
-                'file' => $this->struct['file'],
-                'line' => $this->struct['startLine']
-            );
+        $versions = $node->getAttribute('compatinfo');
+        if ($versions === null) {
+            $this->extension = 'user';
         } else {
-            $call = array(
-                'file' => $attributes['file'],
-                'line' => $attributes['startLine']
-            );
+            $this->extension = $versions['ext.name'];
         }
-        $this->calls[] = $call;
-        return $this;
     }
 
     /**
-     * Returns number of current element uses
+     * Gets doc comments.
      *
-     * @param bool $count (optional) if TRUE return only the number of call,
-     *                    otherwise return the full stack (file/line) of calls.
-     *
-     * @return mixed
+     * @return string
      */
-    public function getCalls($count = true)
+    public function getDocComment()
     {
-        if ($count === true) {
-            $calls = count($this->calls);
-        } else {
-            $calls = $this->calls;
-        }
-        return $calls;
+        return $this->node->getDocComment();
     }
 
     /**
-     * Implement Visitor Design Pattern.
+     * Gets the starting line number.
      *
-     * @param VisitorInterface $visitor Concrete visitor
-     *
-     * @return void
+     * @return int
+     * @see    getEndLine()
      */
-    public function accept(VisitorInterface $visitor)
+    public function getStartLine()
     {
-        $modelClass = explode('\\', get_class($this));
-        $method     = 'visit' . array_pop($modelClass);
+        return $this->node->getAttribute('startLine');
+    }
 
-        if (method_exists($visitor, $method)) {
-            // visit the method and exit
-            $visitor->{$method}($this);
-            return;
-        }
+    /**
+     * Gets the ending line number.
+     *
+     * @return int
+     * @see    getStartLine()
+     */
+    public function getEndLine()
+    {
+        return $this->node->getAttribute('endLine');
+    }
 
-        // if not visit operations is defined, call a default algorithm
-        $visitor->defaultVisit($this);
+    /**
+     * Gets the filename of the file in which the element has been defined.
+     *
+     * @return string
+     */
+    public function getFileName()
+    {
+        return realpath($this->node->getAttribute('fileName', ''));
+    }
+
+    /**
+     * Gets extension name.
+     *
+     * @return string
+     */
+    public function getExtensionName()
+    {
+        return $this->extension;
     }
 }

@@ -17,6 +17,9 @@ namespace Bartlett\Reflect\Model;
 use Bartlett\Reflect\Model\AbstractModel;
 use Bartlett\Reflect\Exception\ModelException;
 
+use PhpParser\Node;
+use PhpParser\PrettyPrinter;
+
 /**
  * The ParameterModel class reports information about a parameter.
  *
@@ -28,18 +31,18 @@ use Bartlett\Reflect\Exception\ModelException;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class ParameterModel extends AbstractModel implements Visitable
+class ParameterModel extends AbstractModel
 {
-    /**
-     * Constructs a new ParameterModel instance.
-     *
-     * @param string $name Name of the parameter
-     */
-    public function __construct($paramName, $attributes)
-    {
-        parent::__construct($attributes);
+    private $position;
 
-        $this->name = $paramName;
+    /**
+     * Creates a new ParameterModel instance.
+     *
+     */
+    public function __construct(Node\Param $param, $position)
+    {
+        parent::__construct($param);
+        $this->position = $position;
     }
 
     /**
@@ -49,7 +52,7 @@ class ParameterModel extends AbstractModel implements Visitable
      */
     public function getName()
     {
-        return $this->name;
+        return $this->node->name;
     }
 
     /**
@@ -60,17 +63,21 @@ class ParameterModel extends AbstractModel implements Visitable
      */
     public function getPosition()
     {
-        return $this->struct['position'];
+        return $this->position;
     }
 
     /**
      * Gets the type of the parameter.
      *
-     * @return mixed Blank when none, 'callable', 'array', or class name.
+     * @return mixed Blank when none, 'Closure', 'callable', 'array', or class name.
      */
     public function getTypeHint()
     {
-        return $this->struct['typeHint'];
+        $typeHint = $this->node->type;
+        if ($typeHint instanceof Node\Name) {
+            $typeHint = (string) $typeHint;
+        }
+        return $typeHint;
     }
 
     /**
@@ -82,11 +89,15 @@ class ParameterModel extends AbstractModel implements Visitable
      */
     public function allowsNull()
     {
-        if (isset($this->struct['typeHint'])) {
-            return (
-                isset($this->struct['defaultValue'])
-                && strtolower($this->struct['defaultValue']) === 'null'
-            );
+        if (!empty($this->node->type)) {
+            // with type hint, checks if NULL constant provided
+            if ($this->node->default instanceof Node\Expr\ConstFetch
+                && $this->node->default->name instanceof Node\Name
+                && strcasecmp('null', (string)$this->node->default->name) === 0
+            ) {
+                return true;
+            }
+            return false;
         }
         return true;
     }
@@ -98,7 +109,7 @@ class ParameterModel extends AbstractModel implements Visitable
      */
     public function isOptional()
     {
-        return (isset($this->struct['defaultValue']));
+        return $this->isDefaultValueAvailable();
     }
 
     /**
@@ -108,7 +119,7 @@ class ParameterModel extends AbstractModel implements Visitable
      */
     public function isPassedByReference()
     {
-        return $this->struct['byRef'];
+        return $this->node->byRef;
     }
 
     /**
@@ -118,7 +129,7 @@ class ParameterModel extends AbstractModel implements Visitable
      */
     public function isVariadic()
     {
-        return $this->struct['variadic'];
+        return $this->node->variadic;
     }
 
     /**
@@ -128,7 +139,17 @@ class ParameterModel extends AbstractModel implements Visitable
      */
     public function isArray()
     {
-        return (strtolower($this->struct['typeHint']) === 'array');
+        return ($this->node->type === 'array');
+    }
+
+    /**
+     * Checks if the parameter is callable.
+     *
+     * @return bool TRUE if the parameter is callable, otherwise FALSE
+     */
+    public function isCallable()
+    {
+        return ($this->node->type === 'callable');
     }
 
     /**
@@ -138,7 +159,7 @@ class ParameterModel extends AbstractModel implements Visitable
      */
     public function isDefaultValueAvailable()
     {
-        return isset($this->struct['defaultValue']);
+        return !empty($this->node->default);
     }
 
     /**
@@ -150,14 +171,15 @@ class ParameterModel extends AbstractModel implements Visitable
      */
     public function getDefaultValue()
     {
-        if (isset($this->struct['defaultValue'])) {
-            return $this->struct['defaultValue'];
+        if ($this->isDefaultValueAvailable()) {
+            $prettyPrinter = new PrettyPrinter\Standard;
+            return $prettyPrinter->prettyPrintExpr($this->node->default);
         }
         throw new ModelException(
             sprintf(
                 'Parameter #%d [$%s] is not optional.',
-                $this->struct['position'],
-                $this->name
+                $this->getPosition(),
+                $this->getName()
             )
         );
     }
@@ -171,11 +193,16 @@ class ParameterModel extends AbstractModel implements Visitable
     {
         $eol = "\n";
 
+        $typeHint = $this->getTypeHint();
+        if (!empty($typeHint)) {
+            $typeHint .= ' ';
+        }
+
         return sprintf(
             'Parameter #%d [ <%s> %s%s$%s%s ]%s',
             $this->getPosition(),
             $this->isOptional() ? 'optional' : 'required',
-            isset($this->struct['typeHint']) ? $this->struct['typeHint'].' ' : '',
+            $typeHint,
             $this->isPassedByReference() ? '&' : '',
             $this->getName(),
             $this->isDefaultValueAvailable() ? ' = ' . $this->getDefaultValue() : '',

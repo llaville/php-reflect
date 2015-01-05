@@ -25,30 +25,8 @@ namespace Bartlett\Reflect\Model;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class FunctionModel extends AbstractFunctionModel implements Visitable
+class FunctionModel extends AbstractFunctionModel
 {
-    /**
-     * Constructs a new FunctionModel instance.
-     *
-     * @param string $qualifiedName The full qualified name of the function
-     */
-    public function __construct($qualifiedName, $attributes)
-    {
-        $struct = array(
-            'closure'    => false,
-            'arguments'  => array(),
-        );
-        $struct = array_merge($struct, $attributes);
-        parent::__construct($struct);
-
-        $this->name = $qualifiedName;
-
-        $parts = explode('\\', $qualifiedName);
-        $this->short_name = array_pop($parts);
-
-        $this->struct['namespace'] = implode('\\', $parts);
-    }
-
     /**
      * Returns the string representation of the FunctionModel object.
      *
@@ -73,6 +51,7 @@ class FunctionModel extends AbstractFunctionModel implements Visitable
             $eol
         );
 
+        // parameters
         $parameters = $this->getParameters();
         if (count($parameters)) {
             $str .= sprintf(
@@ -82,10 +61,11 @@ class FunctionModel extends AbstractFunctionModel implements Visitable
                 $eol
             );
             foreach ($parameters as $parameter) {
-                $str .= '    ' . $parameter->__toString();
+                $str .= '    ' . (string) $parameter;
             }
             $str .= '  }' . $eol;
         }
+
         $str .= '}' . $eol;
 
         return $str;

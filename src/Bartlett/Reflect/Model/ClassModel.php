@@ -14,9 +14,10 @@
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Model\AbstractModel;
-use Bartlett\Reflect\Model\Visitable;
 use Bartlett\Reflect\Exception\ModelException;
+
+use PhpParser\Node;
+use PhpParser\PrettyPrinter;
 
 /**
  * The ClassModel class reports information about a class.
@@ -29,71 +30,28 @@ use Bartlett\Reflect\Exception\ModelException;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class ClassModel extends AbstractModel implements Visitable
+class ClassModel extends AbstractModel
 {
-    /**
-     * Constructs a new ClassModel instance.
-     *
-     * @param string $qualifiedName The full qualified name of the class
-     */
-    public function __construct($qualifiedName, $attributes)
-    {
-        $struct = array(
-            'trait'      => false,
-            'interface'  => false,
-            'parent'     => false,
-            'modifiers'  => array(),
-            'interfaces' => array(),
-            'constants'  => array(),
-            'properties' => array(),
-            'methods'    => array(),
-        );
-        $struct = array_merge($struct, $attributes);
-        parent::__construct($struct);
+    const IS_PUBLIC    = 1;
+    const IS_PROTECTED = 2;
+    const IS_PRIVATE   = 4;
+    const IS_STATIC    = 8;
+    const IS_ABSTRACT  = 16;
+    const IS_FINAL     = 32;
 
-        $this->name = ltrim($qualifiedName, '\\');
-    }
+    private $constants;
+    private $properties;
+    private $staticProperties;
+    private $methods;
 
     /**
-     * Get a Doc comment from a class.
-     *
-     * @return string
-     */
-    public function getDocComment()
-    {
-        return $this->struct['docComment'];
-    }
-
-    /**
-     * Gets the starting line number of the class.
+     * Gets the class modifiers
      *
      * @return int
-     * @see    ClassModel::getEndLine()
      */
-    public function getStartLine()
+    public function getModifiers()
     {
-        return $this->struct['startLine'];
-    }
-
-    /**
-     * Gets the ending line number of the class.
-     *
-     * @return int
-     * @see    ClassModel::getStartLine()
-     */
-    public function getEndLine()
-    {
-        return $this->struct['endLine'];
-    }
-
-    /**
-     * Gets the file name from a user-defined class.
-     *
-     * @return string
-     */
-    public function getFileName()
-    {
-        return $this->struct['file'];
+        return $this->node->type;
     }
 
     /**
@@ -104,9 +62,13 @@ class ClassModel extends AbstractModel implements Visitable
     public function getInterfaceNames()
     {
         $interfaces = array();
-        for ($i = 0, $m = count($this->struct['interfaces']); $i < $m; $i++) {
-            $interfaces[] = $this->struct['interfaces'][$i]->getName();
+
+        if ($this->node instanceof Node\Stmt\Class_) {
+            foreach ($this->node->implements as $interface) {
+                $interfaces[] = (string) $interface;
+            }
         }
+
         return $interfaces;
     }
 
@@ -117,7 +79,7 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getName()
     {
-        return $this->name;
+        return (string) $this->node->namespacedName;
     }
 
     /**
@@ -127,9 +89,8 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getNamespaceName()
     {
-        $parts     = explode('\\', $this->getName());
-        $className = array_pop($parts);
-
+        $parts = $this->node->namespacedName->parts;
+        array_pop($parts);
         return implode('\\', $parts);
     }
 
@@ -140,7 +101,10 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getParentClass()
     {
-        return $this->struct['parent'];
+        if ($this->node->extends) {
+            return (string) $this->node->extends;
+        }
+        return false;
     }
 
     /**
@@ -150,96 +114,64 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function getShortName()
     {
-        $parts = explode('\\', $this->getName());
-
-        return array_pop($parts);
+        return $this->node->namespacedName->getLast();
     }
 
     /**
-     * Gets the extension information of a class.
+     * Gets the interfaces.
      *
-     * @return ReflectionExtension instance that contains the extension information
-     * @throws ModelException if extension does not exist (user(405) or not loaded(404))
-     */
-    public function getExtension()
-    {
-        if ($this->struct['extension'] === 'user') {
-            throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.',
-                405
-            );
-        } elseif (!extension_loaded($this->struct['extension'])) {
-            throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.',
-                404
-            );
-        }
-
-        return new \ReflectionExtension($this->struct['extension']);
-    }
-
-    /**
-     * Gets the extension name of the class.
-     *
-     * @return string
-     */
-    public function getExtensionName()
-    {
-        try {
-            $name = $this->getExtension()->getName();
-
-        } catch (ModelException $e) {
-            if ($e->getCode() === 404) {
-                throw $e;  // re-throws original exception
-            }
-            $name = 'user';
-        }
-        return $name;
-    }
-
-    /**
-     * Gets an array of interfaces for the class.
-     *
-     * @return array ClassModel objects reflecting each class interface.
+     * @return An associative array of interfaces, with keys as interface names
+     *         and the array values as ClassModel objects.
      */
     public function getInterfaces()
     {
-        return $this->struct['interfaces'];
+        return $interfaces = array();
     }
 
     /**
-     * Gets an array of constants for the class.
+     * Gets the constants.
      *
-     * @return iterator that list ConstantModel objects reflecting each class constant.
+     * @return An array of constants. Constant name in key, constant value in value.
      */
     public function getConstants()
     {
-        return $this->struct['constants'];
+        if ($this->constants === null) {
+            $prettyPrinter = new PrettyPrinter\Standard;
+            // lazy load class constants list
+            $this->constants = array();
+            foreach ($this->node->stmts as $stmt) {
+                if ($stmt instanceof Node\Stmt\ClassConst) {
+                    foreach ($stmt->consts as $const) {
+                        $this->constants[$const->name] = trim(
+                            $prettyPrinter->prettyPrintExpr($const->value),
+                            '"\''
+                        );
+                    }
+                }
+            }
+        }
+        return $this->constants;
     }
 
     /**
-     * Gets the defined constant value.
+     * Gets defined constant.
      *
-     * @param string $name The name of the constant
+     * @param string $name Name of the constant
      *
-     * @return mixed constant value
-     * @throws ModelException if constant is not defined
+     * @return mixed constant value or FALSE if constant does not exist
      */
     public function getConstant($name)
     {
-        if ($this->hasConstant($name)) {
-            return $this->struct['constants'][$name]->getValue();
+        $constants = $this->getConstants();
+        $value = array_key_exists($name, $constants);
+        if ($value) {
+            $value = $constants[$name];
         }
-        throw new ModelException(
-            sprintf(
-                'Constant [%s] is not defined.',
-                $name
-            )
-        );
+        return $value;
     }
 
     /**
-     * Checks whether a specific constant is defined in a class.
+     * Checks if constant is defined.
      *
      * @param string $name The name of the constant being checked for
      *
@@ -247,17 +179,39 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function hasConstant($name)
     {
-        return isset($this->struct['constants'][$name]);
+        $constants = $this->getConstants();
+        return array_key_exists($name, $constants);
     }
 
     /**
-     * Gets an array of methods for the class.
+     * Gets an array of methods.
      *
-     * @return iterator that list MethodModel objects reflecting each class method.
+     * @param int $filter Filter the results to include only methods with certain attributes.
+     *                    Defaults to no filtering.
+     *
+     * @return An array of MethodModel objects reflecting each method.
      */
-    public function getMethods()
+    public function getMethods($filter = null)
     {
-        return $this->struct['methods'];
+        if ($this->methods === null) {
+            // lazy load class methods list
+            $this->methods = array();
+            foreach ($this->node->stmts as $stmt) {
+                if ($stmt instanceof Node\Stmt\ClassMethod) {
+                    $stmt->setAttribute('fileName', $this->getFileName());
+                    $this->methods[$stmt->name] = new MethodModel($this, $stmt);
+                }
+            }
+        }
+
+        if (isset($filter)) {
+            // @TODO must implement the filter feature
+            $methods =& $this->methods;
+        } else {
+            $methods =& $this->methods;
+        }
+
+        return array_values($methods);
     }
 
     /**
@@ -271,97 +225,105 @@ class ClassModel extends AbstractModel implements Visitable
     public function getMethod($name)
     {
         if ($this->hasMethod($name)) {
-            return $this->struct['methods'][$name];
+            return $this->methods[$name];
         }
         throw new ModelException(
-            'Method ' . $this->name . '::' .  $name . ' does not exist.'
+            'Method ' . $name . ' does not exist.'
         );
     }
 
     /**
-     * Checks whether a specific method is defined in a class.
+     * Checks if method is defined.
      *
-     * @param string $name The name of the method being checked for
+     * @param string $name Name of the method being checked for
      *
      * @return bool TRUE if it has the method, otherwise FALSE
      */
     public function hasMethod($name)
     {
-        return isset($this->struct['methods'][$name]);
+        $this->getMethods();
+        return array_key_exists($name, $this->methods);
     }
 
     /**
-     * Gets an array of static properties for the class.
+     * Gets the static properties.
      *
-     * @return array Names of static properties
+     * @return An array of static properties. Property name in key, property value in value.
      */
     public function getStaticProperties()
     {
-        static $properties;
-
-        if (!isset($properties)) {
-            $properties = array();
-            foreach ($this->getProperties() as $name => $property) {
-                if ($property->isStatic()) {
-                    $properties[] = $name;
+        if ($this->staticProperties === null) {
+            // lazy load class properties list
+            foreach ($this->node->stmts as $stmt) {
+                if ($stmt instanceof Node\Stmt\Property) {
+                    if ($stmt->isStatic() === false) {
+                        continue;
+                    }
+                    foreach ($stmt->props as $prop) {
+                        $this->staticProperties[] = new PropertyModel($this, $prop);
+                    }
                 }
             }
         }
-        return $properties;
+        return $this->staticProperties;
     }
 
     /**
-     * Gets value of a static property for the class.
+     * Gets static property value.
      *
      * @param string Name of static property
+     *
      * @return mixed
      * @throws ModelException if the property does not exist or is not static
      */
     public function getStaticPropertyValue($name)
     {
-        $property = $this->getProperty($name);
-        if ($property->isStatic()) {
-            return $property->getValue();
+        $properties = $this->getStaticProperties();
+
+        if (array_key_exists($name, $properties)) {
+            return $properties[$name];
         }
         throw new ModelException(
-            'Property ' . $this->name . '::' .  $name . ' is not static.'
+            'Property ' . $name . ' does not exist or is not static.'
         );
     }
 
     /**
-     * Gets an array of properties for the class.
+     * Gets the properties.
      *
-     * @return iterator that list PropertyModel objects reflecting each class property.
+     * @return An array of PropertyModel objects reflecting each property.
      */
     public function getProperties()
     {
-        return $this->struct['properties'];
-    }
-
-    /**
-     * Gets an array of properties defined at compile-time.
-     *
-     * @return array Names and values of default properties.
-     */
-    public function getDefaultProperties()
-    {
-        static $properties;
-
-        if (!isset($properties)) {
-            $properties = array();
-            foreach ($this->getProperties() as $name => $property) {
-                if ($property->isDefault()) {
-                    $properties[$name] = $property->getValue();
+        if ($this->properties === null) {
+            // lazy load class properties list
+            $this->properties = array();
+            foreach ($this->node->stmts as $stmt) {
+                if ($stmt instanceof Node\Stmt\Property) {
+                    $this->properties[] = new PropertyModel($this, $stmt);
                 }
             }
         }
-        return $properties;
+        return array_values($this->properties);
+    }
+
+    /**
+     * Gets default properties.
+     *
+     * @return An array of default properties, with the key being the name of the property
+     *         and the value being the default value of the property
+     *         or NULL if the property doesn't have a default value.
+     *         The function does not distinguish between static and non static properties
+     *         and does not take visibility modifiers into account.
+     */
+    public function getDefaultProperties()
+    {
     }
 
     /**
      * Gets a PropertyModel for a class property.
      *
-     * @param string $name The property name to reflect.
+     * @param string $name Property name to reflect.
      *
      * @return PropertyModel
      * @throws ModelException if the property does not exist.
@@ -369,26 +331,24 @@ class ClassModel extends AbstractModel implements Visitable
     public function getProperty($name)
     {
         if ($this->hasProperty($name)) {
-            return $this->getChild(
-                $this->struct['properties'][$name]
-            );
+            return $this->properties[$name];
         }
         throw new ModelException(
-            'Property ' . $this->name . '::' .  $name . ' does not exist.'
+            'Property ' . $name . ' does not exist.'
         );
     }
 
     /**
-     * Checks whether a specific property is defined in a class.
+     * Checks if property is defined.
      *
-     * @param string $name The name of the property being checked for
+     * @param string $name Name of the property being checked for
      *
      * @return bool TRUE if it has the property, otherwise FALSE
      */
     public function hasProperty($name)
     {
         $this->getProperties();
-        return array_key_exists($name, $this->struct['properties']);
+        return array_key_exists($name, $this->properties);
     }
 
     /**
@@ -409,7 +369,7 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function isAbstract()
     {
-        return in_array('abstract', $this->struct['modifiers']);
+        return $this->node->isAbstract();
     }
 
     /**
@@ -419,7 +379,7 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function isInterface()
     {
-        return $this->struct['interface'] !== false;
+        return $this->node instanceof Node\Stmt\Interface_;
     }
 
     /**
@@ -429,7 +389,7 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function isTrait()
     {
-        return $this->struct['trait'] !== false;
+        return $this->node instanceof Node\Stmt\Trait_;
     }
 
     /**
@@ -439,7 +399,7 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function isUserDefined()
     {
-        return ($this->getExtensionName() === 'user');
+        return ($this->extension === 'user');
     }
 
     /**
@@ -451,15 +411,7 @@ class ClassModel extends AbstractModel implements Visitable
     {
         $interfaces = $this->getInterfaceNames();
 
-        if (!$this->isInterface()) {
-            $parent = $this->getParentClass();
-            if (!empty($parent)) {
-                $interfaces = array_merge(
-                    $interfaces,
-                    $parent->getInterfaceNames()
-                );
-            }
-        }
+        // @TODO must finished to implement feature (see unit tests)
         return in_array('Iterator', $interfaces);
     }
 
@@ -476,10 +428,7 @@ class ClassModel extends AbstractModel implements Visitable
 
         $method = '__clone';
         if ($this->hasMethod($method)) {
-            if ($this->getMethod($method)->isPublic()) {
-                return true;
-            }
-            return false;
+            return $this->getMethod($method)->isPublic();
         }
         return true;
     }
@@ -491,7 +440,10 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function isFinal()
     {
-        return in_array('final', $this->struct['modifiers']);
+        if ($this->node instanceof Node\Stmt\Class_) {
+            return $this->node->isFinal();
+        }
+        return false;
     }
 
     /**
@@ -507,10 +459,7 @@ class ClassModel extends AbstractModel implements Visitable
 
         foreach (array('__construct', $this->getShortName()) as $method) {
             if ($this->hasMethod($method)) {
-                if ($this->getMethod($method)->isPublic()) {
-                    return true;
-                }
-                return false;
+                return $this->getMethod($method)->isPublic();
             }
         }
         return true;
@@ -526,6 +475,8 @@ class ClassModel extends AbstractModel implements Visitable
      */
     public function isSubclassOf($class)
     {
+        return false;  // @FIXME see unit tests
+
         if (in_array($class, $this->struct['interfaces'])) {
             // checks first if implement a specified interface
             return true;
@@ -554,10 +505,36 @@ class ClassModel extends AbstractModel implements Visitable
     {
         $eol = "\n";
         $str = '';
+
+        $extends    = $this->getParentClass() ? : '';
+        $interfaces = $this->getInterfaceNames();
+        $implements = empty($interfaces) ? '' : implode(', ', $interfaces);
+
+        if ($this->isInterface()) {
+            $type = 'interface';
+        } elseif ($this->isTrait()) {
+            $type = 'trait';
+        } else {
+            $type = 'class';
+        }
+
+        $modifiers = '';
+        if ($this->isFinal()) {
+            $modifier .= ' final';
+        }
+        if ($this->isAbstract()) {
+            $modifiers .= ' abstract';
+        }
+
         $str .= sprintf(
-            'Class [ <%s> class %s ] {%s',
+            '%s [ <%s>%s %s %s%s%s ] {%s',
+            ucfirst($type),
             $this->getExtensionName(),
+            $modifiers,
+            $type,
             $this->getName(),
+            !empty($extends) ? " extends $extends" : '',
+            !empty($implements) ? " implements $implements" : '',
             $eol
         );
 
@@ -569,40 +546,64 @@ class ClassModel extends AbstractModel implements Visitable
             $eol
         );
 
-        $constants = array();
-        if (count($constants)) {
-            $str .= sprintf(
-                '%s  - Constants [%d] {%s',
-                $eol,
-                count($constants),
-                $eol
-            );
-            foreach ($constants as $constant) {
-                $str .= '    ' . $constant->__toString();
-            }
-            $str .= '  }' . $eol;
+        // Constants
+        $constants = $this->getConstants();
+        $str .= sprintf(
+            '%s  - Constants [%d] {%s',
+            $eol,
+            count($constants),
+            $eol
+        );
+        foreach ($constants as $name => $value) {
+            $str .= '    ' .
+                sprintf(
+                    'Constant [ %s ] { %s }%s',
+                    $name,
+                    $value,
+                    $eol
+                )
+            ;
         }
+        $str .= '  }' . $eol;
 
-        $methods = $this->getMethods();
-        if (count($methods)) {
-            $str .= sprintf(
-                '%s  - Methods [%d] {%s',
-                $eol,
-                count($methods),
-                $eol
-            );
-            foreach ($methods as $method) {
-                $str .= '    ';
-                // re-indent each method ouput
-                $lines = explode($eol, $method->__toString());
-                //array_pop($lines);
-                $str  .= implode("$eol    ", $lines);
-                $str   = str_replace("$eol    $eol", "$eol$eol", $str);
-                $str  .= $eol;
-            }
-            $str  = rtrim($str);
-            $str .= $eol . '  }' . $eol;
+        // Properties
+        $properties = $this->getProperties();
+        $str .= sprintf(
+            '%s  - Properties [%d] {%s',
+            $eol,
+            count($properties),
+            $eol
+        );
+        foreach ($properties as $property) {
+            $str .= '    ';
+            // re-indent each property ouput
+            $lines = explode($eol, $property->__toString());
+            $str  .= implode("$eol    ", $lines);
+            $str   = str_replace("$eol    $eol", "$eol", $str);
+            $str  .= $eol;
         }
+        $str  = rtrim($str);
+        $str .= $eol . '  }' . $eol;
+
+        // Methods
+        $methods = $this->getMethods();
+        $str .= sprintf(
+            '%s  - Methods [%d] {%s',
+            $eol,
+            count($methods),
+            $eol
+        );
+        foreach ($methods as $method) {
+            $str .= '    ';
+            // re-indent each method ouput
+            $lines = explode($eol, $method->__toString());
+            $str  .= implode("$eol    ", $lines);
+            $str   = str_replace("$eol    $eol", "$eol$eol", $str);
+            $str  .= $eol;
+        }
+        $str  = rtrim($str);
+        $str .= $eol . '  }' . $eol;
+
         $str .= '}' . $eol;
 
         return $str;

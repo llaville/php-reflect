@@ -16,11 +16,7 @@
 
 namespace Bartlett\Tests\Reflect\Model;
 
-use Bartlett\Reflect;
-use Bartlett\Reflect\ProviderManager;
-use Bartlett\Reflect\Provider\SymfonyFinderProvider;
 use Bartlett\Reflect\Exception\ModelException;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Unit Test Case that covers Bartlett\Reflect\Model\ClassModel
@@ -33,279 +29,252 @@ use Symfony\Component\Finder\Finder;
  * @version    Release: @package_version@
  * @link       http://php5.laurent-laville.org/reflect/
  */
-class ClassModelTest extends \PHPUnit_Framework_TestCase
+class ClassModelTest extends GenericModelTest
 {
-    protected static $fixtures;
-    protected static $fixture;
-    protected static $interfaces;
-    protected static $classes;
-
     /**
      * Sets up the shared fixture.
      *
      * @return void
-     * @link   http://phpunit.de/manual/current/en/fixtures.html#fixtures.sharing-fixture
      */
     public static function setUpBeforeClass()
     {
-        self::$fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
-            . '_files' . DIRECTORY_SEPARATOR;
-
-        self::$fixture = self::$fixtures . 'classes.php';
-
-        $finder = new Finder();
-        $finder->files()
-            ->name(basename(self::$fixture))
-            ->in(self::$fixtures);
-
-        $pm = new ProviderManager;
-        $pm->set('test_files', new SymfonyFinderProvider($finder));
-
-        $reflect = new Reflect();
-        $reflect->setProviderManager($pm);
-        $reflect->parse();
-
-        foreach ($reflect->getPackages() as $package) {
-            foreach ($package->getInterfaces() as $rc) {
-                self::$interfaces[] = $rc;
-            }
-            foreach ($package->getClasses() as $rc) {
-                self::$classes[] = $rc;
-            }
-        }
+        self::$fixture = 'classes.php';
+        parent::setUpBeforeClass();
     }
 
     /**
      * Tests the Doc comment accessor.
      *
-     *  covers ClassModel::getDocComment
+     *  covers Bartlett\Reflect\Model\AbstractModel::getDocComment
+     * @group  reflection
      * @return void
      */
     public function testDocCommentAccessor()
     {
-        $c = 0;  // class Foo implements iB
+        $c = 3;  // class Foo implements iB
 
         $expected = '/** short desc for class that implement a unique interface */';
         $this->assertEquals(
             $expected,
-            self::$classes[$c]->getDocComment(),
-            self::$classes[$c]->getName() . ' doc comment does not match.'
+            self::$models[$c]->getDocComment(),
+            self::$models[$c]->getName() . ' doc comment does not match.'
         );
     }
 
     /**
      * Tests starting line number accessor.
      *
-     *  covers ClassModel::getStartLine
+     *  covers Bartlett\Reflect\Model\AbstractModel::getStartLine
+     * @group  reflection
      * @return void
      */
     public function testStartLineAccessor()
     {
-        $c = 0;  // class Foo implements iB
+        $c = 3;  // class Foo implements iB
 
         $this->assertEquals(
             21,
-            self::$classes[$c]->getStartLine(),
-            self::$classes[$c]->getName() . ' starting line does not match.'
+            self::$models[$c]->getStartLine(),
+            self::$models[$c]->getName() . ' starting line does not match.'
         );
     }
 
     /**
      * Tests ending line number accessor.
      *
-     *  covers ClassModel::getEndLine
+     *  covers Bartlett\Reflect\Model\AbstractModel::getEndLine
+     * @group  reflection
      * @return void
      */
     public function testEndLineAccessor()
     {
-        $c = 0;  // class Foo implements iB
+        $c = 3;  // class Foo implements iB
 
         $this->assertEquals(
             33,
-            self::$classes[$c]->getEndLine(),
-            self::$classes[$c]->getName() . ' ending line does not match.'
+            self::$models[$c]->getEndLine(),
+            self::$models[$c]->getName() . ' ending line does not match.'
         );
     }
 
     /**
      * Tests file name accessor.
      *
-     *  covers ClassModel::getFileName
+     *  covers Bartlett\Reflect\Model\AbstractModel::getFileName
+     * @group  reflection
      * @return void
      */
     public function testFileNameAccessor()
     {
-        $c = 0;  // class Foo implements iB
+        $c = 3;  // class Foo implements iB
 
         $this->assertEquals(
             self::$fixture,
-            self::$classes[$c]->getFileName(),
-            self::$classes[$c]->getName() . ' file name does not match.'
+            self::$models[$c]->getFileName(),
+            self::$models[$c]->getName() . ' file name does not match.'
         );
     }
 
     /**
      * Tests class name accessor.
      *
-     *  covers ClassModel::getName
+     *  covers Bartlett\Reflect\Model\ClassModel::getName
+     * @group  reflection
      * @return void
      */
     public function testNameAccessor()
     {
-        $c = 0;  // class Foo implements iB
+        $c = 3;  // class Foo implements iB
 
         $this->assertEquals(
             'Foo',
-            self::$classes[$c]->getName(),
-            self::$classes[$c]->getName() . ' class name does not match.'
+            self::$models[$c]->getName(),
+            self::$models[$c]->getName() . ' class name does not match.'
         );
     }
 
     /**
      * Tests the namespace name accessor.
      *
-     *  covers ClassModel::getNamespaceName
+     *  covers Bartlett\Reflect\Model\ClassModel::getNamespaceName
+     * @group  reflection
      * @return void
      */
     public function testNamespaceNameAccessor()
     {
-        $c = 0;  // class Foo implements iB
+        $c = 3;  // class Foo implements iB
 
         $this->assertEquals(
             '',
-            self::$classes[$c]->getNamespaceName(),
-            self::$classes[$c]->getName() . ' namespace does not match.'
+            self::$models[$c]->getNamespaceName(),
+            self::$models[$c]->getName() . ' namespace does not match.'
         );
     }
 
     /**
      * Tests class short name accessor.
      *
-     *  covers ClassModel::getShortName
+     *  covers Bartlett\Reflect\Model\ClassModel::getShortName
+     * @group  reflection
      * @return void
      */
     public function testShortNameAccessor()
     {
-        $c = 0;  // class Foo implements iB
+        $c = 3;  // class Foo implements iB
 
         $this->assertEquals(
             'Foo',
-            self::$classes[$c]->getShortName(),
-            self::$classes[$c]->getName() . ' short name does not match.'
+            self::$models[$c]->getShortName(),
+            self::$models[$c]->getName() . ' short name does not match.'
         );
     }
 
     /**
      * Tests class constants accessor.
      *
-     *  covers ClassModel::getConstants
+     *  covers Bartlett\Reflect\Model\ClassModel::getConstants
+     * @group  reflection
      * @return void
      */
     public function testConstantsAccessor()
     {
-        $c = 3;  // class Bar
+        $c = 6;  // class Bar
 
         $this->assertCount(
             2,
-            self::$classes[$c]->getConstants(),
-            self::$classes[$c]->getName() . ' constants number does not match.'
+            self::$models[$c]->getConstants(),
+            self::$models[$c]->getName() . ' constants number does not match.'
         );
     }
 
     /**
      * Tests class constant accessor.
      *
-     *  covers ClassModel::getConstant
+     *  covers Bartlett\Reflect\Model\ClassModel::getConstant
+     * @group  reflection
      * @return void
      */
     public function testConstantAccessor()
     {
-        $c = 3;      // class Bar
+        $c = 6;      // class Bar
         $k = 'ONE';  // constant ONE
 
         $this->assertEquals(
             'Number one',
-            self::$classes[$c]->getConstant($k),
-            self::$classes[$c]->getName() . "::$k constant value does not match."
+            self::$models[$c]->getConstant($k),
+            self::$models[$c]->getName() . "::$k constant value does not match."
         );
     }
 
     /**
      * Tests class constant accessor.
      *
-     *  covers ClassModel::getConstant
+     *  covers Bartlett\Reflect\Model\ClassModel::getConstant
+     * @group  reflection
      * @return void
      */
     public function testUndefinedConstant()
     {
-        try {
-            $c = 3;      // class Bar
-            $k = 'FOO';  // constant FOO is not implemented
+        $c = 6;      // class Bar
+        $k = 'FOO';  // constant FOO is not implemented
 
-            self::$classes[$c]->getConstant($k);
-
-        } catch (ModelException $expected) {
-            $this->assertEquals(
-                "Constant [$k] is not defined.",
-                $expected->getMessage(),
-                'Expected exception message does not match'
-            );
-            return;
-        }
-        $this->fail(
-            'An expected Bartlett\Reflect\Exception\ModelException exception' .
-            ' has not been raised.'
+        $this->assertFalse(
+            self::$models[$c]->getConstant($k),
+            "Constant [$k] is defined."
         );
     }
 
     /**
      * Tests whether a specific constant is defined in a class.
      *
-     *  covers ClassModel::hasConstant
+     *  covers Bartlett\Reflect\Model\ClassModel::hasConstant
+     * @group  reflection
      * @return void
      */
     public function testHasConstant()
     {
-        $c = 3;      // class Bar
+        $c = 6;      // class Bar
         $k = 'TWO';  // constant TWO
 
         $this->assertTrue(
-            self::$classes[$c]->hasConstant($k),
-            self::$classes[$c]->getName() . " $k constant does not exist."
+            self::$models[$c]->hasConstant($k),
+            self::$models[$c]->getName() . " $k constant does not exist."
         );
     }
 
     /**
      * Tests class methods accessor.
      *
-     *  covers ClassModel::getMethods
+     *  covers Bartlett\Reflect\Model\ClassModel::getMethods
+     * @group  reflection
      * @return void
      */
     public function testMethodsAccessor()
     {
-        $c = 3;  // class Bar
+        $c = 6;  // class Bar
 
         $this->assertCount(
             2,
-            self::$classes[$c]->getMethods(),
-            self::$classes[$c]->getName() . ' methods number does not match.'
+            self::$models[$c]->getMethods(),
+            self::$models[$c]->getName() . ' methods number does not match.'
         );
     }
 
     /**
      * Tests class method accessor.
      *
-     *  covers ClassModel::getMethod
+     *  covers Bartlett\Reflect\Model\ClassModel::getMethod
+     * @group  reflection
      * @return void
      */
     public function testMethodAccessor()
     {
-        $c = 3;  // class Bar
+        $c = 6;  // class Bar
         $m = 'otherfunction';
 
         $this->assertInstanceOf(
             'Bartlett\Reflect\Model\MethodModel',
-            self::$classes[$c]->getMethod($m),
+            self::$models[$c]->getMethod($m),
             'This is not a MethodModel object'
         );
     }
@@ -313,20 +282,21 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests class method accessor.
      *
-     *  covers ClassModel::getMethod
+     *  covers Bartlett\Reflect\Model\ClassModel::getMethod
+     * @group  reflection
      * @return void
      */
     public function testUndefinedMethod()
     {
         try {
-            $c = 3;      // class Bar
+            $c = 6;      // class Bar
             $m = 'nemo'; // method nemo is not implemented
 
-            self::$classes[$c]->getMethod($m);
+            self::$models[$c]->getMethod($m);
 
         } catch (ModelException $expected) {
             $this->assertEquals(
-                "Method Bar::$m does not exist.",
+                "Method $m does not exist.",
                 $expected->getMessage(),
                 'Expected exception message does not match'
             );
@@ -341,72 +311,77 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests whether a specific method is defined in a class.
      *
-     *  covers ClassModel::hasMethod
+     *  covers Bartlett\Reflect\Model\ClassModel::hasMethod
+     * @group  reflection
      * @return void
      */
     public function testHasMethod()
     {
-        $c = 3;      // class Bar
+        $c = 6;      // class Bar
         $m = 'otherfunction';
 
         $this->assertTrue(
-            self::$classes[$c]->hasMethod($m),
-            self::$classes[$c]->getName() . " $m method does not exist."
+            self::$models[$c]->hasMethod($m),
+            self::$models[$c]->getName() . " $m method does not exist."
         );
     }
 
     /**
      * Tests whether a class is defined in a namespace.
      *
-     *  covers ClassModel::inNamespace
+     *  covers Bartlett\Reflect\Model\ClassModel::inNamespace
+     * @group  reflection
      * @return void
      */
     public function testInNamespace()
     {
-        $c = 3;  // class Bar
+        $c = 6;  // class Bar
 
         $this->assertFalse(
-            self::$classes[$c]->inNamespace(),
-            self::$classes[$c]->getName() . " is in a namespace."
+            self::$models[$c]->inNamespace(),
+            self::$models[$c]->getName() . " is in a namespace."
         );
     }
 
     /**
      * Tests if the class is abstract.
      *
-     *  covers ClassModel::isAbstract
+     *  covers Bartlett\Reflect\Model\ClassModel::isAbstract
+     * @group  reflection
      * @return void
      */
     public function testAbstractClass()
     {
-        $c = 1;  // abstract class AbstractClass
+        $c = 4;  // abstract class AbstractClass
 
         $this->assertTrue(
-            self::$classes[$c]->isAbstract(),
-            self::$classes[$c]->getName() . ' is not an abstract class.'
+            self::$models[$c]->isAbstract(),
+            self::$models[$c]->getName() . ' is not an abstract class.'
         );
     }
 
     /**
      * Tests if the class is an interface.
      *
-     *  covers ClassModel::isInterface
+     *  covers Bartlett\Reflect\Model\ClassModel::isInterface
+     * @group  reflection
      * @return void
      */
     public function testInterfaceClass()
     {
-        $c = 1;  // abstract class AbstractClass
+        $c = 4;  // abstract class AbstractClass
 
         $this->assertFalse(
-            self::$classes[$c]->isInterface(),
-            self::$classes[$c]->getName() . ' is an abstract class.'
+            self::$models[$c]->isInterface(),
+            self::$models[$c]->getName() . ' is an abstract class.'
         );
     }
 
     /**
      * Tests if the class is a trait.
      *
-     *  covers ClassModel::isTrait
+     *  covers Bartlett\Reflect\Model\ClassModel::isTrait
+     * @group  reflection
      * @return void
      */
     public function testTraitClass()
@@ -414,127 +389,137 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
         $i = 1;  // interface iA
 
         $this->assertFalse(
-            self::$interfaces[$i]->isTrait(),
-            self::$interfaces[$i]->getName() . ' is an interface.'
+            self::$models[$i]->isTrait(),
+            self::$models[$i]->getName() . ' is an interface.'
         );
     }
 
     /**
      * Tests if the class is a user-defined class.
      *
-     *  covers ClassModel::isUserDefined
+     *  covers Bartlett\Reflect\Model\ClassModel::isUserDefined
+     * @group  reflection
      * @return void
      */
     public function testUserDefinedClass()
     {
-        $c = 2;  // class MyDestructableClass
+        $c = 5;  // class MyDestructableClass
 
         $this->assertTrue(
-            self::$classes[$c]->isUserDefined(),
-            self::$classes[$c]->getName() . ' is not a user-defined class.'
+            self::$models[$c]->isUserDefined(),
+            self::$models[$c]->getName() . ' is not a user-defined class.'
         );
     }
 
     /**
      * Tests if the class is iterateable.
      *
-     *  covers ClassModel::isIterateable
+     *  covers Bartlett\Reflect\Model\ClassModel::isIterateable
+     * @group  reflection
      * @return void
      */
     public function testIterateableClass()
     {
-        $c = 4;  // class IteratorClass implements Iterator
+        $c = 7;  // class IteratorClass implements Iterator
 
         $this->assertTrue(
-            self::$classes[$c]->isIterateable(),
-            self::$classes[$c]->getName() . ' is not iterateable.'
+            self::$models[$c]->isIterateable(),
+            self::$models[$c]->getName() . ' is not iterateable.'
         );
     }
 
     /**
      * Tests if the class is iterateable by inheritance.
      *
-     *  covers ClassModel::isIterateable
+     *  covers Bartlett\Reflect\Model\ClassModel::isIterateable
+     * @group  reflection
      * @return void
      */
     public function testIterateableClassByInheritance()
     {
-        $c = 5;  // class DerivedClass
+        $this->markTestIncomplete('Not yet fully implemented (FIXME)');
+
+        $c = 8;  // class DerivedClass
 
         $this->assertTrue(
-            self::$classes[$c]->isIterateable(),
-            self::$classes[$c]->getName() . ' is not iterateable.'
+            self::$models[$c]->isIterateable(),
+            self::$models[$c]->getName() . ' is not iterateable.'
         );
     }
 
     /**
      * Tests if the class is cloneable.
      *
-     *  covers ClassModel::isCloneable
+     *  covers Bartlett\Reflect\Model\ClassModel::isCloneable
+     * @group  reflection
      * @return void
      */
     public function testNotCloneableClass()
     {
-        $c = 6;  // class NotCloneable
+        $c = 9;  // class NotCloneable
 
         $this->assertFalse(
-            self::$classes[$c]->isCloneable(),
-            self::$classes[$c]->getName() . ' is cloneable and should not be.'
+            self::$models[$c]->isCloneable(),
+            self::$models[$c]->getName() . ' is cloneable and should not be.'
         );
     }
 
     /**
      * Tests if the class is cloneable.
      *
-     *  covers ClassModel::isCloneable
+     *  covers Bartlett\Reflect\Model\ClassModel::isCloneable
+     * @group  reflection
      * @return void
      */
     public function testCloneableClass()
     {
-        $c = 7;  // class Cloneable
+        $c = 10;  // class Cloneable
 
         $this->assertTrue(
-            self::$classes[$c]->isCloneable(),
-            self::$classes[$c]->getName() . ' is not cloneable.'
+            self::$models[$c]->isCloneable(),
+            self::$models[$c]->getName() . ' is not cloneable.'
         );
     }
 
     /**
      * Tests if the class is final.
      *
-     *  covers ClassModel::isFinal
+     *  covers Bartlett\Reflect\Model\ClassModel::isFinal
+     * @group  reflection
      * @return void
      */
     public function testNotFinalClass()
     {
-        $c = 0;  // class Foo implements iB
+        $c = 3;  // class Foo implements iB
 
         $this->assertFalse(
-            self::$classes[$c]->isFinal(),
-            self::$classes[$c]->getName() . ' should not be a final class.'
+            self::$models[$c]->isFinal(),
+            self::$models[$c]->getName() . ' should not be a final class.'
         );
     }
 
     /**
      * Tests if the class is final.
      *
-     *  covers ClassModel::isFinal
+     *  covers Bartlett\Reflect\Model\ClassModel::isFinal
+     * @group  reflection
      * @return void
      */
     public function testFinalClass()
     {
-        $c = 8;  // class TestFinalClass
+        $c = 11;  // class TestFinalClass
 
         $this->assertTrue(
-            self::$classes[$c]->isFinal(),
-            self::$classes[$c]->getName() . ' is not a final class.'
+            self::$models[$c]->isFinal(),
+            self::$models[$c]->getName() . ' is not a final class.'
         );
     }
 
     /**
      * Tests if the class is instantiable.
      *
-     *  covers ClassModel::isInstantiable
+     *  covers Bartlett\Reflect\Model\ClassModel::isInstantiable
+     * @group  reflection
      * @return void
      */
     public function testNotInstantiableClass()
@@ -542,78 +527,94 @@ class ClassModelTest extends \PHPUnit_Framework_TestCase
         $i = 0; // interface iTemplate
 
         $this->assertFalse(
-            self::$interfaces[$i]->isInstantiable(),
-            self::$interfaces[$i]->getName() . ' should not be instantiable.'
+            self::$models[$i]->isInstantiable(),
+            self::$models[$i]->getName() . ' should not be instantiable.'
         );
     }
 
     /**
      * Tests if the class is instantiable.
      *
-     *  covers ClassModel::isInstantiable
+     *  covers Bartlett\Reflect\Model\ClassModel::isInstantiable
+     * @group  reflection
      * @return void
      */
     public function testInstantiableClass()
     {
-        $c = 0;  // class Foo implements iB
+        $c = 3;  // class Foo implements iB
 
         $this->assertTrue(
-            self::$classes[$c]->isInstantiable(),
-            self::$classes[$c]->getName() . ' is not instantiable.'
+            self::$models[$c]->isInstantiable(),
+            self::$models[$c]->getName() . ' is not instantiable.'
         );
     }
 
     /**
      * Tests if the class is a subclass of a specified class.
      *
-     *  covers ClassModel::isSubclassOf
+     *  covers Bartlett\Reflect\Model\ClassModel::isSubclassOf
+     * @group  reflection
      * @return void
      */
     public function testSubclassOfInterface()
     {
-        $c = 5;  // class DerivedClass extends IteratorClass
+        $this->markTestIncomplete('Not yet fully implemented (FIXME)');
+
+        $c = 8;  // class DerivedClass extends IteratorClass
         $n = 'Iterator';
 
         $this->assertTrue(
-            self::$classes[$c]->isSubclassOf($n),
-            self::$classes[$c]->getName() . " is not a subclass of $n."
+            self::$models[$c]->isSubclassOf($n),
+            self::$models[$c]->getName() . " is not a subclass of $n."
         );
     }
 
     /**
      * Tests if the class is a subclass of a specified class.
      *
-     *  covers ClassModel::isSubclassOf
+     *  covers Bartlett\Reflect\Model\ClassModel::isSubclassOf
+     * @group  reflection
      * @return void
      */
     public function testSubclassOfClass()
     {
-        $c = 5;  // class DerivedClass extends IteratorClass
+        $this->markTestIncomplete('Not yet fully implemented (FIXME)');
+
+        $c = 8;  // class DerivedClass extends IteratorClass
         $n = 'IteratorClass';
 
         $this->assertTrue(
-            self::$classes[$c]->isSubclassOf($n),
-            self::$classes[$c]->getName() . " is not a subclass of $n."
+            self::$models[$c]->isSubclassOf($n),
+            self::$models[$c]->getName() . " is not a subclass of $n."
         );
     }
 
     /**
      * Tests string representation of the ClassModel object
      *
-     *  covers ClassModel::__toString
+     *  covers Bartlett\Reflect\Model\ClassModel::__toString
+     * @group  reflection
      * @return void
      */
     public function testToString()
     {
-        $c = 3;  // class Bar
+        $c = 6;  // class Bar
 
         $expected = <<<EOS
 Class [ <user> class Bar ] {
-  @@ %path%classes.php 60 - 72
+  @@ %filename% 60 - 72
+
+  - Constants [2] {
+    Constant [ ONE ] { Number one }
+    Constant [ TWO ] { Number two }
+  }
+
+  - Properties [0] {
+  }
 
   - Methods [2] {
     Method [ <user> public method myfunction ] {
-      @@ %path%classes.php 65 - 66
+      @@ %filename% 65 - 66
 
       - Parameters [2] {
         Parameter #0 [ <optional> stdClass \$param = NULL ]
@@ -622,7 +623,7 @@ Class [ <user> class Bar ] {
     }
 
     Method [ <user> protected method otherfunction ] {
-      @@ %path%classes.php 68 - 70
+      @@ %filename% 68 - 70
 
       - Parameters [2] {
         Parameter #0 [ <required> Baz \$baz ]
@@ -634,11 +635,11 @@ Class [ <user> class Bar ] {
 
 EOS;
         $this->expectOutputString(
-            str_replace('%path%', self::$fixtures, $expected)
+            str_replace('%filename%', self::$fixture, $expected)
         );
 
         print(
-            self::$classes[$c]->__toString()
+            self::$models[$c]->__toString()
         );
     }
 }
