@@ -52,7 +52,8 @@ class V504Test extends \PHPUnit_Framework_TestCase
         $finder->files()
             ->name('gh15.php')
             ->name('php504ArrayFeatures.php')
-            ->in(self::$fixtures);
+            ->in(self::$fixtures)
+            ->sortByName()
         ;
 
         $pm = new ProviderManager;
