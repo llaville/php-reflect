@@ -44,6 +44,7 @@ class AbstractDispatcher implements DispatcherInterface
      *        dispatcher
      *
      * @return self for a fuent interface
+     * @disabled
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
@@ -55,6 +56,7 @@ class AbstractDispatcher implements DispatcherInterface
      * Get the EventDispatcher of the request
      *
      * @return Symfony\Component\EventDispatcher\EventDispatcher
+     * @disabled
      */
     public function getEventDispatcher()
     {
@@ -71,6 +73,7 @@ class AbstractDispatcher implements DispatcherInterface
      * @param array  $context   (optional) Contextual event data
      *
      * @return Symfony\Component\EventDispatcher\GenericEvent
+     * @disabled
      */
     public function dispatch($eventName, array $context = array())
     {
@@ -87,6 +90,7 @@ class AbstractDispatcher implements DispatcherInterface
      *        interested by events
      *
      * @return self for a fuent interface
+     * @disabled
      */
     public function addSubscriber(EventSubscriberInterface $subscriber)
     {

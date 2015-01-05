@@ -73,7 +73,7 @@ class DefaultCacheStorage implements CacheStorageInterface
     public function exists($request)
     {
         // Hash a request data source into a string that returns cache metadata
-        $this->key = sha1($request['source']);
+        $this->key = $request['source'];
 
         if ($this->entries = $this->cache->fetch($this->key)) {
             return true;
@@ -113,18 +113,12 @@ class DefaultCacheStorage implements CacheStorageInterface
             || $manifest['cacheData'] !== sha1_file($request['file']->getPathname())
         ) {
             // results have expired
-            $response = null;
+            $response = false;
         } else {
             $response = $this->cache->fetch($manifest['cacheData']);
-            if ($response) {
-                $response = unserialize($response);
-            } else {
-                // The response is not valid because the body was somehow deleted
-                $response = null;
-            }
         }
 
-        if ($response === null) {
+        if ($response === false) {
             // Remove the entry from the metadata and update the cache
             unset($entries[$index]);
             if (count($entries)) {

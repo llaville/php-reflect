@@ -21,7 +21,7 @@ final class Events
      *
      * The event listener method receives a Symfony\Component\EventDispatcher\GenericEvent
      * instance with following arguments :
-     * - `source` data source identifier or its alias
+     * - `source` data source identifier
      * - `file`   current file parsed in the data source
      *
      * @var string
@@ -29,26 +29,12 @@ final class Events
     const PROGRESS = 'reflect.progress';
 
     /**
-     * The CACHE event allows you to get the AST (Abstract Syntax Tree)
-     * from a previous cached request.
-     *
-     * The event listener method receives a Symfony\Component\EventDispatcher\GenericEvent
-     * instance with following arguments :
-     * - `source` data source identifier or its alias
-     * - `file`   current file parsed in the data source
-     * - `ast`    the Abstract Syntax Tree result (serialized)
-     *
-     * @var string
-     */
-    const CACHE = 'reflect.cache';
-
-    /**
      * The SUCCESS event allows you to get the AST (Abstract Syntax Tree)
      * from a live request. A cached request will not trigger this event.
      *
      * The event listener method receives a Symfony\Component\EventDispatcher\GenericEvent
      * instance with following arguments :
-     * - `source` data source identifier or its alias
+     * - `source` data source identifier
      * - `file`   current file parsed in the data source
      * - `ast`    the Abstract Syntax Tree result (serialized)
      *
@@ -61,7 +47,7 @@ final class Events
      *
      * The event listener method receives a Symfony\Component\EventDispatcher\GenericEvent
      * instance with following arguments :
-     * - `source` data source identifier or its alias
+     * - `source` data source identifier
      * - `file`   current file parsed in the data source
      * - `error`  PHP Parser error message
      *
@@ -75,7 +61,7 @@ final class Events
      *
      * The event listener method receives a Symfony\Component\EventDispatcher\GenericEvent
      * instance with following arguments :
-     * - `source` data source identifier or its alias
+     * - `source` data source identifier
      *
      * @var string
      */
@@ -87,7 +73,7 @@ final class Events
      * The event listener method receives a Symfony\Component\EventDispatcher\GenericEvent
      * instance with following arguments :
      * - `method` current process
-     * - `args`   arguments given as input of the process
+     * - `node`   current node visited
      *
      * @var string
      */

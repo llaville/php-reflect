@@ -1,6 +1,6 @@
 <?php
 /**
- * The Reflect Structure analyser accessible through the AnalyserPlugin.
+ * The Reflect Structure Analyser.
  *
  * It analyse source code like Sebastian Bergmann phploc solution
  * (https://github.com/sebastianbergmann/phploc), and give a text report
@@ -10,7 +10,7 @@
  * Directories                                         50
  * Files                                              374
  *
- * Structure Analysis
+ * Structure
  *   Namespaces                                         1
  *   Interfaces                                        15
  *   Traits                                             0
@@ -30,8 +30,8 @@
  *     Anonymous Functions                              0 (0.00%)
  *   Constants                                        157
  *     Global Constants                                17 (10.83%)
+ *     Magic Constants                                  0 (0.00%)
  *     Class Constants                                140 (89.17%)
- *
  * </code>
  *
  * @category PHP
@@ -40,14 +40,11 @@
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version  GIT: $Id$
  * @link     http://php5.laurent-laville.org/reflect/
- * @link
  */
 
 namespace Bartlett\Reflect\Analyser;
 
-use Bartlett\Reflect\Printer\Text;
-
-use Symfony\Component\Console\Output\OutputInterface;
+use PhpParser\Node;
 
 /**
  * This analyzer collects different count metrics for code artifacts like
@@ -63,14 +60,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class StructureAnalyser extends AbstractAnalyser
 {
-    /**
-     * Initializes all metrics.
-     *
-     * @return void
-     */
-    protected function init()
+    private $constants  = array();
+
+    public function __construct()
     {
-        $this->count = array(
+        $this->metrics = array(
+            'namespaces'            => 0,
             'interfaces'            => 0,
             'traits'                => 0,
             'classes'               => 0,
@@ -88,282 +83,163 @@ class StructureAnalyser extends AbstractAnalyser
             'constants'             => 0,
             'classConstants'        => 0,
             'globalConstants'       => 0,
+            'magicConstants'        => 0,
             'testClasses'           => 0,
             'testMethods'           => 0,
         );
     }
 
-    /**
-     * Renders analyser report to output.
-     *
-     * @param object OutputInterface $output Console Output
-     *
-     * @return void
-     */
-    public function render(OutputInterface $output)
+    public function afterTraverse(array $nodes)
     {
-        $count = $this->count;
+        parent::afterTraverse($nodes);
 
-        $count['constants'] = $count['classConstants'] + $count['globalConstants'];
+        $this->metrics['namespaces']
+            = count(array_unique($this->namespaces));
 
-        $lines = array();
-
-        $lines['namespaces'] = array(
-            '  Namespaces                                %10d',
-            array($count['namespaces'])
-        );
-        $lines['interfaces'] = array(
-            '  Interfaces                                %10d',
-            array($count['interfaces'])
-        );
-        $lines['traits'] = array(
-            '  Traits                                    %10d',
-            array($count['traits'])
-        );
-
-        $lines['classes'] = array(
-            '  Classes                                   %10d',
-            array($count['classes'])
-        );
-        $lines['abstractClasses'] = array(
-            '    Abstract Classes                        %10d (%.2f%%)',
-            array(
-                $count['abstractClasses'],
-                $count['classes'] > 0 ? ($count['abstractClasses'] / $count['classes']) * 100 : 0,
-            )
-        );
-        $lines['concreteClasses'] = array(
-            '    Concrete Classes                        %10d (%.2f%%)',
-            array(
-                $count['concreteClasses'],
-                $count['classes'] > 0 ? ($count['concreteClasses'] / $count['classes']) * 100 : 0,
-            )
-        );
-
-        $lines['methods'] = array(
-            '  Methods                                   %10d',
-            array($count['methods'])
-        );
-        $lines['methodsScope'] = array(
-            '    Scope',
-            array()
-        );
-        $lines['nonStaticMethods'] = array(
-            '      Non-Static Methods                    %10d (%.2f%%)',
-            array(
-                $count['nonStaticMethods'],
-                $count['methods'] > 0 ? ($count['nonStaticMethods'] / $count['methods']) * 100 : 0,
-            )
-        );
-        $lines['staticMethods'] = array(
-            '      Static Methods                        %10d (%.2f%%)',
-            array(
-                $count['staticMethods'],
-                $count['methods'] > 0 ? ($count['staticMethods'] / $count['methods']) * 100 : 0,
-            )
-        );
-        $lines['methodsVisibility'] = array(
-            '    Visibility',
-            array()
-        );
-        $lines['publicMethods'] = array(
-            '      Public Method                         %10d (%.2f%%)',
-            array(
-                $count['publicMethods'],
-                $count['methods'] > 0 ? ($count['publicMethods'] / $count['methods']) * 100 : 0,
-            )
-        );
-        $lines['protectedMethods'] = array(
-            '      Protected Method                      %10d (%.2f%%)',
-            array(
-                $count['protectedMethods'],
-                $count['methods'] > 0 ? ($count['protectedMethods'] / $count['methods']) * 100 : 0,
-            )
-        );
-        $lines['privateMethods'] = array(
-            '      Private Method                        %10d (%.2f%%)',
-            array(
-                $count['privateMethods'],
-                $count['methods'] > 0 ? ($count['privateMethods'] / $count['methods']) * 100 : 0,
-            )
-        );
-
-        $lines['functions'] = array(
-            '  Functions                                 %10d',
-            array($count['functions'])
-        );
-        $lines['namedFunctions'] = array(
-            '    Named Functions                         %10d (%.2f%%)',
-            array(
-                $count['namedFunctions'],
-                $count['functions'] > 0 ? ($count['namedFunctions'] / $count['functions']) * 100 : 0,
-            )
-        );
-        $lines['anonymousFunctions'] = array(
-            '    Anonymous Functions                     %10d (%.2f%%)',
-            array(
-                $count['anonymousFunctions'],
-                $count['functions'] > 0 ? ($count['anonymousFunctions'] / $count['functions']) * 100 : 0,
-            )
-        );
-
-        $lines['constants'] = array(
-            '  Constants                                 %10d',
-            array($count['constants'])
-        );
-        $lines['globalConstants'] = array(
-            '    Global Constants                        %10d (%.2f%%)',
-            array(
-                $count['globalConstants'],
-                $count['constants'] > 0 ? ($count['globalConstants'] / $count['constants']) * 100 : 0,
-            )
-        );
-        $lines['classConstants'] = array(
-            '    Class Constants                         %10d (%.2f%%)',
-            array(
-                $count['classConstants'],
-                $count['constants'] > 0 ? ($count['classConstants'] / $count['constants']) * 100 : 0,
-            )
-        );
-
-        $output->writeln('<info>Structure Analysis</info>');
-        $printer = new Text;
-        $printer->write($output, $lines);
+        $this->metrics['magicConstants']
+            = count(array_unique($this->constants));
     }
 
-    /**
-     * Explore all classes (ClassModel), functions (FunctionModel)
-     * and constants (ConstantModel) in each namespace (PackageModel).
-     *
-     * @param object $package Reflect the current namespace explored
-     *
-     * @return void
-     */
-    public function visitPackageModel($package)
+    public function enterNode(Node $node)
     {
-        parent::visitPackageModel($package);
+        parent::enterNode($node);
 
-        foreach ($package->getClasses() as $class) {
-            $class->accept($this);
-        }
+        if ($node instanceof Node\Stmt\Namespace_) {
+            $this->visitNamespace($node);
 
-        foreach ($package->getInterfaces() as $interface) {
-            $interface->accept($this);
-        }
+        } elseif ($node instanceof Node\Stmt\Class_) {
+            $this->visitClass($node);
 
-        foreach ($package->getTraits() as $trait) {
-            $trait->accept($this);
-        }
+        } elseif ($node instanceof Node\Stmt\Interface_) {
+            $this->visitInterface($node);
 
-        foreach ($package->getFunctions() as $function) {
-            $function->accept($this);
-        }
+        } elseif ($node instanceof Node\Stmt\Trait_) {
+            $this->visitTrait($node);
 
-        foreach ($package->getConstants() as $constant) {
-            $constant->accept($this);
-        }
-    }
+        } elseif ($node instanceof Node\Stmt\Function_
+            || $node instanceof Node\Expr\Closure
+        ) {
+            $this->visitFunction($node);
 
-    /**
-     * Explore user classes (ClassModel) found in the current namespace.
-     *
-     * @param object $class Reflect the current user class explored
-     *
-     * @return void
-     */
-    public function visitClassModel($class)
-    {
-        parent::visitClassModel($class);
+        } elseif ($node instanceof Node\Scalar\MagicConst) {
+            $this->constants[] = $node->getName();
 
-        if ($class->isTrait()) {
-            $this->count['traits']++;
-
-        } elseif ($class->isInterface()) {
-            $this->count['interfaces']++;
-
-        } else {
-            $this->count['classes']++;
-
-            if ($this->testClass) {
-                $this->count['testClasses']++;
-            } else {
-                if ($class->isAbstract()) {
-                    $this->count['abstractClasses']++;
-                } else {
-                    $this->count['concreteClasses']++;
-                }
-                $this->count['classConstants'] += count($class->getConstants());
+        } elseif ($node instanceof Node\Expr\FuncCall
+            && $node->name instanceof Node\Name
+        ) {
+            if (strcasecmp('define', $node->name) === 0) {
+                $this->visitConstant($node);
             }
         }
+    }
 
-        foreach ($class->getMethods() as $method) {
-            $method->accept($this);
+    protected function visitTrait(Node\Stmt\Trait_ $trait)
+    {
+        $this->metrics['traits']++;
+    }
+
+    protected function visitInterface(Node\Stmt\Interface_ $interface)
+    {
+        $this->metrics['interfaces']++;
+    }
+
+    protected function visitClass(Node\Stmt\Class_ $class)
+    {
+        parent::visitClass($class);
+
+        if ($this->testClass) {
+            $this->metrics['testClasses']++;
+
+            foreach ($class->stmts as $stmt) {
+                if ($stmt instanceof Node\Stmt\ClassMethod) {
+                    $this->visitMethod($stmt);
+                }
+            }
+        } else {
+            $this->metrics['classes']++;
+
+            if ($class->isAbstract()) {
+                $this->metrics['abstractClasses']++;
+            } else {
+                $this->metrics['concreteClasses']++;
+            }
+
+            foreach ($class->stmts as $stmt) {
+                if ($stmt instanceof Node\Stmt\ClassConst) {
+                    $this->metrics['classConstants']++;
+
+                } elseif ($stmt instanceof Node\Stmt\Property) {
+                    // @TODO
+
+                } elseif ($stmt instanceof Node\Stmt\ClassMethod) {
+                    $this->visitMethod($stmt);
+                }
+            }
         }
     }
 
     /**
-     * Explore methods (MethodModel) of each user classes
+     * Explore methods of each user classes
      * found in the current namespace.
      *
-     * @param object $method Reflect the current method explored
+     * @param Node\Stmt\ClassMethod $method The current method explored
      *
      * @return void
      */
-    public function visitMethodModel($method)
+    protected function visitMethod(Node\Stmt\ClassMethod $method)
     {
         if ($this->testClass) {
-            if (strpos($method->getShortName(), 'test') === 0) {
-                $this->count['testMethods']++;
+            if (strpos($method->name, 'test') === 0) {
+                $this->metrics['testMethods']++;
             } elseif (strpos($method->getDocComment(), '@test')) {
-                $this->count['testMethods']++;
+                $this->metrics['testMethods']++;
             }
             return;
         }
-        $this->count['methods']++;
+        $this->metrics['methods']++;
 
         if ($method->isPrivate()) {
-            $this->count['privateMethods']++;
+            $this->metrics['privateMethods']++;
         } elseif ($method->isProtected()) {
-            $this->count['protectedMethods']++;
+            $this->metrics['protectedMethods']++;
         } else {
-            $this->count['publicMethods']++;
+            $this->metrics['publicMethods']++;
         }
 
         if ($method->isStatic()) {
-            $this->count['staticMethods']++;
+            $this->metrics['staticMethods']++;
         } else {
-            $this->count['nonStaticMethods']++;
+            $this->metrics['nonStaticMethods']++;
         }
     }
 
     /**
-     * Explore user functions (FunctionModel) found in the current namespace.
+     * Explore user functions found in the current namespace.
      *
-     * @param object $function Reflect the current user function explored
+     * @param Node $function The current user function explored
      *
      * @return void
      */
-    public function visitFunctionModel($function)
+    protected function visitFunction(Node $function)
     {
-        $this->count['functions']++;
+        $this->metrics['functions']++;
 
-        if ($function->isClosure()) {
-            $this->count['anonymousFunctions']++;
+        if ($function instanceof Node\Expr\Closure) {
+            $this->metrics['anonymousFunctions']++;
         } else {
-            $this->count['namedFunctions']++;
+            $this->metrics['namedFunctions']++;
         }
     }
 
     /**
-     * Explore user or magic constants (ConstantModel)
-     * found in the current namespace.
+     * Explore user constants found in the current namespace.
      *
-     * @param object $constant Reflect the current constant explored
+     * @param Node $node The current node explored
      *
      * @return void
      */
-    public function visitConstantModel($constant)
+    protected function visitConstant(Node $node)
     {
-        $this->count['globalConstants']++;
+        $this->metrics['globalConstants']++;
     }
 }

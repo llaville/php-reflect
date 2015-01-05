@@ -2,8 +2,6 @@
 
 namespace Bartlett\Reflect\PhpParser\Lexer;
 
-use PhpParser\Lexer\Emulative;
-
 /**
  *
  *

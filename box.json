@@ -5,18 +5,22 @@
     "extract": false,
     "compression": "GZ",
     "files": [
-        "bin/phpreflect-schema.json",
+        "bin/phpreflect.json-schema",
+        "bin/phpreflect.json.dist",
         "manifest.txt",
         "LICENSE",
         "vendor/nikic/php-parser/LICENSE",
         "vendor/symfony/console/Symfony/Component/Console/LICENSE",
         "vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher/LICENSE",
         "vendor/symfony/finder/Symfony/Component/Finder/LICENSE",
-        "vendor/phpunit/php-timer/LICENSE",
+        "vendor/symfony/stopwatch/Symfony/Component/Stopwatch/LICENSE",
+        "vendor/symfony/dependency-injection/Symfony/Component/DependencyInjection/LICENSE",
         "vendor/seld/jsonlint/LICENSE",
         "vendor/justinrainbow/json-schema/LICENSE",
         "vendor/doctrine/cache/LICENSE",
+        "vendor/doctrine/collections/LICENSE",
         "vendor/psr/log/LICENSE",
+        "vendor/monolog/monolog/LICENSE",
         "vendor/autoload.php"
     ],
     "finder": [
@@ -35,10 +39,6 @@
         },
         {
             "name": "*.php",
-            "in": "vendor/phpunit/php-timer"
-        },
-        {
-            "name": "*.php",
             "in": "vendor/seld/jsonlint/src"
         },
         {
@@ -47,16 +47,29 @@
         },
         {
             "name": "*.php",
+            "in": "vendor/phpdocumentor/reflection-docblock/src"
+        },
+        {
+            "name": "*.php",
             "in": "vendor/doctrine/cache/lib"
         },
         {
             "name": "*.php",
+            "in": "vendor/doctrine/collections/lib"
+        },
+        {
+            "name": "*.php",
             "in": "vendor/psr/log/Psr"
+        },
+        {
+            "name": "*.php",
+            "in": "vendor/monolog/monolog/src"
         }
     ],
-    "git-version": "package_version",
+    "replacements": { "package_version": "3.0.0-alpha2" },
     "main": "bin/phpreflect",
-    "output": "phpreflect-@git-version@.phar",
+    "output": "phpreflect-3.0.0-alpha2.phar",
     "stub": "phar-stub.php",
-    "web": false
+    "web": false,
+    "shebang": false
 }

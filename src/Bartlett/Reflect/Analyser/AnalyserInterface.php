@@ -12,8 +12,6 @@
 
 namespace Bartlett\Reflect\Analyser;
 
-use Symfony\Component\Console\Output\OutputInterface;
-
 /**
  * Interface that all analysers must implement.
  *
@@ -27,7 +25,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 interface AnalyserInterface
 {
-    public function analyse($reflect);
+    public function setTokens(array $tokens);
 
-    public function render(OutputInterface $output);
+    public function setCurrentFile($path);
+
+    public function getMetrics();
 }

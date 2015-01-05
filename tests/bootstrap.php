@@ -3,4 +3,10 @@
 $baseDir   = dirname(__DIR__);
 $vendorDir = $baseDir . '/vendor';
 
-require_once $vendorDir . '/autoload.php';
+$loader = require_once $vendorDir . '/autoload.php';
+$loader->addClassMap(
+    array(
+        'Bartlett\Tests\Reflect\Model\GenericModelTest'
+            => __DIR__ . '/Model/GenericModelTest.php',
+    )
+);

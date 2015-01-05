@@ -18,14 +18,15 @@ namespace Bartlett;
 
 use Bartlett\Reflect\Event\AbstractDispatcher;
 use Bartlett\Reflect\Events;
-use Bartlett\Reflect\ManagerInterface;
-use Bartlett\Reflect\ProviderManager;
-use Bartlett\Reflect\Builder;
+use Bartlett\Reflect\Plugin\PluginManager;
 use Bartlett\Reflect\PhpParser\Lexer\TokenOffsets;
 
 use PhpParser\Parser;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
+use PhpParser\NodeVisitor;
+
+use Symfony\Component\Finder\Finder;
 
 /**
  * Reflect analyse your source code with the tokenizer extension.
@@ -41,150 +42,193 @@ use PhpParser\NodeVisitor\NameResolver;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class Reflect extends AbstractDispatcher implements ManagerInterface
+class Reflect extends AbstractDispatcher
 {
-    protected $pm;
-    protected $files;
+    private $analysers;
+    private $pluginManager;
+    private $dataSourceId;
 
     /**
-     * Returns an instance of the current provider manager.
-     *
-     * @return ProviderManager
+     * Creates a new instance of the Reflect engine
      */
-    public function getProviderManager()
+    public function __construct()
     {
-        if (!isset($this->pm)) {
-            $this->pm = new ProviderManager;
-        }
-        return $this->pm;
+        $this->analysers = array();
     }
 
     /**
-     * Defines the current provider manager.
+     * Defines a plugin manager.
      *
-     * @param ProviderManager $manager Instance of your custom source provider
-     *
-     * @return void
-     */
-    public function setProviderManager(ProviderManager $manager)
-    {
-        $this->pm = $manager;
-    }
-
-    /**
-     * Analyse all or part of data sources identified by the Provider Manager.
-     *
-     * @param array $providers (optional) Data source providers to parse at this runtime.
-     *                         All providers defined in Provider Manager by default.
+     * @param PluginManager $manager
      *
      * @return self for fluent interface
      */
-    public function parse(array $providers = null)
+    public function setPluginManager(PluginManager $manager)
     {
-        $this->builder = new Builder($this);
+        $this->pluginManager = $manager;
+        return $this;
+    }
+
+    /**
+     * Returns instance of the plugin manager.
+     *
+     * @return PluginManager
+     */
+    public function getPluginManager()
+    {
+        return $this->pluginManager;
+    }
+
+    /**
+     * Adds a new analyser to get specific metrics
+     *
+     * @param NodeVisitor $analyser Analyser instance
+     *
+     * @return self for fluent interface
+     */
+    public function addAnalyser(NodeVisitor $analyser)
+    {
+        $analyser->setSubject($this);
+        $this->analysers[] = $analyser;
+        return $this;
+    }
+
+    /**
+     * Gets the list of active analysers.
+     *
+     * @return array
+     */
+    public function getAnalysers()
+    {
+        return $this->analysers;
+    }
+
+    /**
+     * Set the data source identifier
+     *
+     * @param string $id Identitier to use for the data source
+     *
+     * @return self for fluent interface
+     */
+    public function setDataSourceId($id)
+    {
+        $this->dataSourceId = $id;
+        return $this;
+    }
+
+    /**
+     * Gets identifier of the current data source
+     *
+     * @return string
+     */
+    public function getDataSourceId()
+    {
+        return $this->dataSourceId;
+    }
+
+    /**
+     * Analyse a data source and return all analyser metrics.
+     *
+     * @param Finder $finder A data source finder
+     *
+     * @return array|boolean array of all analysers metrics, or FALSE if no parse occured
+     */
+    public function parse(Finder $finder)
+    {
+        $metrics = array();
+
+        if (empty($this->analysers)) {
+            return false;
+        }
 
         $lexer     = new TokenOffsets();
         $parser    = new Parser($lexer);
         $traverser = new NodeTraverser;
         $traverser->addVisitor(new NameResolver);
-        $traverser->addVisitor($this->builder);
 
-        $this->files = array();
-
-        $all = $this->getProviderManager()->all();
-
-        if (empty($providers)) {
-            $providers = array_keys($all);
+        // attach all analysers selected
+        foreach ($this->analysers as $analyser) {
+            $traverser->addVisitor($analyser);
         }
 
-        foreach ($all as $alias => $provider) {
-            if (!in_array($alias, $providers)) {
-                continue;
-            }
+        $files = array();
 
-            // creates the data model of sources referenced by the $alias name
-            foreach ($provider as $uri => $file) {
-                $event = $this->dispatch(
-                    Events::PROGRESS,
-                    array(
-                        'source'   => $alias,
-                        'file'     => $file,
-                    )
+        // generate a data source identifier if not provided
+        if (!isset($this->dataSourceId)) {
+            $this->dataSourceId = sha1(serialize($finder->getIterator()));
+        }
+
+        // analyse each file of the data source
+        foreach ($finder as $uri => $file) {
+            $event = $this->dispatch(
+                Events::PROGRESS,
+                array(
+                    'source'   => $this->dataSourceId,
+                    'file'     => $file,
+                )
+            );
+            $files[] = $file->getPathname();
+
+            if (isset($event['notModified'])) {
+                $tokens = @token_get_all(
+                    file_get_contents($file->getPathname())
                 );
-                $this->files[] = $file;
-                $this->builder->setCurrentFile($file->getPathname());
+                // uses cached response (AST built by PHP-Parser)
+                $stmts = $event['notModified'];
 
-                if (isset($event['notModified'])) {
-                    $tokens = @token_get_all(
+            } else {
+                // live request
+                try {
+                    $stmts = $parser->parse(
                         file_get_contents($file->getPathname())
                     );
-                    $this->builder->setTokens($tokens);
-                    // uses cached response (AST built by PHP-Parser)
-                    $stmts = $traverser->traverse($event['notModified']);
+                    $tokens = $lexer->getTokens();
 
-                    $event = $this->dispatch(
-                        Events::CACHE,
+                } catch (\PhpParser\Error $e) {
+                    $this->dispatch(
+                        Events::ERROR,
                         array(
-                            'source'   => $alias,
-                            'file'     => $file,
-                            'ast'      => serialize($stmts)
+                            'source' => $this->dataSourceId,
+                            'file'   => $file,
+                            'error'  => $e->getMessage()
                         )
                     );
-
-                } else {
-                    // live request
-                    try {
-                        $stmts = $parser->parse(
-                            file_get_contents($file->getPathname())
-                        );
-                        $this->builder->setTokens($lexer->getTokens());
-                        $stmts = $traverser->traverse($stmts);
-
-                        $this->dispatch(
-                            Events::SUCCESS,
-                            array(
-                                'source'   => $alias,
-                                'file'     => $file,
-                                'ast'      => serialize($stmts)
-                            )
-                        );
-
-                    } catch (\PhpParser\Error $e) {
-                        $this->dispatch(
-                            Events::ERROR,
-                            array(
-                                'source'   => $alias,
-                                'file'     => $file,
-                                'error'    => $e->getMessage()
-                            )
-                        );
-                    }
+                    continue; // skip to next file of the data source
                 }
             }
-            // end of parsing the data source provider
-            $this->dispatch(Events::COMPLETE, array('source' => $alias));
+
+            // update context for each analyser selected
+            foreach ($this->analysers as $analyser) {
+                $analyser->setTokens($tokens);
+                $analyser->setCurrentFile($file->getPathname());
+            }
+
+            $stmts = $traverser->traverse($stmts);
+
+            $this->dispatch(
+                Events::SUCCESS,
+                array(
+                    'source' => $this->dataSourceId,
+                    'file'   => $file,
+                    'ast'    => serialize($stmts),
+                )
+            );
         }
 
-        return $this;
-    }
+        // end of parsing the data source
+        $event = $this->dispatch(Events::COMPLETE, array('source' => $this->dataSourceId));
+        if (isset($event['extra'])) {
+            $metrics['extra'] = $event['extra'];
+        }
 
-    /**
-     * Gets informations about all packages/namespaces.
-     *
-     * @return array PackageModel Map objects reflecting each package/namespace.
-     */
-    public function getPackages()
-    {
-        return $this->builder->getPackages();
-    }
+        // list of files parsed
+        $metrics['files'] = $files;
 
-    /**
-     * Gets list of files parsed.
-     *
-     * @return array
-     */
-    public function getFiles()
-    {
-        return $this->files;
+        // collect metrics of each analyser selected
+        foreach ($this->analysers as $analyser) {
+            $metrics = array_merge($metrics, $analyser->getMetrics());
+        }
+
+        return $metrics;
     }
 }
