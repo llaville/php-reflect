@@ -22,6 +22,9 @@ abstract class BaseApi extends AbstractDispatcher
         $this->token  = $token;
     }
 
+    /**
+     * @disabled
+     */
     public function activatePlugins($register)
     {
         $this->registerPlugins = (bool) $register;
