@@ -87,7 +87,9 @@ class Analyser extends Common
         }
 
         $pm = new PluginManager($this->eventDispatcher);
-        $pm->registerPlugins();
+        if ($this->registerPlugins) {
+            $pm->registerPlugins();
+        }
 
         return $reflect->parse($finder);
     }

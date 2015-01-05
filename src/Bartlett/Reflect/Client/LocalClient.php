@@ -12,6 +12,7 @@ class LocalClient implements ClientInterface
 {
     private $namespace;
     private $eventDispatcher;
+    private $registerPlugins;
 
     /**
      * @param string $url Base of Api Endpoint
@@ -19,6 +20,11 @@ class LocalClient implements ClientInterface
     public function __construct($url = 'Bartlett\Reflect\Api\V3')
     {
         $this->namespace = $url;
+    }
+
+    public function activatePlugins($register)
+    {
+        $this->registerPlugins = (bool) $register;
     }
 
     /**
@@ -33,6 +39,7 @@ class LocalClient implements ClientInterface
 
         $api = new $className;
         $api->setEventDispatcher($this->eventDispatcher);
+        $api->activatePlugins($this->registerPlugins);
 
         try {
             if (!class_exists($className)) {

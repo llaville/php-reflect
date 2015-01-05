@@ -227,6 +227,10 @@ class CommandFactory
             $client = new Client($app->getClient());
             $api    = $client->api(strtolower($namespace));
 
+            if (true === $input->hasParameterOption('--no-plugins')) {
+                // tells to Api, do not use any plugins
+                $api->activatePlugins(false);
+            }
             if (true === $input->hasParameterOption('--progress')) {
                 $formats = array(
                     'very_verbose' => ' %current%/%max% %percent:3s%% %elapsed:6s% %message%',

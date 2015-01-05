@@ -24,7 +24,9 @@ class Plugin extends Common
     public function dir()
     {
         $pm = new PluginManager(new EventDispatcher());
-        $pm->registerPlugins();
+        if ($this->registerPlugins) {
+            $pm->registerPlugins();
+        }
 
         $plugins = $pm->getPlugins();
         $rows    = array();

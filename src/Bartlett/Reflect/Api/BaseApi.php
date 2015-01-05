@@ -10,6 +10,7 @@ abstract class BaseApi extends AbstractDispatcher
     protected $client;
 
     private $token;
+    private $registerPlugins = true;
 
     /**
      * @param ClientInterface $client
@@ -19,6 +20,11 @@ abstract class BaseApi extends AbstractDispatcher
     {
         $this->client = $client;
         $this->token  = $token;
+    }
+
+    public function activatePlugins($register)
+    {
+        $this->registerPlugins = (bool) $register;
     }
 
     /**
@@ -31,6 +37,7 @@ abstract class BaseApi extends AbstractDispatcher
     protected function request($url, $method = 'GET', array $params = array())
     {
         $this->client->setEventDispatcher($this->getEventDispatcher());
+        $this->client->activatePlugins($this->registerPlugins);
 
         $response = $this->client->request($method, $url, $params);
         return $response;

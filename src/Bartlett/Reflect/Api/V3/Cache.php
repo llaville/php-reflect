@@ -25,6 +25,9 @@ class Cache extends Common
         }
 
         $pm = new PluginManager($this->eventDispatcher);
+        if (!$this->registerPlugins) {
+            return 0;
+        }
         $pm->registerPlugins();
 
         foreach ($pm->getPlugins() as $plugin) {

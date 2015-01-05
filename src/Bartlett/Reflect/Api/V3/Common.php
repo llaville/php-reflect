@@ -14,6 +14,7 @@ abstract class Common
     protected $dataSourceId;
     protected $provider;
     protected $eventDispatcher;
+    protected $registerPlugins;
 
     /**
      * Set the EventDispatcher of the request
@@ -27,6 +28,11 @@ abstract class Common
     {
         $this->eventDispatcher = $eventDispatcher;
         return $this;
+    }
+
+    public function activatePlugins($register)
+    {
+        $this->registerPlugins = (bool) $register;
     }
 
     /**

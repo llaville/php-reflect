@@ -182,11 +182,6 @@ class Application extends BaseApplication
             return $exitCode;
         }
 
-        if (false === $input->hasParameterOption('--no-plugins')) {
-            $pm = $this->createPluginManager();
-            $pm->registerPlugins();
-        }
-
         $exitCode = parent::doRun($input, $output);
 
         return $exitCode;
