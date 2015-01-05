@@ -61,6 +61,7 @@
 
         <include name="src/**/*.php" />
         <include name="bin/phpreflect" />
+        <include name="bin/phpreflect.json.dist" />
         <include name="bin/phpreflect-schema.json" />
         <include name="manifest.txt" />
     </fileset>

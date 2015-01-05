@@ -10,6 +10,7 @@ if (class_exists('Phar')) {
             realpath('./phpreflect.json'),
             getenv($home).'/.config/phpreflect.json',
             '/etc/phpreflect.json',
+            'phar://' . __FILE__ . '/bin/phpreflect.json.dist'
         );
         foreach ($files as $file) {
             if (file_exists($file)) {
