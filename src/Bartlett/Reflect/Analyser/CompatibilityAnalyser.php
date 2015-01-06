@@ -351,14 +351,22 @@ class CompatibilityAnalyser extends AbstractAnalyser
 
         // parent class
         if (isset($node->extends)) {
-            if ($node->extends->isFullyQualified()) {
-                $versions = array('php.min' => '5.3.0');
-            } else {
-                $versions = array();
+            $name     = (string) $node->extends;
+            $versions = $this->references->find('classes', $name);
+            if ('user' == $versions['ext.name']) {
+                if ($node->extends->isFullyQualified()) {
+                    $versions = array('php.min' => '5.3.0');
+                } else {
+                    $versions = array();
+                }
             }
-            $name = (string) $node->extends;
             $this->updateElementVersion('classes', $name, $versions);
             ++$this->metrics['classes'][$name]['matches'];
+
+            // update only php versions of the current class
+            unset($versions['ext.name'], $versions['ext.min'], $versions['ext.max']);
+            $name = (string) $node->namespacedName;
+            $this->updateElementVersion('classes', $name, $versions);
         }
 
         // interfaces
