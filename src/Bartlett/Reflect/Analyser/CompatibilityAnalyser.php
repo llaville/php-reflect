@@ -736,6 +736,11 @@ class CompatibilityAnalyser extends AbstractAnalyser
         // direct call from a local variable or a property
         $caller = $node->var;
 
+        if ($caller instanceof Node\Expr\New_) {
+            // class member access on instantiation
+            return $this->computePhpFeatureVersions($node);
+        }
+
         if ($caller instanceof Node\Expr\PropertyFetch) {
             if (!is_string($caller->name)) {
                 // indirect method call
@@ -817,6 +822,18 @@ class CompatibilityAnalyser extends AbstractAnalyser
             // http://php.net/manual/en/migration54.new-features.php
             $versions = array('php.min' => '5.4.0');
             $this->updateElementVersion($element, $name, $versions);
+
+        } elseif ($node instanceof Node\Expr\MethodCall
+            && is_string($node->name)
+        ) {
+            $caller = $node->var;
+
+            if ($caller instanceof Node\Expr\New_) {
+                // Class Member Access On Instantiation
+                // http://php.net/manual/en/migration54.new-features.php
+                $versions = array('php.min' => '5.4.0');
+                $this->updateElementVersion($element, $name, $versions);
+            }
         }
     }
 
