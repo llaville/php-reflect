@@ -162,6 +162,9 @@ class CompatibilityAnalyser extends AbstractAnalyser
         } elseif ($node instanceof Node\Stmt\Use_) {
             $this->computePhpFeatureVersions($node);
 
+        } elseif ($node instanceof Node\Stmt\Property) {
+            $this->computePhpFeatureVersions($node);
+
         } elseif ($node instanceof Node\Expr\Array_) {
             $this->computePhpFeatureVersions($node);
 
@@ -445,7 +448,11 @@ class CompatibilityAnalyser extends AbstractAnalyser
 
             $element  = 'methods';
             $name     = sprintf('%s::%s', $name, $node->name);
-            $versions = array();
+            if ($this->isImplicitlyPublicFunction($this->tokens, $node)) {
+                $versions = array();
+            } else {
+                $versions = array('php.min' => '5.0.0');
+            }
             $this->updateElementVersion($element, $name, $versions);
             $this->contextStack[] = array($element, $name);
             return;
@@ -815,6 +822,15 @@ class CompatibilityAnalyser extends AbstractAnalyser
                 $versions = array('php.min' => '5.6.0');
                 $this->updateElementVersion($element, $name, $versions);
             }
+
+        } elseif ($node instanceof Node\Stmt\Property) {
+            // implicitly public visibility is PHP 4 syntax
+            if ($this->isImplicitlyPublicProperty($this->tokens, $node)) {
+                $versions = array();
+            } else {
+                $versions = array('php.min' => '5.0.0');
+            }
+            $this->updateElementVersion($element, $name, $versions);
 
         } elseif ($node instanceof Node\Expr\Array_) {
             if ($this->isShortArraySyntax($this->tokens, $node)) {
