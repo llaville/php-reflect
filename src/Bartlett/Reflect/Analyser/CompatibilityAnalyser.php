@@ -228,6 +228,12 @@ class CompatibilityAnalyser extends AbstractAnalyser
             $this->metrics[$element][$name] = $versions;
         }
 
+        if (isset($this->metrics[$element][$name]['arg.max'])
+            && $this->metrics[$element][$name]['arg.max'] < $versions['arg.max']
+        ) {
+            $this->metrics[$element][$name]['arg.max'] = $versions['arg.max'];
+        }
+
         self::updateVersion(
             $versions['php.min'],
             $this->metrics[$element][$name]['php.min']
