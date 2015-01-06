@@ -229,6 +229,7 @@ class CompatibilityAnalyser extends AbstractAnalyser
         }
 
         if (isset($this->metrics[$element][$name]['arg.max'])
+            && isset($versions['arg.max'])
             && $this->metrics[$element][$name]['arg.max'] < $versions['arg.max']
         ) {
             $this->metrics[$element][$name]['arg.max'] = $versions['arg.max'];
