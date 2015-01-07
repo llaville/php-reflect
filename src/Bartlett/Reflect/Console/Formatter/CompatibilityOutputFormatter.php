@@ -57,6 +57,10 @@ class CompatibilityOutputFormatter extends OutputFormatter
         );
         // compute global versions of the $group
         foreach ($args as $name => $base) {
+            if (isset($base['optional'])) {
+                // do not compute conditional elements
+                continue;
+            }
             foreach ($base as $id => $version) {
                 if (!in_array(substr($id, -3), array('min', 'max'))
                     || 'arg.max' == $id
