@@ -900,6 +900,15 @@ class CompatibilityAnalyser extends AbstractAnalyser
         $this->updateElementVersion($context, $element, $versions);
         ++$this->metrics[$context][$element]['matches'];
 
+
+        if (isset($this->metrics[$context][$element]['optional'])) {
+            // do not update context when conditional code found
+            if ($versions['ext.name'] !== 'user') {
+                $this->updateElementVersion('extensions', $versions['ext.name'], $versions);
+            }
+            return;
+        }
+
         if ($versions['ext.name'] !== 'user') {
             // update versions of extension's $element
             $this->updateElementVersion('extensions', $versions['ext.name'], $versions);
