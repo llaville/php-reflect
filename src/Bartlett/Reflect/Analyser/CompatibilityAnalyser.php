@@ -802,7 +802,6 @@ class CompatibilityAnalyser extends AbstractAnalyser
     private function computeConstantVersions(Node $node, $name)
     {
         $this->computeInternalVersions($node, $name, 'constants');
-        $this->updateContextVersion($this->localVersions);
     }
 
     /**
