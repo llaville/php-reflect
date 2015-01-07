@@ -784,6 +784,7 @@ class CompatibilityAnalyser extends AbstractAnalyser
             }
             $qualifiedClassName = $this->aliases[$caller->name];
 
+            $this->computeInternalVersions($node, $node->name, 'methods', $qualifiedClassName);
         } else {
             // indirect method call
             return;
@@ -871,12 +872,12 @@ class CompatibilityAnalyser extends AbstractAnalyser
      *
      * @return void
      */
-    private function computeInternalVersions(Node $node, $element, $context)
+    private function computeInternalVersions(Node $node, $element, $context, $extra = null)
     {
         $versions = $node->getAttribute('compatinfo');
         if ($versions === null) {
             // find reference info
-            $versions = $this->references->find($context, $element, count($node->args));
+            $versions = $this->references->find($context, $element, count($node->args), $extra);
 
             if (is_array($node->args)) {
                 foreach ($node->args as $arg) {
@@ -891,6 +892,10 @@ class CompatibilityAnalyser extends AbstractAnalyser
             $node->setAttribute('compatinfo', $versions);
         }
         $node->setAttribute('fileName', $this->file);
+
+        if ('methods' == $context) {
+            $element = sprintf('%s::%s', $extra, $element);
+        }
 
         // update versions of $element
         $this->updateElementVersion($context, $element, $versions);

@@ -21,6 +21,7 @@ class ReferenceCollection extends AbstractLazyCollection
     private $stmtInterfaces;
     private $stmtFunctions;
     private $stmtConstants;
+    private $stmtMethods;
     private $elements;
 
     public function __construct(array $elements = array(), PDO $pdo = null)
@@ -30,7 +31,7 @@ class ReferenceCollection extends AbstractLazyCollection
         $this->dbal->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function find($group, $key, $argc = 0)
+    public function find($group, $key, $argc = 0, $extra = null)
     {
         $this->initialize();
 
@@ -38,7 +39,11 @@ class ReferenceCollection extends AbstractLazyCollection
             $result = $this->get($key);
         } else {
             $stmt = 'stmt' . ucfirst($group);
-            $this->$stmt->execute(array(':name' => $key));
+            $inputParameters = array(':name' => $key);
+            if ('methods' == $group && isset($extra)) {
+                $inputParameters[':class_name'] = $extra;
+            }
+            $this->$stmt->execute($inputParameters);
             $result = $this->$stmt->fetch(PDO::FETCH_ASSOC);
 
             if (!$result) {
@@ -119,6 +124,14 @@ class ReferenceCollection extends AbstractLazyCollection
             ' php_excludes as "php.excludes"' .
             ' FROM bartlett_compatinfo_constants c,  bartlett_compatinfo_extensions e' .
             ' WHERE c.ext_name_fk = e.id AND c.name = :name COLLATE NOCASE'
+        );
+
+        $this->stmtMethods = $this->dbal->prepare(
+            'SELECT e.name as "ext.name", ext_min as "ext.min", ext_max as "ext.max",' .
+            ' php_min as "php.min", php_max as "php.max"' .
+            ' FROM bartlett_compatinfo_methods m,  bartlett_compatinfo_extensions e' .
+            ' WHERE m.ext_name_fk = e.id' .
+            ' AND m.class_name = :class_name AND m.name = :name COLLATE NOCASE'
         );
     }
 }
