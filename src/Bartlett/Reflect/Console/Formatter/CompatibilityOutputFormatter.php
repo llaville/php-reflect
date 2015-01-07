@@ -20,6 +20,22 @@ class CompatibilityOutputFormatter extends OutputFormatter
         foreach ($groups as $group) {
             $this->listHelper($output, $group, $response[$group], $filter);
         }
+
+        $min = sprintf('PHP %s (min)', $response['versions']['php.min']);
+
+        if (empty($response['versions']['php.max'])) {
+            $max = '';
+        } else {
+            $max = sprintf(', PHP %s (max)', $response['versions']['php.max']);
+        }
+        $output->writeln(
+            sprintf(
+                '%s<php>Requires %s%s</php>',
+                PHP_EOL,
+                $min,
+                $max
+            )
+        );
     }
 
     private function listHelper(OutputInterface $output, $group, $args, $filter)
