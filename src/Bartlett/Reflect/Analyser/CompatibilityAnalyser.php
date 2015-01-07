@@ -95,7 +95,7 @@ class CompatibilityAnalyser extends AbstractAnalyser
         parent::enterNode($node);
 
         if ($node instanceof Node\Stmt\Namespace_) {
-            $this->iniUsertNamespace($node);
+            $this->iniUserNamespace($node);
 
         } elseif ($node instanceof Node\Stmt\Class_) {
             $this->initUserClass($node);
@@ -313,7 +313,7 @@ class CompatibilityAnalyser extends AbstractAnalyser
      *
      * @return void
      */
-    private function iniUsertNamespace(Node $node)
+    private function iniUserNamespace(Node $node)
     {
         if (!isset($node->name)) {
             // Namespace without name
