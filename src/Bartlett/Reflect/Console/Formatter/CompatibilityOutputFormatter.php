@@ -40,7 +40,8 @@ class CompatibilityOutputFormatter extends OutputFormatter
 
     private function listHelper(OutputInterface $output, $group, $args, $filter)
     {
-        $title = substr($group, 0, -1);
+        $length = ('classes' == $group) ? -2 : -1;
+        $title  = substr($group, 0, $length);
 
         if (empty($args)) {
             $output->writeln(sprintf('%s<warning>No %s found</warning>', PHP_EOL, $title));
