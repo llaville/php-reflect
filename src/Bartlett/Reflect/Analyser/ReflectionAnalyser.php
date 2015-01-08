@@ -11,7 +11,6 @@
 
 namespace Bartlett\Reflect\Analyser;
 
-use Bartlett\Reflect\Environment;
 use Bartlett\Reflect\Collection\ReflectionCollection;
 
 use PhpParser\Node;
@@ -31,9 +30,7 @@ class ReflectionAnalyser extends AbstractAnalyser
 
     public function __construct()
     {
-        $pdo = Environment::initRefDb();
-
-        $this->metrics = new ReflectionCollection(array(), $pdo);
+        $this->metrics = new ReflectionCollection();
     }
 
     public function enterNode(Node $node)
