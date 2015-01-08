@@ -8,49 +8,48 @@ use Bartlett\Reflect\Plugin\CachePlugin;
 
 class Analyser extends Common
 {
-    const ANALYSER_DEFAULT_NAMESPACE = 'Bartlett\Reflect\Analyser\\';
-
     public function __call($name, $args)
     {
-        if ('invoke' == $name) {
-        } elseif ('list' == $name) {
-            if (count($args) === 0) {
-                $path = dirname(dirname(__DIR__)) . '/Analyser';
-            } else {
-                $path = $args[0];
-            }
-            return $this->dir($path);
+        if ('list' == $name) {
+            return $this->dir();
         }
     }
 
-    public function __invoke($arg)
+    public function dir()
     {
-        if (!file_exists($arg)) {
-            throw new \BadMethodCallException(
-                sprintf('Directory %s does not exist.', $arg)
-            );
-        }
-        return $this->dir($arg);
-    }
+        $namespaces = array(
+            'Bartlett\Reflect\Analyser\\' => dirname(dirname(__DIR__)) . '/Analyser',
+        );
 
-    public function dir($path)
-    {
-        if (\Phar::running(false)) {
-            $iterator = new \Phar($path);
-        } else {
-            $iterator = new \DirectoryIterator($path);
+        $reflectBaseDir = dirname(dirname(dirname(dirname(dirname(__DIR__)))));
+
+        $baseDir   = dirname(dirname(dirname($reflectBaseDir)));
+        $vendorDir = $baseDir . '/vendor';
+
+        if (file_exists($vendorDir) && is_dir($vendorDir)) {
+            // CompatInfo only
+            $namespaces['Bartlett\CompatInfo\Analyser\\']
+                = $baseDir . '/src/Bartlett/CompatInfo/Analyser';
         }
 
         $analysers = array();
-        foreach ($iterator as $file) {
-            if (fnmatch('*Analyser.php', $file->getPathName())) {
-                $name = basename(str_replace('Analyser.php', '', $file->getPathName()));
-                if ('Abstract' !== $name) {
-                    $analysers[strtolower($name)] = self::ANALYSER_DEFAULT_NAMESPACE . basename($file, '.php');
+
+        foreach ($namespaces as $ns => $path) {
+            if (\Phar::running(false)) {
+                $iterator = new \Phar($path);
+            } else {
+                $iterator = new \DirectoryIterator($path);
+            }
+
+            foreach ($iterator as $file) {
+                if (fnmatch('*Analyser.php', $file->getPathName())) {
+                    $name = basename(str_replace('Analyser.php', '', $file->getPathName()));
+                    if ('Abstract' !== $name) {
+                        $analysers[strtolower($name)] = $ns . basename($file, '.php');
+                    }
                 }
             }
         }
-
         return $analysers;
     }
 
