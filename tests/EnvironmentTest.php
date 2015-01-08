@@ -33,8 +33,6 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
 {
     const DIST_RC = 'phpreflect.json.dist';
 
-    protected static $pdo;
-
     /**
      * Sets up the shared fixture.
      *
@@ -43,7 +41,6 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
-        self::$pdo = Environment::initRefDb();
         copy(dirname(__DIR__) . '/bin/' . self::DIST_RC, __DIR__ . '/' . self::DIST_RC);
     }
 
@@ -55,7 +52,6 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        self::$pdo = null;
         unlink(__DIR__ . '/' . self::DIST_RC);
     }
 
@@ -158,31 +154,6 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
             $multipleScanDir,
             getenv("BARTLETT_SCAN_DIR"),
             "Environment variable BARTLETT_SCAN_DIR does not match."
-        );
-    }
-
-    /**
-     * @covers Bartlett\Reflect\Environment::initRefDb
-     *
-     * @return void
-     */
-    public function testInitRefDb()
-    {
-        try {
-            $pdo = Environment::initRefDb();
-
-        } catch (\Exception $e) {
-            $this->fail(
-                'An unexpected ' . get_class($e)
-                . ' exception has been raised with message. '
-                . $e->getMessage()
-            );
-        }
-
-        $this->assertInstanceOf(
-            'PDO',
-            $pdo,
-            'Reference database instance is not PDO'
         );
     }
 }

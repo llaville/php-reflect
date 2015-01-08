@@ -56,31 +56,4 @@ class Environment
             putenv("BARTLETT_SCAN_DIR=" . implode(PATH_SEPARATOR, $dirs));
         }
     }
-
-    /**
-     * Initializes installation of the Reference database
-     *
-     * @return \PDO Instance of pdo_sqlite
-     */
-    public static function initRefDb()
-    {
-        $database = 'compatinfo.sqlite';
-        $tempDir  = sys_get_temp_dir() . '/bartlett';
-
-        if (!file_exists($tempDir)) {
-            mkdir($tempDir);
-        }
-        $source = dirname(__DIR__) . '/' . $database;
-        $dest   = $tempDir . '/' . $database;
-
-        if (!file_exists($dest)
-            || sha1_file($source) !== sha1_file($dest)
-        ) {
-            // install DB only if necessary (missing or modified)
-            copy($source, $dest);
-        }
-
-        $pdo = new \PDO('sqlite:' . $tempDir . '/' . $database);
-        return $pdo;
-    }
 }
