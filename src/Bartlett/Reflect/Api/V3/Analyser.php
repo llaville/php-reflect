@@ -4,7 +4,6 @@ namespace Bartlett\Reflect\Api\V3;
 
 use Bartlett\Reflect;
 use Bartlett\Reflect\Plugin\PluginManager;
-use Bartlett\Reflect\Plugin\CachePlugin;
 
 class Analyser extends Common
 {
@@ -67,8 +66,7 @@ class Analyser extends Common
         $reflect->setEventDispatcher($this->eventDispatcher);
         $reflect->setDataSourceId($this->dataSourceId);
 
-        $path = dirname(dirname(__DIR__)) . '/Analyser';
-        $analysersAvailable = $this->dir($path);
+        $analysersAvailable = $this->dir();
 
         // attach valid analysers only
         foreach ($analysers as $analyserName) {
