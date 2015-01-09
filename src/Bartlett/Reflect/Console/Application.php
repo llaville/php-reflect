@@ -86,8 +86,13 @@ class Application extends BaseApplication
             ),
         );
 
+        $classes = array();
+        if (strcasecmp($appName, 'phpcompatinfo') === 0) {
+            $classes[] = 'Bartlett\CompatInfo\Api\Reference';
+        }
+
         $factory = new CommandFactory($this, $exceptions);
-        $this->addCommands($factory->generateCommands());
+        $this->addCommands($factory->generateCommands($classes));
     }
 
     public function setDispatcher(EventDispatcherInterface $dispatcher)

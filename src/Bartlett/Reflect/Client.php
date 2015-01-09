@@ -37,12 +37,35 @@ class Client
      */
     public function api($name)
     {
-        $class = 'Bartlett\Reflect\Api\\' . ucfirst($name);
+        $classes = array(
+            'Bartlett\Reflect\Api\\' => array(
+                'Analyser',
+                'Cache',
+                'Config',
+                'Plugin',
+                'Reflection',
+            ),
+            'Bartlett\CompatInfo\Api\\' => array(
+                'Reference'
+            ),
+        );
 
-        if (!class_exists($class)) {
+        $class = false;
+
+        foreach ($classes as $ns => $basename) {
+            if (in_array(ucfirst($name), $basename)) {
+                $class = $ns . ucfirst($name);
+                break;
+            }
+        }
+
+        if (!$class || !class_exists($class)) {
             throw new \InvalidArgumentException(
                 sprintf('Unknown Api "%s" requested', $name)
             );
+        }
+        if ($this->client instanceof LocalClient) {
+            $this->client->setNamespace($ns . 'V3');
         }
         return new $class($this->client, $this->token);
     }

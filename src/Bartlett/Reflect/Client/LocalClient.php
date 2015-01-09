@@ -19,12 +19,17 @@ class LocalClient implements ClientInterface
      */
     public function __construct($url = 'Bartlett\Reflect\Api\V3')
     {
-        $this->namespace = $url;
+        $this->setNamespace($url);
     }
 
     public function activatePlugins($register)
     {
         $this->registerPlugins = (bool) $register;
+    }
+
+    public function setNamespace($url)
+    {
+        $this->namespace = $url;
     }
 
     /**

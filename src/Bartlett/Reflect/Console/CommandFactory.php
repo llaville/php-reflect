@@ -48,20 +48,19 @@ class CommandFactory
     public function generateCommands(array $classes = null)
     {
         if (!isset($classes)) {
-            $path = dirname(__DIR__) . '/Api';
-
-            if (\Phar::running(false)) {
-                $iterator = new \Phar($path);
-            } else {
-                $iterator = new \DirectoryIterator($path);
-            }
-
             $classes = array();
+        }
+        $path = dirname(__DIR__) . '/Api';
 
-            foreach ($iterator as $file) {
-                if (fnmatch('*.php', $file->getPathName())) {
-                    $classes[] = Application::API_NAMESPACE . basename($file, '.php');
-                }
+        if (\Phar::running(false)) {
+            $iterator = new \Phar($path);
+        } else {
+            $iterator = new \DirectoryIterator($path);
+        }
+
+        foreach ($iterator as $file) {
+            if (fnmatch('*.php', $file->getPathName())) {
+                $classes[] = Application::API_NAMESPACE . basename($file, '.php');
             }
         }
 
