@@ -10,6 +10,7 @@
         "manifest.txt",
         "LICENSE",
         "vendor/nikic/php-parser/LICENSE",
+        "vendor/sebastian/version/LICENSE",
         "vendor/symfony/console/Symfony/Component/Console/LICENSE",
         "vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher/LICENSE",
         "vendor/symfony/finder/Symfony/Component/Finder/LICENSE",
@@ -31,6 +32,10 @@
         {
             "name": "*.php",
             "in": "vendor/nikic/php-parser/lib"
+        },
+        {
+            "name": "Version.php",
+            "in": "vendor/sebastian/version/src"
         },
         {
             "name": "*.php",
@@ -66,9 +71,9 @@
             "in": "vendor/monolog/monolog/src"
         }
     ],
-    "replacements": { "package_version": "3.0.0-alpha2" },
+    "replacements": { "package_version": "3.0.0-alpha3" },
     "main": "bin/phpreflect",
-    "output": "phpreflect-3.0.0-alpha2.phar",
+    "output": "phpreflect-3.0.0-alpha3.phar",
     "stub": "phar-stub.php",
     "web": false,
     "shebang": false

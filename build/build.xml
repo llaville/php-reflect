@@ -37,6 +37,7 @@
     <fileset dir="${project.dir}" id="phar-contents">
         <include name="LICENSE" />
         <include name="vendor/nikic/php-parser/LICENSE" />
+        <include name="vendor/sebastian/version/LICENSE" />
         <include name="vendor/symfony/console/Symfony/Component/Console/LICENSE" />
         <include name="vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher/LICENSE" />
         <include name="vendor/symfony/finder/Symfony/Component/Finder/LICENSE" />
@@ -52,6 +53,7 @@
 
         <include name="vendor/composer/**/*.php" />
         <include name="vendor/nikic/php-parser/lib/**/*.php" />
+        <include name="vendor/sebastian/version/src/Version.php" />
         <include name="vendor/symfony/**/*.php" />
         <exclude name="**/Tests/**" />
         <include name="vendor/seld/jsonlint/src/**/*.php" />
