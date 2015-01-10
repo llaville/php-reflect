@@ -6,15 +6,7 @@
         }
     ],
     "plugins": [
-        {
-            "name": "Analyser",
-            "class": "Bartlett\\Reflect\\Plugin\\Analyser\\AnalyserPlugin"
-        }
     ],
     "analysers" : [
-        {
-            "name": "Structure",
-            "class": "Bartlett\\Reflect\\Analyser\\StructureAnalyser"
-        }
     ]
 }
