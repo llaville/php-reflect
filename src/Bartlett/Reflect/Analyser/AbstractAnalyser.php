@@ -55,10 +55,18 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
 
     public function getMetrics()
     {
-        $parts = explode('\\', get_class($this));
-        $id    = array_pop($parts);
+        return array($this->getName() => $this->metrics);
+    }
 
-        return array($id => $this->metrics);
+    public function getName()
+    {
+        $parts = explode('\\', get_class($this));
+        return array_pop($parts);
+    }
+
+    public function getShortName()
+    {
+        return strtolower(str_replace('Analyser', '', $this->getName()));
     }
 
     public function beforeTraverse(array $nodes)

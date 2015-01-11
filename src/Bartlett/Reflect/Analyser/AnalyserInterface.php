@@ -30,4 +30,8 @@ interface AnalyserInterface
     public function setCurrentFile($path);
 
     public function getMetrics();
+
+    public function getName();
+
+    public function getShortName();
 }
