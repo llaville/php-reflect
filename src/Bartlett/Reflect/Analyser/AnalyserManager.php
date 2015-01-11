@@ -100,4 +100,19 @@ class AnalyserManager
     {
         return $this->analysers;
     }
+
+    /**
+     * Array representation of all analysers registered.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $array = array();
+
+        foreach ($this->analysers as $analyser) {
+            $array[$analyser->getShortName()] = get_class($analyser);
+        }
+        return $array;
+    }
 }

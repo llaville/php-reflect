@@ -161,4 +161,25 @@ class AnalyserManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('foo', $analyser->getShortName());
     }
+
+    /**
+     * Tests Array representation of all analysers registered.
+     *
+     *  covers Bartlett\Reflect\Analyser\AnalyserManager::toArray
+     *
+     * @depends testContainsOnlyAnalyserInterfaces
+     * @group   analyser
+     * @return  void
+     */
+    public function testToArray()
+    {
+        $this->assertEquals(
+            array(
+                'loc'        => 'Bartlett\Reflect\Analyser\LocAnalyser',
+                'reflection' => 'Bartlett\Reflect\Analyser\ReflectionAnalyser',
+                'structure'  => 'Bartlett\Reflect\Analyser\StructureAnalyser',
+            ),
+            $this->am->toArray()
+        );
+    }
 }
