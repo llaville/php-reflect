@@ -226,7 +226,7 @@ class Reflect extends AbstractDispatcher
 
         // collect metrics of each analyser selected
         foreach ($this->analysers as $analyser) {
-            $metrics = array_merge($metrics, $analyser->getMetrics());
+            $metrics = array_merge($metrics, (array)$analyser->getMetrics());
         }
 
         return $metrics;
