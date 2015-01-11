@@ -62,7 +62,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
      * @group regression
      * @return void
      */
-    public function testBugGH()
+    public function testBugGH4()
     {
         $dataSource = self::$fixtures . self::GH4;
         $analysers  = array('reflection');
