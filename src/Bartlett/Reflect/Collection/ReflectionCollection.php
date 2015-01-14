@@ -10,8 +10,6 @@ use PhpParser\Node;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Closure;
-
 /**
  * Reflection collection that collect models for the reflection analyser.
  */
@@ -38,13 +36,5 @@ class ReflectionCollection extends ArrayCollection
             $model = new ConstantModel($node);
         }
         parent::add($model);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function filter(Closure $p)
-    {
-        return new static(array_filter($this->toArray(), $p), $this->dbal);
     }
 }
