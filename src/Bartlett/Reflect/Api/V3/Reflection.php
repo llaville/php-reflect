@@ -28,6 +28,7 @@ class Reflection extends Common
     public function class_($argument, $source, $alias = null, $return = false)
     {
         $api = new Analyser();
+        $api->setEventDispatcher($this->eventDispatcher);
         $metrics = $api->run($source, array('reflection'), $alias);
 
         $collect = $metrics['ReflectionAnalyser']->filter(
@@ -48,6 +49,7 @@ class Reflection extends Common
     public function function_($argument, $source, $alias = null, $return = false)
     {
         $api = new Analyser();
+        $api->setEventDispatcher($this->eventDispatcher);
         $metrics = $api->run($source, array('reflection'), $alias);
 
         $collect = $metrics['ReflectionAnalyser']->filter(
