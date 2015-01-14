@@ -28,6 +28,7 @@ namespace Bartlett\Reflect\Api;
 class Reflection extends BaseApi
 {
     /**
+     * Reports information about a user class present in a data source.
      *
      * @param string $argument Name of the class to reflect.
      * @param string $source   Path to the data source or its alias.
@@ -43,6 +44,7 @@ class Reflection extends BaseApi
     }
 
     /**
+     * Reports information about a user function present in a data source.
      *
      * @param string $argument Name of the function to reflect.
      * @param string $source   Path to the data source or its alias.
