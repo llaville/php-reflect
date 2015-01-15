@@ -19,9 +19,7 @@ use Bartlett\Reflect;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Console\ConsoleEvents;
-use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Event\ConsoleTerminateEvent;
+
 use Symfony\Component\Stopwatch\Stopwatch;
 
 use Psr\Log\LoggerInterface;
@@ -52,15 +50,11 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Initialize the profiler
      *
-     * @param LoggerInterface $logger    Compatible PSR-3 logger
-     * @param Stopwatch       $stopwatch (optional) Instance of a Stopwatch component
+     * @param LoggerInterface $logger Compatible PSR-3 logger
      */
-    public function __construct(LoggerInterface $logger = null, Stopwatch $stopwatch = null)
+    public function __construct(LoggerInterface $logger = null)
     {
-        if (!isset($stopwatch)) {
-            $stopwatch = new Stopwatch();
-        }
-        $this->stopwatch = $stopwatch;
+        $this->stopwatch = new Stopwatch();
         self::$logger    = $logger;
     }
 
@@ -75,21 +69,15 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        $events = array(
-            ConsoleEvents::COMMAND   => 'onCommandStart',
-            ConsoleEvents::TERMINATE => 'onCommandComplete',
-        );
-
         if (self::$logger) {
-            $events = array_merge(
-                $events,
-                array(
-                    Reflect\Events::PROGRESS => 'onReflectProgress',
-                    Reflect\Events::SUCCESS  => 'onReflectSuccess',
-                    Reflect\Events::ERROR    => 'onReflectError',
-                    Reflect\Events::COMPLETE => 'onReflectComplete',
-                )
+            $events = array(
+                Reflect\Events::PROGRESS => 'onReflectProgress',
+                Reflect\Events::SUCCESS  => 'onReflectSuccess',
+                Reflect\Events::ERROR    => 'onReflectError',
+                Reflect\Events::COMPLETE => 'onReflectComplete',
             );
+        } else {
+            $events = array();
         }
         return $events;
     }
@@ -169,52 +157,6 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
             'Parsing data source {source} completed in {time}',
             array('time' => $this->toTimeString($time), 'source' => $event['source'])
         );
-    }
-
-    /**
-     * Just before executing any command, the ConsoleEvents::COMMAND event
-     * is dispatched.
-     *
-     * @param ConsoleCommandEvent $event A console command started
-     *
-     * @return void
-     */
-    public function onCommandStart(ConsoleCommandEvent $event)
-    {
-        $this->stopwatch->start($event->getCommand()->getName());
-    }
-
-    /**
-     * Just before executing any command, the ConsoleEvents::TERMINATE event
-     * is dispatched.
-     *
-     * @param ConsoleTerminateEvent $event A console command ended
-     *
-     * @return void
-     */
-    public function onCommandComplete(ConsoleTerminateEvent $event)
-    {
-        $command = $event->getCommand();
-
-        $consoleEvent = $this->stopwatch->stop($command->getName());
-
-        $input  = $event->getInput();
-        $output = $event->getOutput();
-
-        if (false === $input->hasParameterOption('--profile')) {
-            return;
-        }
-
-        $time   = $consoleEvent->getDuration();
-        $memory = $consoleEvent->getMemory();
-
-        $text = sprintf(
-            '%s<comment>Time: %s, Memory: %4.2fMb</comment>',
-            PHP_EOL,
-            $this->toTimeString($time),
-            $memory / (1024 * 1024)
-        );
-        $output->writeln($text);
     }
 
     /**
