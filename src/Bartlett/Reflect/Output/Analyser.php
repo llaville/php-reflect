@@ -77,8 +77,13 @@ class Analyser extends OutputFormatter
             if (substr($analyserName, -8) !== 'Analyser') {
                 continue;
             }
-            $outputFormatter = 'Bartlett\Reflect\Console\Formatter\\' .
-                substr($analyserName, 0, -8) . 'OutputFormatter';
+            $baseNamespace = str_replace(
+                'Analyser\\' . basename($analyserName),
+                '',
+                $analyserName
+            );
+            $outputFormatter = $baseNamespace . 'Console\Formatter\\' .
+                substr(basename($analyserName), 0, -8) . 'OutputFormatter';
 
             if (class_exists($outputFormatter)) {
                 $obj = new $outputFormatter();
