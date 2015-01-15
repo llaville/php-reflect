@@ -15,7 +15,6 @@
 namespace Bartlett\Reflect\Console;
 
 use Bartlett\Reflect\Environment;
-use Bartlett\Reflect\Plugin\PluginManager;
 
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -25,6 +24,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\Console\Event\ConsoleTerminateEvent;
+
+use Symfony\Component\Stopwatch\Stopwatch;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -48,9 +52,9 @@ class Application extends BaseApplication
     const OUTPUT_NAMESPACE = 'Bartlett\Reflect\Output\\';
 
     private $release;
-    private $reflect;
     private $container;
-    private $dispatcher;
+    private $eventDispatcher;
+    private $stopwatch;
 
     public function __construct($appName, $appVersion)
     {
@@ -97,7 +101,48 @@ class Application extends BaseApplication
 
     public function setDispatcher(EventDispatcherInterface $dispatcher)
     {
-        $this->dispatcher = $dispatcher;
+        $this->stopwatch = new Stopwatch();
+
+        $dispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $event) {
+            // Just before executing any command
+            $this->stopwatch->start($event->getCommand()->getName());
+        });
+
+        $dispatcher->addListener(ConsoleEvents::TERMINATE, function (ConsoleTerminateEvent $event) {
+            // Just after executing any command
+            $command = $event->getCommand();
+
+            $consoleEvent = $this->stopwatch->stop($command->getName());
+
+            $input  = $event->getInput();
+            $output = $event->getOutput();
+
+            if (false === $input->hasParameterOption('--profile')) {
+                return;
+            }
+
+            $time   = $consoleEvent->getDuration();
+            $memory = $consoleEvent->getMemory();
+
+            $text = sprintf(
+                '%s<comment>Time: %s, Memory: %4.2fMb</comment>',
+                PHP_EOL,
+                $this->toTimeString($time),
+                $memory / (1024 * 1024)
+            );
+            $output->writeln($text);
+        });
+
+        $this->eventDispatcher = $dispatcher;
+        parent::setDispatcher($dispatcher);
+    }
+
+    public function getDispatcher()
+    {
+        if (!$this->eventDispatcher) {
+            $this->setDispatcher(new EventDispatcher());
+        }
+        return $this->eventDispatcher;
     }
 
     public function getLogger()
@@ -164,6 +209,8 @@ class Application extends BaseApplication
             $output->getFormatter()->setStyle('php', new OutputFormatterStyle('white', 'magenta'));
             $output->getFormatter()->setStyle('ext', new OutputFormatterStyle('white', 'blue'));
         }
+
+        $this->getDispatcher();
 
         parent::run($input, $output);
     }
@@ -240,12 +287,32 @@ class Application extends BaseApplication
         return $definition;
     }
 
-    private function createPluginManager()
+    /**
+     * Formats the elapsed time as a string.
+     *
+     * This code has been copied and adapted from phpunit/php-timer
+     *
+     * @param int $time The period duration (in milliseconds)
+     *
+     * @return string
+     */
+    protected function toTimeString($time)
     {
-        if (!$this->dispatcher) {
-            $this->dispatcher = new EventDispatcher();
+        $times = array(
+            'hour'   => 3600000,
+            'minute' => 60000,
+            'second' => 1000
+        );
+
+        $ms = $time;
+
+        foreach ($times as $unit => $value) {
+            if ($ms >= $value) {
+                $time = floor($ms / $value * 100.0) / 100.0;
+                return $time . ' ' . ($time == 1 ? $unit : $unit . 's');
+            }
         }
-        return new PluginManager($this->dispatcher);
+        return $ms . ' ms';
     }
 
     private function createContainer()
