@@ -55,10 +55,11 @@ class OutputFormatter extends BaseOutputFormatter
      */
     public function transformToComposer(OutputInterface $output, $response)
     {
-        if (!isset($response['CompatibilityAnalyser'])) {
+        $analyserId = 'Bartlett\CompatInfo\Analyser\CompatibilityAnalyser';
+        if (!isset($response[$analyserId])) {
             throw new \RuntimeException('Could not render result to Composer format');
         }
-        $compatinfo = $response['CompatibilityAnalyser'];
+        $compatinfo = $response[$analyserId];
 
         // include PHP version
         $composer = array(
