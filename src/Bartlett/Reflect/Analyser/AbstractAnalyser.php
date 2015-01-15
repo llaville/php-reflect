@@ -64,6 +64,11 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
         return array_pop($parts);
     }
 
+    public function getNamespace()
+    {
+        return implode('\\', array_slice(explode('\\', get_class($this)), 0, -1));
+    }
+
     public function getShortName()
     {
         return strtolower(str_replace('Analyser', '', $this->getName()));

@@ -148,6 +148,24 @@ class AnalyserManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests Namespace accessor.
+     *
+     *  covers Bartlett\Reflect\Analyser\AbstractAnalyser::getNamespace
+     *
+     * @group   analyser
+     * @return  void
+     */
+    public function testNamespaceAccessor()
+    {
+        $analyser = new FooAnalyser();
+
+        $this->assertEquals(
+            'Bartlett\Tests\Reflect\Analyser',
+            $analyser->getNamespace()
+        );
+    }
+
+    /**
      * Tests Short Name accessor.
      *
      *  covers Bartlett\Reflect\Analyser\AbstractAnalyser::getName
