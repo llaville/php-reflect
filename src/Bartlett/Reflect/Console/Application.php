@@ -49,7 +49,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class Application extends BaseApplication
 {
     const API_NAMESPACE    = 'Bartlett\Reflect\Api\\';
-    const OUTPUT_NAMESPACE = 'Bartlett\Reflect\Output\\';
 
     private $release;
     private $container;

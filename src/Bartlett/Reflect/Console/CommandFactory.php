@@ -293,7 +293,8 @@ class CommandFactory
 
             // prints response returned
             $classParts      = explode('\\', get_class($api));
-            $outputFormatter = Application::OUTPUT_NAMESPACE . array_pop($classParts);
+            $class           = array_pop($classParts);
+            $outputFormatter = str_replace("\\Api\\$class", "\\Output\\$class", get_class($api));
 
             // handle all Api exceptions when occured
             if ($response instanceof \Exception) {
