@@ -225,6 +225,7 @@ class CommandFactory
 
             $client = new Client($app->getClient());
             $api    = $client->api(strtolower($namespace));
+            $api->setEventDispatcher($app->getDispatcher());
 
             if (true === $input->hasParameterOption('--no-plugins')) {
                 // tells to Api, do not use any plugins
