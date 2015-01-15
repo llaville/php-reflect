@@ -55,7 +55,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
 
     public function getMetrics()
     {
-        return array($this->getName() => $this->metrics);
+        return array(get_class($this) => $this->metrics);
     }
 
     public function getName()
