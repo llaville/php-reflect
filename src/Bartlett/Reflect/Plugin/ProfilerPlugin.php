@@ -15,6 +15,7 @@
 namespace Bartlett\Reflect\Plugin;
 
 use Bartlett\Reflect;
+use Bartlett\Reflect\Plugin\Log\DefaultLogger;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,6 +24,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Plugin to track memory and time consumption.
@@ -55,7 +57,11 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
     public function __construct(LoggerInterface $logger = null)
     {
         $this->stopwatch = new Stopwatch();
-        self::$logger    = $logger;
+
+        if (!isset($logger)) {
+            $logger = new DefaultLogger('DefaultLoggerChannel', LogLevel::INFO, null, array());
+        }
+        self::$logger = $logger;
     }
 
     public function activate(EventDispatcherInterface $eventDispatcher)
@@ -69,16 +75,12 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        if (self::$logger) {
-            $events = array(
-                Reflect\Events::PROGRESS => 'onReflectProgress',
-                Reflect\Events::SUCCESS  => 'onReflectSuccess',
-                Reflect\Events::ERROR    => 'onReflectError',
-                Reflect\Events::COMPLETE => 'onReflectComplete',
-            );
-        } else {
-            $events = array();
-        }
+        $events = array(
+            Reflect\Events::PROGRESS => 'onReflectProgress',
+            Reflect\Events::SUCCESS  => 'onReflectSuccess',
+            Reflect\Events::ERROR    => 'onReflectError',
+            Reflect\Events::COMPLETE => 'onReflectComplete',
+        );
         return $events;
     }
 
