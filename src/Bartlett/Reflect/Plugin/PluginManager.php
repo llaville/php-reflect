@@ -49,6 +49,9 @@ class PluginManager
             if (class_exists($plugin['class'])) {
                 if (isset($plugin['options'])) {
                     $options = $plugin['options'];
+                    if (is_string($options) && class_exists($options)) {
+                        $options = new $options;
+                    }
                 } else {
                     $options = null;
                 }
