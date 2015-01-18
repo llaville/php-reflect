@@ -35,6 +35,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     const GH4 = 'packages.php';
 
     protected static $fixtures;
+    protected static $analyserId;
     protected static $api;
 
     /**
@@ -46,6 +47,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     {
         self::$fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
             . 'fixtures' . DIRECTORY_SEPARATOR;
+
+        self::$analyserId = 'Bartlett\Reflect\Analyser\ReflectionAnalyser';
 
         $client = new Client();
 
@@ -67,7 +70,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $dataSource = self::$fixtures . self::GH4;
         $analysers  = array('reflection');
         $metrics    = self::$api->run($dataSource, $analysers);
-        $models     = $metrics['ReflectionAnalyser'];
+        $models     = $metrics[self::$analyserId];
 
         $c = 0;    // empty namespace, class MyGlobalClass
 

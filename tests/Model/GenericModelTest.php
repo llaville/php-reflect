@@ -54,9 +54,10 @@ abstract class GenericModelTest extends \PHPUnit_Framework_TestCase
         // request for a Bartlett\Reflect\Api\Analyser
         self::$api = $client->api('analyser');
 
+        $analyserId   = 'Bartlett\Reflect\Analyser\ReflectionAnalyser';
         $dataSource   = self::$fixture;
         $analysers    = array('reflection');
         $metrics      = self::$api->run($dataSource, $analysers);
-        self::$models = $metrics['ReflectionAnalyser'];
+        self::$models = $metrics[$analyserId];
     }
 }
