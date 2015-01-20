@@ -1,6 +1,6 @@
 <?php
 /**
- * Common interface to all analysers accessible through the AnalyserPlugin.
+ * Common interface to all analysers accessible through the AnalyserManager.
  *
  * @category PHP
  * @package  PHP_Reflect
