@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Reflection API
  *
  * PHP version 5
  *
@@ -15,7 +15,7 @@
 namespace Bartlett\Reflect\Api;
 
 /**
- *
+ * Reflection API
  *
  * @category PHP
  * @package  PHP_Reflect
