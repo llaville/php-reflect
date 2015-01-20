@@ -1,5 +1,6 @@
 <?php
 /**
+ * The Reflect Reflection Analyser.
  *
  * @category PHP
  * @package  PHP_Reflect
@@ -16,6 +17,8 @@ use Bartlett\Reflect\Collection\ReflectionCollection;
 use PhpParser\Node;
 
 /**
+ * This analyzer collects information about
+ * classes, interfaces, traits, to produce report like PHP Reflection API
  *
  * @category PHP
  * @package  PHP_Reflect
@@ -27,7 +30,6 @@ use PhpParser\Node;
  */
 class ReflectionAnalyser extends AbstractAnalyser
 {
-
     public function __construct()
     {
         $this->metrics = new ReflectionCollection();
