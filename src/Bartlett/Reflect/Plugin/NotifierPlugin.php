@@ -62,6 +62,7 @@ class NotifierPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         $events = array(
+            Events::PROGRESS => 'onNotification',
             Events::ERROR    => 'onNotification',
             Events::COMPLETE => 'onNotification',
         );
@@ -80,12 +81,13 @@ class NotifierPlugin implements PluginInterface, EventSubscriberInterface
     {
         static $start = false;
 
-        if (!$start) {
-            $this->stopwatch->start($event['source']);
-            $start = true;
-        }
-
         switch ($eventName) {
+            case Events::PROGRESS:
+                if (!$start) {
+                    $this->stopwatch->start($event['source']);
+                    $start = true;
+                }
+                return;
             case Events::ERROR:
                 $message = 'Parser has detected an error on file "%filename%". %error%';
                 break;
