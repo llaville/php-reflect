@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Manage plugins
  *
  * PHP version 5
  *
@@ -15,7 +15,7 @@
 namespace Bartlett\Reflect\Api;
 
 /**
- *
+ * Identify all plugins available
  *
  * @category PHP
  * @package  PHP_Reflect
