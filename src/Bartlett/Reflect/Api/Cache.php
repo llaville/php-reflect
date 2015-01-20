@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Manage cache of parsing results
  *
  * PHP version 5
  *
@@ -15,7 +15,7 @@
 namespace Bartlett\Reflect\Api;
 
 /**
- *
+ * Manage cache of parsing results
  *
  * @category PHP
  * @package  PHP_Reflect
