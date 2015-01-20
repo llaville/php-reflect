@@ -65,6 +65,7 @@ class Analyser extends Common
 
     protected function registerAnalysers()
     {
+        $file = 'Bartlett/CompatInfo/Analyser/CompatibilityAnalyser.php';
         $reflectBaseDir = dirname(dirname(dirname(dirname(dirname(__DIR__)))));
 
         $baseDir   = dirname(dirname(dirname($reflectBaseDir)));
@@ -77,7 +78,11 @@ class Analyser extends Common
             $namespaces['Bartlett\CompatInfo\Analyser']
                 = $baseDir . '/src/Bartlett/CompatInfo/Analyser'
             ;
+        } else if ($path = stream_resolve_include_path($file)) {
+            // CompatInfo only, without composer
+            $namespaces['Bartlett\CompatInfo\Analyser'] = dirname($path);
         }
+
         $am = new AnalyserManager($namespaces);
         $am->registerAnalysers();
 
