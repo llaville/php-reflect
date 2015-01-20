@@ -82,20 +82,20 @@ class NotifierPlugin implements PluginInterface, EventSubscriberInterface
         static $start = false;
 
         switch ($eventName) {
-            case Events::PROGRESS :
+            case Events::PROGRESS:
                 $message = 'Parsing file "%filename%" in progress.';
                 if (!$start) {
                     $this->stopwatch->start($event['source']);
                     $start = true;
                 }
                 break;
-            case Events::SUCCESS :
+            case Events::SUCCESS:
                 $message = 'Analyze file "%filename%" successful.';
                 break;
-            case Events::ERROR :
+            case Events::ERROR:
                 $message = 'Parser has detected an error on file "%filename%". %error%';
                 break;
-            case Events::COMPLETE :
+            case Events::COMPLETE:
                 $message  = "Parsing data source \"%source%\" completed.";
                 $appEvent = $this->stopwatch->stop($event['source']);
                 $time     = $appEvent->getDuration();

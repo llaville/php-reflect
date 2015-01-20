@@ -59,8 +59,11 @@ class GrowlNotifier implements NotifierInterface
      *                               Choose either UDP or GNTP protocol,
      *                               host URL, and more ...
      */
-    public function __construct($application = 'phpReflect', $notifications = array(),
-        $password = '', $options = array('protocol' => 'gntp')
+    public function __construct(
+        $application = 'phpReflect',
+        $notifications = array(),
+        $password = '',
+        $options = array('protocol' => 'gntp')
     ) {
         $notifications = array_merge(
             // default notifications
@@ -75,7 +78,10 @@ class GrowlNotifier implements NotifierInterface
         );
 
         $this->growl = \Net_Growl::singleton(
-            $application, $notifications, $password, $options
+            $application,
+            $notifications,
+            $password,
+            $options
         );
     }
 
