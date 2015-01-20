@@ -33,5 +33,7 @@ interface AnalyserInterface
 
     public function getName();
 
+    public function getNamespace();
+
     public function getShortName();
 }
