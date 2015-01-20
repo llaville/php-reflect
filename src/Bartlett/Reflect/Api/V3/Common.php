@@ -1,4 +1,16 @@
 <?php
+/**
+ * Common code to API v3
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+*/
 
 namespace Bartlett\Reflect\Api\V3;
 
@@ -9,6 +21,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Symfony\Component\Finder\Finder;
 
+/**
+ * Common code to API v3
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 3.0.0-alpha1
+ */
 abstract class Common
 {
     protected $dataSourceId;
@@ -30,12 +53,20 @@ abstract class Common
         return $this;
     }
 
+    /**
+     * Allows to disable all plugins declared in the JSON config file
+     *
+     * @param bool $register Activate (default) or not, all plugins declared
+     *
+     * @return void
+     */
     public function activatePlugins($register)
     {
         $this->registerPlugins = (bool) $register;
     }
 
     /**
+     * Global identification of the data source
      *
      * @param string $source Path to the data source (dir, file, archive)
      * @param string $alias  Shortcut that referenced the data source
