@@ -1,4 +1,16 @@
 <?php
+/**
+ * Validates structure of the JSON configuration file.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Api\V3;
 
@@ -7,17 +19,29 @@ use JsonSchema\Validator;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 
+/**
+ * Validates structure of the JSON configuration file.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 3.0.0-alpha1
+ */
 class Config extends Common
 {
-
-    public function __call($name, $args)
-    {
-    }
-
-    public function __invoke($arg)
-    {
-    }
-
+    /**
+     * Validates a JSON configuration file.
+     *
+     * @param string $file Path to json file
+     *
+     * @return array json data
+     * @throws \RuntimeException if configuration file
+     *                           does not exists or not readable
+     * @throws ParsingException  if configuration file is invalid format
+     */
     public function validate($file)
     {
         return $this->getJsonConfigFile($file);
@@ -29,10 +53,9 @@ class Config extends Common
      * @param string $file (optional) Path to a JSON file
      *
      * @return array
-     * @throws \RuntimeException                if configuration file
-     *                                          does not exists or not readable
-     * @throws \Seld\JsonLint\ParsingException  if configuration file
-     *                                          is invalid format
+     * @throws \RuntimeException if configuration file
+     *                           does not exists or not readable
+     * @throws ParsingException  if configuration file is invalid format
      */
     protected function getJsonConfigFile($file)
     {

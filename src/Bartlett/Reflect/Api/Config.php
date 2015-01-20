@@ -32,7 +32,10 @@ class Config extends BaseApi
      *
      * @param string $file Path to {json} file
      *
-     * @return array|string Array when valid json data found, String when an error occured
+     * @return array json data found
+     * @throws \RuntimeException                if configuration file
+     *                                          does not exists or not readable
+     * @throws \Seld\JsonLint\ParsingException  if configuration file is invalid format
      */
     public function validate($file)
     {
