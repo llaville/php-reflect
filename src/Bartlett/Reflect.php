@@ -18,7 +18,6 @@ namespace Bartlett;
 
 use Bartlett\Reflect\Event\AbstractDispatcher;
 use Bartlett\Reflect\Events;
-use Bartlett\Reflect\Plugin\PluginManager;
 use Bartlett\Reflect\PhpParser\Lexer\TokenOffsets;
 
 use PhpParser\Parser;
@@ -54,29 +53,6 @@ class Reflect extends AbstractDispatcher
     public function __construct()
     {
         $this->analysers = array();
-    }
-
-    /**
-     * Defines a plugin manager.
-     *
-     * @param PluginManager $manager
-     *
-     * @return self for fluent interface
-     */
-    public function setPluginManager(PluginManager $manager)
-    {
-        $this->pluginManager = $manager;
-        return $this;
-    }
-
-    /**
-     * Returns instance of the plugin manager.
-     *
-     * @return PluginManager
-     */
-    public function getPluginManager()
-    {
-        return $this->pluginManager;
     }
 
     /**
