@@ -55,6 +55,12 @@ class Application extends BaseApplication
     private $eventDispatcher;
     private $stopwatch;
 
+    /**
+     * Constructor.
+     *
+     * @param string $appName    The name of the application
+     * @param string $appVersion The version of the application
+     */
     public function __construct($appName, $appVersion)
     {
         // disable Garbage Collector
@@ -154,6 +160,9 @@ class Application extends BaseApplication
         return $this->getContainer()->get($this->getName() . '.client');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getVersion()
     {
         $version = parent::getVersion();
@@ -168,6 +177,11 @@ class Application extends BaseApplication
         return $version;
     }
 
+    /**
+     * Gets the application version (long format).
+     *
+     * @return string The application version
+     */
     public function getLongVersion()
     {
         $version = sprintf(
@@ -214,6 +228,9 @@ class Application extends BaseApplication
         parent::run($input, $output);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function doRun(InputInterface $input, OutputInterface $output)
     {
         if (\Phar::running()
@@ -238,6 +255,9 @@ class Application extends BaseApplication
         return $exitCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getDefaultInputDefinition()
     {
         $definition = parent::getDefaultInputDefinition();
