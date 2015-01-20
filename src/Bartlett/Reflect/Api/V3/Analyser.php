@@ -1,4 +1,16 @@
 <?php
+/**
+ * Collect and analyse metrics of parsing results.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+*/
 
 namespace Bartlett\Reflect\Api\V3;
 
@@ -6,6 +18,17 @@ use Bartlett\Reflect;
 use Bartlett\Reflect\Analyser\AnalyserManager;
 use Bartlett\Reflect\Plugin\PluginManager;
 
+/**
+ * Collect and analyse metrics of parsing results.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 3.0.0-alpha1
+ */
 class Analyser extends Common
 {
     public function __call($name, $args)
@@ -15,12 +38,27 @@ class Analyser extends Common
         }
     }
 
+    /**
+     * List all analysers available.
+     *
+     * @return array
+     */
     public function dir()
     {
         $am = $this->registerAnalysers();
         return $am->toArray();
     }
 
+    /**
+     * Analyse a data source and display results.
+     *
+     * @param string $source    Path to the data source or its alias
+     * @param array  $analysers One or more analyser to perform (case insensitive).
+     * @param mixed  $alias     If set, the source refers to its alias
+     *
+     * @return array metrics
+     * @throws \InvalidArgumentException if an analyser required is not installed
+     */
     public function run($source, array $analysers, $alias)
     {
         $finder = $this->findProvider($source, $alias);
@@ -63,6 +101,12 @@ class Analyser extends Common
         return $reflect->parse($finder);
     }
 
+    /**
+     * Registers all analysers
+     * bundled with distribution and declared by user in the JSON config file.
+     *
+     * @return AnalyserManager
+     */
     protected function registerAnalysers()
     {
         $file = 'Bartlett/CompatInfo/Analyser/CompatibilityAnalyser.php';
