@@ -58,10 +58,16 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
         $this->logger = $logger;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function activate(EventDispatcherInterface $eventDispatcher)
     {
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(

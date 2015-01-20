@@ -1,10 +1,33 @@
 <?php
+/**
+ * Default PSR3 compatible logger.
+ *
+ * PHP version 5
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  GIT: $Id$
+ * @link     http://php5.laurent-laville.org/reflect/
+ */
 
 namespace Bartlett\Reflect\Plugin\Log;
 
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;
 
+/**
+ * Default PSR3 compatible logger.
+ *
+ * @category PHP
+ * @package  PHP_Reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version  Release: @package_version@
+ * @link     http://php5.laurent-laville.org/reflect/
+ * @since    Class available since Release 3.0.0-alpha1
+ */
 class DefaultLogger extends AbstractLogger
 {
     private static $levels = array(
@@ -22,6 +45,14 @@ class DefaultLogger extends AbstractLogger
     private $level;
     private $processors;
 
+    /**
+     * Initialize the default log handler
+     *
+     * @param string $name       The logging channel
+     * @param int    $level      The minimum logging level
+     * @param mixed  $handler    Optional handler
+     * @param array  $processors Optional array of processors
+     */
     public function __construct(
         $name = 'DefaultLoggerChannel',
         $level = LogLevel::INFO,
@@ -44,12 +75,28 @@ class DefaultLogger extends AbstractLogger
         $this->processors = $processors;
     }
 
+    /**
+     * Checks whether the given record will be handled by this handler.
+     *
+     * @param array $record The record to handle
+     *
+     * @return bool
+     */
     public function isHandling(array $record)
     {
         $level = array_search($record['level'], self::$levels);
         return $level >= $this->level;
     }
 
+    /**
+     * Adds a log record at an arbitrary level.
+     *
+     * @param mixed  $level   The log level
+     * @param string $message The log message
+     * @param array  $context The log context
+     *
+     * @return void
+     */
     public function log($level, $message, array $context = array())
     {
         $record = array(
@@ -69,6 +116,13 @@ class DefaultLogger extends AbstractLogger
         }
     }
 
+    /**
+     * Handles a record.
+     *
+     * @param array $record The record to handle
+     *
+     * @return void
+     */
     public function handle(array $record)
     {
         error_log(
