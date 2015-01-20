@@ -68,8 +68,6 @@ class GrowlNotifier implements NotifierInterface
         $notifications = array_merge(
             // default notifications
             array(
-                Events::PROGRESS => array('enabled' => false),
-                Events::SUCCESS  => array('enabled' => false),
                 Events::ERROR    => array('enabled' => true, 'sticky' => true),
                 Events::COMPLETE => array('enabled' => true, 'sticky' => true),
             ),
