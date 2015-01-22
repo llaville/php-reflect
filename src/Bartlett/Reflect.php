@@ -26,6 +26,7 @@ use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitor;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\Iterator\CustomFilterIterator;
 
 /**
  * Reflect analyse your source code with the tokenizer extension.
@@ -121,10 +122,74 @@ class Reflect extends AbstractDispatcher
         $parser    = new Parser($lexer);
         $traverser = new NodeTraverser;
         $traverser->addVisitor(new NameResolver);
+        $conditionalCode = false;
 
         // attach all analysers selected
         foreach ($this->analysers as $analyser) {
+            if ('compatibility' == $analyser->getShortName()) {
+                $conditionalCode = true;
+            }
             $traverser->addVisitor($analyser);
+        }
+
+        $queue    = new \SplQueue();
+        $priority = array();
+
+        if ($conditionalCode) {
+
+            // files to process with highest priority
+            $filter = new CustomFilterIterator(
+                $finder->getIterator(),
+                array(
+                    function (\SplFileInfo $fileinfo) {
+                        $content = php_strip_whitespace($fileinfo->getPathname());
+                        return preg_match('/defined/i', $content) > 0;
+                    }
+                )
+            );
+            foreach ($filter as $file) {
+                $path = $file->getPathname();
+                $priority[] = $path;
+                $queue->enqueue($file);
+            }
+
+            $filter = new CustomFilterIterator(
+                $finder->getIterator(),
+                array(
+                    function (\SplFileInfo $fileinfo) {
+                        $content = php_strip_whitespace($fileinfo->getPathname());
+
+                        $patterns = array(
+                            '/extension_loaded/i',
+                            '/function_exists/i',
+                            '/method_exists/i',
+                            '/class_exists/i',
+                            '/interface_exists/i',
+                            '/trait_exists/i',
+                        );
+                        foreach ($patterns as $regexp) {
+                            if (preg_match($regexp, $content) > 0) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                )
+            );
+            foreach ($filter as $file) {
+                $path = $file->getPathname();
+                $priority[] = $path;
+                $queue->enqueue($file);
+            }
+
+            unset($filter);
+        }
+
+        // all other files with lowest priority
+        foreach ($finder as $file) {
+            if (!in_array($file->getPathname(), $priority)) {
+                $queue->enqueue($file);
+            }
         }
 
         $files = array();
@@ -135,7 +200,9 @@ class Reflect extends AbstractDispatcher
         }
 
         // analyse each file of the data source
-        foreach ($finder as $uri => $file) {
+        while (!$queue->isEmpty()) {
+            $file = $queue->dequeue();
+
             $event = $this->dispatch(
                 Events::PROGRESS,
                 array(
