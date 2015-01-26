@@ -143,6 +143,37 @@ class Reflect extends AbstractDispatcher
                 array(
                     function (\SplFileInfo $fileinfo) {
                         $content = php_strip_whitespace($fileinfo->getPathname());
+                        if (preg_match('/define\s*\(/i', $content) > 0) {
+                            // must be confirmed to avoid false positive with string content
+                            $tokens = token_get_all($content);
+
+                            for ($i = 0, $max = count($tokens); $i < $max; $i++) {
+                                if (is_array($tokens[$i])
+                                    && $tokens[$i][0] == T_STRING
+                                    && strcasecmp($tokens[$i][1], 'define') == 0
+                                ) {
+                                    // confirmed by token strategy
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }
+                )
+            );
+            foreach ($filter as $file) {
+                $path = $file->getPathname();
+                $priority[] = $path;
+                $queue->enqueue($file);
+                error_log ( 'QUEUE HI-LEVEL1 ' . $path );
+            }
+
+            // just followed by this other highest priority
+            $filter = new CustomFilterIterator(
+                $finder->getIterator(),
+                array(
+                    function (\SplFileInfo $fileinfo) {
+                        $content = php_strip_whitespace($fileinfo->getPathname());
                         if (preg_match('/defined\s*\(/i', $content) > 0) {
                             // must be confirmed to avoid false positive with string content
                             $tokens = token_get_all($content);
