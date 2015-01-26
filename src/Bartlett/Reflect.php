@@ -143,7 +143,21 @@ class Reflect extends AbstractDispatcher
                 array(
                     function (\SplFileInfo $fileinfo) {
                         $content = php_strip_whitespace($fileinfo->getPathname());
-                        return preg_match('/defined\s*\(/i', $content) > 0;
+                        if (preg_match('/defined\s*\(/i', $content) > 0) {
+                            // must be confirmed to avoid false positive with string content
+                            $tokens = token_get_all($content);
+
+                            for ($i = 0, $max = count($tokens); $i < $max; $i++) {
+                                if (is_array($tokens[$i])
+                                    && $tokens[$i][0] == T_STRING
+                                    && strcasecmp($tokens[$i][1], 'defined') == 0
+                                ) {
+                                    // confirmed by token strategy
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
                     }
                 )
             );
@@ -159,17 +173,32 @@ class Reflect extends AbstractDispatcher
                     function (\SplFileInfo $fileinfo) {
                         $content = php_strip_whitespace($fileinfo->getPathname());
 
-                        $patterns = array(
-                            '/extension_loaded\s*\(/i',
-                            '/function_exists\s*\(/i',
-                            '/method_exists\s*\(/i',
-                            '/class_exists\s*\(/i',
-                            '/interface_exists\s*\(/i',
-                            '/trait_exists\s*\(/i',
+                        $checks = array(
+                            'extension_loaded',
+                            'function_exists',
+                            'method_exists',
+                            'class_exists',
+                            'interface_exists',
+                            'trait_exists',
+                        );
+                        $patterns = array_map(
+                            function($a) { return "/$a\s*\(/i"; },
+                            $checks
                         );
                         foreach ($patterns as $regexp) {
                             if (preg_match($regexp, $content) > 0) {
-                                return true;
+                                // must be confirmed to avoid false positive with string content
+                                $tokens = token_get_all($content);
+
+                                for ($i = 0, $max = count($tokens); $i < $max; $i++) {
+                                    if (is_array($tokens[$i])
+                                        && $tokens[$i][0] == T_STRING
+                                        && in_array(strtolower($tokens[$i][1]), $checks)
+                                    ) {
+                                        // confirmed by token strategy
+                                        return true;
+                                    }
+                                }
                             }
                         }
                         return false;
