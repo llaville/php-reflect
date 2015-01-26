@@ -165,7 +165,6 @@ class Reflect extends AbstractDispatcher
                 $path = $file->getPathname();
                 $priority[] = $path;
                 $queue->enqueue($file);
-                error_log ( 'QUEUE HI-LEVEL1 ' . $path );
             }
 
             // just followed by this other highest priority
@@ -194,8 +193,10 @@ class Reflect extends AbstractDispatcher
             );
             foreach ($filter as $file) {
                 $path = $file->getPathname();
-                $priority[] = $path;
-                $queue->enqueue($file);
+                if (!in_array($path, $priority)) {
+                    $priority[] = $path;
+                    $queue->enqueue($file);
+                }
             }
 
             $filter = new CustomFilterIterator(
@@ -238,8 +239,10 @@ class Reflect extends AbstractDispatcher
             );
             foreach ($filter as $file) {
                 $path = $file->getPathname();
-                $priority[] = $path;
-                $queue->enqueue($file);
+                if (!in_array($path, $priority)) {
+                    $priority[] = $path;
+                    $queue->enqueue($file);
+                }
             }
 
             unset($filter);
