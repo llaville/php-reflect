@@ -143,7 +143,7 @@ class Reflect extends AbstractDispatcher
                 array(
                     function (\SplFileInfo $fileinfo) {
                         $content = php_strip_whitespace($fileinfo->getPathname());
-                        return preg_match('/defined/i', $content) > 0;
+                        return preg_match('/defined\s*\(/i', $content) > 0;
                     }
                 )
             );
@@ -160,12 +160,12 @@ class Reflect extends AbstractDispatcher
                         $content = php_strip_whitespace($fileinfo->getPathname());
 
                         $patterns = array(
-                            '/extension_loaded/i',
-                            '/function_exists/i',
-                            '/method_exists/i',
-                            '/class_exists/i',
-                            '/interface_exists/i',
-                            '/trait_exists/i',
+                            '/extension_loaded\s*\(/i',
+                            '/function_exists\s*\(/i',
+                            '/method_exists\s*\(/i',
+                            '/class_exists\s*\(/i',
+                            '/interface_exists\s*\(/i',
+                            '/trait_exists\s*\(/i',
                         );
                         foreach ($patterns as $regexp) {
                             if (preg_match($regexp, $content) > 0) {
