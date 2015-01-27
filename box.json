@@ -71,9 +71,9 @@
             "in": "vendor/monolog/monolog/src"
         }
     ],
-    "replacements": { "package_version": "3.0.0-alpha3" },
+    "git-version": "package_version",
     "main": "bin/phpreflect",
-    "output": "phpreflect-3.0.0-alpha3.phar",
+    "output": "phpreflect-@git-version@.phar",
     "stub": "phar-stub.php",
     "web": false,
     "shebang": false
