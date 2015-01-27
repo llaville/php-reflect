@@ -16,6 +16,7 @@ namespace Bartlett\Reflect\Plugin;
 
 use Bartlett\Reflect;
 use Bartlett\Reflect\Plugin\Log\DefaultLogger;
+use Bartlett\Reflect\Util\Timer;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -118,7 +119,7 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
 
         self::$logger->info(
             'AST built in {time} on file "{file}"',
-            array('time' => $this->toTimeString($time), 'file' => $filename)
+            array('time' => Timer::toTimeString($time), 'file' => $filename)
         );
     }
 
@@ -137,7 +138,7 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
         self::$logger->error(
             'Parse error in {time} on file "{file"}: {error}',
             array(
-                'time'  => $this->toTimeString($time),
+                'time'  => Timer::toTimeString($time),
                 'file'  => $filename,
                 'error' => $event['error']
             )
@@ -158,35 +159,7 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
 
         self::$logger->notice(
             'Parsing data source {source} completed in {time}',
-            array('time' => $this->toTimeString($time), 'source' => $event['source'])
+            array('time' => Timer::toTimeString($time), 'source' => $event['source'])
         );
-    }
-
-    /**
-     * Formats the elapsed time as a string.
-     *
-     * This code has been copied and adapted from phpunit/php-timer
-     *
-     * @param int $time The period duration (in milliseconds)
-     *
-     * @return string
-     */
-    protected function toTimeString($time)
-    {
-        $times = array(
-            'hour'   => 3600000,
-            'minute' => 60000,
-            'second' => 1000
-        );
-
-        $ms = $time;
-
-        foreach ($times as $unit => $value) {
-            if ($ms >= $value) {
-                $time = floor($ms / $value * 100.0) / 100.0;
-                return $time . ' ' . ($time == 1 ? $unit : $unit . 's');
-            }
-        }
-        return $ms . ' ms';
     }
 }

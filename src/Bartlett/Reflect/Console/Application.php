@@ -15,6 +15,7 @@
 namespace Bartlett\Reflect\Console;
 
 use Bartlett\Reflect\Environment;
+use Bartlett\Reflect\Util\Timer;
 
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -132,7 +133,7 @@ class Application extends BaseApplication
             $text = sprintf(
                 '%s<comment>Time: %s, Memory: %4.2fMb</comment>',
                 PHP_EOL,
-                $this->toTimeString($time),
+                Timer::toTimeString($time),
                 $memory / (1024 * 1024)
             );
             $output->writeln($text);
@@ -304,34 +305,6 @@ class Application extends BaseApplication
             );
         }
         return $definition;
-    }
-
-    /**
-     * Formats the elapsed time as a string.
-     *
-     * This code has been copied and adapted from phpunit/php-timer
-     *
-     * @param int $time The period duration (in milliseconds)
-     *
-     * @return string
-     */
-    protected function toTimeString($time)
-    {
-        $times = array(
-            'hour'   => 3600000,
-            'minute' => 60000,
-            'second' => 1000
-        );
-
-        $ms = $time;
-
-        foreach ($times as $unit => $value) {
-            if ($ms >= $value) {
-                $time = floor($ms / $value * 100.0) / 100.0;
-                return $time . ' ' . ($time == 1 ? $unit : $unit . 's');
-            }
-        }
-        return $ms . ' ms';
     }
 
     private function createContainer()

@@ -16,6 +16,7 @@ namespace Bartlett\Reflect\Plugin;
 
 use Bartlett\Reflect\Events;
 use Bartlett\Reflect\Plugin\Notifier\NotifierInterface;
+use Bartlett\Reflect\Util\Timer;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -99,7 +100,7 @@ class NotifierPlugin implements PluginInterface, EventSubscriberInterface
 
                 $event['profile'] = sprintf(
                     'Time: %s, Memory: %4.2fMb',
-                    $this->toTimeString($time),
+                    Timer::toTimeString($time),
                     $memory / (1024 * 1024)
                 );
                 break;
@@ -130,33 +131,5 @@ class NotifierPlugin implements PluginInterface, EventSubscriberInterface
             '%profile%'   => $event->hasArgument('profile') ? $event['profile'] : '',
             '%message%'   => $event->hasArgument('message') ? $event['message'] : '',
         );
-    }
-
-    /**
-     * Formats the elapsed time as a string.
-     *
-     * This code has been copied and adapted from phpunit/php-timer
-     *
-     * @param int $time The period duration (in milliseconds)
-     *
-     * @return string
-     */
-    protected function toTimeString($time)
-    {
-        $times = array(
-            'hour'   => 3600000,
-            'minute' => 60000,
-            'second' => 1000
-        );
-
-        $ms = $time;
-
-        foreach ($times as $unit => $value) {
-            if ($ms >= $value) {
-                $time = floor($ms / $value * 100.0) / 100.0;
-                return $time . ' ' . ($time == 1 ? $unit : $unit . 's');
-            }
-        }
-        return $ms . ' ms';
     }
 }
