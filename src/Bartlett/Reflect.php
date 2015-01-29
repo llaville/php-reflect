@@ -54,6 +54,7 @@ class Reflect extends AbstractDispatcher
     public function __construct()
     {
         $this->analysers = array();
+        ini_set('xdebug.max_nesting_level', 2000);
     }
 
     /**
