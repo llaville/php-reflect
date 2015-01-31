@@ -45,7 +45,6 @@ use Symfony\Component\Finder\Iterator\CustomFilterIterator;
 class Reflect extends AbstractDispatcher
 {
     private $analysers;
-    private $pluginManager;
     private $dataSourceId;
 
     /**
