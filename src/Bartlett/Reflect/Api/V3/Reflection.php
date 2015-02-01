@@ -57,7 +57,7 @@ class Reflection extends Common
         $api->setEventDispatcher($this->eventDispatcher);
         $metrics = $api->run($source, array('reflection'), $alias);
 
-        $collect = $metrics['ReflectionAnalyser']->filter(
+        $collect = $metrics['Bartlett\Reflect\Analyser\ReflectionAnalyser']->filter(
             function($element) use ($argument) {
                 return $element instanceof Model\ClassModel
                     && $element->getName() === $argument;
@@ -88,7 +88,7 @@ class Reflection extends Common
         $api->setEventDispatcher($this->eventDispatcher);
         $metrics = $api->run($source, array('reflection'), $alias);
 
-        $collect = $metrics['ReflectionAnalyser']->filter(
+        $collect = $metrics['Bartlett\Reflect\Analyser\ReflectionAnalyser']->filter(
             function($element) use ($argument) {
                 return $element instanceof Model\FunctionModel
                     && $element->getName() === $argument;
