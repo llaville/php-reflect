@@ -41,7 +41,20 @@ class Plugin extends OutputFormatter
             $output->writeln('<info>No plugin installed</info>');
         } else {
             $headers = array('Plugin Class', 'Events Subscribed');
-            $this->tableHelper($output, $headers, $response);
+            $rows    = array();
+
+            foreach ($response as $pluginClass => $events) {
+                $first  = true;
+                foreach ($events as $event) {
+                    if (!$first) {
+                        $rows[] = array('', $event);
+                    } else {
+                        $rows[] = array($pluginClass, $event);
+                        $first  = false;
+                    }
+                }
+            }
+            $this->tableHelper($output, $headers, $rows);
         }
     }
 }

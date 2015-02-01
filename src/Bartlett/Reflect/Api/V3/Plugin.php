@@ -56,19 +56,11 @@ class Plugin extends Common
 
         foreach ($plugins as $plugin) {
             if (!$plugin instanceof EventSubscriberInterface) {
-                $rows[] = array(get_class($plugin), '');
-                continue;
+                $events = array();
+            } else {
+                $events = $plugin::getSubscribedEvents();
             }
-            $events = $plugin::getSubscribedEvents();
-            $first  = true;
-            foreach ($events as $event => $function) {
-                if (!$first) {
-                    $rows[] = array('', $event);
-                } else {
-                    $rows[] = array(get_class($plugin), $event);
-                    $first  = false;
-                }
-            }
+            $rows[get_class($plugin)] = array_keys($events);
         }
 
         return $rows;
