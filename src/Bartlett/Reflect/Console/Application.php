@@ -49,6 +49,18 @@ class Application extends BaseApplication
 {
     const API_NAMESPACE    = 'Bartlett\Reflect\Api\\';
 
+    /**
+     * @link http://patorjk.com/software/taag/#p=display&f=Standard&t=phpReflect
+     */
+    protected static $logo = "        _           ____       __ _           _
+  _ __ | |__  _ __ |  _ \ ___ / _| | ___  ___| |_
+ | '_ \| '_ \| '_ \| |_) / _ \ |_| |/ _ \/ __| __|
+ | |_) | | | | |_) |  _ <  __/  _| |  __/ (__| |_
+ | .__/|_| |_| .__/|_| \_\___|_| |_|\___|\___|\__|
+ |_|         |_|
+
+";
+
     private $release;
     private $container;
     private $eventDispatcher;
@@ -147,6 +159,14 @@ class Application extends BaseApplication
             $this->setDispatcher(new EventDispatcher());
         }
         return $this->eventDispatcher;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHelp()
+    {
+        return '<comment>' . static::$logo . '</comment>' . parent::getHelp();
     }
 
     /**
