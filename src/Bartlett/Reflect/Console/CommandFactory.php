@@ -16,6 +16,7 @@ namespace Bartlett\Reflect\Console;
 
 use Bartlett\Reflect\Client;
 use Bartlett\Reflect\Events;
+use Bartlett\Reflect\Environment;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -244,7 +245,7 @@ class CommandFactory
         return function (InputInterface $input, OutputInterface $output) use ($namespace, $method, $app) {
             $methodName = $method->getName();
 
-            $client = new Client($app->getClient());
+            $client = new Client(Environment::getClient());
             $api    = $client->api(strtolower($namespace));
             $api->setEventDispatcher($app->getDispatcher());
 

@@ -52,7 +52,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        unlink(__DIR__ . '/' . self::DIST_RC);
+        @unlink(__DIR__ . '/' . self::DIST_RC);
     }
 
     /**
@@ -154,6 +154,90 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
             $multipleScanDir,
             getenv("BARTLETT_SCAN_DIR"),
             "Environment variable BARTLETT_SCAN_DIR does not match."
+        );
+    }
+
+    /**
+     * @covers Bartlett\Reflect\Environment::getLogger
+     * @runInSeparateProcess
+     *
+     * @return void
+     */
+    public function testDefaultLoggerAccessor()
+    {
+        $singleScanDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin';
+
+        putenv("BARTLETT_SCAN_DIR=$singleScanDir");
+        putenv("BARTLETTRC=" . self::DIST_RC);
+
+        $logger = Environment::getLogger();
+
+        $this->assertInstanceOf(
+            'Psr\Log\LoggerInterface',
+            $logger,
+            'This is not a compatible PSR-3 logger'
+        );
+
+        $this->assertEquals(
+            'Bartlett\Reflect\Plugin\Log\DefaultLogger',
+            get_class($logger),
+            'Default logger does not match.'
+        );
+    }
+
+    /**
+     * @covers Bartlett\Reflect\Environment::getLogger
+     * @runInSeparateProcess
+     *
+     * @return void
+     */
+    public function testCustomLoggerAccessor()
+    {
+        $singleScanDir = __DIR__ . DIRECTORY_SEPARATOR . 'Environment';
+
+        putenv("BARTLETT_SCAN_DIR=$singleScanDir");
+        putenv("BARTLETTRC=phpreflect.json");
+
+        $logger = Environment::getLogger();
+
+        $this->assertInstanceOf(
+            'Psr\Log\LoggerInterface',
+            $logger,
+            'This is not a compatible PSR-3 logger'
+        );
+
+        $this->assertEquals(
+            'Bartlett\Tests\Reflect\Environment\YourLogger',
+            get_class($logger),
+            'Custom logger does not match.'
+        );
+    }
+
+    /**
+     * @covers Bartlett\Reflect\Environment::getClient
+     * @runInSeparateProcess
+     *
+     * @return void
+     */
+    public function testDefaultClientAccessor()
+    {
+        $singleScanDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin';
+
+        putenv("BARTLETT_SCAN_DIR=$singleScanDir");
+        putenv("BARTLETTRC=" . self::DIST_RC);
+
+        $client = Environment::getClient();
+
+        $this->assertInstanceOf(
+            'Bartlett\Reflect\Client\ClientInterface',
+            $client,
+            'This is not a compatible Reflect API client'
+        );
+
+        $this->assertEquals(
+            'Bartlett\Reflect\Client\LocalClient',
+            get_class($client),
+            'Default client does not match.'
         );
     }
 }

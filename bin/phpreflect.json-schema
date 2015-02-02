@@ -62,6 +62,26 @@
                     }
                 }
             }
+        },
+        "services": {
+            "type": "array",
+            "description": "List of services available.",
+            "items": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                    "client": {
+                        "type": "string",
+                        "description": "Client to interact with API.",
+                        "required": false
+                    },
+                    "logger": {
+                        "type": "string",
+                        "description": "Fully qualified class name of a compatible PSR-3 logger.",
+                        "required": false
+                    }
+                }
+            }
         }
     }
 }

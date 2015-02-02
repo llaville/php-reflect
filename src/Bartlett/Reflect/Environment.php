@@ -14,6 +14,8 @@
 
 namespace Bartlett\Reflect;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 /**
 * Application Environment.
 *
@@ -27,6 +29,8 @@ namespace Bartlett\Reflect;
 */
 class Environment
 {
+    protected static $container;
+
     /**
      * Search a json file on a list of scan directory pointed by
      * the BARTLETT_SCAN_DIR env var.
@@ -67,5 +71,75 @@ class Environment
             );
             putenv("BARTLETT_SCAN_DIR=" . implode(PATH_SEPARATOR, $dirs));
         }
+    }
+
+    /**
+     * Gets a client to interact with the API
+     *
+     * @return \Bartlett\Reflect\Client\ClientInterface
+     */
+    public static function getClient()
+    {
+        $prefix = str_replace(array('.json', '.dist'), '', getenv('BARTLETTRC'));
+        return self::getContainer()->get($prefix . '.client');
+    }
+
+    /**
+     * Gets a compatible PSR-3 logger
+     *
+     * @return \Psr\Log\LoggerInterface
+     */
+    public static function getLogger()
+    {
+        $prefix = str_replace(array('.json', '.dist'), '', getenv('BARTLETTRC'));
+        return self::getContainer()->get($prefix . '.logger');
+    }
+
+    private static function createContainer()
+    {
+        // default values
+        $clientClass = 'Bartlett\Reflect\Client\LocalClient';
+        $loggerClass = 'Bartlett\Reflect\Plugin\Log\DefaultLogger';
+
+        $container = new ContainerBuilder();
+
+        $jsonFile = self::getJsonConfigFilename();
+        if ($jsonFile) {
+            $json = file_get_contents($jsonFile);
+            $var  = json_decode($json, true);
+
+            if (isset($var['services'])) {
+                foreach ($var['services'] as $service) {
+                    if (array_key_exists('client', $service)) {
+                        if (class_exists($service['client'])) {
+                            $clientClass = $service['client'];
+                        }
+                    }
+                    if (array_key_exists('logger', $service)) {
+                        if (class_exists($service['logger'])) {
+                            $loggerClass = $service['logger'];
+                        }
+                    }
+                }
+            }
+        }
+
+        $prefix = str_replace(array('.json', '.dist'), '', getenv('BARTLETTRC'));
+
+        // client for interacting with the API
+        $container->register($prefix . '.client', $clientClass);
+
+        // PSR-3 compatible logger
+        $container->register($prefix . '.logger', $loggerClass);
+
+        return $container;
+    }
+
+    private static function getContainer()
+    {
+        if (self::$container === null) {
+            self::$container = self::createContainer();
+        }
+        return self::$container;
     }
 }

@@ -34,8 +34,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 /**
  * Console Application.
  *
@@ -149,16 +147,6 @@ class Application extends BaseApplication
             $this->setDispatcher(new EventDispatcher());
         }
         return $this->eventDispatcher;
-    }
-
-    public function getLogger()
-    {
-        return $this->getContainer()->get($this->getName() . '.logger');
-    }
-
-    public function getClient()
-    {
-        return $this->getContainer()->get($this->getName() . '.client');
     }
 
     /**
@@ -305,33 +293,5 @@ class Application extends BaseApplication
             );
         }
         return $definition;
-    }
-
-    private function createContainer()
-    {
-        $container = new ContainerBuilder();
-
-        // client for interacting with the API
-        $container->register(
-            $this->getName() . '.client',
-            'Bartlett\Reflect\Client\LocalClient'
-        );
-
-        // PSR-3 compatible logger
-        $container->register(
-            $this->getName() . '.logger',
-            'Bartlett\Reflect\Plugin\Log\DefaultLogger'
-        );
-
-        return $container;
-    }
-
-    private function getContainer()
-    {
-        if ($this->container === null) {
-            $this->container = $this->createContainer();
-        }
-
-        return $this->container;
     }
 }

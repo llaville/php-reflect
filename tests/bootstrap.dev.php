@@ -12,6 +12,8 @@ $loader->addClassMap(
             => __DIR__ . '/Analyser/BarAnalyser.php',
         'Bartlett\Tests\Reflect\Model\GenericModelTest'
             => __DIR__ . '/Model/GenericModelTest.php',
+        'Bartlett\Tests\Reflect\Environment\YourLogger'
+            => __DIR__ . '/Environment/YourLogger.php',
         'Bartlett\LoggerTestListener'
             =>  __DIR__ . '/../vendor/bartlett/phpunit-loggertestlistener/src/Bartlett/LoggerTestListener.php',
         'Monolog\Handler\GrowlHandler'
