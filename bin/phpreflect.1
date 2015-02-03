@@ -2,12 +2,12 @@
 .\"     Title: phpreflect
 .\"    Author: [see the "AUTHORS" section]
 .\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
-.\"      Date: 2014-08-21
+.\"      Date: 2015-02-03
 .\"    Manual: \ \&
-.\"    Source: \ \& 2.3.0
+.\"    Source: \ \& 3.0.0-beta1
 .\"  Language: English
 .\"
-.TH "PHPREFLECT" "1" "2014\-08\-21" "\ \& 2\&.3\&.0" "\ \&"
+.TH "PHPREFLECT" "1" "2015\-02\-03" "\ \& 3\&.0\&.0\-beta1" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -34,7 +34,7 @@ phpreflect \- Reverse\-engineer classes, interfaces, functions, constants, names
 \fBphpreflect\fR [\fIoptions\fR] \fIcommand\fR [\fIarguments\fR]
 .SH "DESCRIPTION"
 .sp
-The phpreflect(1) command parse any data source, defined in a json configuration file, to find out elements, such as classes, interfaces, functions, constants, namespaces\&.
+The phpreflect(1) command parse any data source, to find out elements, such as classes, interfaces, functions, constants, namespaces\&.
 .SH "OPTIONS"
 .PP
 \fB\-h, \-\-help\fR
@@ -71,9 +71,24 @@ Disable ANSI output\&.
 .RS 4
 Display timing and memory usage information\&.
 .RE
-.SH "VALIDATE COMMAND"
+.PP
+\fB\-\-progress\fR
+.RS 4
+Show progress bar\&.
+.RE
+.PP
+\fB\-\-output\fR
+.RS 4
+Write results to file or URL\&.
+.RE
+.PP
+\fB\-\-manifest\fR
+.RS 4
+Show which versions of dependencies are bundled (PHAR version only)\&.
+.RE
+.SH "CONFIG:VALIDATE COMMAND"
 .sp
-The phpreflect(1) \fIvalidate\fR command is used to check syntax of your json configuration file
+The phpreflect(1) \fIconfig:validate\fR command is used to check syntax of your json configuration file
 .sp
 Usage:
 .sp
@@ -81,7 +96,7 @@ Usage:
 .RS 4
 .\}
 .nf
-phpreflect validate [file]
+phpreflect config:validate [file]
 .fi
 .if n \{\
 .RE
@@ -108,7 +123,7 @@ Usage:
 .RS 4
 .\}
 .nf
-phpreflect analyser:run [\-\-alias] [\-\-redraw\-freq="\&.\&.\&."] source [analysers1] \&.\&.\&. [analysersN]
+phpreflect analyser:run [\-\-alias] [\-\-format="\&.\&.\&."] source [analysers1] \&.\&.\&. [analysersN]
 .fi
 .if n \{\
 .RE
@@ -118,7 +133,7 @@ Where:
 .PP
 \fBsource\fR
 .RS 4
-Identify a data source declared in a json configuration file (see
+Identify a data source; may be declared in a json configuration file (see
 CONF FILES
 section)
 .RE
@@ -128,26 +143,23 @@ section)
 If set, the source refers to its alias
 .RE
 .PP
-\fB\-\-redraw\-freq\fR
+\fB\-\-format\fR
 .RS 4
-How many times should the progress bar be updated? (default: 1)
+If set, convert result to a specific format\&. (default: "json")
 .RE
 .PP
 \fBanalysers1\fR \&... \fBanalysersN\fR
 .RS 4
 Identify one or more analyser to execute\&. See
 \fIanalyser:list\fR
-command to know what analysers are available\&.
+command to know what analysers are available\&. (default: ["structure"])
 .RE
 .SH "PLUGIN:LIST COMMAND"
 .sp
 The phpreflect(1) \fIplugin:list\fR command is used to show what plugins are installed (see CONF FILES section)\&.
-.SH "PROVIDER:LIST COMMAND"
+.SH "REFLECTION:CLASS COMMAND"
 .sp
-The phpreflect(1) \fIprovider:list\fR command is used to show what data sources are declared in a json configuration file (see CONF FILES section)\&.
-.SH "PROVIDER:SHOW COMMAND"
-.sp
-The phpreflect(1) \fIprovider:show\fR command is used to show files in data sources\&.
+The phpreflect(1) \fIreflection:class\fR command is used to give information about a user class present in a data source\&.
 .sp
 Usage:
 .sp
@@ -155,7 +167,7 @@ Usage:
 .RS 4
 .\}
 .nf
-phpreflect provider:show [\-\-alias] source
+phpreflect reflection:class [\-\-alias] [\-\-return="\&.\&.\&."] argument source
 .fi
 .if n \{\
 .RE
@@ -163,38 +175,14 @@ phpreflect provider:show [\-\-alias] source
 .sp
 Where:
 .PP
-\fBsource\fR
+\fBargument\fR
 .RS 4
-Identify a data source declared in a json configuration file (see
-CONF FILES
-section)
+Name of the class to reflect\&.
 .RE
-.PP
-\fB\-\-alias\fR
-.RS 4
-If set, the source refers to its alias
-.RE
-.SH "PROVIDER:DISPLAY COMMAND"
-.sp
-The phpreflect(1) \fIprovider:display\fR command is used to show source code of a file in a data source\&.
-.sp
-Usage:
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-phpreflect provider:display [\-\-alias] source file
-.fi
-.if n \{\
-.RE
-.\}
-.sp
-Where:
 .PP
 \fBsource\fR
 .RS 4
-Identify a data source declared in a json configuration file (see
+Identify a data source; may be declared in a json configuration file (see
 CONF FILES
 section)
 .RE
@@ -204,9 +192,48 @@ section)
 If set, the source refers to its alias
 .RE
 .PP
-\fBfile\fR
+\fB\-\-format\fR
 .RS 4
-Relative path to a file in the data source
+Format of result to return\&. False when raw text\&. (default: false)
+.RE
+.SH "REFLECTION:FUNCTION COMMAND"
+.sp
+The phpreflect(1) \fIreflection:function\fR command is used to give information about a user function present in a data source\&.
+.sp
+Usage:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+phpreflect reflection:function [\-\-alias] [\-\-return="\&.\&.\&."] argument source
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Where:
+.PP
+\fBargument\fR
+.RS 4
+Name of the function to reflect\&.
+.RE
+.PP
+\fBsource\fR
+.RS 4
+Identify a data source; may be declared in a json configuration file (see
+CONF FILES
+section)
+.RE
+.PP
+\fB\-\-alias\fR
+.RS 4
+If set, the source refers to its alias
+.RE
+.PP
+\fB\-\-format\fR
+.RS 4
+Format of result to return\&. False when raw text\&. (default: false)
 .RE
 .SH "EXIT STATUS"
 .PP
@@ -231,8 +258,10 @@ A configuration file contains data sources that can be analysed, but also option
 .sp -1
 .IP "  1." 4.2
 .\}
-The CONF_FILE specified by the environment variable
-REFLECT\&.
+The CONF_FILE specified by the environment variables
+BARTLETTRC
+and
+BARTLETT_SCAN_DIR\&.
 .RE
 .sp
 .RS 4
@@ -285,7 +314,7 @@ The Command\-Line Interface (CLI) version was introduced in version 2\&.0 and is
 Main web site: http://php5\&.laurent\-laville\&.org/reflect/
 .SH "COPYRIGHT"
 .sp
-Copyright (C) 2011\-2014 Laurent Laville\&.
+Copyright (C) 2011\-2015 Laurent Laville\&.
 .SH "LICENSE"
 .sp
 Free use of this software is granted under the terms of the BSD 3\-clause license\&.
