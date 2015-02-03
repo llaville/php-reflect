@@ -22,30 +22,61 @@ when you invoke the `phpreflect` command, you should obtain the following comman
 
 [role="output"]
 ----
-phpReflect version 2.5.0
+        _           ____       __ _           _
+  _ __ | |__  _ __ |  _ \ ___ / _| | ___  ___| |_
+ | '_ \| '_ \| '_ \| |_) / _ \ |_| |/ _ \/ __| __|
+ | |_) | | | | |_) |  _ <  __/  _| |  __/ (__| |_
+ | .__/|_| |_| .__/|_| \_\___|_| |_|\___|\___|\__|
+ |_|         |_|
+
+phpReflect version 3.0.0-beta1
 
 Usage:
-  [options] command [arguments]
+ [options] command [arguments]
 
 Options:
-  --help           -h Display this help message.
-  --quiet          -q Do not output any message.
-  --verbose        -v|vv|vvv Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
-  --version        -V Display this application version.
-  --ansi              Force ANSI output.
-  --no-ansi           Disable ANSI output.
-  --no-interaction -n Do not ask any interactive question.
-  --profile           Display timing and memory usage information.
+ --help (-h)           Display this help message
+ --quiet (-q)          Do not output any message
+ --verbose (-v|vv|vvv) Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+ --version (-V)        Display this application version
+ --ansi                Force ANSI output
+ --no-ansi             Disable ANSI output
+ --no-interaction (-n) Do not ask any interactive question
+ --no-plugins          Disables all plugins.
+ --profile             Display timing and memory usage information.
+ --progress            Show progress bar.
+ --output              Write results to file or URL.
+ --manifest            Show which versions of dependencies are bundled.
 
 Available commands:
-  help               Displays help for a command
-  list               Lists commands
+ help                  Displays help for a command
+ list                  Lists commands
+analyser
+ analyser:list         List all analysers available.
+ analyser:run          Analyse a data source and display results.
+cache
+ cache:clear           Clear cache (any adapter and backend).
+config
+ config:validate       Validates a JSON configuration file.
 plugin
-  plugin:list        List all plugins installed.
-provider
-  provider:display   Show source of a file in a data source.
-  provider:list      List all data source providers.
-  provider:show      Show list of files in a data source.
+ plugin:list           List all plugins installed.
+reflection
+ reflection:class      Reports information about a user class present in a data source.
+ reflection:function   Reports information about a user function present in a data source.
+----
+
+[horizontal]
+config:validate::
+Validates an optional JSON config file.
++
+[source,bash]
+----
+$ phpreflect config:validate
+----
++
+[role="output"]
+----
+"/etc/phpreflect.json" config file is valid.
 ----
 
 [horizontal]
@@ -60,124 +91,30 @@ $ phpreflect plugin:list
 +
 [role="output"]
 ----
- [Json Configuration]
- No plugins detected.
+No plugin installed.
 ----
 +
 [source,bash]
-.With only `Analyser` plugin configured, you will get
+.With only `Cache` plugin configured, you will get
 ----
 $ phpreflect plugin:list
 ----
 +
 [role="output"]
 ----
- Plugin Name Plugin Class                                    Events Subscribed
- Analyser    Bartlett\Reflect\Plugin\Analyser\AnalyserPlugin reflect.complete
+ Plugin Class                           Events Subscribed
+ Bartlett\Reflect\Plugin\CachePlugin    reflect.progress
+                                        reflect.success
+                                        reflect.complete 
 ----
-
-provider:list::
-List all data source providers configured in `source-providers` section of your `phpreflect.json` config file.
-+
-[source,bash]
-.Result may vary depending of your current directory, but you will get something like
-----
-$ phpreflect provider:list
-----
-+
-[role="output"]
-----
- Source Alias   Files
- .      current     46
-----
-
-provider:show::
-Show list of files corresponding to the (Symfony) Finder rules defined.
-+
-[source,bash]
-.With Reflect source files
-----
-$ phpreflect provider:show .
-----
-+
-[source,bash]
-.Possible alternative
-----
-$ phpreflect provider:show --alias current
-----
-+
-[role="output"]
-----
- Source                                                  Files
- .                                                       46
- Relative Path Name                                      Date                      Size
- Bartlett\Reflect\Analyser\AbstractAnalyser.php          2014-02-03T17:25:07+01:00    3475
- Bartlett\Reflect\Analyser\AnalyserInterface.php         2014-02-03T17:26:50+01:00     835
- Bartlett\Reflect\Analyser\StructureAnalyser.php         2014-02-23T17:31:16+01:00   12798
-
- <... more lines ...>
-----
-
-provider:display::
-Show source code of a file in one of the data source identified.
-+
-[source,bash]
-.With `Bartlett\Reflect.php` in the 'current' data source
-----
-$ phpreflect provider:display . Bartlett\Reflect.php
-----
-+
-[source,bash]
-.Possible alternative
-----
-$ phpreflect provider:display --alias current Bartlett\Reflect.php
-----
-+
-[role="output"]
-----
- Source
- .
- Relative Path Name Date Size
- Id    Token                          Line  Text
-     0 T_OPEN_TAG                         1 <?php
-     1 T_DOC_COMMENT                      2 /** * Reflect * Reverse-engineer
-     2 T_WHITESPACE                      15
-     3 T_NAMESPACE                       17 namespace
-     4 T_WHITESPACE                      17
-     5 T_STRING                          17 Bartlett
-     6 T_SEMICOLON                       17 ;
-
- <... more lines ...>
-----
-
-When the `Analyser` plugin is installed, following lines added into `analysers` section
-[source,json]
-----
-    {
-        "name": "Analyser",
-        "class": "Bartlett\\Reflect\\Plugin\\Analyser\\AnalyserPlugin"
-    }
-----
-you will get two additionnal commands.
 
 [horizontal]
 analyser:list::
-List all analysers configured in `analysers` section of your `phpreflect.json` config file.
+List all analysers configured in `analysers` section of your `phpreflect.json` config file, 
+and available by default.
 +
 [source,bash]
-.Without analysers, you will get
-----
-$ phpreflect analyser:list
-----
-+
-[role="output"]
-----
- [Json Configuration]
- No analysers detected.
-----
-+
-[source,bash]
-.With only `Analyser` plugin configured, you will get
+.With only default analysers, you will get
 ----
 $ phpreflect analyser:list
 ----
@@ -185,9 +122,11 @@ $ phpreflect analyser:list
 [role="output"]
 ----
  Analyser Name Analyser Class
- Structure     Bartlett\Reflect\Analyser\StructureAnalyser
+ loc           Bartlett\Reflect\Analyser\LocAnalyser
+ reflection    Bartlett\Reflect\Analyser\ReflectionAnalyser
+ structure     Bartlett\Reflect\Analyser\StructureAnalyser 
 ----
-
++
 analyser:run::
 Parse a data source and display results. May wary depending of the data source and analyser used.
 +
@@ -198,7 +137,7 @@ $ phpreflect analyser:run .
 ----
 +
 [source,bash]
-.Possible alternative
+.Possible alternative (if you use the default json config file)
 ----
 $ phpreflect analyser:run --alias current
 ----
@@ -208,92 +147,21 @@ $ phpreflect analyser:run --alias current
 include::structure_analysis.out.asciidoc[]
 ----
 
-When the `plantUML` plugin is installed, following lines added into `plugins` section
-[source,json]
-----
-    {
-        "name": "PlantUML",
-        "class": "Bartlett\\Reflect\\Plugin\\PlantUML\\PlantUMLPlugin"
-    }
-----
-you will get one additionnal command.
-
 [horizontal]
-plantUML:run::
-Parse a data source and draw corresponding UML diagrams (package or class)
-with the http://plantuml.sourceforge.net/[PlantUML] syntax.
+reflection:class::
+Reports information about a user class present in a data source.
 +
 [source,bash]
-.Build a package diagram corresponding to `Bartlett\Reflect\Model`
+.With the Reflect source code (`./src`), and `Bartlett\Reflect` class
 ----
-$ phpreflect plantUML:run --package=Bartlett\Reflect\Model .
-----
-+
-[source,bash]
-.Possible Alternative
-----
-$ phpreflect plantUML:run --package=Bartlett\Reflect\Model --alias current
+$ phpreflect reflection:class Bartlett\Reflect ./src
 ----
 +
 [role="output"]
 ----
-PlantUML package diagram
+include::reflection_class.out.asciidoc[]
+----
 
-include::packageDiagram.plantuml[]
-----
-+
-It's now time to produce PNG images. Put previous PlantUML code syntax into a text file (e.g named +packageDiagram.plantuml+),
-and run the following command.
-+
-[source,bash]
-----
-$ java -jar plantuml.jar packageDiagram.plantuml
-----
-+
-And you should obtain a PNG image like this one
-+
-ifdef::basebackend-docbook[]
-image:plantUML_packageDiag.png[alt="Package UML diagram",scale="60"]
-endif::basebackend-docbook[]
-ifndef::basebackend-docbook[]
-image::plantUML_packageDiag.png[alt="Package UML diagram",options="responsive"]
-endif::basebackend-docbook[]
-+
-[source,bash]
-.Build a class diagram corresponding to `Bartlett\Reflect\Builder`
-----
-$ phpreflect plantUML:run --class=Bartlett\Reflect\Builder .
-----
-+
-[source,bash]
-.Possible Alternative
-----
-$ phpreflect plantUML:run --class=Bartlett\Reflect\Builder --alias current
-----
-+
-[role="output"]
-----
-PlantUML class diagram
-
-include::classDiagram.plantuml[]
-----
-+
-It's now time to produce PNG images. Put previous PlantUML code syntax into a text file (e.g named +classDiagram.plantuml+),
-and run the following command.
-+
-[source,bash]
-----
-$ java -jar plantuml.jar classDiagram.plantuml
-----
-+
-And you should obtain a PNG image like this one
-+
-ifdef::basebackend-docbook[]
-image:plantUML_classDiag.png[alt="Class UML diagram",scale="60"]
-endif::basebackend-docbook[]
-ifndef::basebackend-docbook[]
-image::plantUML_classDiag.png[alt="Class UML diagram",options="responsive"]
-endif::basebackend-docbook[]
 
 == Summary
 
@@ -302,7 +170,6 @@ Let's review what we've learned about the command-line interface :
 
 * It's a Symfony http://symfony.com/doc/current/components/console/index.html[Console Component] that can be extended to infinite via plugins and analysers.
 * Default analyser produced results such as https://github.com/sebastianbergmann/phploc[PHPLoc] by Sebastian Bergmann.
-* May generate class and package UML diagrams with http://plantuml.sourceforge.net/[PlantUML].
 
 ifdef::basebackend-bootstrap[]
 == Next

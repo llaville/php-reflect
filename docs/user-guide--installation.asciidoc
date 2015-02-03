@@ -24,13 +24,14 @@ in case you are upgrading from a version 1.x of PHP Reflect.
 === Requirements
 
 Before you install PHP [label label-primary]#Reflect#, you will need an operating system
-with http://www.php.net[PHP] 5.3.0 or later installed,
+with http://www.php.net[PHP] 5.3.2 or later installed,
 
 [label label-primary]#Reflect# requires the
 http://www.php.net/manual/en/book.datetime.php[date],
 http://www.php.net/manual/en/book.json.php[json],
 http://www.php.net/manual/en/book.reflection.php[reflection],
 http://www.php.net/manual/en/book.tokenizer.php[tokenizer],
+http://www.php.net/manual/en/book.phar.php[phar],
 http://www.php.net/manual/en/book.pcre.php[pcre], and
 http://www.php.net/manual/en/book.spl.php[spl] extensions.
 These extensions are usually compiled and enabled by default.
@@ -42,7 +43,7 @@ Put a file named [label label-default]#composer.json# at the root of your projec
 ----
 {
     "require": {
-        "bartlett/php-reflect": "~2.6"
+        "bartlett/php-reflect": "3.0.0-beta1"
     }
 }
 ----
@@ -67,9 +68,9 @@ This is the equivalent of doing a git clone checkout followed by a composer inst
 
 [source,bash]
 ----
-$ php composer.phar create-project bartlett/php-reflect /path/to 2.6.0
+$ php composer.phar create-project bartlett/php-reflect /path/to/install 3.0.0-beta1
 ----
-Where +/path/to+ is your install directory.
+Where +/path/to/install+ is your install directory.
 ====
 
 === PHAR
@@ -80,17 +81,17 @@ bundled in a single file.
 
 [source,bash]
 ----
-$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.6.0.phar
-$ chmod +x phpreflect-2.6.0.phar
-$ mv phpreflect-2.6.0.phar /usr/local/bin/phpreflect
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-3.0.0-beta1.phar
+$ chmod +x phpreflect-3.0.0-beta1.phar
+$ mv phpreflect-3.0.0-beta1.phar /usr/local/bin/phpreflect
 $ phpreflect
 ----
 
 You can also immediately use the PHAR after you have downloaded it.
 [source,bash]
 ----
-$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.6.0.phar
-$ php phpreflect-2.6.0.phar
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-3.0.0-beta1.phar
+$ php phpreflect-3.0.0-beta1.phar
 ----
 
 ifdef::basebackend-bootstrap[]
