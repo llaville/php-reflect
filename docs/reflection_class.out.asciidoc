@@ -1,0 +1,58 @@
+Class [ <user> class Bartlett\Reflect extends Bartlett\Reflect\Event\AbstractDispatcher ] {
+  @@ C:\home\github\php-reflect\src\Bartlett\Reflect.php 45 - 340
+
+  - Constants [0] {
+  }
+
+  - Properties [2] {
+    Property [ private $analysers ]
+    Property [ private $dataSourceId ]
+  }
+
+  - Methods [6] {
+    Method [ <user> public method __construct ] {
+      @@ C:\home\github\php-reflect\src\Bartlett\Reflect.php 53 - 57
+
+      - Parameters [0] {
+      }
+    }
+
+    Method [ <user> public method addAnalyser ] {
+      @@ C:\home\github\php-reflect\src\Bartlett\Reflect.php 66 - 71
+
+      - Parameters [1] {
+        Parameter #0 [ <required> PhpParser\NodeVisitor $analyser ]
+      }
+    }
+
+    Method [ <user> public method getAnalysers ] {
+      @@ C:\home\github\php-reflect\src\Bartlett\Reflect.php 78 - 81
+
+      - Parameters [0] {
+      }
+    }
+
+    Method [ <user> public method setDataSourceId ] {
+      @@ C:\home\github\php-reflect\src\Bartlett\Reflect.php 90 - 94
+
+      - Parameters [1] {
+        Parameter #0 [ <required> $id ]
+      }
+    }
+
+    Method [ <user> public method getDataSourceId ] {
+      @@ C:\home\github\php-reflect\src\Bartlett\Reflect.php 101 - 104
+
+      - Parameters [0] {
+      }
+    }
+
+    Method [ <user> public method parse ] {
+      @@ C:\home\github\php-reflect\src\Bartlett\Reflect.php 113 - 339
+
+      - Parameters [1] {
+        Parameter #0 [ <required> Symfony\Component\Finder\Finder $finder ]
+      }
+    }
+  }
+}

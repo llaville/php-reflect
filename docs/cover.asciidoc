@@ -8,7 +8,7 @@ include::attributes.asciidoc[]
 :stylesheet:  cover.css
 
 
-== PHP Reflect 2
+== PHP Reflect 3
 
 [role="cover"]
 --
