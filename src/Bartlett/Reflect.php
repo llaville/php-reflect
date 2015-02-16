@@ -53,7 +53,6 @@ class Reflect extends AbstractDispatcher
     public function __construct()
     {
         $this->analysers = array();
-        ini_set('xdebug.max_nesting_level', 2000);
     }
 
     /**
@@ -316,7 +315,7 @@ class Reflect extends AbstractDispatcher
                 array(
                     'source' => $this->dataSourceId,
                     'file'   => $file,
-                    'ast'    => serialize($stmts),
+                    'ast'    => $stmts,
                 )
             );
         }

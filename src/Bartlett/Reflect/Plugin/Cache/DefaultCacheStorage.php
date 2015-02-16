@@ -95,8 +95,7 @@ class DefaultCacheStorage implements CacheStorageInterface
         }
 
         $manifest = null;
-        $entries  = unserialize($this->entries);
-        foreach ($entries as $index => $entry) {
+        foreach ($this->entries as $index => $entry) {
             if ($entry['sourceFile'] === $request['file']->getPathname()) {
                 $manifest = $entry;
                 break;  // we found entry in cache corresponding to current filename
@@ -120,9 +119,9 @@ class DefaultCacheStorage implements CacheStorageInterface
 
         if ($response === false) {
             // Remove the entry from the metadata and update the cache
-            unset($entries[$index]);
-            if (count($entries)) {
-                $this->cache->save($this->key, serialize($entries));
+            unset($this->entries[$index]);
+            if (count($this->entries)) {
+                $this->cache->save($this->key, $this->entries);
             } else {
                 $this->cache->delete($this->key);
             }
@@ -144,7 +143,7 @@ class DefaultCacheStorage implements CacheStorageInterface
         $entries     = array();
 
         if ($this->exists($request)) {
-            foreach (unserialize($this->entries) as $entry) {
+            foreach ($this->entries as $entry) {
                 if ($entry['expiration'] < $currentTime) {
                     // remove expired entry from the metadata
                     continue;
@@ -168,7 +167,7 @@ class DefaultCacheStorage implements CacheStorageInterface
                 'sourceFile' => $request['file']->getPathname()
             )
         );
-        $this->cache->save($this->key, serialize($entries));
+        $this->cache->save($this->key, $entries);
 
         // save user data
         $this->cache->save($key, $request['ast']);
@@ -186,7 +185,7 @@ class DefaultCacheStorage implements CacheStorageInterface
         $entriesCleared = 0;
 
         if ($this->exists($request)) {
-            foreach (unserialize($this->entries) as $entry) {
+            foreach ($this->entries as $entry) {
                 if ($entry['cacheData']) {
                     // delete each results of the manifest
                     if ($this->cache->delete($entry['cacheData'])) {

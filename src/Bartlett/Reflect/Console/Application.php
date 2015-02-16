@@ -16,6 +16,7 @@ namespace Bartlett\Reflect\Console;
 
 use Bartlett\Reflect\Environment;
 use Bartlett\Reflect\Util\Timer;
+use Bartlett\Reflect\Event\CacheAwareEventDispatcher;
 
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -31,7 +32,6 @@ use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 
 use Symfony\Component\Stopwatch\Stopwatch;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -156,7 +156,7 @@ class Application extends BaseApplication
     public function getDispatcher()
     {
         if (!$this->eventDispatcher) {
-            $this->setDispatcher(new EventDispatcher());
+            $this->setDispatcher(new CacheAwareEventDispatcher());
         }
         return $this->eventDispatcher;
     }

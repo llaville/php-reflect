@@ -101,8 +101,8 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
     {
         if ($response = $this->storage->fetch($event)) {
             ++$this->stats[self::STATS_HITS];
-            $this->hashUserData = sha1($response);
-            $event['notModified'] = unserialize($response);
+            $this->hashUserData = sha1(serialize($response));
+            $event['notModified'] = $response;
         } else {
             $this->hashUserData = null;
         }
@@ -117,7 +117,7 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
      */
     public function onReflectSuccess(GenericEvent $event)
     {
-        if (sha1($event['ast']) !== $this->hashUserData) {
+        if (sha1(serialize($event['ast'])) !== $this->hashUserData) {
             // cache need to be refresh
             ++$this->stats[self::STATS_MISSES];
             $this->storage->cache($event);
