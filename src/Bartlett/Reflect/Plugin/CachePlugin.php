@@ -217,9 +217,12 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
         return $cache;
     }
 
-    private static function replaceTokens($args)
+    protected static function replaceTokens($args)
     {
         for ($a = 0, $max = count($args); $a < $max; $a++) {
+            if (!is_string($args[$a])) {
+                continue;
+            }
             // Expands variable from Environment on each argument
             $count = preg_match_all("/%{([^}]*)}/", $args[$a], $reg);
             for ($i = 0; $i < $count; $i++) {
