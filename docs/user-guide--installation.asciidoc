@@ -43,7 +43,7 @@ Put a file named [label label-default]#composer.json# at the root of your projec
 ----
 {
     "require": {
-        "bartlett/php-reflect": "3.0.0-beta1"
+        "bartlett/php-reflect": "3.0.0-beta2"
     }
 }
 ----
@@ -68,7 +68,7 @@ This is the equivalent of doing a git clone checkout followed by a composer inst
 
 [source,bash]
 ----
-$ php composer.phar create-project bartlett/php-reflect /path/to/install 3.0.0-beta1
+$ php composer.phar create-project bartlett/php-reflect /path/to/install 3.0.0-beta2
 ----
 Where +/path/to/install+ is your install directory.
 ====
@@ -81,17 +81,17 @@ bundled in a single file.
 
 [source,bash]
 ----
-$ wget http://bartlett.laurent-laville.org/get/phpreflect-3.0.0-beta1.phar
-$ chmod +x phpreflect-3.0.0-beta1.phar
-$ mv phpreflect-3.0.0-beta1.phar /usr/local/bin/phpreflect
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-3.0.0-beta2.phar
+$ chmod +x phpreflect-3.0.0-beta2.phar
+$ mv phpreflect-3.0.0-beta2.phar /usr/local/bin/phpreflect
 $ phpreflect
 ----
 
 You can also immediately use the PHAR after you have downloaded it.
 [source,bash]
 ----
-$ wget http://bartlett.laurent-laville.org/get/phpreflect-3.0.0-beta1.phar
-$ php phpreflect-3.0.0-beta1.phar
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-3.0.0-beta2.phar
+$ php phpreflect-3.0.0-beta2.phar
 ----
 
 ifdef::basebackend-bootstrap[]

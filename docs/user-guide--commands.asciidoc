@@ -29,7 +29,7 @@ when you invoke the `phpreflect` command, you should obtain the following comman
  | .__/|_| |_| .__/|_| \_\___|_| |_|\___|\___|\__|
  |_|         |_|
 
-phpReflect version 3.0.0-beta1
+phpReflect version 3.0.0-beta2
 
 Usage:
  [options] command [arguments]
@@ -128,7 +128,7 @@ $ phpreflect analyser:list
 ----
 +
 analyser:run::
-Parse a data source and display results. May wary depending of the data source and analyser used.
+Parse a data source and display results. May vary depending of the data source and analyser used.
 +
 [source,bash]
 .With `structure` analyser and the Reflect source code, you will get something like
