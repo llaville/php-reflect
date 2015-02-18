@@ -3,22 +3,26 @@
 :description: Reverse-engineer classes, interfaces, functions, constants, namespaces and more.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
-:stable:      2.6.2
+:stable:        2.6.2
+:stablePubDate: January 5, 2015
+:dev:           3.0.0-beta1
+:devPubDate:    February 3, 2015
 :toc!:
 :toc2!:
 :navbar!:
+:jumboinfo:
 
 
-== Releases _currently v{stable}_
+== Releases
 
 [role="col-md-6"]
 ====
 [panel,primary]
 .v2
 --
-[bg-primary]*Stable Release*
+*Stable Release* [label label-primary]#{stable}#
 
-Last branch 2 release was published on January 5, 2015.
+It was published on {stablePubDate}.
 
 ifdef::basebackend-bootstrap[]
 link:./manual/current/en/getting-started.html["Learn more",role="primary",options="block"]
@@ -32,12 +36,12 @@ endif::[]
 
 [role="col-md-6"]
 ====
-[panel,warning]
+[panel,danger]
 .v3
 --
-[bg-warning]*Beta Release*
+*Beta Release* [label label-danger]#{dev}#
 
-First beta release was published on February 3, 2015.
+It was published on {devPubDate}.
 
 ifdef::basebackend-bootstrap[]
 link:./manual/3.0/en/getting-started.html["Learn more",role="primary",options="block"]
