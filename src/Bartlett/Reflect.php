@@ -135,7 +135,6 @@ class Reflect extends AbstractDispatcher
         $priority = array();
 
         if ($conditionalCode) {
-
             // files to process with highest priority
             $filter = new CustomFilterIterator(
                 $finder->getIterator(),
@@ -213,7 +212,9 @@ class Reflect extends AbstractDispatcher
                             'trait_exists',
                         );
                         $patterns = array_map(
-                            function($a) { return "/$a\s*\(/i"; },
+                            function($a) {
+                                return "/$a\s*\(/i";
+                            },
                             $checks
                         );
                         foreach ($patterns as $regexp) {
