@@ -36,7 +36,7 @@ $dispatcher->addListener(
     }
 );
 
-// perform request, on a data source with two analysers (structure, loc)
+// perform request, on a data source with default analyser (structure)
 $dataSource = dirname(__DIR__) . '/src';
 $analysers  = array('structure');
 
