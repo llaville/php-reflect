@@ -2,6 +2,7 @@
 :description: PHP Reflect Book
 include::attributes.asciidoc[]
 :navbar!:
+:themeswitcher!:
 :jumbotron!:
 :toc!:
 :toc2!:

@@ -92,7 +92,7 @@ They are used to register one or more event listeners to methods of the class.
 Event subscribers tell event dispatcher exactly which events to listen to and what method to invoke on the class.
 
 [label label-primary]#Reflect# plugins follow the event subscribers behaviors.
-Have a look on AnalyserPlugin :
+Have a look on NotifierPlugin :
 
 [source,php]
 ----
@@ -100,13 +100,16 @@ Have a look on AnalyserPlugin :
 
 use Bartlett\Reflect\Events;
 
-class AnalyserPlugin implements EventSubscriberInterface
+class NotifierPlugin implements PluginInterface, EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        return array(
-            Events::COMPLETE => 'onReflectComplete',
+        $events = array(
+            Events::PROGRESS => 'onNotification',
+            Events::ERROR    => 'onNotification',
+            Events::COMPLETE => 'onNotification',
         );
+        return $events;
     }
 }
 ----
@@ -114,7 +117,7 @@ class AnalyserPlugin implements EventSubscriberInterface
 This plugin registers event listeners to the `reflect.complete` event
 of a [label label-primary]#Reflect# parse request.
 
-When the `reflect.complete` event is emitted, the +onReflectComplete+ instance method
+When the `reflect.complete` event is emitted, the +onNotification+ instance method
 of the plugin is invoked.
 
 === Events lifecycle
