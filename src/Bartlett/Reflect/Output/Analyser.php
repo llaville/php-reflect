@@ -95,12 +95,12 @@ class Analyser extends OutputFormatter
                 continue;
             }
             $baseNamespace = str_replace(
-                'Analyser\\' . basename($analyserName),
+                'Analyser\\' . basename(str_replace('\\', '/', $analyserName)),
                 '',
                 $analyserName
             );
             $outputFormatter = $baseNamespace . 'Console\Formatter\\' .
-                substr(basename($analyserName), 0, -8) . 'OutputFormatter';
+                substr(basename(str_replace('\\', '/', $analyserName)), 0, -8) . 'OutputFormatter';
 
             if (class_exists($outputFormatter)) {
                 $obj = new $outputFormatter();
