@@ -12,6 +12,8 @@
 
 namespace Bartlett\Reflect\Analyser;
 
+use Bartlett\Reflect;
+
 /**
  * Interface that all analysers must implement.
  *
@@ -25,6 +27,8 @@ namespace Bartlett\Reflect\Analyser;
  */
 interface AnalyserInterface
 {
+    public function setSubject(Reflect $reflect);
+
     public function setTokens(array $tokens);
 
     public function setCurrentFile($path);
