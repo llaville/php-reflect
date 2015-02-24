@@ -1,0 +1,125 @@
+= Migration Guide v3
+:description: Migrating from version 2.x to 3.x, and continue to keep your environment running.
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+
+ifdef::basebackend-docbook[]
+[partintro]
+--
+endif::basebackend-docbook[]
+[role="lead"]
+Because the version 3 is a full API rewrites, and used namespaces, your old code cannot migrate
+without a little change.
+
+We will try to explain how to do in few steps.
+ifdef::basebackend-docbook[]
+--
+endif::basebackend-docbook[]
+
+== Collections
+
+[role="lead"]
+Version 2.x used collections of data models that we can enumerate and exploit.
+Version 3.x return only a single data model that match object to reflect.
+
+
+In [label label-success]*version 2.x*, we have collections of data models that we can enumerate and exploit.
+
+.Exploit model collections to print methods of a user class
+====
+[source,php]
+----
+<?php
+require_once 'vendor/autoload.php';
+
+use Bartlett\Reflect;
+use Bartlett\Reflect\ProviderManager;
+use Bartlett\Reflect\Provider\SymfonyFinderProvider;
+
+use Symfony\Component\Finder\Finder;
+
+$finder = new Finder();
+$finder->files()
+    ->name('*.php')
+    ->in('/path/to/');
+
+// Identify Data Source
+$pm = new ProviderManager;
+$pm->set('Sample', new SymfonyFinderProvider($finder));
+
+$reflect = new Reflect;
+$reflect->setProviderManager($pm);
+$reflect->parse();
+
+// Exploit results
+foreach ($reflect->getPackages() as $package) {    
+    foreach ($package->getClasses() as $class) {
+        if ('VendorNamespace\\VendorClass' === $class->getName()) {        
+            $methods = array();
+
+            foreach ($class->getMethods() as $method) {
+                $methods[] = $method->getShortName();
+            }
+            printf( 'Methods are : %s' . PHP_EOL, print_r($methods, true) );        
+        }
+    }
+}
+----
+====
+
+In [label label-success]*version 3.x*, we have a single data model corresponding to a user class or function.
+
+.Print methods of a user class
+====
+[source,php]
+----
+<?php
+require_once 'vendor/autoload.php';
+
+use Bartlett\Reflect\Client;
+
+// creates an instance of client
+$client = new Client();
+
+// request for a Bartlett\Reflect\Api\Reflection
+$api = $client->api('reflection');
+
+// perform request, on a data source
+$dataSource = '/path/to/';
+
+// equivalent to CLI command `phpreflect reflection:class VendorNamespace\VendorClass /path/to`
+$class = $api->class_('VendorNamespace\\VendorClass', $dataSource);
+
+$methods = array();
+
+foreach ($class->getMethods() as $method) {
+    $methods[] = $method->getShortName();
+}
+printf( 'Methods are : %s' . PHP_EOL, print_r($methods, true) );        
+----
+====
+
+
+== Summary
+
+[role="lead"]
+Let's review what we've did :
+
+* Analysed a data source 
+* Exploited +Bartlett\Reflect\Model\ClassModel+ object from both versions [label label-success]*2.x* and [label label-success]*3.x*
+
+ifdef::basebackend-bootstrap[]
+== Next
+
+[role="lead"]
+For PHP developers only.
+
+************************************************
+.Read more
+
+* Want to learn more about [label label-primary]#Reflect# API,
+to exploit results as you want,
+have a look on link:developer-guide.html[developer's guide].
+
+************************************************
+endif::basebackend-bootstrap[]
