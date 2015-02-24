@@ -1,4 +1,4 @@
-= Migration Guide
+= Migration Guide v2
 :description: Migrating from version 1.x to 2.x, and continue to keep your environment running.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
@@ -71,28 +71,16 @@ In [label label-success]*version 2.x*, we have collections of data models that w
 
 [role="col-md-6"]
 ****
-.See API in developer's guide
+.See API in developer's guide v2.6
 
-ifdef::basebackend-html[]
-* link:developer-guide&#45;&#45;api.html#_packages_or_namespaces[Namespaces] collection
-* link:developer-guide&#45;&#45;api.html#_classes[Classes] collection
-* link:developer-guide&#45;&#45;api.html#_interfaces[Interfaces] collection
-* link:developer-guide&#45;&#45;api.html#_traits[Traits] collection
-* link:developer-guide&#45;&#45;api.html#_functions[Functions] collection
-* link:developer-guide&#45;&#45;api.html#_constants[Constants] collection
-* link:developer-guide&#45;&#45;api.html#_includes[Includes] collection
-* link:developer-guide&#45;&#45;api.html#_dependencies[Dependencies] collection
-endif::basebackend-html[]
-ifdef::basebackend-docbook[]
-* Namespaces collection. See xref:_packages_or_namespaces[]
-* Classes collection. See xref:_classes[]
-* Interfaces collection. See xref:_interfaces[]
-* Traits collection. See xref:_traits[]
-* Functions collection. See xref:_functions[]
-* Constants collection. See xref:_constants[]
-* Includes collection. See xref:_includes[]
-* Dependencies collection. See xref:_dependencies[]
-endif::basebackend-docbook[]
+* {mandir}/../2.6/en/developer-guide&#45;&#45;api.html#_packages_or_namespaces[Namespaces] collection
+* {mandir}/../2.6/en/developer-guide&#45;&#45;api.html#_classes[Classes] collection
+* {mandir}/../2.6/en/developer-guide&#45;&#45;api.html#_interfaces[Interfaces] collection
+* {mandir}/../2.6/en/developer-guide&#45;&#45;api.html#_traits[Traits] collection
+* {mandir}/../2.6/en/developer-guide&#45;&#45;api.html#_functions[Functions] collection
+* {mandir}/../2.6/en/developer-guide&#45;&#45;api.html#_constants[Constants] collection
+* {mandir}/../2.6/en/developer-guide&#45;&#45;api.html#_includes[Includes] collection
+* {mandir}/../2.6/en/developer-guide&#45;&#45;api.html#_dependencies[Dependencies] collection
 ****
 
 [role="col-md-6"]
