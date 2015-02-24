@@ -1,8 +1,0 @@
-Additions and changes:
-- none
-
-CAUTION: this version is the last to support PHP 5.2. Next API 2.0 will drop this support
-
-Bug fixes:
-- avoid wrong namespace detection if source code used a class property named namespace: $this->namespace
-(Thanks to Remi Collet to notice me a strong behavior in class report)

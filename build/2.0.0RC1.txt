@@ -1,8 +1,0 @@
-New major version and API rewritten specially for PHP 5.3 and greater.
-
-Additions and changes:
-- Implement Event Driven Architecture powered by the Symfony EventDispatcher component.
-- More data source can be parse. Implement a new source provider powered by the Symfony Finder component. 
-- Each element found during parsing can be exploited by an API almost equivalent to PHP5 Reflection.
-
-This first release candidate is published for test purpose only, and should not be used yet in production.

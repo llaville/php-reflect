@@ -1,5 +1,0 @@
-Additions and changes:
-- none
-
-Bug fixes:
-- constants of extensions are no more considered as user constant

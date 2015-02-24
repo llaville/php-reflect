@@ -1,5 +1,0 @@
-New major version and API rewritten specially for PHP 5.3 and greater.
-
-Additions and changes since RC3:
-
-* cache feature will be included in next version (2.1.0).
