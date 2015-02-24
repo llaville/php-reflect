@@ -230,7 +230,7 @@ abstract class Common
      *
      * @param mixed $response Compatibility Analyser metrics
      *
-     * @return void
+     * @return string JSON formatted
      * @throws \RuntimeException
      */
     protected function transformToComposer($response)
@@ -257,6 +257,6 @@ abstract class Common
         // final result
         $composer = array('require' => $composer);
 
-        $this->transformToJson($composer);
+        return $this->transformToJson($composer);
     }
 }
