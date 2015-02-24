@@ -257,6 +257,6 @@ abstract class Common
         // final result
         $composer = array('require' => $composer);
 
-        $this->transformToJson($output, $composer);
+        $this->transformToJson($composer);
     }
 }
