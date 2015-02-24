@@ -49,7 +49,7 @@ class Analyser extends BaseApi
      * @return array metrics
      * @throws \InvalidArgumentException if an analyser required is not installed
      */
-    public function run($source, array $analysers, $alias = null, $format = 'json')
+    public function run($source, array $analysers, $alias = null, $format = false)
     {
         $source = trim($source);
         if ($alias) {
