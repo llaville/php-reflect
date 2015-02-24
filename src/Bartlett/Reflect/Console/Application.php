@@ -64,7 +64,6 @@ class Application extends BaseApplication
     private $release;
     private $container;
     private $eventDispatcher;
-    private $stopwatch;
 
     /**
      * Constructor.
@@ -117,37 +116,43 @@ class Application extends BaseApplication
 
     public function setDispatcher(EventDispatcherInterface $dispatcher)
     {
-        $this->stopwatch = new Stopwatch();
+        $stopwatch = new Stopwatch();
 
-        $dispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $event) {
-            // Just before executing any command
-            $this->stopwatch->start($event->getCommand()->getName());
-        });
-
-        $dispatcher->addListener(ConsoleEvents::TERMINATE, function (ConsoleTerminateEvent $event) {
-            // Just after executing any command
-            $command = $event->getCommand();
-
-            $consoleEvent = $this->stopwatch->stop($command->getName());
-
-            $input  = $event->getInput();
-            $output = $event->getOutput();
-
-            if (false === $input->hasParameterOption('--profile')) {
-                return;
+        $dispatcher->addListener(
+            ConsoleEvents::COMMAND,
+            function (ConsoleCommandEvent $event) use ($stopwatch) {
+                // Just before executing any command
+                $stopwatch->start($event->getCommand()->getName());
             }
+        );
 
-            $time   = $consoleEvent->getDuration();
-            $memory = $consoleEvent->getMemory();
+        $dispatcher->addListener(
+            ConsoleEvents::TERMINATE,
+            function (ConsoleTerminateEvent $event) use ($stopwatch) {
+                // Just after executing any command
+                $command = $event->getCommand();
 
-            $text = sprintf(
-                '%s<comment>Time: %s, Memory: %4.2fMb</comment>',
-                PHP_EOL,
-                Timer::toTimeString($time),
-                $memory / (1024 * 1024)
-            );
-            $output->writeln($text);
-        });
+                $consoleEvent = $stopwatch->stop($command->getName());
+
+                $input  = $event->getInput();
+                $output = $event->getOutput();
+
+                if (false === $input->hasParameterOption('--profile')) {
+                    return;
+                }
+
+                $time   = $consoleEvent->getDuration();
+                $memory = $consoleEvent->getMemory();
+
+                $text = sprintf(
+                    '%s<comment>Time: %s, Memory: %4.2fMb</comment>',
+                    PHP_EOL,
+                    Timer::toTimeString($time),
+                    $memory / (1024 * 1024)
+                );
+                $output->writeln($text);
+            }
+        );
 
         $this->eventDispatcher = $dispatcher;
         parent::setDispatcher($dispatcher);
