@@ -348,15 +348,7 @@ class CommandFactory
             $result = new $outputFormatter();
 
             if ($input->hasParameterOption('--format')) {
-                $transformMethod = sprintf('transformTo%s', ucfirst($input->getOption('format')));
-                if (method_exists($result, $transformMethod)) {
-                    $methodName = $transformMethod;
-                } else {
-                    $output->writeln(
-                        '<error>Could not render result in this format (not implemented).</error>'
-                    );
-                    return;
-                }
+                 return $output->write($response, OutputInterface::OUTPUT_RAW);
             }
             $result->$methodName($output, $response);
         };

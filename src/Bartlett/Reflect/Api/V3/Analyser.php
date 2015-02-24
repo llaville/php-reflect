@@ -55,11 +55,12 @@ class Analyser extends Common
      * @param string $source    Path to the data source or its alias
      * @param array  $analysers One or more analyser to perform (case insensitive).
      * @param mixed  $alias     If set, the source refers to its alias
+     * @param string $format    If set, convert result to a specific format.
      *
      * @return array metrics
      * @throws \InvalidArgumentException if an analyser required is not installed
      */
-    public function run($source, array $analysers, $alias)
+    public function run($source, array $analysers, $alias, $format)
     {
         $finder = $this->findProvider($source, $alias);
 
@@ -98,7 +99,18 @@ class Analyser extends Common
             $pm->registerPlugins();
         }
 
-        return $reflect->parse($finder);
+        $response = $reflect->parse($finder);
+
+        if (!empty($format)) {
+            $transformMethod = sprintf('transformTo%s', ucfirst($format));
+            if (!method_exists($this, $transformMethod)) {
+                throw new \InvalidArgumentException(
+                    'Could not render result in this format (not implemented).'
+                );
+            }
+            $response = $this->$transformMethod($response);
+        }
+        return $response;
     }
 
     /**

@@ -182,4 +182,81 @@ abstract class Common
         $this->provider = $provider;
         return $finder;
     }
+
+    /**
+     * Transforms compatibility analyser results to standard json format.
+     *
+     * @param mixed $response Any analyser metrics
+     *
+     * @return string JSON formatted
+     */
+    protected function transformToJson($response)
+    {
+        if (version_compare(PHP_VERSION, '5.4.0', 'ge')) {
+            $jsonpp = function ($data) {
+                return json_encode($data, JSON_PRETTY_PRINT);
+            };
+
+        } else {
+            // Original code available
+            // @link https://github.com/ryanuber/projects/blob/master/PHP/JSON/jsonpp.php
+
+            $jsonpp = function ($data, $istr='    ') {
+                $json = json_encode($data);
+                $result = '';
+                for ($p=$q=$i=0; isset($json[$p]); $p++)
+                {
+                    $json[$p] == '"' && ($p>0?$json[$p-1]:'') != '\\' && $q=!$q;
+                    if (!$q && strchr(" \t\n\r", $json[$p])) {
+                        continue;
+                    }
+                    if (strchr('}]', $json[$p]) && !$q && $i--) {
+                        strchr('{[', $json[$p-1]) || $result .= "\n".str_repeat($istr, $i);
+                    }
+                    $result .= $json[$p];
+                    if (strchr(',{[', $json[$p]) && !$q) {
+                        $i += strchr('{[', $json[$p])===FALSE?0:1;
+                        strchr('}]', $json[$p+1]) || $result .= "\n".str_repeat($istr, $i);
+                    }
+                }
+                return $result;
+            };
+        }
+        return $jsonpp($response);
+    }
+
+    /**
+     * Transforms compatibility analyser results to Composer json format.
+     *
+     * @param mixed $response Compatibility Analyser metrics
+     *
+     * @return void
+     * @throws \RuntimeException
+     */
+    protected function transformToComposer($response)
+    {
+        $analyserId = 'Bartlett\CompatInfo\Analyser\CompatibilityAnalyser';
+        if (!isset($response[$analyserId])) {
+            throw new \RuntimeException('Could not render result to Composer format');
+        }
+        $compatinfo = $response[$analyserId];
+
+        // include PHP version
+        $composer = array(
+            'php' => '>= ' . $compatinfo['versions']['php.min']
+        );
+
+        // include extensions
+        foreach ($compatinfo['extensions'] as $key => $val) {
+            if (in_array($key, array('standard', 'Core'))) {
+                continue;
+            }
+            $composer['ext-' . $key] = '*';
+        }
+
+        // final result
+        $composer = array('require' => $composer);
+
+        $this->transformToJson($output, $composer);
+    }
 }
