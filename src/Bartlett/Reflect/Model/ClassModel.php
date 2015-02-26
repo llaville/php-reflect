@@ -369,7 +369,8 @@ class ClassModel extends AbstractModel
      */
     public function isAbstract()
     {
-        return $this->node->isAbstract();
+        return $this->node instanceof Node\Stmt\Class_
+            && $this->node->isAbstract();
     }
 
     /**
