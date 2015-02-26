@@ -61,6 +61,7 @@ class Client
                 'Analyser',
                 'Cache',
                 'Config',
+                'Diagram',
                 'Plugin',
                 'Reflection',
             ),
