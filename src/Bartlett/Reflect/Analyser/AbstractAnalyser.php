@@ -172,7 +172,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
      */
     protected function isImplicitlyPublicProperty(array $tokens, Node\Stmt\Property $prop)
     {
-        $i = $prop->getAttribute('startOffset');
+        $i = $prop->getAttribute('startTokenPos');
         return (isset($tokens[$i]) && $tokens[$i][0] == T_VAR);
     }
 
@@ -186,7 +186,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
      */
     protected function isImplicitlyPublicFunction(array $tokens, Node\Stmt\ClassMethod $method)
     {
-        $i = $method->getAttribute('startOffset');
+        $i = $method->getAttribute('startTokenPos');
         for ($c = count($tokens); $i < $c; ++$i) {
             $t = $tokens[$i];
             if ($t[0] == T_PUBLIC || $t[0] == T_PROTECTED || $t[0] == T_PRIVATE) {
@@ -209,7 +209,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
      */
     protected function isShortArraySyntax(array $tokens, Node\Expr\Array_ $array)
     {
-        $i = $array->getAttribute('startOffset');
+        $i = $array->getAttribute('startTokenPos');
         return is_string($tokens[$i]);
     }
 }

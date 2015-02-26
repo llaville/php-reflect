@@ -3,7 +3,7 @@
 namespace Bartlett\Reflect\PhpParser\Lexer;
 
 /**
- *
+ * This lexer is a feature available on PHP-Parser 1.1.0
  *
  * @author Nikita Popov
  * @author Christoph M. Becker
@@ -16,7 +16,7 @@ class TokenOffsets extends \PhpParser\Lexer\Emulative
     public function getNextToken(&$value = null, &$startAttributes = null, &$endAttributes = null)
     {
         $token = parent::getNextToken($value, $startAttributes, $endAttributes);
-        $startAttributes['startOffset'] = $endAttributes['endOffset'] = $this->pos;
+        $startAttributes['startTokenPos'] = $endAttributes['endTokenPos'] = $this->pos;
         return $token;
     }
 

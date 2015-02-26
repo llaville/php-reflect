@@ -199,13 +199,13 @@ class LocAnalyser extends AbstractAnalyser
      */
     private function getLinesOfCode(array $nodes)
     {
-        $length = $nodes[count($nodes)-1]->getAttribute('endOffset')
-            - $nodes[0]->getAttribute('startOffset')
+        $length = $nodes[count($nodes)-1]->getAttribute('endTokenPos')
+            - $nodes[0]->getAttribute('startTokenPos')
             + 1
         ;
         $tokens = array_slice(
             $this->tokens,
-            $nodes[0]->getAttribute('startOffset'),
+            $nodes[0]->getAttribute('startTokenPos'),
             $length
         );
 

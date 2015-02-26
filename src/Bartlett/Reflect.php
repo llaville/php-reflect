@@ -20,6 +20,7 @@ use Bartlett\Reflect\Event\AbstractDispatcher;
 use Bartlett\Reflect\Events;
 use Bartlett\Reflect\PhpParser\Lexer\TokenOffsets;
 
+use PhpParser\Lexer\Emulative;
 use PhpParser\Parser;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
@@ -117,6 +118,11 @@ class Reflect extends AbstractDispatcher
             return false;
         }
 
+        /*$lexer     = new Emulative(array(
+            'usedAttributes' => array(
+                'comments', 'startLine', 'endLine', 'startTokenPos', 'endTokenPos'
+            )
+        ));*/
         $lexer     = new TokenOffsets();
         $parser    = new Parser($lexer);
         $traverser = new NodeTraverser;
