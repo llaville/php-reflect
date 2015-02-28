@@ -20,6 +20,7 @@ use Bartlett\Reflect\Event\CacheAwareEventDispatcher;
 
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -198,16 +199,11 @@ class Application extends BaseApplication
      */
     public function getLongVersion()
     {
-        $version = sprintf(
+        return sprintf(
             '<info>%s</info> version <comment>%s</comment>',
             $this->getName(),
             $this->getVersion()
         );
-        if (extension_loaded('xdebug')) {
-            $version .= PHP_EOL . PHP_EOL .
-                '<warning>You are encouraged to unload xdebug extension to speed up execution.</warning>';
-        }
-        return $version;
     }
 
     /**
@@ -269,6 +265,17 @@ class Application extends BaseApplication
         }
 
         $exitCode = parent::doRun($input, $output);
+
+        $name = $this->getCommandName($input);
+        if (!$name
+            && $exitCode == 0
+            && (false === $input->hasParameterOption(array('--version', '-V', '--help', '-h')))
+        ) {
+            $output->writeln("\n<comment>Auto-Diagnostic:</comment>");
+            $command = $this->find('diagnose:run');
+            $input = new ArrayInput(array('command' => 'diagnose:run'));
+            $exitCode = $this->doRunCommand($command, $input, $output);
+        }
 
         return $exitCode;
     }
