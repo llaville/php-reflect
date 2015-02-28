@@ -201,11 +201,10 @@ abstract class Common
             // Original code available
             // @link https://github.com/ryanuber/projects/blob/master/PHP/JSON/jsonpp.php
 
-            $jsonpp = function ($data, $istr='    ') {
+            $jsonpp = function ($data, $istr = '    ') {
                 $json = json_encode($data);
                 $result = '';
-                for ($p=$q=$i=0; isset($json[$p]); $p++)
-                {
+                for ($p=$q=$i=0; isset($json[$p]); $p++) {
                     $json[$p] == '"' && ($p>0?$json[$p-1]:'') != '\\' && $q=!$q;
                     if (!$q && strchr(" \t\n\r", $json[$p])) {
                         continue;
@@ -215,7 +214,7 @@ abstract class Common
                     }
                     $result .= $json[$p];
                     if (strchr(',{[', $json[$p]) && !$q) {
-                        $i += strchr('{[', $json[$p])===FALSE?0:1;
+                        $i += strchr('{[', $json[$p])===false?0:1;
                         strchr('}]', $json[$p+1]) || $result .= "\n".str_repeat($istr, $i);
                     }
                 }

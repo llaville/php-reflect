@@ -316,7 +316,6 @@ class PlantUmlProcessor implements ProcessorInterface
 
         // prints class methods
         foreach ($methods as $method) {
-
             if ($method->isPrivate()) {
                 $visibility = '-';
             } elseif ($method->isProtected()) {
