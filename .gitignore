@@ -1,5 +1,4 @@
 Thumbs.db
 *.tgz
 vendor/
-*.plantuml
 phpunit.xml

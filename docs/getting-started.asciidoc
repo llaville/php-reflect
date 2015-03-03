@@ -2,7 +2,7 @@
 :description: How to download, configure and use it in a basic way.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
-:pharstable:  http://bartlett.laurent-laville.org/get/phpreflect-3.0.0-beta3.phar
+:pharstable:  http://bartlett.laurent-laville.org/get/phpreflect-3.0.0-RC1.phar
 
 
 == Download
@@ -20,8 +20,8 @@ endif::basebackend-bootstrap[]
 Make it executable, and put it into your `$PATH`.
 [source,bash]
 ----
-$ chmod +x phpreflect-3.0.0-beta3.phar
-$ mv phpreflect-3.0.0-beta3.phar /usr/local/bin/phpreflect
+$ chmod +x phpreflect-3.0.0-RC1.phar
+$ mv phpreflect-3.0.0-RC1.phar /usr/local/bin/phpreflect
 
 $ phpreflect --version
 ----
@@ -29,8 +29,8 @@ $ phpreflect --version
 You can also immediately use the PHAR after you have downloaded it.
 [source,bash]
 ----
-$ wget http://bartlett.laurent-laville.org/get/phpreflect-3.0.0-beta3.phar
-$ php phpreflect-3.0.0-beta3.phar --version
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-3.0.0-RC1.phar
+$ php phpreflect-3.0.0-RC1.phar --version
 ----
 
 With both methods then you have this output :
@@ -38,7 +38,7 @@ With both methods then you have this output :
 [role="output"]
 ====
 ----
-phpReflect version 3.0.0-beta3
+phpReflect version 3.0.0-RC1
 ----
 ====
 
