@@ -50,6 +50,55 @@ elements, such as classes, interfaces, functions, constants, namespaces.
    Show which versions of dependencies are bundled (PHAR version only).
 
 
+== diagnose:run COMMAND
+The phpreflect(1) 'diagnose:run' command is used to identify common errors on a platform.
+
+Usage:
+
+  phpreflect diagnose:run [-vv|-vvv]
+
+
+== diagram:class COMMAND
+The phpreflect(1) 'diagram:class' command is used to generate diagram about a user class present in a data source
+
+Usage:
+
+  phpreflect diagram:class [--alias] [--engine[="..."]] argument source
+
+Where:
+
+*argument*::
+  Name of the class to inspect
+
+*source*::
+  Identify a data source; may be declared in a json configuration file (see <<X1,CONF FILES>> section)
+
+*--alias*::
+  If set, the source refers to its alias
+
+*--engine*::
+  Graphical syntax. (default: "plantuml")
+
+
+== diagram:package COMMAND
+The phpreflect(1) 'diagram:package' command is used to generate diagram about namespaces in a data source
+
+Usage:
+
+  phpreflect diagram:package [--alias] [--engine[="..."]] source
+
+Where:
+
+*source*::
+  Identify a data source; may be declared in a json configuration file (see <<X1,CONF FILES>> section)
+
+*--alias*::
+  If set, the source refers to its alias
+
+*--engine*::
+  Graphical syntax. (default: "plantuml")
+
+
 == config:validate COMMAND
 The phpreflect(1) 'config:validate' command is used to check syntax of your json configuration file
 
