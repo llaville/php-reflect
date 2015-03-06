@@ -58,6 +58,11 @@ cache
  cache:clear           Clear cache (any adapter and backend).
 config
  config:validate       Validates a JSON configuration file.
+diagnose
+ diagnose:run          Diagnoses the system to identify common errors.
+diagram
+ diagram:class         Generates diagram about a user class present in a data source.
+ diagram:package       Generates diagram about namespaces in a data source.
 plugin
  plugin:list           List all plugins installed.
 reflection
@@ -77,6 +82,49 @@ $ phpreflect config:validate
 [role="output"]
 ----
 "/etc/phpreflect.json" config file is valid.
+----
+
+[horizontal]
+diagnose:run::
+Diagnoses the system to identify common errors.
++
+[source,bash]
+----
+$ phpreflect diagnose:run
+----
++
+[role="output"]
+----
+Checking php settings:
+- Requires PHP 5.3.2 or better OK
+- php.ini file loaded C:\UwAmp\bin\php\php-5.6.6\php.ini
+- date extension loaded YES
+- json extension loaded YES
+- pcre extension loaded YES
+- phar extension loaded YES
+- reflection extension loaded YES
+- spl extension loaded YES
+- tokenizer extension loaded YES
+----
++
+TIP: Use verbose level 2 for more details, and level 3 to get raw response
+
+[horizontal]
+diagram:class::
+Generates diagram about a user class present in a data source.
++
+[source,bash]
+----
+$ phpreflect diagram:class Bartlett\Reflect\Plugin\LogPlugin ./src
+----
+
+[horizontal]
+diagram:package::
+Generates diagram about namespaces in a data source.
++
+[source,bash]
+----
+$ phpreflect diagram:package --engine=graphviz ./src
 ----
 
 [horizontal]
@@ -105,12 +153,12 @@ $ phpreflect plugin:list
  Plugin Class                           Events Subscribed
  Bartlett\Reflect\Plugin\CachePlugin    reflect.progress
                                         reflect.success
-                                        reflect.complete 
+                                        reflect.complete
 ----
 
 [horizontal]
 analyser:list::
-List all analysers configured in `analysers` section of your `phpreflect.json` config file, 
+List all analysers configured in `analysers` section of your `phpreflect.json` config file,
 and available by default.
 +
 [source,bash]
@@ -124,7 +172,7 @@ $ phpreflect analyser:list
  Analyser Name Analyser Class
  loc           Bartlett\Reflect\Analyser\LocAnalyser
  reflection    Bartlett\Reflect\Analyser\ReflectionAnalyser
- structure     Bartlett\Reflect\Analyser\StructureAnalyser 
+ structure     Bartlett\Reflect\Analyser\StructureAnalyser
 ----
 +
 analyser:run::
