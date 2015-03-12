@@ -271,7 +271,7 @@ class Application extends BaseApplication
             && $exitCode == 0
             && (false === $input->hasParameterOption(array('--version', '-V', '--help', '-h')))
         ) {
-            $output->writeln("\n<comment>Auto-Diagnostic:</comment>");
+            $output->writeln("\n<comment>Auto-Diagnose:</comment>");
             $command = $this->find('diagnose:run');
             $input = new ArrayInput(array('command' => 'diagnose:run'));
             $exitCode = $this->doRunCommand($command, $input, $output);
