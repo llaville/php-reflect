@@ -129,7 +129,9 @@ class Analyser extends Common
 
         $namespaces = array();
 
-        if (file_exists($vendorDir) && is_dir($vendorDir)) {
+        if (file_exists($vendorDir) && is_dir($vendorDir)
+            && file_exists($baseDir . '/src/Bartlett/CompatInfo/Analyser')
+        ) {
             // CompatInfo only
             $namespaces['Bartlett\CompatInfo\Analyser']
                 = $baseDir . '/src/Bartlett/CompatInfo/Analyser'
