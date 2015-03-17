@@ -10,6 +10,7 @@ include::attributes.asciidoc[]
 :toc!:
 :toc2!:
 :navbar!:
+:themeswitcher!:
 :jumboinfo:
 
 
