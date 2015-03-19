@@ -97,9 +97,9 @@ class ClassModel extends AbstractModel
     /**
      * Gets the parent class.
      *
-     * @return mixed a ClassModel instance if parent exists, false otherwise
+     * @return mixed string if parent exists, false otherwise
      */
-    public function getParentClass()
+    public function getParentClassName()
     {
         if ($this->node->extends) {
             return (string) $this->node->extends;
@@ -507,7 +507,7 @@ class ClassModel extends AbstractModel
         $eol = "\n";
         $str = '';
 
-        $extends    = $this->getParentClass() ? : '';
+        $extends    = $this->getParentClassName() ? : '';
         $interfaces = $this->getInterfaceNames();
         $implements = empty($interfaces) ? '' : implode(', ', $interfaces);
 
