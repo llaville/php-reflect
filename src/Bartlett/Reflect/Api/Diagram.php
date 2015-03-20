@@ -30,15 +30,16 @@ class Diagram extends BaseApi
     /**
      * Generates diagram about namespaces in a data source.
      *
+     * @param string $argument Name of the namespace to inspect.
      * @param string $source   Path to the data source or its alias.
      * @param mixed  $alias    If set, the source refers to its alias.
      * @param string $engine   Graphical syntax.
      *
      * @return mixed
      */
-    public function package($source, $alias = null, $engine = 'plantuml')
+    public function package($argument, $source, $alias = null, $engine = 'plantuml')
     {
-        return $this->request('diagram/package', 'POST', array($source, $alias, $engine));
+        return $this->request('diagram/package', 'POST', array($argument, $source, $alias, $engine));
     }
 
     /**

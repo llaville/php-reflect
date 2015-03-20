@@ -40,21 +40,20 @@ class Diagram extends Common
     /**
      * Generates diagram about namespaces in a data source.
      *
+     * @param string $argument Name of the namespace to inspect.
      * @param string $source   Path to the data source or its alias.
      * @param mixed  $alias    If set, the source refers to its alias.
      * @param string $engine   Graphical syntax.
      *
      * @return mixed
      */
-    public function package($source, $alias = null, $engine = 'plantuml')
+    public function package($argument, $source, $alias = null, $engine = 'plantuml')
     {
-        $api = new Analyser();
-        $api->setEventDispatcher($this->eventDispatcher);
-        $metrics = $api->run($source, array('reflection'), $alias, false);
-
         return $this->getDiagram(
             $engine,
-            $metrics['Bartlett\Reflect\Analyser\ReflectionAnalyser']
+            $source,
+            __FUNCTION__,
+            $argument
         );
     }
 
@@ -70,40 +69,42 @@ class Diagram extends Common
      */
     public function class_($argument, $source, $alias = null, $engine = 'plantuml')
     {
-        $api = new Analyser();
-        $api->setEventDispatcher($this->eventDispatcher);
-        $metrics = $api->run($source, array('reflection'), $alias, false);
-
-        $collect = $metrics['Bartlett\Reflect\Analyser\ReflectionAnalyser']->filter(
-            function($element) use ($argument) {
-                return $element instanceof Model\ClassModel
-                    && $element->getName() === $argument;
-            }
-        );
-
-        if (count($collect) === 0) {
-            throw new \InvalidArgumentException(
-                sprintf('Class "%s" not found.', $argument)
-            );
-        }
         return $this->getDiagram(
             $engine,
-            $metrics['Bartlett\Reflect\Analyser\ReflectionAnalyser'],
-            $collect->first()
+            $source,
+            __FUNCTION__,
+            $argument
         );
     }
 
-    protected function getDiagram($engine, $metrics, $class = null)
+    protected function getDiagram($engine, $source, $function, $argument = '')
     {
         $processors = array(
-            'plantuml' => __NAMESPACE__ . '\\Diagram\\PlantUmlProcessor',
+            'plantuml' => '\\Bartlett\\UmlWriter\\Processor\\PlantUMLProcessor',
+            'graphviz' => '\\Bartlett\\UmlWriter\\Processor\\GraphvizProcessor',
         );
         if (!array_key_exists($engine, $processors)) {
             throw new \InvalidArgumentException(
                 sprintf('Graphical processor "%s" is unknown.', $engine)
             );
         }
-        $processor = new $processors[$engine];
-        return $processor->render($metrics, $class);
+        if (!class_exists($processors[$engine])) {
+            throw new \InvalidArgumentException(
+                'You should install Bartlett\UmlWriter'
+            );
+        }
+        $reflector = new \Bartlett\UmlWriter\Reflector\Reflect($source);
+        $processor = new $processors[$engine]($reflector);
+
+        if (strpos('class', $function) === 0) {
+            $graphStmt = $processor->renderClass($argument);
+        } else {
+            if (empty($argument)) {
+                $graphStmt = $processor->render();
+            } else {
+                $graphStmt = $processor->renderNamespace($argument);
+            }
+        }
+        return $graphStmt;
     }
 }
