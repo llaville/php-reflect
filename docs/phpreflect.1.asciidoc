@@ -85,9 +85,12 @@ The phpreflect(1) 'diagram:package' command is used to generate diagram about na
 
 Usage:
 
-  phpreflect diagram:package [--alias] [--engine[="..."]] source
+  phpreflect diagram:package [--alias] [--engine[="..."]] argument source
 
 Where:
+
+*argument*::
+  Name of the namespace to inspect
 
 *source*::
   Identify a data source; may be declared in a json configuration file (see <<X1,CONF FILES>> section)
