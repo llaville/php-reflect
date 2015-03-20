@@ -50,6 +50,7 @@
         <include name="vendor/doctrine/collections/LICENSE" />
         <include name="vendor/psr/log/LICENSE" />
         <include name="vendor/monolog/monolog/LICENSE" />
+        <include name="vendor/bartlett/umlwriter/LICENSE" />
         <include name="vendor/autoload.php" />
 
         <include name="vendor/composer/**/*.php" />
@@ -64,6 +65,7 @@
         <include name="vendor/doctrine/collections/lib/**/*.php" />
         <include name="vendor/psr/log/Psr/**/*.php" />
         <include name="vendor/monolog/monolog/src/**/*.php" />
+        <include name="vendor/bartlett/umlwriter/src/**/*.php" />
 
         <include name="src/**/*.php" />
         <include name="bin/phpreflect" />

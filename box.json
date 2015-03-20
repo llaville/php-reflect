@@ -23,6 +23,7 @@
         "vendor/doctrine/collections/LICENSE",
         "vendor/psr/log/LICENSE",
         "vendor/monolog/monolog/LICENSE",
+        "vendor/bartlett/umlwriter/LICENSE",
         "vendor/autoload.php"
     ],
     "finder": [
@@ -70,6 +71,10 @@
         {
             "name": "*.php",
             "in": "vendor/monolog/monolog/src"
+        },
+        {
+            "name": "*.php",
+            "in": "vendor/bartlett/umlwriter/src"
         }
     ],
     "git-version": "package_version",
