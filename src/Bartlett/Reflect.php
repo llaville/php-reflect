@@ -217,7 +217,7 @@ class Reflect extends AbstractDispatcher
                             'trait_exists',
                         );
                         $patterns = array_map(
-                            function($a) {
+                            function ($a) {
                                 return "/$a\s*\(/i";
                             },
                             $checks

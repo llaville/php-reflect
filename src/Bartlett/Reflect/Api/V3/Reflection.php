@@ -58,7 +58,7 @@ class Reflection extends Common
         $metrics = $api->run($source, array('reflection'), $alias, false);
 
         $collect = $metrics['Bartlett\Reflect\Analyser\ReflectionAnalyser']->filter(
-            function($element) use ($argument) {
+            function ($element) use ($argument) {
                 return $element instanceof Model\ClassModel
                     && $element->getName() === $argument;
             }
@@ -89,7 +89,7 @@ class Reflection extends Common
         $metrics = $api->run($source, array('reflection'), $alias, false);
 
         $collect = $metrics['Bartlett\Reflect\Analyser\ReflectionAnalyser']->filter(
-            function($element) use ($argument) {
+            function ($element) use ($argument) {
                 return $element instanceof Model\FunctionModel
                     && $element->getName() === $argument;
             }
