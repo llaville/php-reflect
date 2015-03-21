@@ -118,12 +118,11 @@ class Reflect extends AbstractDispatcher
             return false;
         }
 
-        /*$lexer     = new Emulative(array(
+        $lexer     = new Emulative(array(
             'usedAttributes' => array(
                 'comments', 'startLine', 'endLine', 'startTokenPos', 'endTokenPos'
             )
-        ));*/
-        $lexer     = new TokenOffsets();
+        ));
         $parser    = new Parser($lexer);
         $traverser = new NodeTraverser;
         $traverser->addVisitor(new NameResolver);
