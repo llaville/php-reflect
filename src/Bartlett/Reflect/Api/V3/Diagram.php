@@ -96,7 +96,7 @@ class Diagram extends Common
         $reflector = new \Bartlett\UmlWriter\Reflector\Reflect($source);
         $processor = new $processors[$engine]($reflector);
 
-        if (strpos('class', $function) === 0) {
+        if (strpos($function, 'class') === 0) {
             $graphStmt = $processor->renderClass($argument);
         } else {
             if (empty($argument)) {
