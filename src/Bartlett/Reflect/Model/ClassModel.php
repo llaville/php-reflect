@@ -101,8 +101,13 @@ class ClassModel extends AbstractModel
      */
     public function getParentClassName()
     {
-        if ($this->node->extends) {
-            return (string) $this->node->extends;
+        $parent = $this->node->extends;
+
+        if (!empty($parent)) {
+            if ($this->isInterface()) {
+                $parent = array_pop($parent);
+            }
+            return (string) $parent;
         }
         return false;
     }
