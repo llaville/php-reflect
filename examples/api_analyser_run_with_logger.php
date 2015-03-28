@@ -21,10 +21,7 @@ $loader->addClassMap(
     )
 );
 
-use Bartlett\Reflect\Environment;
 use Bartlett\Reflect\Client;
-
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 // set our own location of JSON config file
 putenv("BARTLETT_SCAN_DIR=" . __DIR__ . '/YourNamespace');
