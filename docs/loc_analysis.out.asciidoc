@@ -1,21 +1,21 @@
 
 Data Source Analysed
 
-Directories                                         21
-Files                                               66
+Directories                                         20
+Files                                               72
 
 Size
-  Lines of Code (LOC)                             3347
-  Comment Lines of Code (CLOC)                     131 (3.91%)
-  Non-Comment Lines of Code (NCLOC)               3216 (96.09%)
-  Logical Lines of Code (LLOC)                    1119 (33.43%)
-    Classes                                       1049 (93.74%)
-      Average Class Length                          18
+  Lines of Code (LOC)                             3591
+  Comment Lines of Code (CLOC)                     136 (3.79%)
+  Non-Comment Lines of Code (NCLOC)               3455 (96.21%)
+  Logical Lines of Code (LLOC)                    1186 (33.03%)
+    Classes                                       1107 (93.34%)
+      Average Class Length                          17
       Average Method Length                          3
-    Functions                                       70 (6.26%)
-      Average Function Length                        7
+    Functions                                       79 (6.66%)
+      Average Function Length                        6
     Not in classes or functions                      0 (0.00%)
 
 Complexity
-  Cyclomatic Complexity / LLOC                    0.47
-  Cyclomatic Complexity / Number of Methods       2.60
+  Cyclomatic Complexity / LLOC                    0.51
+  Cyclomatic Complexity / Number of Methods       2.70
