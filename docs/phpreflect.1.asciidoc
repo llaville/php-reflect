@@ -50,6 +50,47 @@ elements, such as classes, interfaces, functions, constants, namespaces.
    Show which versions of dependencies are bundled (PHAR version only).
 
 
+== analyser:list COMMAND
+The phpreflect(1) 'analyser:list' command is used to show what analysers are installed
+(see <<X1,CONF FILES>> section).
+
+
+== analyser:run COMMAND
+The phpreflect(1) 'analyser:run' command is used to analyse a data source and display results.
+
+Usage:
+
+  phpreflect analyser:run [--alias] [--format="..."] source [analysers1] ... [analysersN]
+
+Where:
+
+*source*::
+  Identify a data source; may be declared in a json configuration file (see <<X1,CONF FILES>> section)
+
+*--alias*::
+  If set, the source refers to its alias
+
+*--format*::
+  If set, convert result to a specific format. (default: "json")
+
+*analysers1* ... *analysersN*::
+  Identify one or more analyser to execute. See 'analyser:list' command to know what analysers are available.
+  (default: ["structure"])
+
+
+== config:validate COMMAND
+The phpreflect(1) 'config:validate' command is used to check syntax of your json configuration file
+
+Usage:
+
+  phpreflect config:validate [file]
+
+Where:
+
+*file*::
+  Path to `phpreflect.json` file (optional)
+
+
 == diagnose:run COMMAND
 The phpreflect(1) 'diagnose:run' command is used to identify common errors on a platform.
 
@@ -100,47 +141,6 @@ Where:
 
 *--engine*::
   Graphical syntax. (default: "plantuml")
-
-
-== config:validate COMMAND
-The phpreflect(1) 'config:validate' command is used to check syntax of your json configuration file
-
-Usage:
-
-  phpreflect config:validate [file]
-
-Where:
-
-*file*::
-  Path to `phpreflect.json` file (optional)
-
-
-== analyser:list COMMAND
-The phpreflect(1) 'analyser:list' command is used to show what analysers are installed
-(see <<X1,CONF FILES>> section).
-
-
-== analyser:run COMMAND
-The phpreflect(1) 'analyser:run' command is used to analyse a data source and display results.
-
-Usage:
-
-  phpreflect analyser:run [--alias] [--format="..."] source [analysers1] ... [analysersN]
-
-Where:
-
-*source*::
-  Identify a data source; may be declared in a json configuration file (see <<X1,CONF FILES>> section)
-
-*--alias*::
-  If set, the source refers to its alias
-
-*--format*::
-  If set, convert result to a specific format. (default: "json")
-
-*analysers1* ... *analysersN*::
-  Identify one or more analyser to execute. See 'analyser:list' command to know what analysers are available.
-  (default: ["structure"])
 
 
 == plugin:list COMMAND
