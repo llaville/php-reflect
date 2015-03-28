@@ -41,33 +41,6 @@ class FunctionModelTest extends GenericModelTest
     }
 
     /**
-     * Tests the Doc comment accessor.
-     *
-     *  covers Bartlett\Reflect\Model\AbstractModel::getDocComment
-     * @group  reflection
-     * @return void
-     */
-    public function testDocCommentAccessor()
-    {
-        $c = 1;  // class glob\Foo
-        $m = 0;  // method myfunction
-
-        $methods = self::$models[$c]->getMethods();
-
-        $expected = '/**
-     * @param stdClass $param
-     * @param mixed    $otherparam
-     */';
-
-        $this->assertEquals(
-            $expected,
-            $methods[$m]->getDocComment(),
-            $methods[$m]->getName()
-            . ' doc comment does not match.'
-        );
-    }
-
-    /**
      * Tests starting line number accessor.
      *
      *  covers Bartlett\Reflect\Model\AbstractModel::getStartLine
