@@ -54,7 +54,13 @@ abstract class AbstractFunctionModel extends AbstractModel
      */
     public function getName()
     {
-        return $this->node->namespacedName;
+        if ($this->isClosure()) {
+            return '{closure}';
+        }
+        if (isset($this->node->namespacedName)) {
+            return $this->node->namespacedName;
+        }
+        return $this->node->name;
     }
 
     /**
