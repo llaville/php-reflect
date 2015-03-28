@@ -27,6 +27,16 @@ namespace Bartlett\Reflect\Api;
  */
 class Reflection extends BaseApi
 {
+    public function __call($name, $args)
+    {
+        if ('class' == $name) {
+            return call_user_func_array(array($this, 'class_'), $args);
+
+        } elseif ('function' == $name) {
+            return call_user_func_array(array($this, 'function_'), $args);
+        }
+    }
+
     /**
      * Reports information about a user class present in a data source.
      *

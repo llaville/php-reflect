@@ -32,12 +32,10 @@ class Reflection extends Common
     public function __call($name, $args)
     {
         if ('class' == $name) {
-            list($argument, $source, $alias, $return) = $args;
-            return $this->class_($argument, $source, $alias, $return);
+            return call_user_func_array(array($this, 'class_'), $args);
 
         } elseif ('function' == $name) {
-            list($argument, $source, $alias, $return) = $args;
-            return $this->function_($argument, $source, $alias, $return);
+            return call_user_func_array(array($this, 'function_'), $args);
         }
     }
 

@@ -25,6 +25,6 @@ $api = $client->api('reflection');
 $dataSource = dirname(__DIR__) . '/src';
 
 // equivalent to CLI command `phpreflect reflection:class Bartlett\Reflect ../src`
-$model = $api->class_('Bartlett\\Reflect', $dataSource);
+$model = $api->class('Bartlett\\Reflect', $dataSource);
 
 echo $model;
