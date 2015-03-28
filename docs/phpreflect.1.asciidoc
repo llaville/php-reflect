@@ -153,7 +153,7 @@ The phpreflect(1) 'reflection:class' command is used to give information about a
 
 Usage:
 
-  phpreflect reflection:class [--alias] [--return="..."] argument source
+  phpreflect reflection:class [--alias] [--format="..."] argument source
 
 Where:
 
@@ -167,7 +167,7 @@ Where:
   If set, the source refers to its alias
 
 *--format*::
-  Format of result to return. False when raw text. (default: false)
+  To ouput results in other formats. (default: "txt")
 
 
 == reflection:function COMMAND
@@ -175,7 +175,7 @@ The phpreflect(1) 'reflection:function' command is used to give information abou
 
 Usage:
 
-  phpreflect reflection:function [--alias] [--return="..."] argument source
+  phpreflect reflection:function [--alias] [--format="..."] argument source
 
 Where:
 
@@ -189,7 +189,7 @@ Where:
   If set, the source refers to its alias
 
 *--format*::
-  Format of result to return. False when raw text. (default: false)
+  To ouput results in other formats. (default: "txt")
 
 
 == EXIT STATUS

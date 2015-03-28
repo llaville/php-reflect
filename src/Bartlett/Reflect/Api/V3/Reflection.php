@@ -47,11 +47,11 @@ class Reflection extends Common
      * @param string $argument Name of the class to reflect.
      * @param string $source   Path to the data source or its alias.
      * @param mixed  $alias    If set, the source refers to its alias.
-     * @param mixed  $return   Format of result to return. False when raw text.
+     * @param string $format   To ouput results in other formats.
      *
      * @return mixed
      */
-    public function class_($argument, $source, $alias = null, $return = false)
+    public function class_($argument, $source, $alias = null, $format = 'txt')
     {
         $api = new Analyser();
         $api->setEventDispatcher($this->eventDispatcher);
@@ -78,11 +78,11 @@ class Reflection extends Common
      * @param string $argument Name of the function to reflect.
      * @param string $source   Path to the data source or its alias.
      * @param mixed  $alias    If set, the source refers to its alias.
-     * @param mixed  $return   Format of result to return. False when raw text.
+     * @param string $format   To ouput results in other formats.
      *
      * @return mixed
      */
-    public function function_($argument, $source, $alias = null, $return = false)
+    public function function_($argument, $source, $alias = null, $format = 'txt')
     {
         $api = new Analyser();
         $api->setEventDispatcher($this->eventDispatcher);
