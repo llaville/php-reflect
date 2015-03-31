@@ -156,7 +156,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
             // Treat the class as a test case class if the name
             // of the parent class equals to "PHPUnit_Framework_TestCase".
 
-            if ($parent->name === 'PHPUnit_Framework_TestCase') {
+            if ((string) $parent === 'PHPUnit_Framework_TestCase') {
                 $this->testClass = true;
             }
         }
