@@ -101,6 +101,9 @@ class ClassModel extends AbstractModel
      */
     public function getParentClassName()
     {
+        if ($this->isTrait()) {
+            return false;
+        }
         $parent = $this->node->extends;
 
         if (!empty($parent)) {
