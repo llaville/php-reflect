@@ -29,7 +29,7 @@ when you invoke the `phpreflect` command, you should obtain the following comman
  | .__/|_| |_| .__/|_| \_\___|_| |_|\___|\___|\__|
  |_|         |_|
 
-phpReflect version 3.0.0-RC2
+phpReflect version 3.0.0
 
 Usage:
  [options] command [arguments]
@@ -97,7 +97,7 @@ $ phpreflect diagnose:run
 ----
 Checking php settings:
 - Requires PHP 5.3.2 or better OK
-- php.ini file loaded C:\UwAmp\bin\php\php-5.6.6\php.ini
+- php.ini file loaded C:\UwAmp\bin\php\php-5.6.7\php.ini
 - date extension loaded YES
 - json extension loaded YES
 - pcre extension loaded YES

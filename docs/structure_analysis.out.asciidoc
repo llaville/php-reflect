@@ -2,23 +2,23 @@
 Data Source Analysed
 
 Directories                                         20
-Files                                               72
+Files                                               73
 
 Structure
   Namespaces                                        20
   Interfaces                                         8
   Traits                                             0
-  Classes                                           64
-    Abstract Classes                                 6 (9.38%)
-    Concrete Classes                                58 (90.62%)
-  Methods                                          293
+  Classes                                           65
+    Abstract Classes                                 6 (9.23%)
+    Concrete Classes                                59 (90.77%)
+  Methods                                          295
     Scope
-      Non-Static Methods                           280 (95.56%)
-      Static Methods                                13 (4.44%)
+      Non-Static Methods                           282 (95.59%)
+      Static Methods                                13 (4.41%)
     Visibility
-      Public Method                                250 (85.32%)
-      Protected Method                              34 (11.60%)
-      Private Method                                 9 (3.07%)
+      Public Method                                251 (85.08%)
+      Protected Method                              34 (11.53%)
+      Private Method                                10 (3.39%)
   Functions                                         12
     Named Functions                                  0 (0.00%)
     Anonymous Functions                             12 (100.00%)

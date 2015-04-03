@@ -3,10 +3,6 @@
 :description: Reverse-engineer classes, interfaces, functions, constants, namespaces and more.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
-:stable:        2.6.2
-:stablePubDate: January 5, 2015
-:dev:           3.0.0-RC2
-:devPubDate:    Marth 20, 2015
 :toc!:
 :toc2!:
 :navbar!:
@@ -18,8 +14,27 @@ include::attributes.asciidoc[]
 
 [role="col-md-6"]
 ====
+[panel,warning]
+.v2 deprecated
+--
+*Last Branch 2 Release* [label label-danger]#{deprecated}#
+
+It was published on {deprecatedPubDate}.
+
+ifdef::basebackend-bootstrap[]
+link:./manual/2.6/en/getting-started.html["Learn more",role="primary",icon="glyphicon-book",options="block"]
+endif::[]
+
+ifndef::basebackend-bootstrap[]
+link:./manual/2.6/en/getting-started.html[Learn more]
+endif::[]
+--
+====
+
+[role="col-md-6"]
+====
 [panel,primary]
-.v2
+.v3
 --
 *Stable Release* [label label-primary]#{stable}#
 
@@ -35,24 +50,6 @@ endif::[]
 --
 ====
 
-[role="col-md-6"]
-====
-[panel,danger]
-.v3
---
-*Beta Release* [label label-danger]#{dev}#
-
-It was published on {devPubDate}.
-
-ifdef::basebackend-bootstrap[]
-link:./manual/3.0/en/getting-started.html["Learn more",role="primary",icon="glyphicon-book",options="block"]
-endif::[]
-
-ifndef::basebackend-bootstrap[]
-link:./manual/3.0/en/getting-started.html[Learn more]
-endif::[]
---
-====
 
 unfloat::[]
 

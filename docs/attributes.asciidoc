@@ -1,5 +1,5 @@
 :author:      Laurent Laville
-:keywords:    PHP, reverse-engineer, reflexion
+:keywords:    PHP, reverse-engineer, reflection
 :mandir:      http://php5.laurent-laville.org/reflect/manual/current
 :brand:       PHP Reflect
 :brandref:    http://php5.laurent-laville.org/reflect/
