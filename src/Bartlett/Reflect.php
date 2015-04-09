@@ -18,12 +18,11 @@ namespace Bartlett;
 
 use Bartlett\Reflect\Event\AbstractDispatcher;
 use Bartlett\Reflect\Events;
-use Bartlett\Reflect\PhpParser\NameResolver;
 
 use PhpParser\Lexer\Emulative;
 use PhpParser\Parser;
 use PhpParser\NodeTraverser;
-//use PhpParser\NodeVisitor\NameResolver;
+use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitor;
 
 use Symfony\Component\Finder\Finder;
