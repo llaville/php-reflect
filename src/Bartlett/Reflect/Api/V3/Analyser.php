@@ -127,15 +127,19 @@ class Analyser extends Common
         $baseDir   = dirname(dirname(dirname($reflectBaseDir)));
         $vendorDir = $baseDir . '/vendor';
 
+        $baseAnalyser   = $baseDir . '/src/Bartlett/CompatInfo/Analyser';
+        $vendorAnalyser = $vendorDir . '/bartlett/php-compatinfo/src/Bartlett/CompatInfo/Analyser';
+
         $namespaces = array();
 
         if (file_exists($vendorDir) && is_dir($vendorDir)
-            && file_exists($baseDir . '/src/Bartlett/CompatInfo/Analyser')
+            && (file_exists($baseAnalyser) || file_exists($vendorAnalyser))
         ) {
             // CompatInfo only
             $namespaces['Bartlett\CompatInfo\Analyser']
-                = $baseDir . '/src/Bartlett/CompatInfo/Analyser'
+                = file_exists($baseAnalyser) ? $baseAnalyser : $vendorAnalyser
             ;
+
         } elseif ($path = stream_resolve_include_path($file)) {
             // CompatInfo only, without composer
             $namespaces['Bartlett\CompatInfo\Analyser'] = dirname($path);
