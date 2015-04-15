@@ -370,7 +370,7 @@ Function [ <user> function glob\\singleFunction ] {
 
   - Parameters [3] {
     Parameter #0 [ <required> array \$someparam ]
-    Parameter #1 [ <required> stdClass \$somethingelse ]
+    Parameter #1 [ <required> glob\stdClass \$somethingelse ]
     Parameter #2 [ <optional> \$lastone = NULL ]
   }
 }
