@@ -25,3 +25,5 @@ trait PeanutButter {
 }
 
 const TWO = ONE +1;
+
+define ('FOO', 'something');

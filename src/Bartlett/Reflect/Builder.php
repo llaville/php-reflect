@@ -644,6 +644,7 @@ class Builder extends NodeVisitorAbstract
     {
         $qualifiedName = $node->args[0]->value->value;
         $nodeAttributes['value'] = $node->args[1]->value->value;
+        $nodeAttributes['scalar'] = true;
         $this->buildConstant($qualifiedName, $nodeAttributes);
     }
 

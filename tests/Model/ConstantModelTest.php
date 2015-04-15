@@ -405,6 +405,23 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests whether a constant is scalar.
+     *
+     *  covers ConstantModel::isScalar
+     * @return void
+     * @see    https://github.com/llaville/php-compat-info/issues/170#issuecomment-86687898
+     */
+    public function testIsScalarForUSerDefine()
+    {
+        $c = 11;  // sandbox\FOO
+
+        $this->assertTrue(
+            self::$constants[$c]->isScalar(),
+            self::$constants[$c]->getName() . ' is not a scalar constant.'
+        );
+    }
+
+    /**
      * Tests string representation of the FunctionModel object
      *
      *  covers ConstantModel::__toString
