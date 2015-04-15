@@ -310,7 +310,7 @@ class Builder extends NodeVisitorAbstract
 
             $qualifiedClassName = $node->namespacedName->__toString();
 
-            if ($node->extends) {
+            if (isset($node->extends) && !empty($node->extends)) {
                 $parent = $node->extends;
                 if (is_array($parent)) {
                     // multiple direct inheritance is not allowed in PHP, but PHP-Parser ?
@@ -327,7 +327,7 @@ class Builder extends NodeVisitorAbstract
             }
 
             $interfaces = array();
-            if ($node->implements
+            if (isset($node->implements)
                 && !empty($node->implements)
             ) {
                 foreach ($node->implements as $interface) {
@@ -431,7 +431,7 @@ class Builder extends NodeVisitorAbstract
                     // @link http://www.php.net/manual/en/language.oop5.properties.php
 
                     $props = $stmt->props;
-                    if ($props[0]->default) {
+                    if (isset($props[0]->default) && isset($props[0]->default->value)) {
                         $stmtAttributes['value'] = $props[0]->default->value;
                     } else {
                         $stmtAttributes['value'] = null;
