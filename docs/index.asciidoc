@@ -3,7 +3,7 @@
 :description: Reverse-engineer classes, interfaces, functions, constants, namespaces and more.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
-:stable:      2.6.2
+:stable:      2.6.3
 :toc!:
 :toc2!:
 :navbar!:
@@ -37,14 +37,14 @@ endif::[]
 --
 [bg-primary]*Stable Release*
 
-Last branch 2 release was published on January 5, 2015.
+Last branch 2 release was published on April 15, 2015.
 
 ifdef::basebackend-bootstrap[]
-link:./manual/current/en/getting-started.html["Learn more",role="primary",options="block"]
+link:./manual/2.6/en/getting-started.html["Learn more",role="primary",options="block"]
 endif::[]
 
 ifndef::basebackend-bootstrap[]
-link:./manual/current/en/getting-started.html[Learn more]
+link:./manual/2.6/en/getting-started.html[Learn more]
 endif::[]
 --
 ====
