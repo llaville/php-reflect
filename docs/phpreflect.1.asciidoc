@@ -60,7 +60,7 @@ The phpreflect(1) 'analyser:run' command is used to analyse a data source and di
 
 Usage:
 
-  phpreflect analyser:run [--alias] [--format="..."] source [analysers1] ... [analysersN]
+  phpreflect analyser:run [--alias] [--format[="..."]] [--filter[="..."]] source [analysers1] ... [analysersN]
 
 Where:
 
@@ -71,7 +71,10 @@ Where:
   If set, the source refers to its alias
 
 *--format*::
-  If set, convert result to a specific format. (default: "json")
+  If set, convert result to a specific format. (default: false)
+
+*--filter*::
+  Resource that provide a closure to filter results. (default: false)
 
 *analysers1* ... *analysersN*::
   Identify one or more analyser to execute. See 'analyser:list' command to know what analysers are available.
