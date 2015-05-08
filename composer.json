@@ -34,7 +34,7 @@
         "doctrine/cache": "~1.3",
         "psr/log": "~1.0",
         "monolog/monolog": "~1.10",
-        "bartlett/phpunit-loggertestlistener": "~1.3",
+        "bartlett/phpunit-loggertestlistener": "~1.5",
         "bartlett/umlwriter": "~1.0"
     },
     "suggest": {
