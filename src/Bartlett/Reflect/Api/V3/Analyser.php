@@ -52,15 +52,16 @@ class Analyser extends Common
     /**
      * Analyse a data source and display results.
      *
-     * @param string $source    Path to the data source or its alias
-     * @param array  $analysers One or more analyser to perform (case insensitive).
-     * @param mixed  $alias     If set, the source refers to its alias
-     * @param string $format    If set, convert result to a specific format.
+     * @param string   $source    Path to the data source or its alias
+     * @param array    $analysers One or more analyser to perform (case insensitive).
+     * @param mixed    $alias     If set, the source refers to its alias
+     * @param string   $format    If set, convert result to a specific format.
+     * @param \Closure $filter    Function used to filter results
      *
      * @return array metrics
      * @throws \InvalidArgumentException if an analyser required is not installed
      */
-    public function run($source, array $analysers, $alias, $format)
+    public function run($source, array $analysers, $alias, $format, $filter)
     {
         $finder = $this->findProvider($source, $alias);
 
@@ -101,6 +102,8 @@ class Analyser extends Common
 
         $response = $reflect->parse($finder);
 
+        $response = $filter($response);
+
         if (!empty($format)) {
             $transformMethod = sprintf('transformTo%s', ucfirst($format));
             if (!method_exists($this, $transformMethod)) {
@@ -110,6 +113,7 @@ class Analyser extends Common
             }
             $response = $this->$transformMethod($response);
         }
+
         return $response;
     }
 

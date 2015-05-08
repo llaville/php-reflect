@@ -45,11 +45,13 @@ class Analyser extends BaseApi
      * @param array  $analysers One or more analyser to perform (case insensitive).
      * @param mixed  $alias     If set, the source refers to its alias
      * @param string $format    If set, convert result to a specific format.
+     * @param mixed  $filter    Resource that provide a closure to filter results.
      *
      * @return array metrics
      * @throws \InvalidArgumentException if an analyser required is not installed
+     * @throws \RuntimeException         if filter provided is not a closure
      */
-    public function run($source, array $analysers, $alias = null, $format = false)
+    public function run($source, array $analysers, $alias = null, $format = false, $filter = false)
     {
         $source = trim($source);
         if ($alias) {
@@ -57,6 +59,29 @@ class Analyser extends BaseApi
         } else {
             $alias = false;
         }
-        return $this->request('analyser/run', 'POST', array($source, $analysers, $alias, $format));
+
+        if ($filter instanceof \Closure) {
+            $closure = $filter;
+
+        } elseif ($filter === false) {
+            $closure = function ($data) {
+                return $data;
+            };
+
+        } else {
+            if ($filterRes = stream_resolve_include_path($filter)) {
+                include_once $filterRes;
+            }
+            if (!isset($closure) || !is_callable($closure)) {
+                throw new \RuntimeException(
+                    sprintf(
+                        'Invalid filter provided by file "%s"',
+                        $filterRes ? : $filter
+                    )
+                );
+            }
+        }
+
+        return $this->request('analyser/run', 'POST', array($source, $analysers, $alias, $format, $closure));
     }
 }
