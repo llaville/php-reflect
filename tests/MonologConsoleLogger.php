@@ -23,7 +23,7 @@ use Monolog\Formatter\LineFormatter;
 /**
  * Prints the result of a TestRunner run using Monolog and few handlers.
  *
- * - We log all PHPUnit events to a local file "phpunit-phpcompatinfo.log"
+ * - We log all PHPUnit events to a local file "phpunit-phpreflect.log"
  *   and keep history 30 days
  * - We log some PHPUnit events, depending of --verbose, --debug and --colors switches,
  *   directly to the CLI console
