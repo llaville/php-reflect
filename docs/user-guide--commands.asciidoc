@@ -29,7 +29,7 @@ when you invoke the `phpreflect` command, you should obtain the following comman
  | .__/|_| |_| .__/|_| \_\___|_| |_|\___|\___|\__|
  |_|         |_|
 
-phpReflect version 3.0.1
+phpReflect version 3.1.0
 
 Usage:
  [options] command [arguments]
@@ -97,7 +97,7 @@ $ phpreflect diagnose:run
 ----
 Checking php settings:
 - Requires PHP 5.3.2 or better OK
-- php.ini file loaded C:\UwAmp\bin\php\php-5.6.7\php.ini
+- php.ini file loaded C:\UwAmp\bin\php\php-5.6.8\php.ini
 - date extension loaded YES
 - json extension loaded YES
 - pcre extension loaded YES
@@ -194,6 +194,24 @@ $ phpreflect analyser:run --alias current
 ----
 include::structure_analysis.out.asciidoc[]
 ----
++
+[source,bash]
+.Filter results with a closure (available since version [label label-success]*3.1.0*)
+----
+$ phpreflect analyser:run --filter=YourFilters.php .
+----
++
+[source, php]
+----
+include::php_filters.asciidoc[]
+----
++
+[role="output"]
+----
+include::structure_analysis_filtered.out.asciidoc[]
+----
++
+WARNING: The filter's file that host the `$closure`, must be resolvable through the include_path.
 
 [horizontal]
 reflection:class::

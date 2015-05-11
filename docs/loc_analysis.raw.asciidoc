@@ -56,45 +56,44 @@ Array
             [51] => /home/github/php-reflect/src/Bartlett/Reflect/Output/Diagram.php
             [52] => /home/github/php-reflect/src/Bartlett/Reflect/Output/Plugin.php
             [53] => /home/github/php-reflect/src/Bartlett/Reflect/Output/Reflection.php
-            [54] => /home/github/php-reflect/src/Bartlett/Reflect/PhpParser/NameResolver.php
-            [55] => /home/github/php-reflect/src/Bartlett/Reflect/PhpParser/NodeProcessor.php
-            [56] => /home/github/php-reflect/src/Bartlett/Reflect/PhpParser/NodeProcessorAbstract.php
-            [57] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Cache/CacheAdapterInterface.php
-            [58] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Cache/CacheStorageInterface.php
-            [59] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Cache/DefaultCacheStorage.php
-            [60] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Cache/DoctrineCacheAdapter.php
-            [61] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/CachePlugin.php
-            [62] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Log/DefaultLogger.php
-            [63] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/LogPlugin.php
-            [64] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Notifier/GrowlNotifier.php
-            [65] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Notifier/NotifierInterface.php
-            [66] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/NotifierPlugin.php
-            [67] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/PluginInterface.php
-            [68] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/PluginManager.php
-            [69] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/ProfilerPlugin.php
-            [70] => /home/github/php-reflect/src/Bartlett/Reflect/Tokenizer/DefaultTokenizer.php
-            [71] => /home/github/php-reflect/src/Bartlett/Reflect/Util/Timer.php
-            [72] => /home/github/php-reflect/src/Bartlett/Reflect.php
+            [54] => /home/github/php-reflect/src/Bartlett/Reflect/PhpParser/NodeProcessor.php
+            [55] => /home/github/php-reflect/src/Bartlett/Reflect/PhpParser/NodeProcessorAbstract.php
+            [56] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Cache/CacheAdapterInterface.php
+            [57] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Cache/CacheStorageInterface.php
+            [58] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Cache/DefaultCacheStorage.php
+            [59] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Cache/DoctrineCacheAdapter.php
+            [60] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/CachePlugin.php
+            [61] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Log/DefaultLogger.php
+            [62] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/LogPlugin.php
+            [63] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Notifier/GrowlNotifier.php
+            [64] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/Notifier/NotifierInterface.php
+            [65] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/NotifierPlugin.php
+            [66] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/PluginInterface.php
+            [67] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/PluginManager.php
+            [68] => /home/github/php-reflect/src/Bartlett/Reflect/Plugin/ProfilerPlugin.php
+            [69] => /home/github/php-reflect/src/Bartlett/Reflect/Tokenizer/DefaultTokenizer.php
+            [70] => /home/github/php-reflect/src/Bartlett/Reflect/Util/Timer.php
+            [71] => /home/github/php-reflect/src/Bartlett/Reflect.php
         )
 
     [Bartlett\Reflect\Analyser\LocAnalyser] => Array
         (
-            [llocClasses] => 1115
+            [llocClasses] => 1116
             [llocByNoc] => 0
             [llocByNom] => 0
-            [llocFunctions] => 79
+            [llocFunctions] => 80
             [llocByNof] => 0
             [llocGlobal] => 0
-            [classes] => 65
-            [functions] => 12
-            [methods] => 323
-            [cloc] => 137
-            [eloc] => 3117
-            [lloc] => 1194
-            [wloc] => 366
-            [loc] => 3620
-            [ccn] => 610
-            [ccnMethods] => 556
+            [classes] => 64
+            [functions] => 13
+            [methods] => 321
+            [cloc] => 136
+            [eloc] => 3207
+            [lloc] => 1196
+            [wloc] => 378
+            [loc] => 3721
+            [ccn] => 656
+            [ccnMethods] => 602
         )
 
 )
