@@ -30,6 +30,7 @@ use Bartlett\Monolog\Handler\GrowlHandler;
  *   and keep history 30 days
  * - We log some PHPUnit events, depending of --verbose, --debug and --colors switches,
  *   directly to the CLI console
+ * - We will notify final results to any Growl client (if available and started)
  *
  * @category   PHP
  * @package    PHP_Reflect
