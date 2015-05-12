@@ -9,7 +9,7 @@ that bundles all dependencies in a single file.
 
 Follow development on the http://php5.laurent-laville.org/reflect/blog/[official Blog].
 
-Have a look on https://github.com/llaville/php-reflect/releases/tag/2.6.3[tag 2.6.3] for previous stable API 2.0
+Have a look on https://github.com/llaville/php-reflect/tree/2.6[branch 2.6] for previous stable API 2.0
 
 == Install
 
