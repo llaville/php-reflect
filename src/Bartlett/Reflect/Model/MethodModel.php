@@ -14,6 +14,8 @@
 
 namespace Bartlett\Reflect\Model;
 
+use PhpParser\Node;
+
 /**
  * The MethodModel class reports information about a method.
  *
@@ -25,39 +27,36 @@ namespace Bartlett\Reflect\Model;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class MethodModel extends AbstractFunctionModel implements Visitable
+class MethodModel extends AbstractFunctionModel
 {
-    protected $class_name;
-
     /**
-     * Constructs a new MethodModel instance.
+     * Creates a new MethodModel instance.
      *
-     * @param string $class The class name that contains the method
-     * @param string $name  Name of the method
      */
-    public function __construct($class, $name, $attributes)
+    public function __construct($class, Node\Stmt\ClassMethod $method)
     {
-        $struct = array(
-            'modifiers' => array(),
-            'implicitlyPublic' => true,
-        );
-        $struct = array_merge($struct, $attributes);
-        parent::__construct($struct);
-
-        $this->short_name = $name;
-        $this->class_name = ltrim($class, '\\');
-
-        $this->name = $this->class_name . "::$name";
+        parent::__construct($method);
+        $this->declaringClass = $class;
     }
 
     /**
-     * Gets class name for the reflected method.
+     * Gets the method modifiers
      *
-     * @return string
+     * @return int
      */
-    public function getClassName()
+    public function getModifiers()
     {
-        return $this->class_name;
+        return $this->node->type;
+    }
+
+    /**
+     * Gets declaring class
+     *
+     * @return ClassModel
+     */
+    public function getDeclaringClass()
+    {
+        return $this->declaringClass;
     }
 
     /**
@@ -67,7 +66,7 @@ class MethodModel extends AbstractFunctionModel implements Visitable
      */
     public function isAbstract()
     {
-        return in_array('abstract', $this->struct['modifiers']);
+        return $this->node->isAbstract();
     }
 
     /**
@@ -77,10 +76,10 @@ class MethodModel extends AbstractFunctionModel implements Visitable
      */
     public function isConstructor()
     {
-        $name = explode('\\', $this->class_name);
+        $name = explode('\\', $this->declaringClass->getName());
         $name = array_pop($name);
 
-        return in_array($this->short_name, array('__construct', $name));
+        return in_array($this->getShortName(), array('__construct', $name));
     }
 
     /**
@@ -90,7 +89,7 @@ class MethodModel extends AbstractFunctionModel implements Visitable
      */
     public function isDestructor()
     {
-        return $this->short_name === '__destruct';
+        return $this->getShortName() === '__destruct';
     }
 
     /**
@@ -100,7 +99,7 @@ class MethodModel extends AbstractFunctionModel implements Visitable
      */
     public function isFinal()
     {
-        return in_array('final', $this->struct['modifiers']);
+        return $this->node->isFinal();
     }
 
     /**
@@ -110,7 +109,7 @@ class MethodModel extends AbstractFunctionModel implements Visitable
      */
     public function isStatic()
     {
-        return in_array('static', $this->struct['modifiers']);
+        return $this->node->isStatic();
     }
 
     /**
@@ -120,7 +119,7 @@ class MethodModel extends AbstractFunctionModel implements Visitable
      */
     public function isPrivate()
     {
-        return $this->struct['visibility'] === 'private';
+        return $this->node->isPrivate();
     }
 
     /**
@@ -130,7 +129,7 @@ class MethodModel extends AbstractFunctionModel implements Visitable
      */
     public function isProtected()
     {
-        return $this->struct['visibility'] === 'protected';
+        return $this->node->isProtected();
     }
 
     /**
@@ -140,7 +139,7 @@ class MethodModel extends AbstractFunctionModel implements Visitable
      */
     public function isPublic()
     {
-        return $this->struct['visibility'] === 'public';
+        return $this->node->isPublic();
     }
 
     /**
@@ -150,7 +149,7 @@ class MethodModel extends AbstractFunctionModel implements Visitable
      */
     public function isImplicitlyPublic()
     {
-        return $this->struct['implicitlyPublic'];
+        return $this->node->getAttribute('implicitlyPublic', false);
     }
 
     /**
@@ -170,6 +169,8 @@ class MethodModel extends AbstractFunctionModel implements Visitable
 
         $eol = "\n";
         $str = '';
+
+        // Method
         $str .= sprintf(
             'Method [ <%s> %s method %s ] {%s',
             $this->getExtensionName(),
@@ -186,19 +187,19 @@ class MethodModel extends AbstractFunctionModel implements Visitable
             $eol
         );
 
+        // Parameters
         $parameters = $this->getParameters();
-        if (count($parameters)) {
-            $str .= sprintf(
-                '%s  - Parameters [%d] {%s',
-                $eol,
-                count($parameters),
-                $eol
-            );
-            foreach ($parameters as $parameter) {
-                $str .= '    ' . $parameter->__toString();
-            }
-            $str .= '  }' . $eol;
+        $str .= sprintf(
+            '%s  - Parameters [%d] {%s',
+            $eol,
+            count($parameters),
+            $eol
+        );
+        foreach ($parameters as $parameter) {
+            $str .= '    ' . $parameter->__toString();
         }
+        $str .= '  }' . $eol;
+
         $str .= '}' . $eol;
 
         return $str;

@@ -1,24 +1,14 @@
 #!/usr/bin/env php
 <?php
 if (class_exists('Phar')) {
-    Phar::mapPhar('phpreflect.phar');
-    Phar::interceptFileFuncs();
+    $appName = 'phpReflect';
 
-    if (!getenv("REFLECT")) {
-        $home  = defined('PHP_WINDOWS_VERSION_BUILD') ? 'USERPROFILE' : 'HOME';
-        $files = array(
-            realpath('./phpreflect.json'),
-            getenv($home).'/.config/phpreflect.json',
-            '/etc/phpreflect.json',
-            'phar://' . __FILE__ . '/bin/phpreflect.json.dist'
-        );
-        foreach ($files as $file) {
-            if (file_exists($file)) {
-                putenv("REFLECT=$file");
-                break;
-            }
-        }
+    Phar::mapPhar(strtolower($appName) . '.phar');
+
+    if (!getenv("BARTLETTRC")) {
+        putenv("BARTLETTRC=" . strtolower($appName) . '.json');
     }
-    require 'phar://' . __FILE__ . '/bin/phpreflect';
+
+    require 'phar://' . __FILE__ . '/bin/' . strtolower($appName);
 }
 __HALT_COMPILER();

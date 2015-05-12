@@ -16,11 +16,6 @@
 
 namespace Bartlett\Tests\Reflect\Model;
 
-use Bartlett\Reflect;
-use Bartlett\Reflect\ProviderManager;
-use Bartlett\Reflect\Provider\SymfonyFinderProvider;
-use Symfony\Component\Finder\Finder;
-
 /**
  * Unit Test Case that covers Bartlett\Reflect\Model\MethodModel
  *
@@ -32,57 +27,32 @@ use Symfony\Component\Finder\Finder;
  * @version    Release: @package_version@
  * @link       http://php5.laurent-laville.org/reflect/
  */
-class MethodModelTest extends \PHPUnit_Framework_TestCase
+class MethodModelTest extends GenericModelTest
 {
-    protected static $fixtures;
-    protected static $interfaces;
-    protected static $classes;
-
     /**
      * Sets up the shared fixture.
      *
      * @return void
-     * @link   http://phpunit.de/manual/current/en/fixtures.html#fixtures.sharing-fixture
      */
     public static function setUpBeforeClass()
     {
-        self::$fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
-            . '_files' . DIRECTORY_SEPARATOR;
-
-        $finder = new Finder();
-        $finder->files()
-            ->name('classes.php')
-            ->in(self::$fixtures);
-
-        $pm = new ProviderManager;
-        $pm->set('test_files', new SymfonyFinderProvider($finder));
-
-        $reflect = new Reflect();
-        $reflect->setProviderManager($pm);
-        $reflect->parse();
-
-        foreach ($reflect->getPackages() as $package) {
-            foreach ($package->getInterfaces() as $rc) {
-                self::$interfaces[] = $rc;
-            }
-            foreach ($package->getClasses() as $rc) {
-                self::$classes[] = $rc;
-            }
-        }
+        self::$fixture = 'classes.php';
+        parent::setUpBeforeClass();
     }
 
     /**
      * Tests doc comment accessor.
      *
-     *  covers MethodModel::getDocComment
+     *  covers Bartlett\Reflect\Model\AbstractModel::getDocComment
+     * @group  reflection
      * @return void
      */
     public function testDocCommentAccessor()
     {
-        $c = 1;  // abstract class AbstractClass
-        $m = 'lambdaMethod';
+        $c = 4;  // abstract class AbstractClass
+        $m = 0;  // method lambdaMethod
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertEquals(
             '/** static meth: */',
@@ -95,15 +65,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests starting line number accessor.
      *
-     *  covers MethodModel::getStartLine
+     *  covers Bartlett\Reflect\Model\AbstractModel::getStartLine
+     * @group  reflection
      * @return void
      */
     public function testStartLineAccessor()
     {
-        $c = 2;  // class MyDestructableClass
-        $m = 'dump';
+        $c = 5;  // class MyDestructableClass
+        $m = 2;  // method dump;
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertEquals(
             54,
@@ -116,15 +87,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests ending line number accessor.
      *
-     *  covers MethodModel::getEndLine
+     *  covers Bartlett\Reflect\Model\AbstractModel::getEndLine
+     * @group  reflection
      * @return void
      */
     public function testEndLineAccessor()
     {
-        $c = 2;  // class MyDestructableClass
-        $m = 'dump';
+        $c = 5;  // class MyDestructableClass
+        $m = 2;  // method dump;
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertEquals(
             57,
@@ -137,15 +109,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests file name accessor.
      *
-     *  covers MethodModel::getFileName
+     *  covers Bartlett\Reflect\Model\AbstractModel::getFileName
+     * @group  reflection
      * @return void
      */
     public function testFileNameAccessor()
     {
-        $c = 2;  // class MyDestructableClass
-        $m = 'dump';
+        $c = 5;  // class MyDestructableClass
+        $m = 2;  // method dump;
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertEquals(
             self::$fixtures . 'classes.php',
@@ -158,36 +131,60 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests method name accessor.
      *
-     *  covers MethodModel::getName
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::getShortName
+     * @group  reflection
      * @return void
      */
     public function testNameAccessor()
     {
-        $c = 2;  // class MyDestructableClass
-        $m = 'dump';
+        $c = 5;  // class MyDestructableClass
+        $m = 2;  // method dump;
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertEquals(
-            'MyDestructableClass::dump',
-            $methods[$m]->getName(),
+            'dump',
+            $methods[$m]->getShortName(),
             $methods[$m]->getName()
             . ' method name does not match.'
         );
     }
 
     /**
+     * Tests declaring class of the method.
+     *
+     *  covers Bartlett\Reflect\Model\MethodModel::getDeclaringClass
+     * @group  reflection
+     * @return void
+     */
+    public function testDeclaringClassAccessor()
+    {
+        $c = 5;  // class MyDestructableClass
+        $m = 2;  // method dump;
+
+        $methods = self::$models[$c]->getMethods();
+
+        $this->assertEquals(
+            'MyDestructableClass',
+            $methods[$m]->getDeclaringClass()->getName(),
+            $methods[$m]->getName()
+            . ", method #$m declaring class does not match."
+        );
+    }
+
+    /**
      * Tests method extension name acessor.
      *
-     *  covers MethodModel::getExtensionName
+     *  covers Bartlett\Reflect\Model\AbstractModel::getExtensionName
+     * @group  reflection
      * @return void
      */
     public function testExtensionNameAccessor()
     {
-        $c = 2;  // class MyDestructableClass
-        $m = 'dump';
+        $c = 5;  // class MyDestructableClass
+        $m = 2;  // method dump;
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertEquals(
             'user',
@@ -200,15 +197,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests class method is a PHP4 constructor.
      *
-     *  covers MethodModel::isConstructor
+     *  covers Bartlett\Reflect\Model\MethodModel::isConstructor
+     * @group  reflection
      * @return void
      */
     public function testPHP4Constructor()
     {
-        $c = 0;  // class Foo implements iB
-        $m = 'Foo';
+        $c = 3;  // class Foo implements iB
+        $m = 0;  // method Foo
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertTrue(
             $methods[$m]->isConstructor(),
@@ -220,15 +218,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests class method is a PHP5 constructor.
      *
-     *  covers MethodModel::isConstructor
+     *  covers Bartlett\Reflect\Model\MethodModel::isConstructor
+     * @group  reflection
      * @return void
      */
     public function testPHP5Constructor()
     {
-        $c = 2;  // class MyDestructableClass
-        $m = '__construct';
+        $c = 5;  // class MyDestructableClass
+        $m = 0;  // method __construct
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertTrue(
             $methods[$m]->isConstructor(),
@@ -240,15 +239,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests class method is a destructor.
      *
-     *  covers MethodModel::isDestructor
+     *  covers Bartlett\Reflect\Model\MethodModel::isDestructor
+     * @group  reflection
      * @return void
      */
     public function testDestructor()
     {
-        $c = 2;  // class MyDestructableClass
-        $m = '__destruct';
+        $c = 5;  // class MyDestructableClass
+        $m = 1;  // method __destruct
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertTrue(
             $methods[$m]->isDestructor(),
@@ -260,15 +260,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests class method with abstract keyword.
      *
-     *  covers MethodModel::isAbstract
+     *  covers Bartlett\Reflect\Model\MethodModel::isAbstract
+     * @group  reflection
      * @return void
      */
     public function testAbstractMethod()
     {
-        $c = 1;  // abstract class AbstractClass
-        $m = 'abstractMethod';
+        $c = 4;  // abstract class AbstractClass
+        $m = 1;  // method abstractMethod
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertTrue(
             $methods[$m]->isAbstract(),
@@ -280,15 +281,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests class method with final keyword.
      *
-     *  covers MethodModel::isFinal
+     *  covers Bartlett\Reflect\Model\MethodModel::isFinal
+     * @group  reflection
      * @return void
      */
     public function testFinalMethod()
     {
-        $c = 0;  // class Foo implements iB
-        $m = 'baz';
+        $c = 3;  // class Foo implements iB
+        $m = 2;  // method baz
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertTrue(
             $methods[$m]->isFinal(),
@@ -300,15 +302,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests class method with static keyword.
      *
-     *  covers MethodModel::isStatic
+     *  covers Bartlett\Reflect\Model\MethodModel::isStatic
+     * @group  reflection
      * @return void
      */
     public function testStaticMethod()
     {
-        $c = 1;  // abstract class AbstractClass
-        $m = 'lambdaMethod';
+        $c = 4;  // abstract class AbstractClass
+        $m = 0;  // method lambdaMethod
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertTrue(
             $methods[$m]->isStatic(),
@@ -320,15 +323,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests class method with private visibility.
      *
-     *  covers MethodModel::isPrivate
+     *  covers Bartlett\Reflect\Model\MethodModel::isPrivate
+     * @group  reflection
      * @return void
      */
     public function testPrivateMethod()
     {
-        $c = 0;  // class Foo implements iB
-        $m = 'FooBaz';
+        $c = 3;  // class Foo implements iB
+        $m = 1;  // method FooBaz
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertTrue(
             $methods[$m]->isPrivate(),
@@ -340,15 +344,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests class method with protected visibility.
      *
-     *  covers MethodModel::isProtected
+     *  covers Bartlett\Reflect\Model\MethodModel::isProtected
+     * @group  reflection
      * @return void
      */
     public function testProtectedMethod()
     {
-        $c = 3;  // class Bar
-        $m = 'otherfunction';
+        $c = 6;  // class Bar
+        $m = 1;  // method otherfunction
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertTrue(
             $methods[$m]->isProtected(),
@@ -360,15 +365,16 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests class method with public visibility.
      *
-     *  covers MethodModel::isPublic
+     *  covers Bartlett\Reflect\Model\MethodModel::isPublic
+     * @group  reflection
      * @return void
      */
     public function testPublicMethod()
     {
-        $c = 1;  // abstract class AbstractClass
-        $m = 'lambdaMethod';
+        $c = 4;  // abstract class AbstractClass
+        $m = 0;  // method lambdaMethod
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         $this->assertTrue(
             $methods[$m]->isPublic(),
@@ -378,17 +384,39 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests class method with implicit public visibility.
+     *
+     *  covers Bartlett\Reflect\Model\MethodModel::isImplicitlyPublic
+     * @group  reflection
+     * @return void
+     */
+    public function testImplicitlyPublicMethod()
+    {
+        $c = 5;  // class MyDestructableClass
+        $m = 2;  // method dump;
+
+        $methods = self::$models[$c]->getMethods();
+
+        $this->assertTrue(
+            $methods[$m]->isImplicitlyPublic(),
+            $methods[$m]->getName()
+            . ' is not implicitly public.'
+        );
+    }
+
+    /**
      * Tests parameters of the class method.
      *
-     *  covers MethodModel::getParameters
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::getParameters
+     * @group  reflection
      * @return void
      */
     public function testParametersAccessor()
     {
         $i = 2;  // interface iB extends iA
-        $m = 'baz';
+        $m = 0;  // method baz
 
-        $methods = self::$interfaces[$i]->getMethods();
+        $methods = self::$models[$i]->getMethods();
 
         $this->assertCount(
             1,
@@ -401,17 +429,18 @@ class MethodModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests string representation of the MethodModel object
      *
-     *  covers MethodModel::__toString
+     *  covers Bartlett\Reflect\Model\MethodModel::__toString
+     * @group  reflection
      * @return void
      */
     public function testToString()
     {
-        $c = 3;  // class Bar
-        $m = 'myfunction';
+        $c = 6;  // class Bar
+        $m = 0; // method myfunction
 
         $expected = <<<EOS
 Method [ <user> public method myfunction ] {
-  @@ %path%classes.php 65 - 66
+  @@ %filename% 65 - 66
 
   - Parameters [2] {
     Parameter #0 [ <optional> stdClass \$param = NULL ]
@@ -421,10 +450,10 @@ Method [ <user> public method myfunction ] {
 
 EOS;
         $this->expectOutputString(
-            str_replace('%path%', self::$fixtures, $expected)
+            str_replace('%filename%', self::$fixture, $expected)
         );
 
-        $methods = self::$classes[$c]->getMethods();
+        $methods = self::$models[$c]->getMethods();
 
         print(
             $methods[$m]->__toString()

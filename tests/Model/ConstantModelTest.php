@@ -16,11 +16,6 @@
 
 namespace Bartlett\Tests\Reflect\Model;
 
-use Bartlett\Reflect;
-use Bartlett\Reflect\ProviderManager;
-use Bartlett\Reflect\Provider\SymfonyFinderProvider;
-use Symfony\Component\Finder\Finder;
-
 /**
  * Unit Test Case that covers Bartlett\Reflect\Model\ConstantModel
  *
@@ -32,47 +27,24 @@ use Symfony\Component\Finder\Finder;
  * @version    Release: @package_version@
  * @link       http://php5.laurent-laville.org/reflect/
  */
-class ConstantModelTest extends \PHPUnit_Framework_TestCase
+class ConstantModelTest extends GenericModelTest
 {
-    protected static $fixture;
-    protected static $constants;
-
     /**
      * Sets up the shared fixture.
      *
      * @return void
-     * @link   http://phpunit.de/manual/current/en/fixtures.html#fixtures.sharing-fixture
      */
     public static function setUpBeforeClass()
     {
-        $fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
-            . '_files' . DIRECTORY_SEPARATOR;
-
-        self::$fixture = $fixtures . 'constants.php';
-
-        $finder = new Finder();
-        $finder->files()
-            ->name(basename(self::$fixture))
-            ->in($fixtures);
-
-        $pm = new ProviderManager;
-        $pm->set('test_files', new SymfonyFinderProvider($finder));
-
-        $reflect = new Reflect();
-        $reflect->setProviderManager($pm);
-        $reflect->parse();
-
-        foreach ($reflect->getPackages() as $package) {
-            foreach ($package->getConstants() as $rc) {
-                self::$constants[] = $rc;
-            }
-        }
+        self::$fixture = 'constants.php';
+        parent::setUpBeforeClass();
     }
 
     /**
      * Tests the Doc comment accessor.
      *
-     *  covers ConstantModel::getDocComment
+     *  covers Bartlett\Reflect\Model\AbstractModel::getDocComment
+     * @group  reflection
      * @return void
      */
     public function testDocCommentAccessor()
@@ -83,15 +55,16 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $expected,
-            self::$constants[$c]->getDocComment(),
-            self::$constants[$c]->getName() . ' doc comment does not match.'
+            self::$models[$c]->getDocComment(),
+            self::$models[$c]->getName() . ' doc comment does not match.'
         );
     }
 
     /**
      * Tests file name accessor.
      *
-     *  covers ConstantModel::getFileName
+     *  covers Bartlett\Reflect\Model\AbstractModel::getFileName
+     * @group  reflection
      * @return void
      */
     public function testFileNameAccessor()
@@ -100,48 +73,16 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             self::$fixture,
-            self::$constants[$c]->getFileName(),
-            self::$constants[$c]->getName() . ' file name does not match.'
-        );
-    }
-
-    /**
-     * Tests file name accessor for an internal constant.
-     *
-     *  covers ConstantModel::getFileName
-     * @return void
-     */
-    public function testInternalConstantFileNameAccessor()
-    {
-        $c = 3;  // __METHOD__ from sandbox\Connection::connect()
-
-        $this->assertFalse(
-            self::$constants[$c]->getFileName(),
-            self::$constants[$c]->getName() . ' does not expect a file name.'
-        );
-    }
-
-    /**
-     * Tests extension name acessor.
-     *
-     *  covers ConstantModel::getExtensionName
-     * @return void
-     */
-    public function testExtensionNameAccessor()
-    {
-        $c = 3;  // __METHOD__ from sandbox\Connection::connect()
-
-        $this->assertEquals(
-            'Core',
-            self::$constants[$c]->getExtensionName(),
-            self::$constants[$c]->getName() . ' extension name does not match.'
+            self::$models[$c]->getFileName(),
+            self::$models[$c]->getName() . ' file name does not match.'
         );
     }
 
     /**
      * Tests name accessor.
      *
-     *  covers ConstantModel::getName
+     *  covers Bartlett\Reflect\Model\ConstantModel::getName
+     * @group  reflection
      * @return void
      */
     public function testNameAccessor()
@@ -150,15 +91,16 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             'sandbox\CONNECT_OK',
-            self::$constants[$c]->getName(),
-            self::$constants[$c]->getName() . ' constant name does not match.'
+            self::$models[$c]->getName(),
+            self::$models[$c]->getName() . ' constant name does not match.'
         );
     }
 
     /**
      * Tests value accessor of a user constant.
      *
-     *  covers ConstantModel::getValue
+     *  covers Bartlett\Reflect\Model\ConstantModel::getValue
+     * @group  reflection
      * @return void
      */
     public function testUserConstantValueAccessor()
@@ -167,165 +109,16 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             1,
-            self::$constants[$c]->getValue(),
-            self::$constants[$c]->getName() . ' user constant value does not match.'
-        );
-    }
-
-    /**
-     * Tests value accessor on the __CLASS__ magic constant.
-     *
-     *  covers ConstantModel::getValue
-     * @return void
-     */
-    public function testClassMagicConstantValueAccessor()
-    {
-        $c = 2;  // __CLASS__ from sandbox\Connection::connect()
-
-        $this->assertNull(
-            self::$constants[$c]->getValue(),
-            self::$constants[$c]->getName() . ' magic constant value does not match.'
-        );
-    }
-
-    /**
-     * Tests value accessor on the __METHOD__ magic constant.
-     *
-     *  covers ConstantModel::getValue
-     * @return void
-     */
-    public function testMethodMagicConstantValueAccessor()
-    {
-        $c = 3;  // __METHOD__ from sandbox\Connection::connect()
-
-        $this->assertNull(
-            self::$constants[$c]->getValue(),
-            self::$constants[$c]->getName() . ' magic constant value does not match.'
-        );
-    }
-
-    /**
-     * Tests value accessor on the __DIR__ magic constant.
-     *
-     *  covers ConstantModel::getValue
-     * @return void
-     */
-    public function testDirMagicConstantValueAccessor()
-    {
-        $c = 7;  // __DIR__
-
-        $this->assertNull(
-            self::$constants[$c]->getValue(),
-            self::$constants[$c]->getName() . ' magic constant value does not match.'
-        );
-    }
-
-    /**
-     * Tests value accessor on the __FILE__ magic constant.
-     *
-     *  covers ConstantModel::getValue
-     * @return void
-     */
-    public function testFileMagicConstantValueAccessor()
-    {
-        $c = 1;  // __FILE__
-
-        $this->assertNull(
-            self::$constants[$c]->getValue(),
-            self::$constants[$c]->getName() . ' magic constant value does not match.'
-        );
-    }
-
-    /**
-     * Tests value accessor on the __LINE__ magic constant.
-     *
-     *  covers ConstantModel::getValue
-     * @return void
-     */
-    public function testLineMagicConstantValueAccessor()
-    {
-        $c = 4;  // __LINE__ from sandbox\Connection::connect()
-
-        $this->assertNull(
-            self::$constants[$c]->getValue(),
-            self::$constants[$c]->getName() . ' magic constant value does not match.'
-        );
-    }
-
-    /**
-     * Tests calls accessor on the __LINE__ magic constant.
-     *
-     *  covers ConstantModel::getCalls
-     * @return void
-     */
-    public function testLineMagicConstantCallsAccessor()
-    {
-        $c = 4;  // __LINE__ from sandbox\Connection::connect()
-
-        $callStack = array(
-            array('file' => self::$fixture, 'line' => 12),
-            array('file' => self::$fixture, 'line' => 17),
-        );
-
-        $this->assertEquals(
-            $callStack,
-            self::$constants[$c]->getCalls(false),
-            self::$constants[$c]->getName() . ' magic constant calls stack does not match.'
-        );
-    }
-
-    /**
-     * Tests value accessor on the __FUNCTION__ magic constant.
-     *
-     *  covers ConstantModel::getValue
-     * @return void
-     */
-    public function testFunctionMagicConstantValueAccessor()
-    {
-        $c = 5;  // __FUNCTION__ from sandbox\connect()
-
-        $this->assertNull(
-            self::$constants[$c]->getValue(),
-            self::$constants[$c]->getName() . ' magic constant value does not match.'
-        );
-    }
-
-    /**
-     * Tests value accessor on the __NAMESPACE__ magic constant.
-     *
-     *  covers ConstantModel::getValue
-     * @return void
-     */
-    public function testNamespaceMagicConstantValueAccessor()
-    {
-        $c = 6;  // __NAMESPACE__
-
-        $this->assertNull(
-            self::$constants[$c]->getValue(),
-            self::$constants[$c]->getName() . ' magic constant value does not match.'
-        );
-    }
-
-    /**
-     * Tests value accessor on the __TRAIT__ magic constant.
-     *
-     *  covers ConstantModel::getValue
-     * @return void
-     */
-    public function testTraitMagicConstantValueAccessor()
-    {
-        $c = 8;  // __TRAIT__ from sandbox\PeanutButter::traitName()
-
-        $this->assertNull(
-            self::$constants[$c]->getValue(),
-            self::$constants[$c]->getName() . ' magic constant value does not match.'
+            self::$models[$c]->getValue(),
+            self::$models[$c]->getName() . ' user constant value does not match.'
         );
     }
 
     /**
      * Tests the namespace name accessor.
      *
-     *  covers ConstantModel::getNamespaceName
+     *  covers Bartlett\Reflect\Model\ConstantModel::getNamespaceName
+     * @group  reflection
      * @return void
      */
     public function testNamespaceNameAccessor()
@@ -334,15 +127,16 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             'sandbox',
-            self::$constants[$c]->getNamespaceName(),
-            self::$constants[$c]->getName() . ' namespace does not match.'
+            self::$models[$c]->getNamespaceName(),
+            self::$models[$c]->getName() . ' namespace does not match.'
         );
     }
 
     /**
      * Tests function short name accessor.
      *
-     *  covers ConstantModel::getShortName
+     *  covers Bartlett\Reflect\Model\ConstantModel::getShortName
+     * @group  reflection
      * @return void
      */
     public function testShortNameAccessor()
@@ -351,15 +145,16 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             'CONNECT_OK',
-            self::$constants[$c]->getShortName(),
-            self::$constants[$c]->getName() . ' short name does not match.'
+            self::$models[$c]->getShortName(),
+            self::$models[$c]->getName() . ' short name does not match.'
         );
     }
 
     /**
      * Tests whether a constant is defined in a namespace.
      *
-     *  covers ConstantModel::inNamespace
+     *  covers Bartlett\Reflect\Model\ConstantModel::inNamespace
+     * @group  reflection
      * @return void
      */
     public function testInNamespace()
@@ -367,40 +162,59 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // sandbox\CONNECT_OK
 
         $this->assertTrue(
-            self::$constants[$c]->inNamespace(),
-            self::$constants[$c]->getName() . ' is defined in a namespace.'
+            self::$models[$c]->inNamespace(),
+            self::$models[$c]->getName() . ' is defined in a namespace.'
+        );
+    }
+
+    /**
+     * Tests whether a constant is internal.
+     *
+     *  covers Bartlett\Reflect\Model\ConstantModel::isInternal
+     * @group  reflection
+     * @return void
+     */
+    public function testIsInternal()
+    {
+        $c = 0;  // sandbox\CONNECT_OK
+
+        $this->assertFalse(
+            self::$models[$c]->isInternal(),
+            self::$models[$c]->getName() . ' is an internal constant.'
         );
     }
 
     /**
      * Tests whether a constant is magic.
      *
-     *  covers ConstantModel::isMagic
+     *  covers Bartlett\Reflect\Model\ConstantModel::isMagic
+     * @group  reflection
      * @return void
      */
     public function testIsMagic()
     {
-        $c = 2;  // __CLASS__ from sandbox\Connection::connect()
+        $c = 0;  // sandbox\CONNECT_OK
 
-        $this->assertTrue(
-            self::$constants[$c]->isMagic(),
-            self::$constants[$c]->getName() . ' is not a magic constant.'
+        $this->assertFalse(
+            self::$models[$c]->isMagic(),
+            self::$models[$c]->getName() . ' is a magic constant.'
         );
     }
 
     /**
      * Tests whether a constant is scalar.
      *
-     *  covers ConstantModel::isScalar
+     *  covers Bartlett\Reflect\Model\ConstantModel::isScalar
+     * @group  reflection
      * @return void
      */
     public function testIsScalar()
     {
-        $c = 9;  // sandbox\TWO
+        $c = 4;  // sandbox\TWO
 
         $this->assertFalse(
-            self::$constants[$c]->isScalar(),
-            self::$constants[$c]->getName() . ' is a scalar constant.'
+            self::$models[$c]->isScalar(),
+            self::$models[$c]->getName() . ' is a scalar constant.'
         );
     }
 
@@ -424,21 +238,22 @@ class ConstantModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests string representation of the FunctionModel object
      *
-     *  covers ConstantModel::__toString
+     *  covers Bartlett\Reflect\Model\ConstantModel::__toString
+     * @group  reflection
      * @return void
      */
     public function testToString()
     {
-        $c = 2;  // __CLASS__ from sandbox\Connection::connect()
+        $c = 4;  // sandbox\TWO
 
         $expected = <<<EOS
-Constant [ __CLASS__ ] {  }
+Constant [ sandbox\TWO ] { ONE + 1 }
 
 EOS;
         $this->expectOutputString($expected);
 
         print(
-            self::$constants[$c]->__toString()
+            self::$models[$c]->__toString()
         );
     }
 }

@@ -11,13 +11,22 @@ endif::basebackend-docbook[]
 
 [WARNING]
 ====
-[label label-primary]#Reflect# always needs a file in http://json.org/[JSON] format to run.
-It should be found either in the current, `$HOME/.config/`, or `/etc` directory.
+[label label-primary]#Reflect# may used an optional config file in http://json.org/[JSON] format.
+It could be found either in the current, `$HOME/.config/`, or `/etc` directory.
 
-By setting the `REFLECT` environment variable it is possible to set the filename
+By setting the `BARTLETTRC` environment variable it is possible to set the filename
 of `phpreflect.json` to something else.
 
-E.g:  `REFLECT=my-phpreflect.json`
+E.g:  `BARTLETTRC=my-phpreflect.json`
+
+And by setting the `BARTLETT_SCAN_DIR` environment variable it is possible to change
+directories where to search for the json config file.
+
+E.g:  `BARTLETT_SCAN_DIR=.:/var/configs:/tmp/bartlett`  (for Linux)
+
+E.g:  `BARTLETT_SCAN_DIR=.;\var\configs;\tmp\bartlett`  (for Windows)
+
+Take care of different PATH_SEPARATOR and DIRECTORY_SEPARATOR in each platform.
 ====
 
 The minimalist JSON file +phpreflect.json+ is :
@@ -31,16 +40,10 @@ The minimalist JSON file +phpreflect.json+ is :
         }
     ],
     "plugins": [
-        {
-            "name": "Analyser",
-            "class": "Bartlett\\Reflect\\Plugin\\Analyser\\AnalyserPlugin"
-        }
     ],
-    "analysers" : [
-        {
-            "name": "Structure",
-            "class": "Bartlett\\Reflect\\Analyser\\StructureAnalyser"
-        }
+    "analysers": [
+    ],
+    "services": [
     ]
 }
 ----
@@ -53,6 +56,9 @@ this entry list all plugins added to the core base code of PHP [label label-prim
 
 analysers::
 this entry list all analysers that may be used with the `analyser:run` command.
+
+services::
+this entry list all services that may be used with this application.
 
 
 === section Source Providers
@@ -162,35 +168,32 @@ By default, the Finder recursively traverse directories.
 [role="lead"]
 There are a number of optional plugins you can use along with Reflect to add more capabilities.
 
-The `Analyser` is the only mandatory plugin you should add to parse your data source.
+Take an example with the `Logger` plugin.
 
 In your +phpreflect.json+ configuration file, add in `plugins` section the following entry:
 [source,json]
 ----
     {
-        "name": "Analyser",
-        "class": "Bartlett\\Reflect\\Plugin\\Analyser\\AnalyserPlugin"
+        "name": "Logger",
+        "class": "Bartlett\\Reflect\\Plugin\\LogPlugin"
     }
 ----
 
-The `name` key identify the namespace of optional commands the plugin may provide.
+* The `name` key is (since version 3.0.0-alpha1) comment only.
+* The `class` key identify the name of the class that implement the plugin features (must be fully qualified).
 
-CAUTION: Each `name` key must be unique to avoid conflicts.
-
-The `class` key identify the name of the class that implement the plugin features.
-
-E.g: AnalyserPlugin footnote:[{rawurl}/src/Bartlett/Reflect/Plugin/Analyser/AnalyserPlugin.php]
+NOTE: The `LogPlugin` used by default the `Bartlett\Reflect\Plugin\Log\DefaultLogger` class that write results to error_log 
 
 ==== Cache Plugin
 
-WARNING: Available only since version 2.3.0
+WARNING: Available since version 2.3.0, but location changed since version 3.0.0-alpha1
 
 In your +phpreflect.json+ configuration file, add in `plugins` section the following entry:
 [source,json]
 ----
     {
         "name": "Cache",
-        "class": "Bartlett\\Reflect\\Plugin\\Cache\\CachePlugin",
+        "class": "Bartlett\\Reflect\\Plugin\\CachePlugin",
         "options": {
             "adapter": "DoctrineCacheAdapter",
             "backend": {
@@ -206,6 +209,20 @@ TIP: You may use any environment variable that will be replaced, at run-time, by
 
 NOTE: Since release 2.3.0, the `HOME` syntax is compatible Linux/Windows.
 
+[TIP]
+====
+If you want to used the same options (Doctrine adapter with file cache) as above, 
+you can used shortcut syntax like this.
+[source,json]
+----
+    {
+        "name": "Cache",
+        "class": "Bartlett\\Reflect\\Plugin\\CachePlugin",
+        "options": []
+    }
+----
+====
+
 In previous configuration we used the Doctrine Cache adapter and its File system backend.
 See the same configuration applied with other SAPI, in
 ifdef::basebackend-html[]
@@ -218,23 +235,20 @@ endif::basebackend-docbook[]
 
 ==== Log Plugin
 
-WARNING: Available only since version 2.4.0
+WARNING: Available since version 2.4.0, but location and options changed since version 3.0.0-alpha1
 
 In your +phpreflect.json+ configuration file, add in `plugins` section the following entry:
 [source,json]
 ----
     {
         "name": "Log",
-        "class": "Bartlett\\Reflect\\Plugin\\Log\\LogPlugin",
-        "options": {
-            "logger": {
-                "class": "YourLogger"
-            },
-            "conf": []
-        }
+        "class": "Bartlett\\Reflect\\Plugin\\LogPlugin"
     }
 ----
-Where `YourLogger` identify your class logger (fully qualified. E.g `YourNamespace\YourLogger`).
+Where `options` key identify an optional class logger (fully qualified. E.g `YourNamespace\YourLogger`).
+
+When `options` key is not provided, log plugin used the default Reflect logger bundled with distribution.
+See `Bartlett\Reflect\Plugin\Log\DefaultLogger` that write results to the error log system.
 
 See the Developer Guide for definition examples of some loggers
 ifdef::basebackend-html[]
@@ -247,73 +261,33 @@ xref:_using_monolog[]
 endif::basebackend-docbook[]
 
 
-And `conf` entry are custom plugin options to apply.
-
-For example, to suppress logging of `reflect.success` event, and remove contextual data
-on `reflect.complete` event, modify your +phpreflect.json+ configuration file as follow :
-
-[source,json]
-----
-    {
-        "name": "Log",
-        "class": "Bartlett\\Reflect\\Plugin\\Log\\LogPlugin",
-        "options": {
-            "logger": {
-                "class": "YourLogger"
-            },
-            "conf": {
-                "reflect.success": false,
-                "reflect.complete": {
-                    "context": false
-                }
-            }
-        }
-    }
-----
-
-All configuration options are available, see
-ifdef::basebackend-html[]
-link:developer-guide&#45;&#45;log-plugin.html#_register_plugin[Register Plugin] of Log section.
-endif::basebackend-html[]
-ifdef::basebackend-docbook[]
-xref:_register_plugin[]
-endif::basebackend-docbook[]
-
-
 === section Analysers
 
 [role="lead"]
-There are a number of optional analysers you can use along with the Reflect Analyser Plugin.
+There are two default analysers you can use, but you are free to add your owns.
 
-The `Structure` is the default analyser you should add to obtain results when you parse your data source.
-
-In your +phpreflect.json+ configuration file, add in `analysers` section the following entry:
+In your +phpreflect.json+ configuration file, add in `analysers` section (for example) the following entry:
 [source,json]
 ----
     {
-        "name": "Structure",
-        "class": "Bartlett\\Reflect\\Analyser\\StructureAnalyser"
+        "name": "MyAnalyser",
+        "class": "Your\\Analysers\\MyAnalyser"
     }
 ----
 
-The `name` key identify the name you can optionally invoke with the `analyser:run` command.
+* The `name` key is (since version 3.0.0-alpha1) comment only.
+* The `class` key identify the name of the class that implement your analyser (must be fully qualified).
 
-The two following commands do the same:
+Your analyser should implement both interfaces `Bartlett\Reflect\Analyser\AnalyserInterface` 
+and `PhpParser\NodeVisitor`.
+
+Then to use it in command line :
 
 [source,bash]
-.Used implicitly the structure analyser (default behavior)
 ----
-$ phpreflect analyser:run .
+$ phpreflect analyser:run /path/to/datasource my
 ----
-[source,bash]
-.Named explicitly the structure analyser
-----
-$ phpreflect analyser:run . structure
-----
-
-CAUTION: Each `name` key must be unique to avoid conflicts.
-
-The `class` key identify the name of the class that implement the analyser features.
+NOTE: `my` identify your analyser (prefix in lower case of `MyAnalyser` class) 
 
 
 ifdef::basebackend-bootstrap[]

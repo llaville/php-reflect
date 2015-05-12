@@ -1,0 +1,27 @@
+{
+    "source-providers": [
+    ],
+    "plugins": [
+        {
+            "name": "Cache",
+            "class": "YourNamespace\\CachePlugin",
+            "options": {
+                "backend": {
+                    "class": "Doctrine\\Common\\Cache\\SQLite3Cache",
+                    "args": [
+                        "%{TEMP}/bartlett/cache/your_db_cache.sqlite",
+                        "your_table"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Logger",
+            "class": "YourNamespace\\LogPlugin"
+        }
+    ],
+    "analysers" : [
+    ],
+    "services": [
+    ]
+}

@@ -5,18 +5,25 @@
     "extract": false,
     "compression": "GZ",
     "files": [
-        "bin/phpreflect-schema.json",
+        "bin/phpreflect.json-schema",
+        "bin/phpreflect.json.dist",
         "manifest.txt",
         "LICENSE",
         "vendor/nikic/php-parser/LICENSE",
+        "vendor/sebastian/version/LICENSE",
         "vendor/symfony/console/Symfony/Component/Console/LICENSE",
         "vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher/LICENSE",
         "vendor/symfony/finder/Symfony/Component/Finder/LICENSE",
-        "vendor/phpunit/php-timer/LICENSE",
+        "vendor/symfony/stopwatch/Symfony/Component/Stopwatch/LICENSE",
+        "vendor/symfony/dependency-injection/Symfony/Component/DependencyInjection/LICENSE",
         "vendor/seld/jsonlint/LICENSE",
         "vendor/justinrainbow/json-schema/LICENSE",
+        "vendor/phpdocumentor/reflection-docblock/LICENSE",
         "vendor/doctrine/cache/LICENSE",
+        "vendor/doctrine/collections/LICENSE",
         "vendor/psr/log/LICENSE",
+        "vendor/monolog/monolog/LICENSE",
+        "vendor/bartlett/umlwriter/LICENSE",
         "vendor/autoload.php"
     ],
     "finder": [
@@ -29,13 +36,13 @@
             "in": "vendor/nikic/php-parser/lib"
         },
         {
-            "name": "*.php",
-            "notPath": "/Tests/",
-            "in": "vendor/symfony"
+            "name": "Version.php",
+            "in": "vendor/sebastian/version/src"
         },
         {
             "name": "*.php",
-            "in": "vendor/phpunit/php-timer"
+            "notPath": "/Tests/",
+            "in": "vendor/symfony"
         },
         {
             "name": "*.php",
@@ -47,16 +54,33 @@
         },
         {
             "name": "*.php",
+            "in": "vendor/phpdocumentor/reflection-docblock/src"
+        },
+        {
+            "name": "*.php",
             "in": "vendor/doctrine/cache/lib"
         },
         {
             "name": "*.php",
+            "in": "vendor/doctrine/collections/lib"
+        },
+        {
+            "name": "*.php",
             "in": "vendor/psr/log/Psr"
+        },
+        {
+            "name": "*.php",
+            "in": "vendor/monolog/monolog/src"
+        },
+        {
+            "name": "*.php",
+            "in": "vendor/bartlett/umlwriter/src"
         }
     ],
     "git-version": "package_version",
     "main": "bin/phpreflect",
     "output": "phpreflect-@git-version@.phar",
     "stub": "phar-stub.php",
-    "web": false
+    "web": false,
+    "shebang": false
 }

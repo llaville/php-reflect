@@ -5,7 +5,6 @@ namespace Bartlett\Reflect\Tokenizer;
 class DefaultTokenizer
 {
     protected $tokenStack;
-    protected $file;
 
     protected static $customTokens = array(
         '(' => 'T_OPEN_BRACKET',
@@ -44,23 +43,37 @@ class DefaultTokenizer
         return $this->tokenStack;
     }
 
-    public function setSourceFile($file)
+    public function setTokens($tokens)
     {
-        $this->file = $file;
-        $this->tokenStack = new \SplDoublyLinkedList;
-        $this->tokenize();
+        $this->tokenize($tokens);
     }
 
-    protected function tokenize()
+    public function setSourceFile($file)
     {
-        $source = $this->file->getContents();
-        $line   = 1;
-        $tokens = token_get_all($source);
+        $this->tokenize(
+            token_get_all(
+                $file->getContents()
+            )
+        );
+    }
+
+    protected function tokenize($tokens)
+    {
+        $this->tokenStack = new \SplDoublyLinkedList;
 
         foreach ($tokens as $id => $token) {
             if (is_array($token)) {
                 $text      = $token[1];
+                $line      = $token[2];
                 $tokenName = token_name($token[0]);
+
+                if ($token[0] == T_WHITESPACE) {
+                    $lines = substr_count($text, "\n");
+                    if ($lines > 0) {
+                        --$lines;
+                        $line += $lines;
+                    }
+                }
             } else {
                 $text      = $token;
                 $tokenName = self::$customTokens[$token];
@@ -73,9 +86,6 @@ class DefaultTokenizer
                     $id
                 )
             );
-
-            $lines = substr_count($text, "\n");
-            $line += $lines;
 
             if ('T_HALT_COMPILER' == $tokenName) {
                 break;

@@ -1,5 +1,0 @@
-Additions and changes:
-- add T_FINALLY and T_YIELD tokens support for PHP 5.5
-
-Bug fixes:
-- none

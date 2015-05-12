@@ -2,7 +2,7 @@
 :description: How to download, configure and use it in a basic way.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
-:pharstable:  http://bartlett.laurent-laville.org/get/phpreflect-2.6.3.phar
+:pharstable:  http://bartlett.laurent-laville.org/get/phpreflect-3.1.0.phar
 
 
 == Download
@@ -20,8 +20,8 @@ endif::basebackend-bootstrap[]
 Make it executable, and put it into your `$PATH`.
 [source,bash]
 ----
-$ chmod +x phpreflect-2.6.3.phar
-$ mv phpreflect-2.6.3.phar /usr/local/bin/phpreflect
+$ chmod +x phpreflect-3.1.0.phar
+$ mv phpreflect-3.1.0.phar /usr/local/bin/phpreflect
 
 $ phpreflect --version
 ----
@@ -29,8 +29,8 @@ $ phpreflect --version
 You can also immediately use the PHAR after you have downloaded it.
 [source,bash]
 ----
-$ wget http://bartlett.laurent-laville.org/get/phpreflect-2.6.3.phar
-$ php phpreflect-2.6.3.phar --version
+$ wget http://bartlett.laurent-laville.org/get/phpreflect-3.1.0.phar
+$ php phpreflect-3.1.0.phar --version
 ----
 
 With both methods then you have this output :
@@ -38,7 +38,7 @@ With both methods then you have this output :
 [role="output"]
 ====
 ----
-phpReflect version 2.6.3
+phpReflect version 3.1.0
 ----
 ====
 
@@ -65,16 +65,10 @@ for details on how to do this.
         }
     ],
     "plugins": [
-        {
-            "name": "Analyser",
-            "class": "Bartlett\\Reflect\\Plugin\\Analyser\\AnalyserPlugin"
-        }
     ],
-    "analysers" : [
-        {
-            "name": "Structure",
-            "class": "Bartlett\\Reflect\\Analyser\\StructureAnalyser"
-        }
+    "analysers": [
+    ],
+    "services": [
     ]
 }
 ----
@@ -88,39 +82,29 @@ xref:_the_json_configuration_file[]
 endif::basebackend-docbook[]
 for details on how to do this.
 
+NOTE: The JSON configuration file is no more required for basic usage.
+Reserved to advanced users.
+
 [role="col-md-6"]
 == Structure
 
 source-providers::
 this entry provide list of your data sources to parse.
-+
-[TIP]
-====
-Like [label label-primary]#Reflect# always needs a JSON file to run, Remi Collet
-https://github.com/llaville/php-compat-info/issues/120#issuecomment-46188900[shared]
-a workaround solution exposed here that allows to run :
-[source,bash]
-----
-$ phpreflect analyser:run .
-----
-====
 
 plugins::
 this entry list all plugins added to the core base code of PHP Reflect.
-+
-CAUTION: Don't forget to add at least this default content, else the `analyser:run`
-and `analyser:list` commands wouldn't be available.
 
 analysers::
 this entry list all analysers that may be used with the `analyser:run` command.
-+
-IMPORTANT: Don't miss it, else you could not run the `analyser:run` command.
+
+services::
+this entry list all services that may be used with this application.
 
 [role="col-md-12 clearfix"]
 == Execution
 
-With a default +phpreflect.json+ as detailed above, put in the +src/+ folder of the
-[label label-primary]#Reflect# source code, and invoke the following command :
+With the
+[label label-primary]#Reflect# source code, invoke the following command :
 [source,bash]
 ----
 $ phpreflect analyser:run .
@@ -134,6 +118,24 @@ include::structure_analysis.out.asciidoc[]
 ----
 ====
 
+Another analyser (`loc`) is also available, and can be combined or not with `structure`
+the default analyser.
+
+With the
+[label label-primary]#Reflect# source code, invoke the following command :
+[source,bash]
+----
+$ phpreflect analyser:run . loc
+----
+and you should obtain something like this :
+
+[role="output"]
+====
+----
+include::loc_analysis.out.asciidoc[]
+----
+====
+
 
 == Summary
 
@@ -141,7 +143,7 @@ include::structure_analysis.out.asciidoc[]
 Let's review what we've done :
 
 * downloaded the latest stable PHAR version.
-* prepared your JSON configuration file that is required to run [label label-primary]#Reflect# commands.
+* prepared a minimalist JSON configuration file that is OPTIONAL to run [label label-primary]#Reflect# commands.
 * executed your first parse on the [label label-primary]#Reflect# data source.
 
 == Next
@@ -176,10 +178,10 @@ endif::basebackend-docbook[]
 upgrade to the new major version 2, and keep your old environment still running,
 have a look on
 ifdef::basebackend-html[]
-link:migration-guide.html[migration's guide]
+link:migration-guide-30.html[migration's guide]
 endif::basebackend-html[]
 ifdef::basebackend-docbook[]
-xref:_migration_guide[]
+xref:_migration_guide_30[]
 endif::basebackend-docbook[]
 
 ************************************************

@@ -1,5 +1,5 @@
-= Analysers
-:description: How to customize the render of your results.
+= Build your Analysers
+:description: How to extend analyser Reflect's features.
 include::revision.asciidoc[]
 include::attributes.asciidoc[]
 
@@ -10,84 +10,70 @@ in a simple and effective way to make the render of your results truly customiza
 
 == Visitor pattern
 
-Each +Analyser+ class must implement interface +Bartlett\Reflect\Visitor\VisitorInterface+.
+Each +Analyser+ class must implement two interfaces +Bartlett\Reflect\Analyser\AnalyserInterface+,
+and  +PhpParser\NodeVisitor+.
+
+Your first own analyser may start like that :
 
 [source,php]
 ----
 <?php
 
-namespace Bartlett\Reflect\Visitor;
+namespace YourNamespace;
 
-use Bartlett\Reflect\Model\Visitable;
+use Bartlett\Reflect\Analyser\AnalyserInterface;
+use PhpParser\NodeVisitor;
 
-interface VisitorInterface
+class YourAnalyser implements AnalyserInterface, NodeVisitor
 {
-    public function visit(Visitable $visitable);
-}
-----
+    //
+    // AnalyserInterface methods
+    //
 
-Each element that need to be explored by your analyser should have a visit method accordingly.
-
-* For packages, we need to implement a *visitPackageModel* method.
-* For classes, we need to implement a *visitClassModel* method.
-* For properties, we need to implement a *visitPropertyModel* method.
-* For methods, we need to implement a *visitMethodModel* method.
-* For functions, we need to implement a *visitFunctionModel* method.
-* For function or method parameters, we need to implement a *visitParameterModel* method.
-* For constants, we need to implement a *visitConstantModel* method.
-* For includes, we need to implement a *visitIncludeModel* method.
-* For dependencies, we need to implement a *visitDependencyModel* method.
-
-NOTE: Abstract class `Bartlett\Reflect\Visitor\AbstractVisitor`
-( {rawbaseurl}/src/Bartlett/Reflect/Visitor/AbstractVisitor.php[source code] ),
-that implement interface +Bartlett\Reflect\Visitor\VisitorInterface+,
-holds a basic visitor.
-
-[source,php]
-----
-<?php
-
-use Bartlett\Reflect\Visitor\AbstractVisitor;
-
-class Analyser extends AbstractVisitor
-{
-    public function visitPackageModel($package)
+    public function setSubject(Reflect $reflect)
     {
     }
 
-    public function visitUseModel($use)
+    public function setTokens(array $tokens)
     {
     }
 
-    public function visitClassModel($class)
+    public function setCurrentFile($path)
     {
     }
 
-    public function visitPropertyModel($property)
+    public function getMetrics()
     {
     }
 
-    public function visitMethodModel($method)
+    public function getName()
     {
     }
 
-    public function visitFunctionModel($function)
+    public function getNamespace()
     {
     }
 
-    public function visitParameterModel($parameter)
+    public function getShortName()
     {
     }
 
-    public function visitConstantModel($constant)
+    //
+    // NodeVisitor methods
+    //
+    public function beforeTraverse(array $nodes)
     {
     }
 
-    public function visitIncludeModel($include)
+    public function enterNode(Node $node)
     {
     }
 
-    public function visitDependencyModel($dependency)
+    public function leaveNode(Node $node)
+    {
+    }
+
+    public function afterTraverse(array $nodes)
     {
     }
 }
@@ -96,7 +82,6 @@ class Analyser extends AbstractVisitor
 [TIP]
 ====
 An abstract class +Bartlett\Reflect\Analyser\AbstractAnalyser+
-( {rawbaseurl}/src/Bartlett/Reflect/Analyser/AbstractAnalyser.php[source code] )
 that implement all required interfaces may be used to initialize common data in a simple way.
 
 Your analyser became as simple like that:
@@ -104,9 +89,11 @@ Your analyser became as simple like that:
 ----
 <?php
 
+namespace YourNamespace;
+
 use Bartlett\Reflect\Analyser\AbstractAnalyser;
 
-class Analyser extends AbstractAnalyser
+class YourAnalyser extends AbstractAnalyser
 {
 }
 ----
@@ -115,66 +102,35 @@ class Analyser extends AbstractAnalyser
 
 == Print results
 
-Once you have used visit methods to explore parsing results, you probably want to display it.
+Once all nodes of AST built by PHP-Parser were traversed, you have to publish your results
+with the +getMetrics()+ method.
 
-To do so, you should implement the +render()+ method of +Bartlett\Reflect\Analyser\AnalyserInterface+.
+Results must be organized as a +key+/+values+ pair array, where +key+ is the fully qualified name of your analyser
+(E.g: +YourNamespace\YourAnalyser+), and +values+ are your metrics (free organization).
 
-Each analyser is responsible to display results with the `render()` method.
-You can either used the `Bartlett\Reflect\Printer\Text` helper to produces report line by line,
-or any other solution.
+At end of API +analyser+/+run+, your metrics are returned, and may be exploited as you want.
+You are free to create a custom render or not. 
+If no output formatter is provided in namespace +YourNamespace\Console\Formatter+, a simple PHP +print_r()+ format is returned.
 
-If you used the printer text helper, your implementation should follow only one rule.
-Return an array with :
+NOTE: This is the default format in debug mode (verbose level 3 in CLI).
 
-* free data identifier as key.
-* data contents are an array with a string format
-compatible http://www.php.net/manual/en/function.vsprintf.php[vsprintf] as first element, and the value as second element.
+Here is a pattern of skeleton.
 
-.Console lines information (without data)
-====
 [source,php]
 ----
 <?php
 
-    $lines['dataSourceAnalysed'] = array(
-        '<info>Data Source Analysed</info>%s',
-        array(PHP_EOL)
-    );
+namespace YourNamespace\Console\Formatter;
 
-    $lines['methodsScope'] = array(
-        '    Scope',
-        array()
-    );
-----
-====
+use Symfony\Component\Console\Output\OutputInterface;
 
-.Console line information with only one value
-====
-[source,php]
-----
-<?php
-
-    $lines['methods'] = array(
-        '  Methods                                   %10d',
-        array($count['methods'])
-    );
-----
-====
-
-.Console line information with more than one value
-====
-[source,php]
-----
-<?php
-
-    $lines['nonStaticMethods'] = array(
-        '      Non-Static Methods                    %10d (%.2f%%)',
-        array(
-            $count['nonStaticMethods'],
-            $count['methods'] > 0 ? ($count['nonStaticMethods'] / $count['methods']) * 100 : 0,
-        )
-    );
-----
-====
-
-TIP: See source code of {rawbaseurl}/src/Bartlett/Reflect/Analyser/StructureAnalyser.php[Structure Analyser] as example.
+class YourAnalyserOutputFormatter 
+{
+    // $output   === instance of console output
+    // $response === your metrics returned by the +YourNamespace\YourAnalyser\getMetrics()+ 
+    
+    public function __invoke(OutputInterface $output, $response)
+    {
+    }
+}
+---- 

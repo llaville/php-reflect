@@ -14,8 +14,8 @@
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Exception\ModelException;
-use Bartlett\Reflect\Model\AbstractModel;
+use PhpParser\Node;
+use PhpParser\PrettyPrinter;
 
 /**
  * The ConstantModel class reports information about a constant.
@@ -28,105 +28,8 @@ use Bartlett\Reflect\Model\AbstractModel;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class ConstantModel extends AbstractModel implements Visitable
+class ConstantModel extends AbstractModel
 {
-    protected $short_name;
-
-    /**
-     * Constructs a new ConstantModel instance.
-     *
-     * @param string $qualifiedName The full qualified name of the constant
-     */
-    public function __construct($qualifiedName, $attributes)
-    {
-        $struct = array(
-            'magic'      => false,
-            'namespace'  => false,
-            'scalar'     => false,
-            'value'      => null,
-        );
-        $struct = array_merge($struct, $attributes);
-        parent::__construct($struct);
-
-        $this->name = $qualifiedName;
-
-        $parts = explode('\\', $qualifiedName);
-        // a constant should be normally in uppercase
-        $this->short_name = strtoupper(array_pop($parts));
-
-        $this->struct['namespace'] = implode('\\', $parts);
-
-        if ($this->struct['magic']) {
-            $this->struct['extension'] = 'core';
-        }
-    }
-
-    /**
-     * Get a Doc comment from a constant.
-     *
-     * @return string
-     */
-    public function getDocComment()
-    {
-        return $this->struct['docComment'];
-    }
-
-    /**
-     * Gets the file name from a user-defined function.
-     *
-     * @return mixed FALSE for an internal constant (when isInternal() returns TRUE),
-     *               otherwise string
-     */
-    public function getFileName()
-    {
-        if ($this->isInternal()) {
-            return false;
-        }
-        return $this->struct['file'];
-    }
-
-    /**
-     * Gets the extension information of this constant.
-     *
-     * @return ReflectionExtension instance that contains the extension information
-     * @throws ModelException if extension does not exist (user(405) or not loaded(404))
-     */
-    public function getExtension()
-    {
-        if ($this->struct['extension'] === 'user') {
-            throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.',
-                405
-            );
-        } elseif (!extension_loaded($this->struct['extension'])) {
-            throw new ModelException(
-                'Extension ' . $this->struct['extension'] . ' does not exist.',
-                404
-            );
-        }
-
-        return new \ReflectionExtension($this->struct['extension']);
-    }
-
-    /**
-     * Gets the extension name of this constant.
-     *
-     * @return string
-     */
-    public function getExtensionName()
-    {
-        try {
-            $name = $this->getExtension()->getName();
-
-        } catch (ModelException $e) {
-            if ($e->getCode() === 404) {
-                throw $e;  // re-throws original exception
-            }
-            $name = 'user';
-        }
-        return $name;
-    }
-
     /**
      * Get the namespace name where the constant is defined.
      *
@@ -134,7 +37,9 @@ class ConstantModel extends AbstractModel implements Visitable
      */
     public function getNamespaceName()
     {
-        return $this->struct['namespace'];
+        $parts = $this->node->consts[0]->namespacedName->parts;
+        array_pop($parts);
+        return implode('\\', $parts);
     }
 
     /**
@@ -144,7 +49,7 @@ class ConstantModel extends AbstractModel implements Visitable
      */
     public function getName()
     {
-        return $this->name;
+        return (string) $this->node->consts[0]->namespacedName;
     }
 
     /**
@@ -154,7 +59,7 @@ class ConstantModel extends AbstractModel implements Visitable
      */
     public function getShortName()
     {
-        return $this->short_name;
+        return (string) $this->node->consts[0]->name;
     }
 
     /**
@@ -164,7 +69,11 @@ class ConstantModel extends AbstractModel implements Visitable
      */
     public function getValue()
     {
-        return $this->struct['value'];
+        $prettyPrinter = new PrettyPrinter\Standard;
+        return trim(
+            $prettyPrinter->prettyPrintExpr($this->node->consts[0]->value),
+            '"\''
+        );
     }
 
     /**
@@ -174,7 +83,7 @@ class ConstantModel extends AbstractModel implements Visitable
      */
     public function inNamespace()
     {
-        return (!empty($this->struct['namespace']));
+        return $this->node->consts[0]->namespacedName->isQualified();
     }
 
     /**
@@ -184,7 +93,7 @@ class ConstantModel extends AbstractModel implements Visitable
      */
     public function isInternal()
     {
-        return ($this->struct['magic'] || $this->getExtensionName() !== 'user');
+        return false;
     }
 
     /**
@@ -195,18 +104,17 @@ class ConstantModel extends AbstractModel implements Visitable
      */
     public function isMagic()
     {
-        return $this->struct['magic'];
+        return false;
     }
 
     /**
      * Checks whether it's a scalar constant.
      *
-     * @link http://php.net/manual/en/migration56.new-features.php#migration56.new-features.const-scalar-exprs
      * @return bool TRUE if it's scalar, otherwise FALSE
      */
     public function isScalar()
     {
-        return $this->struct['scalar'];
+        return ($this->node->consts[0]->value instanceof Node\Scalar);
     }
 
     /**

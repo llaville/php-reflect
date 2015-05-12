@@ -1,27 +1,31 @@
 
 Data Source Analysed
 
-Directories                                         17
-Files                                               53
+Directories                                         20
+Files                                               72
 
-Structure Analysis
-  Namespaces                                        17
-  Interfaces                                        10
+Structure
+  Namespaces                                        20
+  Interfaces                                         8
   Traits                                             0
-  Classes                                           51
-    Abstract Classes                                 4 (7.84%)
-    Concrete Classes                                47 (92.16%)
-  Methods                                          323
+  Classes                                           64
+    Abstract Classes                                 6 (9.38%)
+    Concrete Classes                                58 (90.62%)
+  Methods                                          293
     Scope
-      Non-Static Methods                           316 (97.83%)
-      Static Methods                                 7 (2.17%)
+      Non-Static Methods                           280 (95.56%)
+      Static Methods                                13 (4.44%)
     Visibility
-      Public Method                                288 (89.16%)
-      Protected Method                              32 (9.91%)
-      Private Method                                 3 (0.93%)
-  Functions                                          6
+      Public Method                                250 (85.32%)
+      Protected Method                              34 (11.60%)
+      Private Method                                 9 (3.07%)
+  Functions                                         13
     Named Functions                                  0 (0.00%)
-    Anonymous Functions                              6 (100.00%)
-  Constants                                         30
-    Global Constants                                14 (46.67%)
-    Class Constants                                 16 (53.33%)
+    Anonymous Functions                             13 (100.00%)
+  Constants                                         22
+    Global Constants                                 0 (0.00%)
+    Magic Constants                                  3 (13.64%)
+    Class Constants                                 19 (86.36%)
+  Tests
+    Classes                                          0
+    Methods                                          0

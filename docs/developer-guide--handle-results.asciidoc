@@ -7,94 +7,68 @@ include::attributes.asciidoc[]
 
 endif::basebackend-docbook[]
 
-== Study case
+[role="lead"]
+Whatever SAPI you use, all metrics (for each analysers asked) are available
+at end of parse, in the same format.
 
-We are suppose in the following, study the source code below, script named +StudyCase1.php+ :
-
-[source,php]
+With CLI, and [label label-primary]#Reflect# source code,
+to get a structure report, you have to invoke the following command :
+[source,bash]
 ----
-<?php
-include '/path/to/test1.php';
-include_once 'test2.php';
-require 'test3.php';
-// test four
-require_once
-    'test4.php';
-
-class Foo implements SplObserver
-{
-    const FOO = 'default FOO value';
-
-    public function __construct()
-    {
-    }
-
-    public function update(SplSubject $subject) {
-    }
-}
-
-define('SOURCE1_ROOT', __DIR__);
-
-function singleFunction( Array $someparam, stdClass $somethingelse, $lastone = NULL )
-{
-}
+$ phpreflect analyser:run /home/github/php-reflect/src
 ----
+With others SAPI, use example {rawbaseurl}/examples/api_analyser_run.php
 
-To explore and exploit results, we need first to parse the data source.
-You should be able to do it.
+and you should obtain something like this :
 
-Here are the solution how to parse the data source seen above :
-
-[source,php]
+[role="output"]
+====
 ----
-<?php
+include::structure_analysis.out.asciidoc[]
+----
+====
 
-use Bartlett\Reflect;
-use Bartlett\Reflect\ProviderManager;
-use Bartlett\Reflect\Provider\SymfonyFinderProvider;
-use Symfony\Component\Finder\Finder;
+This is the default render. But, if you want to compare with other SAPI,
+activate the debug verbose mode (`-vvv`) to get the raw response.
+You should obtain something like this :
 
-$dirs = dirname(__DIR__) . '/sources';
+[role="output"]
+====
+----
+include::structure_analysis.raw.asciidoc[]
+----
+====
 
-$finder = new Finder();
-$finder->files()
-    ->name('StudyCase1.php')
-    ->in($dirs);
+* First entry in array is the list of parsed `files`
+* Second entry in array is the `structure` analyser result
 
-$provider = new SymfonyFinderProvider($finder);
+Each analyser as its own data structure and results, but you will always get the fully qualified
+class name that identify origin of analyser used.
 
-$pm = new ProviderManager;
-$pm->set('StudyCase1', $provider);
-
-$reflect = new Reflect;
-$reflect->setProviderManager($pm);
-$reflect->parse();
+.Example with two analysers (`structure` and `loc`)
+[source,bash]
+----
+$ phpreflect analyser:run /home/github/php-reflect/src structure loc
 ----
 
-== Enumerate each elements
+[role="output"]
+====
+----
+Raw response
+Array
+(
+    [files] => Array
+        (
+            ...
+        )
 
-include::enumerate-packages.asciidoc[]
-include::enumerate-uses.asciidoc[]
-include::enumerate-classes.asciidoc[]
-include::enumerate-interfaces.asciidoc[]
-include::enumerate-traits.asciidoc[]
-include::enumerate-properties.asciidoc[]
-include::enumerate-parameters.asciidoc[]
-include::enumerate-functions.asciidoc[]
-include::enumerate-constants.asciidoc[]
-include::enumerate-includes.asciidoc[]
-include::enumerate-dependencies.asciidoc[]
+    [Bartlett\Reflect\Analyser\StructureAnalyser] => Array
+        (
+            ...
+        )
 
-== Exploit each elements
+include::loc_analysis.raw.asciidoc[]
 
-include::exploit-packages.asciidoc[]
-include::exploit-uses.asciidoc[]
-include::exploit-classes.asciidoc[]
-include::exploit-interfaces.asciidoc[]
-include::exploit-traits.asciidoc[]
-include::exploit-properties.asciidoc[]
-include::exploit-parameters.asciidoc[]
-include::exploit-functions.asciidoc[]
-include::exploit-constants.asciidoc[]
-include::exploit-includes.asciidoc[]
-include::exploit-dependencies.asciidoc[]
+)
+----
+====

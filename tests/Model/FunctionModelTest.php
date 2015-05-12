@@ -16,11 +16,6 @@
 
 namespace Bartlett\Tests\Reflect\Model;
 
-use Bartlett\Reflect;
-use Bartlett\Reflect\ProviderManager;
-use Bartlett\Reflect\Provider\SymfonyFinderProvider;
-use Symfony\Component\Finder\Finder;
-
 /**
  * Unit Test Case that covers Bartlett\Reflect\Model\FunctionModel
  *
@@ -32,341 +27,281 @@ use Symfony\Component\Finder\Finder;
  * @version    Release: @package_version@
  * @link       http://php5.laurent-laville.org/reflect/
  */
-class FunctionModelTest extends \PHPUnit_Framework_TestCase
+class FunctionModelTest extends GenericModelTest
 {
-    protected static $fixtures;
-    protected static $interfaces;
-    protected static $classes;
-    protected static $functions;
-
     /**
      * Sets up the shared fixture.
      *
      * @return void
-     * @link   http://phpunit.de/manual/current/en/fixtures.html#fixtures.sharing-fixture
      */
     public static function setUpBeforeClass()
     {
-        self::$fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
-            . '_files' . DIRECTORY_SEPARATOR;
-
-        $finder = new Finder();
-        $finder->files()
-            ->name('namespaces.php')
-            ->in(self::$fixtures);
-
-        $pm = new ProviderManager;
-        $pm->set('test_files', new SymfonyFinderProvider($finder));
-
-        $reflect = new Reflect();
-        $reflect->setProviderManager($pm);
-        $reflect->parse();
-
-        $n = 0;
-
-        foreach ($reflect->getPackages() as $package) {
-            foreach ($package->getInterfaces() as $rc) {
-                self::$interfaces[$n][] = $rc;
-            }
-            foreach ($package->getClasses() as $rc) {
-                self::$classes[$n][] = $rc;
-            }
-            foreach ($package->getFunctions() as $rf) {
-                self::$functions[$n][] = $rf;
-            }
-            $n++;
-        }
-    }
-
-    /**
-     * Tests the Doc comment accessor.
-     *
-     *  covers AbstractFunctionModel::getDocComment
-     * @return void
-     */
-    public function testDocCommentAccessor()
-    {
-        $n = 0;  // namespace glob
-        $c = 0;  // class glob\Foo
-        $m = 'myfunction';
-
-        $methods = self::$classes[$n][$c]->getMethods();
-
-        $expected = '/**
-     * @param stdClass $param
-     * @param mixed    $otherparam
-     */';
-
-        $this->assertEquals(
-            $expected,
-            $methods[$m]->getDocComment(),
-            $methods[$m]->getName()
-            . ' doc comment does not match.'
-        );
+        self::$fixture = 'namespaces.php';
+        parent::setUpBeforeClass();
     }
 
     /**
      * Tests starting line number accessor.
      *
-     *  covers AbstractFunctionModel::getStartLine
+     *  covers Bartlett\Reflect\Model\AbstractModel::getStartLine
+     * @group  reflection
      * @return void
      */
     public function testStartLineAccessor()
     {
-        $n = 0;  // namespace glob
-        $f = 1;  // function glob\myprocess
+        $f = 3;  // function glob\myprocess
 
         $this->assertEquals(
             29,
-            self::$functions[$n][$f]->getStartLine(),
-            self::$functions[$n][$f]->getName() . ' starting line does not match.'
+            self::$models[$f]->getStartLine(),
+            self::$models[$f]->getName() . ' starting line does not match.'
         );
     }
 
     /**
      * Tests ending line number accessor.
      *
-     *  covers AbstractFunctionModel::getEndLine
+     *  covers Bartlett\Reflect\Model\AbstractModel::getEndLine
+     * @group  reflection
      * @return void
      */
     public function testEndLineAccessor()
     {
-        $n = 0;  // namespace glob
-        $f = 1;  // function glob\myprocess
+        $f = 3;  // function glob\myprocess
 
         $this->assertEquals(
             32,
-            self::$functions[$n][$f]->getEndLine(),
-            self::$functions[$n][$f]->getName() . ' ending line does not match.'
+            self::$models[$f]->getEndLine(),
+            self::$models[$f]->getName() . ' ending line does not match.'
         );
     }
 
     /**
      * Tests file name accessor.
      *
-     *  covers AbstractFunctionModel::getFileName
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::getFileName
+     * @group  reflection
      * @return void
      */
     public function testFileNameAccessor()
     {
-        $n = 0;  // namespace glob
-        $f = 1;  // function glob\myprocess
+        $f = 3;  // function glob\myprocess
 
         $this->assertEquals(
             self::$fixtures . 'namespaces.php',
-            self::$functions[$n][$f]->getFileName(),
-            self::$functions[$n][$f]->getName() . ' file name does not match.'
+            self::$models[$f]->getFileName(),
+            self::$models[$f]->getName() . ' file name does not match.'
         );
     }
 
     /**
      * Tests method name accessor.
      *
-     *  covers AbstractFunctionModel::getName
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::getName
+     * @group  reflection
      * @return void
      */
     public function testNameAccessor()
     {
-        $n = 0;  // namespace glob
-        $f = 1;  // function glob\myprocess
+        $f = 3;  // function glob\myprocess
 
         $this->assertEquals(
             'glob\myprocess',
-            self::$functions[$n][$f]->getName(),
-            self::$functions[$n][$f]->getName() . ' function name does not match.'
+            self::$models[$f]->getName(),
+            self::$models[$f]->getName() . ' function name does not match.'
         );
     }
 
     /**
      * Tests method extension name acessor.
      *
-     *  covers AbstractFunctionModel::getExtensionName
+     *  covers Bartlett\Reflect\Model\AbstractModel::getExtensionName
+     * @group  reflection
      * @return void
      */
     public function testExtensionNameAccessor()
     {
-        $n = 0;  // namespace glob
-        $f = 1;  // function glob\myprocess
+        $f = 3;  // function glob\myprocess
 
         $this->assertEquals(
             'user',
-            self::$functions[$n][$f]->getExtensionName(),
-            self::$functions[$n][$f]->getName() . ' extension name does not match.'
+            self::$models[$f]->getExtensionName(),
+            self::$models[$f]->getName() . ' extension name does not match.'
         );
     }
 
     /**
      * Tests the namespace name accessor.
      *
-     *  covers AbstractFunctionModel::getNamespaceName
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::getNamespaceName
+     * @group  reflection
      * @return void
      */
     public function testNamespaceNameAccessor()
     {
-        $n = 1;  // namespace nemo
-        $f = 0;  // function nemo\nobody
+        $f = 4;  // function nemo\nobody
 
         $this->assertEquals(
             'nemo',
-            self::$functions[$n][$f]->getNamespaceName(),
-            self::$functions[$n][$f]->getName() . ' namespace does not match.'
+            self::$models[$f]->getNamespaceName(),
+            self::$models[$f]->getName() . ' namespace does not match.'
         );
     }
 
     /**
      * Tests function short name accessor.
      *
-     *  covers AbstractFunctionModel::getShortName
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::getShortName
+     * @group  reflection
      * @return void
      */
     public function testShortNameAccessor()
     {
-        $n = 0;  // namespace glob
-        $f = 0;  // function glob\singleFunction
+        $f = 2;  // function glob\singleFunction
 
         $this->assertEquals(
             'singleFunction',
-            self::$functions[$n][$f]->getShortName(),
-            self::$functions[$n][$f]->getName() . ' short name does not match.'
+            self::$models[$f]->getShortName(),
+            self::$models[$f]->getName() . ' short name does not match.'
         );
     }
 
     /**
      * Tests the number of parameters that a function defines.
      *
-     *  covers AbstractFunctionModel::getNumberOfParameters
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::getNumberOfParameters
+     * @group  reflection
      * @return void
      */
     public function testNumberOfParametersAccessor()
     {
-        $n = 0;  // namespace glob
-        $f = 0;  // function glob\singleFunction
+        $f = 2;  // function glob\singleFunction
 
         $this->assertEquals(
             3,
-            self::$functions[$n][$f]->getNumberOfParameters(),
-            self::$functions[$n][$f]->getName() . ' number of parameters does not match.'
+            self::$models[$f]->getNumberOfParameters(),
+            self::$models[$f]->getName() . ' number of parameters does not match.'
         );
     }
 
     /**
      * Tests the number of required parameters that a function defines.
      *
-     *  covers AbstractFunctionModel::getNumberOfRequiredParameters
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::getNumberOfRequiredParameters
+     * @group  reflection
      * @return void
      */
     public function testNumberOfRequiredParametersAccessor()
     {
-        $n = 0;  // namespace glob
-        $f = 0;  // function glob\singleFunction
+        $f = 2;  // function glob\singleFunction
 
         $this->assertEquals(
             2,
-            self::$functions[$n][$f]->getNumberOfRequiredParameters(),
-            self::$functions[$n][$f]->getName() . ' number of required parameters does not match.'
+            self::$models[$f]->getNumberOfRequiredParameters(),
+            self::$models[$f]->getName() . ' number of required parameters does not match.'
         );
     }
 
     /**
      * Tests parameters of the class method.
      *
-     *  covers AbstractFunctionModel::getParameters
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::getParameters
+     * @group  reflection
      * @return void
      */
     public function testParametersAccessor()
     {
-        $n = 0;  // namespace glob
-        $f = 0;  // function glob\singleFunction
+        $f = 2;  // function glob\singleFunction
 
         $this->assertCount(
             3,
-            self::$functions[$n][$f]->getParameters(),
-            self::$functions[$n][$f]->getName() . ' parameters number does not match.'
+            self::$models[$f]->getParameters(),
+            self::$models[$f]->getName() . ' parameters number does not match.'
         );
     }
 
     /**
      * Tests whether a function is defined in a namespace.
      *
-     *  covers AbstractFunctionModel::inNamespace
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::inNamespace
+     * @group  reflection
      * @return void
      */
     public function testInNamespace()
     {
-        $n = 0;  // namespace glob
-        $f = 0;  // function glob\singleFunction
+        $f = 2;  // function glob\singleFunction
 
         $this->assertTrue(
-            self::$functions[$n][$f]->inNamespace(),
-            self::$functions[$n][$f]->getName() . ' is defined in a namespace.'
+            self::$models[$f]->inNamespace(),
+            self::$models[$f]->getName() . ' is defined in a namespace.'
         );
     }
 
     /**
      * Tests whether it's an anonymous function (closure).
      *
-     *  covers AbstractFunctionModel::isClosure
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::isClosure
+     * @group  reflection
      * @return void
      */
     public function testAnonymousFunction()
     {
-        $n = 0;  // namespace glob
-        $f = 0;  // function glob\singleFunction
+        $f = 2;  // function glob\singleFunction
 
         $this->assertFalse(
-            self::$functions[$n][$f]->isClosure(),
-            self::$functions[$n][$f]->getName() . ' is not an anonymous function.'
+            self::$models[$f]->isClosure(),
+            self::$models[$f]->getName() . ' is not an anonymous function.'
         );
     }
 
     /**
      * Tests whether it's a closure in a user namespace.
      *
-     *  covers AbstractFunctionModel::isClosure
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::isClosure
+     * @group  reflection
      * @return void
      */
     public function testClosureInNamespace()
     {
-        $n = 1;  // namespace nemo
-        $f = 1;  // closure in nemo namespace
+        $f = 5;  // closure in nemo namespace
 
         $this->assertTrue(
-            self::$functions[$n][$f]->isClosure(),
-            self::$functions[$n][$f]->getName() . ' is a closure.'
+            self::$models[$f]->isClosure(),
+            self::$models[$f]->getName() . ' is a closure.'
         );
     }
 
     /**
      * Tests whether it's an internal function.
      *
-     *  covers AbstractFunctionModel::isInternal
+     *  covers Bartlett\Reflect\Model\AbstractFunctionModel::isInternal
+     * @group  reflection
      * @return void
      */
     public function testInternalFunction()
     {
-        $n = 0;  // namespace glob
-        $f = 0;  // function glob\singleFunction
+        $f = 2;  // function glob\singleFunction
 
         $this->assertFalse(
-            self::$functions[$n][$f]->isInternal(),
-            self::$functions[$n][$f]->getName() . ' is a user-defined function.'
+            self::$models[$f]->isInternal(),
+            self::$models[$f]->getName() . ' is a user-defined function.'
         );
     }
 
     /**
      * Tests string representation of the FunctionModel object
      *
-     *  covers MethodModel::__toString
+     *  covers Bartlett\Reflect\Model\FunctionModel::__toString
+     * @group  reflection
      * @return void
      */
     public function testToString()
     {
-        $n = 0;  // namespace glob
-        $f = 0;  // function glob\singleFunction
+        $f = 2;  // function glob\singleFunction
 
         $expected = <<<EOS
 Function [ <user> function glob\\singleFunction ] {
-  @@ %path%namespaces.php 25 - 27
+  @@ %filename% 25 - 27
 
   - Parameters [3] {
     Parameter #0 [ <required> array \$someparam ]
@@ -377,11 +312,11 @@ Function [ <user> function glob\\singleFunction ] {
 
 EOS;
         $this->expectOutputString(
-            str_replace('%path%', self::$fixtures, $expected)
+            str_replace('%filename%', self::$fixture, $expected)
         );
 
         print(
-            self::$functions[$n][$f]->__toString()
+            self::$models[$f]->__toString()
         );
     }
 }

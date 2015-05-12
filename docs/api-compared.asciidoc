@@ -95,8 +95,12 @@ http://www.php.net/manual/en/class.reflectionclass.php[]
 | *getNamespaceName* - Gets namespace name
 
 | {checked}
-| {checked}
+| {unchecked}
 | *getParentClass* - Gets parent class
+
+| {unchecked}
+| {checked}
+| *getParentClassName* - Gets parent class name
 
 | {checked}
 | {checked}

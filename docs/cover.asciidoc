@@ -2,18 +2,24 @@
 :description: PHP Reflect Book
 include::attributes.asciidoc[]
 :navbar!:
+:themeswitcher!:
 :jumbotron!:
 :toc!:
 :toc2!:
 :stylesheet:  cover.css
 
 
-== PHP Reflect 2
+== PHP Reflect 3
 
 [role="cover"]
 --
-image:icons/font-awesome/code.png[alt="code",icon="code",iconsfont="font-awesome",size="5x"]
-image:icons/font-awesome/search-plus.png[alt="code",icon="search-plus",iconsfont="font-awesome",size="9x"]
+[subs="none"]
+++++++++++++++++++++++++++++++++++++++
+<span class="fa-stack hidden-xs hidden-sm">
+    <i class="fa fa-puzzle-piece fa-stack-1x iconsfont-4x" style="bottom: -0.8em; left: 0.5em; color: #2FA4E7;"></i>
+    <i class="fa fa-search iconsfont-9x" style="color: #2C3E50;"></i>
+</span>
+++++++++++++++++++++++++++++++++++++++
 --
 
 [role="bg-info"]

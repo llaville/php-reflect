@@ -14,8 +14,8 @@
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Model\AbstractModel;
-use Bartlett\Reflect\Exception\ModelException;
+use PhpParser\Node;
+use PhpParser\PrettyPrinter;
 
 /**
  * The PropertyModel class reports information about a class property.
@@ -28,49 +28,28 @@ use Bartlett\Reflect\Exception\ModelException;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
-class PropertyModel extends AbstractModel implements Visitable
+class PropertyModel extends AbstractModel
 {
+    private $declaringClass;
+
     /**
-     * Constructs a new PropertyModel instance.
+     * Creates a new PropertyModel instance.
      *
-     * @param string $class The class name that contains the property
-     * @param string $name  Name of the property
      */
-    public function __construct($class, $name, $attributes)
+    public function __construct($class, Node\Stmt\Property $property)
     {
-        $struct = array(
-            'compileTime' => true,
-            'modifiers'   => array(),
-            'visibility'  => 'public',
-            'implicitlyPublic' => true,
-        );
-        $struct = array_merge($struct, $attributes);
-        parent::__construct($struct);
-
-        $this->short_name = $name;
-        $this->class_name = ltrim($class, '\\');
-
-        $this->name = $this->class_name . "::$name";
+        parent::__construct($property);
+        $this->declaringClass = $class;
     }
 
     /**
-     * Gets class name for the reflected property.
+     * Gets declaring class
      *
-     * @return string
+     * @return ClassModel
      */
-    public function getClassName()
+    public function getDeclaringClass()
     {
-        return $this->class_name;
-    }
-
-    /**
-     * Gets Doc comment from the property.
-     *
-     * @return string
-     */
-    public function getDocComment()
-    {
-        return $this->struct['docComment'];
+        return $this->declaringClass;
     }
 
     /**
@@ -80,7 +59,7 @@ class PropertyModel extends AbstractModel implements Visitable
      */
     public function getName()
     {
-        return $this->short_name;
+        return $this->node->props[0]->name;
     }
 
     /**
@@ -90,7 +69,14 @@ class PropertyModel extends AbstractModel implements Visitable
      */
     public function getValue()
     {
-        return $this->struct['value'];
+        if (!empty($this->node->props[0]->default)) {
+            $prettyPrinter = new PrettyPrinter\Standard;
+            return trim(
+                $prettyPrinter->prettyPrintExpr($this->node->props[0]->default),
+                '"\''
+            );
+        }
+        return;
     }
 
     /**
@@ -101,7 +87,7 @@ class PropertyModel extends AbstractModel implements Visitable
      */
     public function isDefault()
     {
-        return isset($this->struct['compileTime']);
+        return !empty($this->node->props[0]->default);
     }
 
     /**
@@ -111,7 +97,7 @@ class PropertyModel extends AbstractModel implements Visitable
      */
     public function isPrivate()
     {
-        return $this->struct['visibility'] === 'private';
+        return $this->node->isPrivate();
     }
 
     /**
@@ -121,7 +107,7 @@ class PropertyModel extends AbstractModel implements Visitable
      */
     public function isProtected()
     {
-        return $this->struct['visibility'] === 'protected';
+        return $this->node->isProtected();
     }
 
     /**
@@ -131,7 +117,7 @@ class PropertyModel extends AbstractModel implements Visitable
      */
     public function isPublic()
     {
-        return $this->struct['visibility'] === 'public';
+        return $this->node->isPublic();
     }
 
     /**
@@ -141,7 +127,7 @@ class PropertyModel extends AbstractModel implements Visitable
      */
     public function isStatic()
     {
-        return in_array('static', $this->struct['modifiers']);
+        return $this->node->isStatic();
     }
 
     /**
@@ -151,7 +137,7 @@ class PropertyModel extends AbstractModel implements Visitable
      */
     public function isImplicitlyPublic()
     {
-        return $this->struct['implicitlyPublic'];
+        return $this->node->getAttribute('implicitlyPublic', false);
     }
 
     /**
@@ -169,14 +155,14 @@ class PropertyModel extends AbstractModel implements Visitable
             $visibility = 'public';
         }
 
+        $static = $this->isStatic() ? ' static' : '';
         $eol = "\n";
 
         return sprintf(
-            'Property [ <%s> %s %s%s ]%s',
-            '',
+            'Property [ %s%s $%s ]%s',
             $visibility,
+            $static,
             $this->getName(),
-            $this->isDefault() ? ' = ' . $this->getValue() : '',
             $eol
         );
     }

@@ -1,7 +1,0 @@
-Additions and changes:
-- add user, class and magic constants detection
-- declares methods getNamespaces(), getTraits(), getInterfaces(), getClasses(),
-getFunctions() and getConstants().
-
-Bug fixes:
-- Wrong detection of function name when a closure uses a typehint for the first argument

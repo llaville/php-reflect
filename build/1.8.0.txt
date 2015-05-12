@@ -1,7 +1,0 @@
-Additions and changes:
-- Latest version of branch 1.x
-- Little memory usage optimisation : tokens list are not kept after source parsing.
-- visibility property for class method parsing was added by default.
-
-Bug fixes:
-- none

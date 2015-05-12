@@ -1,0 +1,17 @@
+{
+    "source-providers": [
+        {
+            "in": ". as current",
+            "name": "/\\.(php|inc|phtml)$/"
+        }
+    ],
+    "plugins": [
+    ],
+    "analysers": [
+    ],
+    "services": [
+        {
+            "logger": "Bartlett\\Tests\\Reflect\\Environment\\YourLogger"
+        }
+    ]
+}

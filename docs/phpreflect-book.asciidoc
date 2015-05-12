@@ -17,7 +17,9 @@ include::user-guide--installation.asciidoc[]
 include::user-guide--configuration.asciidoc[]
 include::user-guide--commands.asciidoc[]
 
-include::migration-guide.asciidoc[]
+include::migration-guide-20.asciidoc[]
+
+include::migration-guide-30.asciidoc[]
 
 include::developer-guide.asciidoc[]
 :leveloffset: 1
@@ -30,6 +32,8 @@ include::developer-guide--plugins.asciidoc[]
 include::developer-guide--cache-plugin.asciidoc[]
 
 include::developer-guide--log-plugin.asciidoc[]
+
+include::developer-guide--notifier-plugin.asciidoc[]
 
 include::developer-guide--analysers.asciidoc[]
 :leveloffset: 0

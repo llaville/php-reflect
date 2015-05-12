@@ -1,8 +1,9 @@
 #!/usr/bin/env php
 <?php
+$appName = 'phpReflect';
 
 if (\Phar::running()) {
-    $vendorDir = 'phar://phpreflect.phar/vendor';
+    $vendorDir = 'phar://' . strtolower($appName) . '.phar/vendor';
 } else {
     $baseDir   = dirname(__DIR__);
     $vendorDir = $baseDir . '/vendor';
@@ -11,20 +12,8 @@ if (\Phar::running()) {
         $vendorDir = dirname(dirname($baseDir));
     }
 
-    if (!getenv("REFLECT")) {
-        $home  = defined('PHP_WINDOWS_VERSION_BUILD') ? 'USERPROFILE' : 'HOME';
-        $files = array(
-            realpath('./phpreflect.json'),
-            getenv($home).'/.config/phpreflect.json',
-            '/etc/phpreflect.json',
-            __DIR__ . '/phpreflect.json.dist'
-        );
-        foreach ($files as $file) {
-            if (file_exists($file)) {
-                putenv("REFLECT=$file");
-                break;
-            }
-        }
+    if (!getenv("BARTLETTRC")) {
+        putenv("BARTLETTRC=" . strtolower($appName) . '.json');
     }
 }
 $loader = require_once $vendorDir . '/autoload.php';
@@ -34,7 +23,10 @@ if (PHP_SAPI !== 'cli') {
     return;
 }
 
-use Bartlett\Reflect\ConsoleApplication as Application;
+use Bartlett\Reflect\Environment;
+use Bartlett\Reflect\Console\Application;
 
-$application = new Application();
+Environment::setScanDir();
+
+$application = new Application($appName, '3.1');
 $application->run();

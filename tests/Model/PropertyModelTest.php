@@ -16,12 +16,6 @@
 
 namespace Bartlett\Tests\Reflect\Model;
 
-use Bartlett\Reflect;
-use Bartlett\Reflect\ProviderManager;
-use Bartlett\Reflect\Provider\SymfonyFinderProvider;
-use Bartlett\Reflect\Exception\ModelException;
-use Symfony\Component\Finder\Finder;
-
 /**
  * Unit Test Case that covers Bartlett\Reflect\Model\PropertyModel
  *
@@ -33,45 +27,24 @@ use Symfony\Component\Finder\Finder;
  * @version    Release: @package_version@
  * @link       http://php5.laurent-laville.org/reflect/
  */
-class PropertyModelTest extends \PHPUnit_Framework_TestCase
+class PropertyModelTest extends GenericModelTest
 {
-    protected static $fixtures;
-    protected static $classes;
-
     /**
      * Sets up the shared fixture.
      *
      * @return void
-     * @link   http://phpunit.de/manual/current/en/fixtures.html#fixtures.sharing-fixture
      */
     public static function setUpBeforeClass()
     {
-        self::$fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
-            . '_files' . DIRECTORY_SEPARATOR;
-
-        $finder = new Finder();
-        $finder->files()
-            ->name('properties.php')
-            ->in(self::$fixtures);
-
-        $pm = new ProviderManager;
-        $pm->set('test_files', new SymfonyFinderProvider($finder));
-
-        $reflect = new Reflect();
-        $reflect->setProviderManager($pm);
-        $reflect->parse();
-
-        foreach ($reflect->getPackages() as $package) {
-            foreach ($package->getClasses() as $rc) {
-                self::$classes[] = $rc;
-            }
-        }
+        self::$fixture = 'properties.php';
+        parent::setUpBeforeClass();
     }
 
     /**
      * Tests doc comment accessor.
      *
-     *  covers PropertyModel::getDocComment
+     *  covers Bartlett\Reflect\Model\AbstractModel::getDocComment
+     * @group  reflection
      * @return void
      */
     public function testDocCommentAccessor()
@@ -79,7 +52,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 5;  // var6 property
 
-        $properties = self::$classes[$c]->getProperties();
+        $properties = self::$models[$c]->getProperties();
 
         $this->assertEquals(
             '/** This is allowed only in PHP 5.3.0 and later. */',
@@ -92,7 +65,8 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests name of the property.
      *
-     *  covers Property::getName
+     *  covers Bartlett\Reflect\Model\PropertyModel::getName
+     * @group  reflection
      * @return void
      */
     public function testNameAccessor()
@@ -100,7 +74,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 1;  // var2 property
 
-        $properties = self::$classes[$c]->getProperties();
+        $properties = self::$models[$c]->getProperties();
 
         $this->assertEquals(
             'var2',
@@ -111,9 +85,32 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests declaring class of the property.
+     *
+     *  covers Bartlett\Reflect\Model\PropertyModel::getDeclaringClass
+     * @group  reflection
+     * @return void
+     */
+    public function testDeclaringClassAccessor()
+    {
+        $c = 0;  // class SimpleClass
+        $p = 1;  // var2 property
+
+        $properties = self::$models[$c]->getProperties();
+
+        $this->assertEquals(
+            'SimpleClass',
+            $properties[$p]->getDeclaringClass()->getName(),
+            $properties[$p]->getName()
+            . ", property #$p declaring class does not match."
+        );
+    }
+
+    /**
      * Tests if property is defined at run-time or compile-time.
      *
-     *  covers PropertyModel::isDefault
+     *  covers Bartlett\Reflect\Model\PropertyModel::isDefault
+     * @group  reflection
      * @return void
      */
     public function testDefaultValue()
@@ -121,7 +118,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 1;  // var2 property
 
-        $properties = self::$classes[$c]->getProperties();
+        $properties = self::$models[$c]->getProperties();
 
         $this->assertTrue(
             $properties[$p]->isDefault(),
@@ -133,7 +130,8 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests default value of the property.
      *
-     *  covers PropertyModel::getValue
+     *  covers Bartlett\Reflect\Model\PropertyModel::getValue
+     * @group  reflection
      * @return void
      */
     public function testValueAccessor()
@@ -141,7 +139,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 5;  // var6 property
 
-        $properties = self::$classes[$c]->getProperties();
+        $properties = self::$models[$c]->getProperties();
 
         $expected = 'hello world';
 
@@ -156,7 +154,8 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests property with private visibility.
      *
-     *  covers PropertyModel::isPrivate
+     *  covers Bartlett\Reflect\Model\PropertyModel::isPrivate
+     * @group  reflection
      * @return void
      */
     public function testPrivateProperty()
@@ -164,7 +163,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 2;  // var3 property
 
-        $properties = self::$classes[$c]->getProperties();
+        $properties = self::$models[$c]->getProperties();
 
         $this->assertTrue(
             $properties[$p]->isPrivate(),
@@ -176,7 +175,8 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests property with protected visibility.
      *
-     *  covers PropertyModel::isProtected
+     *  covers Bartlett\Reflect\Model\PropertyModel::isProtected
+     * @group  reflection
      * @return void
      */
     public function testProtectedProperty()
@@ -184,7 +184,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 3;  // var4 property
 
-        $properties = self::$classes[$c]->getProperties();
+        $properties = self::$models[$c]->getProperties();
 
         $this->assertTrue(
             $properties[$p]->isProtected(),
@@ -196,7 +196,8 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests property with public visibility.
      *
-     *  covers PropertyModel::isPublic
+     *  covers Bartlett\Reflect\Model\PropertyModel::isPublic
+     * @group  reflection
      * @return void
      */
     public function testPublicProperty()
@@ -204,7 +205,7 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 4;  // var5 property
 
-        $properties = self::$classes[$c]->getProperties();
+        $properties = self::$models[$c]->getProperties();
 
         $this->assertTrue(
             $properties[$p]->isPublic(),
@@ -216,7 +217,8 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests property with static keyword.
      *
-     *  covers PropertyModel::isStatic
+     *  covers Bartlett\Reflect\Model\PropertyModel::isStatic
+     * @group  reflection
      * @return void
      */
     public function testStaticProperty()
@@ -224,12 +226,56 @@ class PropertyModelTest extends \PHPUnit_Framework_TestCase
         $c = 0;  // class SimpleClass
         $p = 2;  // var3 property
 
-        $properties = self::$classes[$c]->getProperties();
+        $properties = self::$models[$c]->getProperties();
 
         $this->assertTrue(
             $properties[$p]->isStatic(),
             $properties[$p]->getName()
             . ' is not a static property.'
+        );
+    }
+
+    /**
+     * Tests property with implicit public visibility.
+     *
+     *  covers Bartlett\Reflect\Model\PropertyModel::isImplicitlyPublic
+     * @group  reflection
+     * @return void
+     */
+    public function testImplicitlyPublicProperty()
+    {
+        $c = 0;  // class SimpleClass
+        $p = 0;  // debug property
+
+        $properties = self::$models[$c]->getProperties();
+
+        $this->assertTrue(
+            $properties[$p]->isImplicitlyPublic(),
+            $properties[$p]->getName()
+            . ' is not implicitly public.'
+        );
+    }
+
+    /**
+     * Tests string representation of the PropertyModel object
+     * for a static property.
+     *
+     *  covers Bartlett\Reflect\Model\PropertyModel::__toString
+     * @group  reflection
+     * @return void
+     */
+    public function testToStringStaticProperty()
+    {
+        $c = 0;  // class SimpleClass
+        $p = 2;  // var3 property
+
+        $properties = self::$models[$c]->getProperties();
+
+        $this->assertEquals(
+            'Property [ private static $var3 ]' . "\n",
+            $properties[$p]->__toString(),
+            $properties[$p]->getName()
+            . ", property #$p string representation does not match."
         );
     }
 }

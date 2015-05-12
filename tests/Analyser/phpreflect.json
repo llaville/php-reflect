@@ -1,0 +1,20 @@
+{
+    "source-providers": [
+        {
+            "in": ". as current",
+            "name": "/\\.(php|inc|phtml)$/"
+        }
+    ],
+    "plugins": [
+    ],
+    "analysers" : [
+        {
+            "name":  "ValidAnalyser",
+            "class": "Bartlett\\Tests\\Reflect\\Analyser\\FooAnalyser"
+        },
+        {
+            "name":  "InvalidAnalyser",
+            "class": "Bartlett\\Tests\\Reflect\\Analyser\\BarAnalyser"
+        }
+    ]
+}

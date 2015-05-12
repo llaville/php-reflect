@@ -1,6 +1,6 @@
 <?php
 /**
- * Common interface to all analysers accessible through the AnalyserPlugin.
+ * Common interface to all analysers accessible through the AnalyserManager.
  *
  * @category PHP
  * @package  PHP_Reflect
@@ -12,7 +12,7 @@
 
 namespace Bartlett\Reflect\Analyser;
 
-use Symfony\Component\Console\Output\OutputInterface;
+use Bartlett\Reflect;
 
 /**
  * Interface that all analysers must implement.
@@ -27,7 +27,17 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 interface AnalyserInterface
 {
-    public function analyse($reflect);
+    public function setSubject(Reflect $reflect);
 
-    public function render(OutputInterface $output);
+    public function setTokens(array $tokens);
+
+    public function setCurrentFile($path);
+
+    public function getMetrics();
+
+    public function getName();
+
+    public function getNamespace();
+
+    public function getShortName();
 }

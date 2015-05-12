@@ -13,7 +13,9 @@
 namespace Bartlett\Reflect\Analyser;
 
 use Bartlett\Reflect;
-use Bartlett\Reflect\Visitor\AbstractVisitor;
+
+use PhpParser\Node;
+use PhpParser\NodeVisitor;
 
 /**
  * Provides common metrics for all analysers.
@@ -26,130 +28,188 @@ use Bartlett\Reflect\Visitor\AbstractVisitor;
  * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC2
  */
-abstract class AbstractAnalyser extends AbstractVisitor implements AnalyserInterface
+abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
 {
-    protected $directories;
-    protected $packages;
+    protected $namespaces = array();
     protected $testClass;
-    protected $count;
+    protected $tokens;
+    protected $file;
+    protected $metrics = array();
 
-    /**
-     * Runs the source code analyse
-     *
-     * @param Reflect $reflect Reverse source code
-     *
-     * @return array Metrics
-     */
-    public function analyse($reflect)
+    protected $subject;
+
+    public function setSubject(Reflect $reflect)
     {
-        if (method_exists($this, 'init')) {
-            $this->init();
-        } else {
-            $this->count = array();
-        }
-        $this->count['files'] = 0;
-        $this->directories    = array();
-        $this->packages       = array();
+        $this->subject = $reflect;
+    }
 
-        // explore elements results of data source parsed
-        foreach ($reflect->getPackages() as $package) {
-            $package->accept($this);
-        }
+    public function setTokens(array $tokens)
+    {
+        $this->tokens = $tokens;
+    }
 
-        // explore files parsed
-        foreach ($reflect->getFiles() as $file) {
-            $this->count['files']++;
-            $this->directories[] = dirname($file->getPathname());
-        }
-        $directories = array_unique($this->directories);
+    public function setCurrentFile($path)
+    {
+        $this->file = $path;
+    }
 
-        $this->count['directories'] = count($directories);
-        $this->count['namespaces']  = count($this->packages);
+    public function getMetrics()
+    {
+        return array(get_class($this) => $this->metrics);
+    }
 
-        return $this->count;
+    public function getName()
+    {
+        $parts = explode('\\', get_class($this));
+        return array_pop($parts);
+    }
+
+    public function getNamespace()
+    {
+        return implode('\\', array_slice(explode('\\', get_class($this)), 0, -1));
+    }
+
+    public function getShortName()
+    {
+        return strtolower(str_replace('Analyser', '', $this->getName()));
+    }
+
+    public function beforeTraverse(array $nodes)
+    {
+        $this->subject->dispatch(
+            Reflect\Events::BUILD,
+            array(
+                'method' => get_class($this) . '::' . __FUNCTION__,
+                'node'   => null,
+            )
+        );
+    }
+
+    public function enterNode(Node $node)
+    {
+        $this->subject->dispatch(
+            Reflect\Events::BUILD,
+            array(
+                'method' => get_class($this) . '::' . __FUNCTION__,
+                'node'   => $node,
+            )
+        );
+    }
+
+    public function leaveNode(Node $node)
+    {
+        $this->subject->dispatch(
+            Reflect\Events::BUILD,
+            array(
+                'method' => get_class($this) . '::' . __FUNCTION__,
+                'node'   => $node,
+            )
+        );
+    }
+
+    public function afterTraverse(array $nodes)
+    {
+        $this->subject->dispatch(
+            Reflect\Events::BUILD,
+            array(
+                'method' => get_class($this) . '::' . __FUNCTION__,
+                'node'   => null,
+            )
+        );
     }
 
     /**
-     * Visits a package model.
+     * Visits a namespace node.
      *
-     * Counts the namespaces in the data source.
-     *
-     * @param PackageModel $package Represents a namespace in the data source
+     * @param Node\Stmt\Namespace_ $namespace Represents a namespace in the data source
      *
      * @return void
      */
-    public function visitPackageModel($package)
+    protected function visitNamespace(Node\Stmt\Namespace_ $namespace)
     {
-        $this->packages[] = $package->getName();
+        $this->namespaces[] = $namespace->name;
     }
 
     /**
-     * Visits a class model.
+     * Visits a class node.
      *
-     * Counts the namespaces in the data source.
-     *
-     * @param ClassModel $class Represents a class in the package
+     * @param Node\Stmt\Class_ $class Represents a class in the namespace
      *
      * @return void
      */
-    public function visitClassModel($class)
+    protected function visitClass(Node\Stmt\Class_ $class)
     {
         $this->testClass = false;
 
-        if (!$class->isTrait()
-            && !$class->isInterface()
-        ) {
-            $parent = $class->getParentClass();
+        $parent = $class->extends;
 
-            if ($parent === false) {
-                // No ancestry
-                // Treat the class as a test case class if the name
-                // of the parent class ends with "TestCase".
+        if (empty($parent)) {
+            // No ancestry
+            // Treat the class as a test case class if the name
+            // of the parent class ends with "TestCase".
 
-                if (substr($class->getShortName(), -8) == 'TestCase') {
-                    $this->testClass = true;
-                }
-            } else {
-                // Ancestry
-                // Treat the class as a test case class if the name
-                // of the parent class equals to "PHPUnit_Framework_TestCase".
+            if (substr($class->name, -8) == 'TestCase') {
+                $this->testClass = true;
+            }
+        } else {
+            // Ancestry
+            // Treat the class as a test case class if the name
+            // of the parent class equals to "PHPUnit_Framework_TestCase".
 
-                if ($parent->getShortName() === 'PHPUnit_Framework_TestCase') {
-                    $this->testClass = true;
-                }
+            if ((string) $parent === 'PHPUnit_Framework_TestCase') {
+                $this->testClass = true;
             }
         }
     }
 
-    public function visitConstantModel($constant)
+    /**
+     * Checks if a property is implicitly public (PHP 4 syntax)
+     *
+     * @param array              $tokens
+     * @param Node\Stmt\Property $prop
+     *
+     * @return boolean
+     */
+    protected function isImplicitlyPublicProperty(array $tokens, Node\Stmt\Property $prop)
     {
+        $i = $prop->getAttribute('startTokenPos');
+        return (isset($tokens[$i]) && $tokens[$i][0] == T_VAR);
     }
 
-    public function visitDependencyModel($dependency)
+    /**
+     * Checks if a method is implicitly public (PHP 4 syntax)
+     *
+     * @param array                 $tokens
+     * @param Node\Stmt\ClassMethod $method
+     *
+     * @return boolean
+     */
+    protected function isImplicitlyPublicFunction(array $tokens, Node\Stmt\ClassMethod $method)
     {
+        $i = $method->getAttribute('startTokenPos');
+        for ($c = count($tokens); $i < $c; ++$i) {
+            $t = $tokens[$i];
+            if ($t[0] == T_PUBLIC || $t[0] == T_PROTECTED || $t[0] == T_PRIVATE) {
+                return false;
+            }
+            if ($t[0] == T_FUNCTION) {
+                break;
+            }
+        }
+        return true;
     }
 
-    public function visitFunctionModel($function)
+    /**
+     * Checks if array syntax is normal or short (PHP 5.4+ feature)
+     *
+     * @param array            $tokens
+     * @param Node\Expr\Array_ $array
+     *
+     * @return boolean
+     */
+    protected function isShortArraySyntax(array $tokens, Node\Expr\Array_ $array)
     {
-    }
-
-    public function visitIncludeModel($include)
-    {
-    }
-
-    public function visitMethodModel($method)
-    {
-    }
-
-    public function visitParameterModel($parameter)
-    {
-    }
-
-    public function visitPropertyModel($property)
-    {
-    }
-
-    public function visitUseModel($use)
-    {
+        $i = $array->getAttribute('startTokenPos');
+        return is_string($tokens[$i]);
     }
 }

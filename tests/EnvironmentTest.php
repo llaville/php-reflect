@@ -31,7 +31,7 @@ use Bartlett\Reflect\Environment;
  */
 class EnvironmentTest extends \PHPUnit_Framework_TestCase
 {
-    protected static $env;
+    const DIST_RC = 'phpreflect.json.dist';
 
     /**
      * Sets up the shared fixture.
@@ -41,137 +41,203 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
-        self::$env = new Environment();
+        copy(dirname(__DIR__) . '/bin/' . self::DIST_RC, __DIR__ . '/' . self::DIST_RC);
     }
 
     /**
-     *  covers Bartlett\Reflect\AbstractEnvironment::getJsonFilename
+     * Clean-up the shared fixture environment.
+     *
+     * @return void
+     * @link   http://phpunit.de/manual/current/en/fixtures.html#fixtures.sharing-fixture
+     */
+    public static function tearDownAfterClass()
+    {
+        @unlink(__DIR__ . '/' . self::DIST_RC);
+    }
+
+    /**
+     * Clean-up single test environment
      *
      * @return void
      */
-    public function testJsonFilenameAccessor()
+    public function tearDown()
     {
-        $this->assertEquals(
-            Environment::JSON_FILE,
-            self::$env->getJsonFilename(),
-            "Environment JSON file does not match."
+        putenv("BARTLETT_SCAN_DIR=");
+        putenv("BARTLETTRC=");
+    }
+
+    /**
+     * @covers Bartlett\Reflect\Environment::getJsonConfigFilename
+     *
+     * @return void
+     */
+    public function testUndefinedScanDir()
+    {
+        $this->assertFalse(
+            Environment::getJsonConfigFilename(),
+            "Environment variable BARTLETT_SCAN_DIR is not defined."
         );
     }
 
     /**
-     *  covers Bartlett\Reflect\AbstractEnvironment::getEnv
+     * @covers Bartlett\Reflect\Environment::getJsonConfigFilename
      *
      * @return void
      */
-    public function testEnvAccessor()
+    public function testUndefinedConfigFilename()
     {
-        $this->assertEquals(
-            Environment::ENV,
-            self::$env->getEnv(),
-            "Environment ENV variable does not match."
+        putenv("BARTLETT_SCAN_DIR=.");
+
+        $this->assertFalse(
+            Environment::getJsonConfigFilename(),
+            "Environment variable BARTLETTRC is not defined."
         );
     }
 
     /**
-     *  covers Bartlett\Reflect\AbstractEnvironment::validateSyntax
+     * @covers Bartlett\Reflect\Environment::getJsonConfigFilename
      *
      * @return void
      */
-    public function testValidateSyntaxJsonConfigFile()
+    public function testGetConfigFilenameInSingleScanDirEnvironment()
     {
-        try {
-            $file = dirname(__DIR__) . DIRECTORY_SEPARATOR
-                . getenv(self::$env->getEnv());
-            $json = self::$env->validateSyntax($file);
+        $singleScanDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin';
 
-        } catch (\Exception $e) {
-            $this->fail(
-                'An unexpected ' . get_class($e) . ' exception has been raised with message. '
-                . $e->getMessage()
-            );
-        }
-
-        $this->assertJson(
-            $json,
-            "Environment JSON config is not a valid JSON string."
-        );
-    }
-
-    /**
-     *  covers Bartlett\Reflect\AbstractEnvironment::validateSchema
-     *
-     * @return void
-     */
-    public function testValidateSchemaJsonConfigFile()
-    {
-        try {
-            $file = dirname(__DIR__) . DIRECTORY_SEPARATOR
-                . getenv(self::$env->getEnv());
-            $json = self::$env->validateSyntax($file);
-
-            $schema = dirname(__DIR__) . DIRECTORY_SEPARATOR
-                . 'bin' . DIRECTORY_SEPARATOR
-                . self::$env->getJsonSchemaFilename();
-            $result = self::$env->validateSchema($json, $schema);
-
-        } catch (\Exception $e) {
-            $this->fail(
-                'An unexpected ' . get_class($e) . ' exception has been raised with message. '
-                . $e->getMessage()
-            );
-        }
-
-        $this->assertNull(
-            $result,
-            'Config file "$file" does not match the expected JSON schema ("$schema").'
-        );
-    }
-
-    /**
-     *  covers Bartlett\Reflect\AbstractEnvironment::validateSyntax
-     *
-     * @return void
-     */
-    public function testJsonConfigFile()
-    {
-        try {
-            $file = dirname(__DIR__) . DIRECTORY_SEPARATOR
-                . getenv(self::$env->getEnv());
-            $json = self::$env->validateSyntax($file);
-            $var  = json_decode($json, true);
-
-        } catch (\Exception $e) {
-            $this->fail(
-                'An unexpected ' . get_class($e) . ' exception has been raised with message. '
-                . '"' . $e->getMessage() . '"'
-            );
-        }
-
-        $config = array(
-            'source-providers' => array(
-                array (
-                    'in'   => '. as current',
-                    'name' => '/\\.(php|inc|phtml)$/',
-                ),
-            ),
-            'plugins' => array(
-                array (
-                    'name'  => 'Analyser',
-                    'class' => 'Bartlett\\Reflect\\Plugin\\Analyser\\AnalyserPlugin',
-                ),
-            ),
-            'analysers' => array(
-                array (
-                    'name'  => 'Structure',
-                    'class' => 'Bartlett\\Reflect\\Analyser\\StructureAnalyser',
-                ),
-            ),
-        );
+        putenv("BARTLETT_SCAN_DIR=$singleScanDir");
+        putenv("BARTLETTRC=" . self::DIST_RC);
 
         $this->assertEquals(
-            $config,
-            $var,
-            "Environment JSON config does not match."
+            $singleScanDir . DIRECTORY_SEPARATOR . self::DIST_RC,
+            Environment::getJsonConfigFilename(),
+            "Config filename does not match."
+        );
+    }
+
+    /**
+     * @covers Bartlett\Reflect\Environment::getJsonConfigFilename
+     *
+     * @return void
+     */
+    public function testGetConfigFilenameInMultipleScanDirEnvironment()
+    {
+        $multipleScanDir = __DIR__ . DIRECTORY_SEPARATOR . PATH_SEPARATOR .
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin';
+
+        putenv("BARTLETT_SCAN_DIR=$multipleScanDir");
+        putenv("BARTLETTRC=" . self::DIST_RC);
+
+        $this->assertEquals(
+            __DIR__ . DIRECTORY_SEPARATOR . self::DIST_RC,
+            Environment::getJsonConfigFilename(),
+            "Config filename does not match."
+        );
+    }
+
+    /**
+     * @covers Bartlett\Reflect\Environment::setScanDir
+     *
+     * @return void
+     */
+    public function testSetDefaultScanDir()
+    {
+        $home = defined('PHP_WINDOWS_VERSION_BUILD') ? 'USERPROFILE' : 'HOME';
+        $dirs = array(
+            realpath('.'),
+            getenv($home) . DIRECTORY_SEPARATOR . '.config',
+            DIRECTORY_SEPARATOR . 'etc'
+        );
+        $multipleScanDir = implode(PATH_SEPARATOR, $dirs);
+
+        Environment::setScanDir();
+
+        $this->assertEquals(
+            $multipleScanDir,
+            getenv("BARTLETT_SCAN_DIR"),
+            "Environment variable BARTLETT_SCAN_DIR does not match."
+        );
+    }
+
+    /**
+     * @covers Bartlett\Reflect\Environment::getLogger
+     * @runInSeparateProcess
+     *
+     * @return void
+     */
+    public function testDefaultLoggerAccessor()
+    {
+        $singleScanDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin';
+
+        putenv("BARTLETT_SCAN_DIR=$singleScanDir");
+        putenv("BARTLETTRC=" . self::DIST_RC);
+
+        $logger = Environment::getLogger();
+
+        $this->assertInstanceOf(
+            'Psr\Log\LoggerInterface',
+            $logger,
+            'This is not a compatible PSR-3 logger'
+        );
+
+        $this->assertEquals(
+            'Bartlett\Reflect\Plugin\Log\DefaultLogger',
+            get_class($logger),
+            'Default logger does not match.'
+        );
+    }
+
+    /**
+     * @covers Bartlett\Reflect\Environment::getLogger
+     * @runInSeparateProcess
+     *
+     * @return void
+     */
+    public function testCustomLoggerAccessor()
+    {
+        $singleScanDir = __DIR__ . DIRECTORY_SEPARATOR . 'Environment';
+
+        putenv("BARTLETT_SCAN_DIR=$singleScanDir");
+        putenv("BARTLETTRC=phpreflect.json");
+
+        $logger = Environment::getLogger();
+
+        $this->assertInstanceOf(
+            'Psr\Log\LoggerInterface',
+            $logger,
+            'This is not a compatible PSR-3 logger'
+        );
+
+        $this->assertEquals(
+            'Bartlett\Tests\Reflect\Environment\YourLogger',
+            get_class($logger),
+            'Custom logger does not match.'
+        );
+    }
+
+    /**
+     * @covers Bartlett\Reflect\Environment::getClient
+     * @runInSeparateProcess
+     *
+     * @return void
+     */
+    public function testDefaultClientAccessor()
+    {
+        $singleScanDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin';
+
+        putenv("BARTLETT_SCAN_DIR=$singleScanDir");
+        putenv("BARTLETTRC=" . self::DIST_RC);
+
+        $client = Environment::getClient();
+
+        $this->assertInstanceOf(
+            'Bartlett\Reflect\Client\ClientInterface',
+            $client,
+            'This is not a compatible Reflect API client'
+        );
+
+        $this->assertEquals(
+            'Bartlett\Reflect\Client\LocalClient',
+            get_class($client),
+            'Default client does not match.'
         );
     }
 }
