@@ -15,6 +15,6 @@
 :iconsfont:   font-awesome
 :imagesdir:   ./images
 :idprefix:    _
-:gitbranch:   3.0
+:gitbranch:   master
 :rawbaseurl:  https://raw.githubusercontent.com/llaville/php-reflect/{gitbranch}
 :gitproject:  https://github.com/llaville/php-reflect
