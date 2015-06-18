@@ -19,7 +19,18 @@ print "</info>\n";
 
 $lock = json_decode(file_get_contents(__DIR__ . '/composer.lock'));
 
-$packages = function ($package) {
+// packages that may be installed but not distributed in the phar version
+$excludes = array(
+    'bartlett/phpunit-loggertestlistener',
+    'bartlett/monolog-callbackfilterhandler',
+    'bartlett/monolog-growlhandler',
+    'pear-pear.php.net/Net_Growl',
+);
+
+$packages = function ($package) use ($excludes) {
+    if (in_array($package->name, $excludes)) {
+        return;
+    }
     print $package->name . ': <info>' . $package->version;
 
     if (!preg_match('/^[v= ]*(([0-9]+)(\\.([0-9]+)(\\.([0-9]+)(-([0-9]+))?(-?([a-zA-Z-+][a-zA-Z0-9\\.\\-:]*)?)?)?)?)$/', $package->version)) {

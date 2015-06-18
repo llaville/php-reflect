@@ -22,7 +22,7 @@
         ======================================================================
     -->
     <property name="build.short-version"         value="3.1" />
-    <property name="build.version"               value="${build.short-version}.0" />
+    <property name="build.version"               value="${build.short-version}.1" />
 
     <!--
         ======================================================================
@@ -52,7 +52,7 @@
 
     <fileset dir="${adoc.sourcedir}" id="adoc-project-assets">
         <include name="stylesheets/cover.css" />
-        <include name="stylesheets/tocaffix.css" />
+        <include name="stylesheets/tocmmenu.css" />
         <include name="themes.json" />
         <include name="images/**" />
         <exclude name="images/**/Thumbs.db" />
