@@ -18,8 +18,6 @@ use Bartlett\Reflect\Events;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-require_once 'Net/Growl/Autoload.php';
-
 /**
  * Notifies events via a Growl (Mac or Windows, but not Linux)
  *
