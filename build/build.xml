@@ -26,61 +26,6 @@
 
     <!--
         ======================================================================
-        Build PHAR distribution by Phing PharPackage Task
-        ======================================================================
-    -->
-    <property name="phar.destfile"               value="phpreflect-${build.version}.phar" />
-    <property name="phar.compression"            value="gzip" />
-    <property name="phar.stub"                   value="${project.dir}/phar-stub.php" />
-    <property name="phar.alias"                  value="phpreflect.phar" />
-
-    <fileset dir="${project.dir}" id="phar-contents">
-        <include name="LICENSE" />
-        <include name="vendor/nikic/php-parser/LICENSE" />
-        <include name="vendor/sebastian/version/LICENSE" />
-        <include name="vendor/symfony/console/Symfony/Component/Console/LICENSE" />
-        <include name="vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher/LICENSE" />
-        <include name="vendor/symfony/finder/Symfony/Component/Finder/LICENSE" />
-        <include name="vendor/symfony/stopwatch/Symfony/Component/Stopwatch/LICENSE" />
-        <include name="vendor/symfony/dependency-injection/Symfony/Component/DependencyInjection/LICENSE" />
-        <include name="vendor/seld/jsonlint/LICENSE" />
-        <include name="vendor/justinrainbow/json-schema/LICENSE" />
-        <include name="vendor/phpdocumentor/reflection-docblock/LICENSE" />
-        <include name="vendor/doctrine/cache/LICENSE" />
-        <include name="vendor/doctrine/collections/LICENSE" />
-        <include name="vendor/psr/log/LICENSE" />
-        <include name="vendor/monolog/monolog/LICENSE" />
-        <include name="vendor/bartlett/umlwriter/LICENSE" />
-        <include name="vendor/autoload.php" />
-
-        <include name="vendor/composer/**/*.php" />
-        <include name="vendor/nikic/php-parser/lib/**/*.php" />
-        <include name="vendor/sebastian/version/src/Version.php" />
-        <include name="vendor/symfony/**/*.php" />
-        <exclude name="**/Tests/**" />
-        <include name="vendor/seld/jsonlint/src/**/*.php" />
-        <include name="vendor/justinrainbow/json-schema/src/**/*.php" />
-        <include name="vendor/phpdocumentor/reflection-docblock/src/**/*.php" />
-        <include name="vendor/doctrine/cache/lib/**/*.php" />
-        <include name="vendor/doctrine/collections/lib/**/*.php" />
-        <include name="vendor/psr/log/Psr/**/*.php" />
-        <include name="vendor/monolog/monolog/src/**/*.php" />
-        <include name="vendor/bartlett/umlwriter/src/**/*.php" />
-
-        <include name="src/**/*.php" />
-        <include name="bin/phpreflect" />
-        <include name="bin/phpreflect.json-schema" />
-        <include name="bin/phpreflect.json.dist" />
-        <include name="manifest.txt" />
-    </fileset>
-
-    <fileset dir="${project.dir}" id="phar-versions">
-        <include name="src/**/*.php" />
-        <include name="tests/**/*.php" />
-    </fileset>
-
-    <!--
-        ======================================================================
         Generate the full documentation
         ======================================================================
     -->
@@ -162,7 +107,6 @@
     -->
     <property name="modules.adoc"                value="true" />
     <property name="modules.notify"              value="true" />
-    <property name="modules.phar"                value="true" />
 
     <import file="${phingBuilder.dir}/modules/build.xml" />
 
@@ -171,14 +115,13 @@
         Actions
         ======================================================================
     -->
-    <target name="all" depends="adoc.all,phar.all" />
+    <target name="all" depends="adoc.all" />
 
     <target name="help">
         <echo>A toolchain manager for ${phing.project.name} ${build.version}</echo>
         <echo>                                                              </echo>
         <echo>targets:                                                      </echo>
         <echo>  adoc.all     Generate the full documentation                </echo>
-        <echo>  phar.all     Generate the PHAR version                      </echo>
         <echo>  all          Do all tasks above                             </echo>
     </target>
 
