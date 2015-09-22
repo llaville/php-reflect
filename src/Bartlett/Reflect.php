@@ -18,8 +18,10 @@ namespace Bartlett;
 
 use Bartlett\Reflect\Event\AbstractDispatcher;
 use Bartlett\Reflect\Events;
+use Bartlett\Reflect\PhpParser\EmulativeLexer;
+use Bartlett\Reflect\Visitor\VisitorInterface;
 
-use PhpParser\Lexer\Emulative;
+//use PhpParser\Lexer\Emulative;
 use PhpParser\Parser;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
@@ -117,10 +119,11 @@ class Reflect extends AbstractDispatcher
             return false;
         }
 
-        $lexer     = new Emulative(array(
+        $lexer     = new EmulativeLexer(array(
             'usedAttributes' => array(
                 'comments', 'startLine', 'endLine', 'startTokenPos', 'endTokenPos'
-            )
+            ),
+            'allowKeywordsReserved' => true  // force auto-detect for all PHP versions (demo purpose only)
         ));
         $parser    = new Parser($lexer);
         $traverser = new NodeTraverser;
@@ -133,6 +136,10 @@ class Reflect extends AbstractDispatcher
                 $conditionalCode = true;
             }
             $traverser->addVisitor($analyser);
+
+            if ($analyser instanceof VisitorInterface) {
+                $analyser->setUpBeforeVisitor();
+            }
         }
 
         $queue    = new \SplQueue();
@@ -336,6 +343,10 @@ class Reflect extends AbstractDispatcher
 
         // collect metrics of each analyser selected
         foreach ($this->analysers as $analyser) {
+            if ($analyser instanceof VisitorInterface) {
+                $analyser->tearDownAfterVisitor();
+            }
+
             $metrics = array_merge($metrics, (array)$analyser->getMetrics());
         }
 

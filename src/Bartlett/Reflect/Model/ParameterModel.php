@@ -149,7 +149,7 @@ class ParameterModel extends AbstractModel
      */
     public function isCallable()
     {
-        return ($this->node->type === 'callable');
+        return ((string) $this->node->type === 'callable');
     }
 
     /**
