@@ -192,36 +192,7 @@ abstract class Common
      */
     protected function transformToJson($response)
     {
-        if (version_compare(PHP_VERSION, '5.4.0', 'ge')) {
-            $jsonpp = function ($data) {
-                return json_encode($data, JSON_PRETTY_PRINT);
-            };
-
-        } else {
-            // Original code available
-            // @link https://github.com/ryanuber/projects/blob/master/PHP/JSON/jsonpp.php
-
-            $jsonpp = function ($data, $istr = '    ') {
-                $json = json_encode($data);
-                $result = '';
-                for ($p=$q=$i=0; isset($json[$p]); $p++) {
-                    $json[$p] == '"' && ($p>0?$json[$p-1]:'') != '\\' && $q=!$q;
-                    if (!$q && strchr(" \t\n\r", $json[$p])) {
-                        continue;
-                    }
-                    if (strchr('}]', $json[$p]) && !$q && $i--) {
-                        strchr('{[', $json[$p-1]) || $result .= "\n".str_repeat($istr, $i);
-                    }
-                    $result .= $json[$p];
-                    if (strchr(',{[', $json[$p]) && !$q) {
-                        $i += strchr('{[', $json[$p])===false?0:1;
-                        strchr('}]', $json[$p+1]) || $result .= "\n".str_repeat($istr, $i);
-                    }
-                }
-                return $result;
-            };
-        }
-        return $jsonpp($response);
+        return json_encode($response, JSON_PRETTY_PRINT);
     }
 
     /**

@@ -31,8 +31,6 @@ use Symfony\Component\Console\Formatter\OutputFormatter as BaseOutputFormatter;
  */
 class OutputFormatter extends BaseOutputFormatter
 {
-    const JSON_PRETTY_PRINT = 128;
-
     /**
      * Helper that convert analyser results to a console table
      *
