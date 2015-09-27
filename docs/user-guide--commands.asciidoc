@@ -29,24 +29,24 @@ when you invoke the `phpreflect` command, you should obtain the following comman
  | .__/|_| |_| .__/|_| \_\___|_| |_|\___|\___|\__|
  |_|         |_|
 
-phpReflect version 3.1.1
+phpReflect version 3.1.2
 
 Usage:
  [options] command [arguments]
 
 Options:
- --help (-h)           Display this help message
- --quiet (-q)          Do not output any message
- --verbose (-v|vv|vvv) Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
- --version (-V)        Display this application version
- --ansi                Force ANSI output
- --no-ansi             Disable ANSI output
- --no-interaction (-n) Do not ask any interactive question
- --no-plugins          Disables all plugins.
- --profile             Display timing and memory usage information.
- --progress            Show progress bar.
- --output              Write results to file or URL.
- --manifest            Show which versions of dependencies are bundled.
+  -h, --help            Display this help message
+  -q, --quiet           Do not output any message
+  -V, --version         Display this application version
+      --ansi            Force ANSI output
+      --no-ansi         Disable ANSI output
+  -n, --no-interaction  Do not ask any interactive question
+      --no-plugins      Disables all plugins.
+      --profile         Display timing and memory usage information.
+      --progress        Show progress bar.
+      --output=OUTPUT   Write results to file or URL.
+      --manifest        Show which versions of dependencies are bundled.
+  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Available commands:
  help                  Displays help for a command
@@ -97,7 +97,7 @@ $ phpreflect diagnose:run
 ----
 Checking php settings:
 - Requires PHP 5.3.2 or better OK
-- php.ini file loaded C:\UwAmp\bin\php\php-5.6.8\php.ini
+- php.ini file loaded C:\UwAmp\bin\php\php-5.6.13\php.ini
 - date extension loaded YES
 - json extension loaded YES
 - pcre extension loaded YES
