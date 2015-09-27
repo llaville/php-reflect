@@ -56,7 +56,7 @@ class Analyser extends Common
      * @param array    $analysers One or more analyser to perform (case insensitive).
      * @param mixed    $alias     If set, the source refers to its alias
      * @param string   $format    If set, convert result to a specific format.
-     * @param \Closure $filter    Function used to filter results
+     * @param mixed    $filter    (optional) Function used to filter results
      *
      * @return array metrics
      * @throws \InvalidArgumentException if an analyser required is not installed
@@ -69,6 +69,13 @@ class Analyser extends Common
             throw new \RuntimeException(
                 'None data source matching'
             );
+        }
+
+        if ($filter === false) {
+            // filter feature is not possible on reflection:* commands
+            $filter = function ($data) {
+                return $data;
+            };
         }
 
         $reflect = new Reflect();

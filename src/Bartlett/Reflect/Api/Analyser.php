@@ -60,13 +60,10 @@ class Analyser extends BaseApi
             $alias = false;
         }
 
-        if ($filter instanceof \Closure) {
+        if ($filter instanceof \Closure
+            || $filter === false
+        ) {
             $closure = $filter;
-
-        } elseif ($filter === false) {
-            $closure = function ($data) {
-                return $data;
-            };
 
         } else {
             if ($filterRes = stream_resolve_include_path($filter)) {
