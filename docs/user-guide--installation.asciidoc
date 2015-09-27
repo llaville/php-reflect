@@ -52,6 +52,11 @@ And ask http://getcomposer.org/[Composer] to install the dependencies:
 ----
 $ php composer.phar install
 ----
+Or just invoke Composer to install the latest version:
+[source,bash]
+----
+$ php composer.phar require bartlett/php-reflect
+----
 
 [TIP]
 ====
