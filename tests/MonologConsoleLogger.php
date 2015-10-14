@@ -69,33 +69,37 @@ class MonologConsoleLogger extends Logger
 
         $handlers = array($filter, $stream);
 
-        try {
-            $options = array(
-                'resourceDir' => dirname(__DIR__) . '/vendor/pear-pear.php.net/Net_Growl/data/Net_Growl/data',
-                'defaultIcon' => '80/growl_phpunit.png',
-            );
+        if (class_exists('GrowlHandler')
+            && class_exists('CallbackFilterHandler')
+        ) {
+            try {
+                $options = array(
+                    'resourceDir' => dirname(__DIR__) . '/vendor/pear-pear.php.net/Net_Growl/data/Net_Growl/data',
+                    'defaultIcon' => '80/growl_phpunit.png',
+                );
 
-            $growl = new GrowlHandler(
-                array(
-                    'name'    => 'PHPUnit ResultPrinter',
-                    'options' => $options
-                ),
-                Logger::NOTICE
-            );
-            $growl->setFormatter(
-                new LineFormatter(
-                    "PHP Reflect\n" .
-                    "%message%"
-                )
-            );
+                $growl = new GrowlHandler(
+                    array(
+                        'name'    => 'PHPUnit ResultPrinter',
+                        'options' => $options
+                    ),
+                    Logger::NOTICE
+                );
+                $growl->setFormatter(
+                    new LineFormatter(
+                        "PHP Reflect\n" .
+                        "%message%"
+                    )
+                );
 
-            $handlers[] = new CallbackFilterHandler(
-                $growl,
-                $filterRules
-            );
+                $handlers[] = new CallbackFilterHandler(
+                    $growl,
+                    $filterRules
+                );
 
-        } catch (\Exception $e) {
-            // Growl server is probably not started
+            } catch (\Exception $e) {
+                // Growl server is probably not started
+            }
         }
 
         parent::__construct($name, $handlers);
