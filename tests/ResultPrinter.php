@@ -54,7 +54,7 @@ class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter
             $minLevelOrList = array(LogLevel::NOTICE, LogLevel::ERROR);
         }
 
-        $console = new \MonologConsoleLogger('ResultPrinter');
+        $console = new MonologConsoleLogger('ResultPrinter');
         $console->setAcceptedLevels($minLevelOrList);
 
         $handlers = $console->getHandlers();
@@ -167,28 +167,27 @@ class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter
 
             if ('startTest' == $context['operation']) {
                 $record['message'] = sprintf("%sTest '%s' started.", $indent, ($debug ? $longLabel : $shortLabel));
-            }
-            elseif ('endTest' == $context['operation']) {
+
+            } elseif ('endTest' == $context['operation']) {
                 $record['message'] = sprintf("%sTest '%s' ended.", $indent, $shortLabel);
-            }
-            elseif ('addError' == $context['operation']) {
+
+            } elseif ('addError' == $context['operation']) {
                 $record['message'] = sprintf("%sError while running test '%s'. %s", $indent, $shortLabel, $context['reason']);
-            }
-            elseif ('addFailure' == $context['operation']) {
+
+            } elseif ('addFailure' == $context['operation']) {
                 $record['message'] = sprintf("%sTest '%s' failed. %s", $indent, $shortLabel, $context['reason']);
-            }
-            elseif ('addIncompleteTest' == $context['operation']) {
+
+            } elseif ('addIncompleteTest' == $context['operation']) {
                 $record['message'] = sprintf("%sTest '%s' is incomplete. %s", $indent, $shortLabel, $context['reason']);
-            }
-            elseif ('addRiskyTest' == $context['operation']) {
+
+            } elseif ('addRiskyTest' == $context['operation']) {
                 $record['message'] = sprintf("%sTest '%s' is risky. %s", $indent, $shortLabel, $context['reason']);
-            }
-            elseif ('addSkippedTest' == $context['operation']) {
+
+            } elseif ('addSkippedTest' == $context['operation']) {
                 $record['message'] = sprintf("%sTest '%s' has been skipped. %s", $indent, $shortLabel, $context['reason']);
             }
         }
 
         return $record;
     }
-
 }

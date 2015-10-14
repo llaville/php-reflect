@@ -14,6 +14,8 @@
  * @since      Class available since Release 3.1.0
  */
 
+namespace Bartlett\Tests\Reflect;
+
 use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
