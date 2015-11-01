@@ -105,16 +105,13 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         parent::enterNode($node);
 
         // store current context
-        if ($node instanceof Stmt\Class_
-            || $node instanceof Stmt\Interface_
-            || $node instanceof Stmt\Trait_
-        ) {
+        if ($node instanceof Node\Stmt\ClassLike) {
             $this->currentObject = $node;
 
-        } elseif ($node instanceof Stmt\ClassMethod) {
+        } elseif ($node instanceof Node\Stmt\ClassMethod) {
             $this->currentMethod = $node;
 
-        } elseif ($node instanceof Stmt\Function_) {
+        } elseif ($node instanceof Node\Stmt\Function_) {
             $this->currentFunction = $node;
 
         } elseif ($node instanceof Node\Expr\Closure) {
@@ -135,16 +132,13 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         }
 
         // clear current context
-        if ($node instanceof Stmt\Class_
-            || $node instanceof Stmt\Interface_
-            || $node instanceof Stmt\Trait_
-        ) {
+        if ($node instanceof Node\Stmt\ClassLike) {
             $this->currentObject = null;
 
-        } elseif ($node instanceof Stmt\ClassMethod) {
+        } elseif ($node instanceof Node\Stmt\ClassMethod) {
             $this->currentMethod = null;
 
-        } elseif ($node instanceof Stmt\Function_) {
+        } elseif ($node instanceof Node\Stmt\Function_) {
             $this->currentFunction = null;
 
         } elseif ($node instanceof Node\Expr\Closure) {
