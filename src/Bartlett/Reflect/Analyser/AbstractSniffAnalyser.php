@@ -47,14 +47,14 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     {
         if (strcasecmp($id, 'object') === 0) {
             return (null !== $this->currentObject);
-        }
-        elseif (strcasecmp($id, 'method') === 0) {
+
+        } elseif (strcasecmp($id, 'method') === 0) {
             return (null !== $this->currentMethod);
-        }
-        elseif (strcasecmp($id, 'function') === 0) {
+
+        } elseif (strcasecmp($id, 'function') === 0) {
             return (null !== $this->currentFunction);
-        }
-        elseif (strcasecmp($id, 'closure') === 0) {
+
+        } elseif (strcasecmp($id, 'closure') === 0) {
             return (null !== $this->currentClosure);
         }
         return false;
