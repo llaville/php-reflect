@@ -1,20 +1,20 @@
 
 Data Source Analysed
 
-Directories                                         20
-Files                                               72
+Directories                                         22
+Files                                               77
 
 Structure
-  Namespaces                                        20
-  Interfaces                                         8
+  Namespaces                                        22
+  Interfaces                                        10
   Traits                                             0
-  Classes                                           64
-    Abstract Classes                                 6 (9.38%)
-    Concrete Classes                                58 (90.62%)
-  Functions                                         13
+  Classes                                           67
+    Abstract Classes                                 8 (11.94%)
+    Concrete Classes                                59 (88.06%)
+  Functions                                         11
     Named Functions                                  0 (0.00%)
-    Anonymous Functions                             13 (100.00%)
-  Constants                                         22
+    Anonymous Functions                             11 (100.00%)
+  Constants                                         21
     Global Constants                                 0 (0.00%)
-    Magic Constants                                  3 (13.64%)
-    Class Constants                                 19 (86.36%)
+    Magic Constants                                  3 (14.29%)
+    Class Constants                                 18 (85.71%)

@@ -96,7 +96,7 @@ $ phpreflect diagnose:run
 ----
 Checking php settings:
 - Requires PHP 5.4.0 or better OK
-- php.ini file loaded C:\UwAmp\bin\php\php-5.6.13\php.ini
+- php.ini file loaded C:\UwAmp\bin\php\php-5.6.16\php.ini
 - date extension loaded YES
 - json extension loaded YES
 - pcre extension loaded YES
