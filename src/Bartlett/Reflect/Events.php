@@ -90,4 +90,11 @@ final class Events
      * @var string
      */
     const BUILD = 'ast.build';
+
+    /**
+     * The SNIFF event allows you to learn what are sniff processes during AST traverse.
+     *
+     * @var string
+     */
+    const SNIFF = 'visit.sniff';
 }

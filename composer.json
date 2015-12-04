@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.2",
+        "php": ">=5.4.0",
         "ext-tokenizer": "*",
         "ext-pcre": "*",
         "ext-phar": "*",
@@ -25,7 +25,7 @@
         "ext-date": "*",
         "ext-reflection": "*",
         "sebastian/version": "~1.0",
-        "nikic/php-parser": "^1.2.2",
+        "nikic/php-parser": "~1.4",
         "doctrine/collections": "~1.2",
         "symfony/event-dispatcher": "~2.5",
         "symfony/finder": "~2.5",
@@ -66,12 +66,12 @@
         "bin/phpreflect"
     ],
     "autoload": {
-        "psr-0": {
-            "Bartlett\\": "src/"
+        "psr-4": {
+            "Bartlett\\": "src/Bartlett"
         }
     },
     "autoload-dev": {
-        "psr-0": {
+        "psr-4": {
             "Bartlett\\Tests\\Reflect\\": "tests/"
         }
     }

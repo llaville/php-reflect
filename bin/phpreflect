@@ -40,5 +40,5 @@ use Bartlett\Reflect\Console\Application;
 
 Environment::setScanDir();
 
-$application = new Application($appName, '3.1');
+$application = new Application($appName, '4.0');
 $application->run();

@@ -1,0 +1,109 @@
+= Build your Filters
+:description: How to filter analyser Reflect's results.
+include::revision.asciidoc[]
+include::attributes.asciidoc[]
+
+
+[role="lead"]
+If you want to restrict final results to one ore more criteria, the filter feature
+is what you are waiting for.
+
+NOTE: This feature was introduced in [label label-primary]#Reflect# [label label-info]#3.1.0#.
+
+== Your first filter
+
+Here, our goal is to remove some elements of the default report.
+
+[source, php]
+.Script `YourFilters.php`
+----
+<?php
+$closure = function ($data) {
+    $filterOnKeys = array(
+        'namespaces',
+        'interfaces',
+        'traits',
+        'classes', 'abstractClasses', 'concreteClasses',
+        'functions', 'namedFunctions', 'anonymousFunctions',
+        'classConstants', 'globalConstants', 'magicConstants',
+    );
+
+    foreach ($data as $title => &$keys) {
+        if (strpos($title, 'StructureAnalyser') === false) {
+            continue;
+        }
+        // looking into Structure Analyser metrics only
+        foreach ($keys as $key => $val) {
+            if (!in_array($key, $filterOnKeys)) {
+                unset($keys[$key]);  // "removed" unsolicited values
+                continue;
+            }
+        }
+    }
+    return $data;
+};
+return $closure;
+----
+
+WARNING: The filter's file that host the `$closure`, must be resolvable through the include_path.
+
+CAUTION: Be carefull, with filter source code, or unwanted results may occured.
+
+TIP: You have ability to remove definitively (`unset`), or remove partially (`false`),
+values in response through the filter.
+
+NOTE: Only one filter is allowed at same run, but you can combine one or more analyser rules.
+
+== SAPI usage
+
+On CLI, invoke the `analyser:run` command with the `--filter` option. E.g:
+[source, bash]
+----
+$ phpreflect analyser:run --filter=YourFilters.php src
+----
+
+On other SAPI, follow example pattern like:
+[source, php]
+----
+<?php
+
+use Bartlett\Reflect\Client;
+
+// creates an instance of client
+$client = new Client();
+
+// request for a Bartlett\Reflect\Api\Analyser
+$api = $client->api('analyser');
+
+// perform request, on a data source with two analysers (structure, loc)
+$dataSource = dirname(__DIR__) . '/src';
+$analysers  = array('structure', 'loc');
+
+// filter rules on final results
+$closure = function ($data) {
+    $filterOnKeys = array(
+        'classes', 'abstractClasses', 'concreteClasses',
+        'classConstants', 'globalConstants', 'magicConstants',
+    );
+
+    foreach ($data as $title => &$keys) {
+        if (strpos($title, 'StructureAnalyser') === false) {
+            continue;
+        }
+        // looking into Structure Analyser metrics and keep classes and constants info
+        foreach ($keys as $key => $val) {
+            if (!in_array($key, $filterOnKeys)) {
+                unset($keys[$key]);  // "removed" unsolicited values
+                continue;
+            }
+        }
+    }
+    return $data;
+};
+
+// equivalent to CLI command `phpreflect analyser:run --filter=YourFilters.php ../src structure loc`
+//$metrics = $api->run($dataSource, $analysers, null, false, $closure = 'YourFilters.php');
+
+// OR with embeded $closure code
+$metrics = $api->run($dataSource, $analysers, null, false, $closure);
+----

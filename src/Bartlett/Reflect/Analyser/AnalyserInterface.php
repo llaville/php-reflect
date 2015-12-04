@@ -27,6 +27,12 @@ use Bartlett\Reflect;
  */
 interface AnalyserInterface
 {
+    public function getSubject();
+
+    public function getCurrentFile();
+
+    public function getTokens();
+
     public function setSubject(Reflect $reflect);
 
     public function setTokens(array $tokens);

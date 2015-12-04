@@ -38,6 +38,21 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
 
     protected $subject;
 
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    public function getCurrentFile()
+    {
+        return $this->file;
+    }
+
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
+
     public function setSubject(Reflect $reflect)
     {
         $this->subject = $reflect;

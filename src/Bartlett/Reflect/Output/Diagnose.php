@@ -13,6 +13,7 @@
 namespace Bartlett\Reflect\Output;
 
 use Bartlett\Reflect\Console\Formatter\OutputFormatter;
+use Bartlett\Reflect\Api\V3\Diagnose as ApiDiagnose;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,9 +30,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Diagnose extends OutputFormatter
 {
-    const PHP_MIN         = '5.3.2';
-    const PHP_RECOMMANDED = '5.3.4';
-
     /**
      * Diagnose run results
      *
@@ -46,7 +44,7 @@ class Diagnose extends OutputFormatter
 
                 $output->writeln(
                     sprintf(
-                        '- Requires PHP ' . self::PHP_MIN . ' or better %s',
+                        '- Requires PHP ' . ApiDiagnose::PHP_MIN . ' or better %s',
                         is_bool($value) ? '<error>FAIL</error>' : '<info>OK</info>'
                     )
                 );
@@ -54,7 +52,7 @@ class Diagnose extends OutputFormatter
                     $this->writeComment(
                         $output,
                         'Upgrading to PHP ' .
-                        self::PHP_RECOMMANDED . ' or higher is recommended.'
+                        ApiDiagnose::PHP_RECOMMANDED . ' or higher is recommended.'
                     );
                 }
             }

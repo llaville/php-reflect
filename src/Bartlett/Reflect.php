@@ -18,6 +18,7 @@ namespace Bartlett;
 
 use Bartlett\Reflect\Event\AbstractDispatcher;
 use Bartlett\Reflect\Events;
+use Bartlett\Reflect\Visitor\VisitorInterface;
 
 use PhpParser\Lexer\Emulative;
 use PhpParser\Parser;
@@ -133,6 +134,10 @@ class Reflect extends AbstractDispatcher
                 $conditionalCode = true;
             }
             $traverser->addVisitor($analyser);
+
+            if ($analyser instanceof VisitorInterface) {
+                $analyser->setUpBeforeVisitor();
+            }
         }
 
         $queue    = new \SplQueue();
@@ -336,6 +341,10 @@ class Reflect extends AbstractDispatcher
 
         // collect metrics of each analyser selected
         foreach ($this->analysers as $analyser) {
+            if ($analyser instanceof VisitorInterface) {
+                $analyser->tearDownAfterVisitor();
+            }
+
             $metrics = array_merge($metrics, (array)$analyser->getMetrics());
         }
 

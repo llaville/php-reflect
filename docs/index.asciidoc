@@ -15,18 +15,18 @@ include::attributes.asciidoc[]
 [role="col-md-6"]
 ====
 [panel,warning]
-.v2 deprecated
+.v3 deprecated
 --
-*Last Branch 2 Release* [label label-danger]#{deprecated}#
+*Last Branch 3 Release* [label label-danger]#{deprecated}#
 
 It was published on {deprecatedPubDate}.
 
 ifdef::basebackend-bootstrap[]
-link:./manual/2.6/en/getting-started.html["Learn more",role="primary",icon="glyphicon-book",options="block"]
+link:./manual/3.1/en/getting-started.html["Learn more",role="primary",icon="glyphicon-book",options="block"]
 endif::[]
 
 ifndef::basebackend-bootstrap[]
-link:./manual/2.6/en/getting-started.html[Learn more]
+link:./manual/3.1/en/getting-started.html[Learn more]
 endif::[]
 --
 ====
@@ -34,7 +34,7 @@ endif::[]
 [role="col-md-6"]
 ====
 [panel,primary]
-.v3
+.v4
 --
 *Stable Release* [label label-primary]#{stable}#
 
@@ -74,7 +74,7 @@ image:icons/font-awesome/flag.png[alt="modern",icon="flag",size="2x"]
 --
 [medium]*Modern*
 
-[label label-primary]#Reflect# takes advantage of new features in PHP 5.3.0 or greater.
+[label label-primary]#Reflect# takes advantage of new features in PHP 5.4.0 or greater.
 --
 unfloat::[]
 

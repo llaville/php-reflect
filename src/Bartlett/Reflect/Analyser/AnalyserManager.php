@@ -56,7 +56,7 @@ class AnalyserManager
             foreach ($iterator as $file) {
                 if (fnmatch('*Analyser.php', $file->getPathName())) {
                     $name = basename(str_replace('Analyser.php', '', $file->getPathName()));
-                    if ('Abstract' !== $name) {
+                    if (strpos($name, 'Abstract') !== 0) {
                         $class    = rtrim($ns, '\\') . '\\' . basename($file, '.php');
                         $analyser = new $class;
 

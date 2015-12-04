@@ -76,6 +76,7 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
             Reflect\Events::ERROR    => 'onReflectError',
             Reflect\Events::COMPLETE => 'onReflectComplete',
             Reflect\Events::BUILD    => 'onAstBuild',
+            Reflect\Events::SNIFF    => 'onSniff',
         );
     }
 
@@ -151,5 +152,19 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
             );
         }
         $this->logger->debug('Building AST, process {method} {node}', $context);
+    }
+
+    /**
+     * Logs SNIFF event.
+     *
+     * @param Event $event Current event emitted by the sniffer
+     *
+     * @return void
+     */
+    public function onSniff(GenericEvent $event)
+    {
+        $context = $event->getArguments();
+
+        $this->logger->debug('Visiting SNIFF, process {method} {sniff}', $context);
     }
 }
