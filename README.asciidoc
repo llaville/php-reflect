@@ -15,8 +15,8 @@ Have a look on https://github.com/llaville/php-reflect/tree/3.1[branch 3.1] for 
 
 You can either :
 
-* download the phar version http://bartlett.laurent-laville.org/get/phpreflect-4.0.0.phar[4.0.0]
-* install via https://packagist.org/packages/bartlett/php-reflect/[packagist] the current source dev-master or the stable version 4.0.0
+* download the phar version http://bartlett.laurent-laville.org/get/phpreflect-4.0.1.phar[4.0.1]
+* install via https://packagist.org/packages/bartlett/php-reflect/[packagist] the current source dev-master or the stable version 4.0.1
 
 == Documentation
 
