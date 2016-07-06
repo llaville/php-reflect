@@ -188,7 +188,6 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Bartlett\Reflect\Environment::getLogger
      * @runInSeparateProcess
-     * @expectedException PHPUnit_Framework_Error_Deprecated
      *
      * @return void
      */

@@ -17,7 +17,7 @@ class YourLogger extends Logger
         $filename = sprintf('phpreflect-%s.log', date('Ymd'));
 
         $stream = new RotatingFileHandler("$tempDir/$filename", 30);
-        $stream->setFilenameFormat('{filename}-{date}', 'Ymd');
+        $stream->setFilenameFormat('{filename}-{date}', 'Y-m-d');
 
         $handlers = array($stream);
 
