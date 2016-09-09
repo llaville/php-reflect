@@ -34,28 +34,6 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     const DIST_RC = 'phpreflect.json.dist';
 
     /**
-     * Sets up the shared fixture.
-     *
-     * @return void
-     * @link   http://phpunit.de/manual/current/en/fixtures.html#fixtures.sharing-fixture
-     */
-    public static function setUpBeforeClass()
-    {
-        copy(dirname(__DIR__) . '/bin/' . self::DIST_RC, __DIR__ . '/' . self::DIST_RC);
-    }
-
-    /**
-     * Clean-up the shared fixture environment.
-     *
-     * @return void
-     * @link   http://phpunit.de/manual/current/en/fixtures.html#fixtures.sharing-fixture
-     */
-    public static function tearDownAfterClass()
-    {
-        @unlink(__DIR__ . '/' . self::DIST_RC);
-    }
-
-    /**
      * Clean-up single test environment
      *
      * @return void
@@ -101,7 +79,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetConfigFilenameInSingleScanDirEnvironment()
     {
-        $singleScanDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin';
+        $singleScanDir = __DIR__ . DIRECTORY_SEPARATOR . 'Environment' . DIRECTORY_SEPARATOR . 'dir1';
 
         putenv("BARTLETT_SCAN_DIR=$singleScanDir");
         putenv("BARTLETTRC=" . self::DIST_RC);
@@ -120,14 +98,18 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetConfigFilenameInMultipleScanDirEnvironment()
     {
-        $multipleScanDir = __DIR__ . DIRECTORY_SEPARATOR . PATH_SEPARATOR .
-            dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin';
+        $baseScanDir = __DIR__ . DIRECTORY_SEPARATOR . 'Environment';
+
+        $multipleScanDir = $baseScanDir . DIRECTORY_SEPARATOR . 'dir1'
+            . PATH_SEPARATOR .
+            $baseScanDir . DIRECTORY_SEPARATOR . 'dir2'
+        ;
 
         putenv("BARTLETT_SCAN_DIR=$multipleScanDir");
         putenv("BARTLETTRC=" . self::DIST_RC);
 
         $this->assertEquals(
-            __DIR__ . DIRECTORY_SEPARATOR . self::DIST_RC,
+            $baseScanDir . DIRECTORY_SEPARATOR . 'dir1' . DIRECTORY_SEPARATOR . self::DIST_RC,
             Environment::getJsonConfigFilename(),
             "Config filename does not match."
         );
@@ -165,7 +147,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaultLoggerAccessor()
     {
-        $singleScanDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin';
+        $singleScanDir = __DIR__ . DIRECTORY_SEPARATOR . 'Environment' . DIRECTORY_SEPARATOR . 'dir1';
 
         putenv("BARTLETT_SCAN_DIR=$singleScanDir");
         putenv("BARTLETTRC=" . self::DIST_RC);
@@ -222,7 +204,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaultClientAccessor()
     {
-        $singleScanDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bin';
+        $singleScanDir = __DIR__ . DIRECTORY_SEPARATOR . 'Environment' . DIRECTORY_SEPARATOR . 'dir1';
 
         putenv("BARTLETT_SCAN_DIR=$singleScanDir");
         putenv("BARTLETTRC=" . self::DIST_RC);
