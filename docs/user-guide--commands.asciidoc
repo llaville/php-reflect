@@ -29,7 +29,7 @@ when you invoke the `phpreflect` command, you should obtain the following comman
  | .__/|_| |_| .__/|_| \_\___|_| |_|\___|\___|\__|
  |_|         |_|
 
-phpReflect version 4.0.1
+phpReflect version 4.0.2
 
 Usage:
  command [options] [arguments]
