@@ -14,6 +14,10 @@
 
 namespace Bartlett\Reflect\Api\V3;
 
+use ZendDiagnostics\Check;
+use ZendDiagnostics\Runner\Runner;
+use ZendDiagnostics\Result\FailureInterface;
+
 /**
  * Diagnoses the system to identify common errors.
  *
@@ -37,16 +41,6 @@ class Diagnose extends Common
      */
     public function run()
     {
-        $response = array();
-
-        if (version_compare(PHP_VERSION, self::PHP_MIN, '<')) {
-            $response['php_version'] = false;
-        } else {
-            $response['php_version'] = PHP_VERSION;
-        }
-
-        $response['php_ini'] = php_ini_loaded_file();
-
         $extensions = array(
             'date',
             'json',
@@ -57,13 +51,62 @@ class Diagnose extends Common
             'tokenizer',
         );
 
-        foreach ($extensions as $extension) {
-            $response[$extension . '_loaded'] = extension_loaded($extension);
+        $runner = new Runner();
+
+        // Add checks
+        $checkPhpversion = new Check\PhpVersion(self::PHP_MIN);
+        $checkPhpIni     = new Check\IniFile(php_ini_loaded_file());
+        $checkExtensions = new Check\ExtensionLoaded($extensions);
+        $checkXdebugProf = new Check\PhpFlag('xdebug.profiler_enable', false);
+        $runner->addCheck($checkPhpversion);
+        $runner->addCheck($checkPhpIni);
+        $runner->addCheck($checkExtensions);
+        $runner->addCheck($checkXdebugProf);
+
+        // Run all checks
+        $results = $runner->run();
+
+        // Prepare formatted responses
+        $response = array();
+
+        if ($results[$checkPhpversion] instanceof FailureInterface) {
+            $flag = 'KO';
+            $response['php_version'] = [$flag => $results[$checkPhpversion]->getMessage()];
+        } else {
+            $flag = 'OK';
+            $response['php_version'] = [$flag => 'PHP version at least ' . self::PHP_MIN . ': ' .
+                $results[$checkPhpversion]->getMessage()
+            ];
         }
 
+        if ($results[$checkPhpIni] instanceof FailureInterface) {
+            $flag = 'KO';
+            $response['php_ini'] = [$flag => $results[$checkPhpIni]->getMessage()];
+        } else {
+            $flag = 'OK';
+            $response['php_ini'] = [$flag => sprintf('php.ini file loaded is valid: %s', php_ini_loaded_file())];
+        }
+
+        if ($results[$checkExtensions] instanceof FailureInterface) {
+            $flag = 'KO';
+        } else {
+            $flag = 'OK';
+        }
+        $response['extensions'] = [$flag => $results[$checkExtensions]->getMessage()];
+
         if (extension_loaded('xdebug')) {
-            $response['xdebug_loaded']          = true;
-            $response['xdebug_profiler_enable'] = ini_get('xdebug.profiler_enable');
+            $flag = 'WARN';
+            $response['xdebug_loaded'] = [$flag => 'You are encouraged to unload xdebug extension' .
+                ' to speed up execution.'
+            ];
+            if ($results[$checkXdebugProf] instanceof FailureInterface) {
+                $response['xdebug_profiler_enable'] = [$flag => 'The xdebug.profiler_enable setting is enabled,' .
+                    ' this can slow down execution a lot.'
+                ];
+            } else {
+                $flag = 'OK';
+                $response['xdebug_profiler_enable'] = [$flag => $results[$checkXdebugProf]->getMessage()];
+            }
         }
 
         return $response;

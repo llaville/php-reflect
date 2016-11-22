@@ -13,9 +13,9 @@
 namespace Bartlett\Reflect\Output;
 
 use Bartlett\Reflect\Console\Formatter\OutputFormatter;
-use Bartlett\Reflect\Api\V3\Diagnose as ApiDiagnose;
 
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 /**
  * Diagnose results default render on console
@@ -38,75 +38,33 @@ class Diagnose extends OutputFormatter
      */
     public function run(OutputInterface $output, $response)
     {
-        foreach ($response as $key => $value) {
-            if (strcasecmp('php_version', $key) == 0) {
-                $output->writeln('Checking php settings:');
+        $output->writeln('<comment>Diagnostics:</comment>');
 
-                $output->writeln(
-                    sprintf(
-                        '- Requires PHP ' . ApiDiagnose::PHP_MIN . ' or better %s',
-                        is_bool($value) ? '<error>FAIL</error>' : '<info>OK</info>'
-                    )
-                );
-                if ($output->isVeryVerbose() && is_bool($value)) {
-                    $this->writeComment(
-                        $output,
-                        'Upgrading to PHP ' .
-                        ApiDiagnose::PHP_RECOMMANDED . ' or higher is recommended.'
-                    );
-                }
-            }
+        $withError = false;
 
-            if (strcasecmp('php_ini', $key) == 0) {
-                $output->writeln(
-                    sprintf(
-                        '- php.ini file loaded <info>%s</info>',
-                        is_bool($value) ? 'NONE' : $value
-                    )
-                );
-            }
+        foreach ($response as $key => $values) {
+            list ($flag, $message) = each($values);
 
-            if (preg_match('/^(.*)_loaded$/', $key, $matches)) {
-                // checks extensions loaded
-                if (strcasecmp('xdebug', $matches[1]) == 0) {
-                    // Xdebug is special case (performance issue)
-                    $output->writeln(
-                        sprintf(
-                            '- Xdebug extension loaded %s',
-                            $value ? '<warning>YES</warning>' : '<info>NO</info>'
-                        )
-                    );
-                    if ($output->isVeryVerbose()) {
-                        $this->writeComment(
-                            $output,
-                            'You are encouraged to unload xdebug extension' .
-                            ' to speed up execution.'
-                        );
-                    }
-                    if ($output->isVeryVerbose() && $response['xdebug_profiler_enable']) {
-                        $this->writeComment(
-                            $output,
-                            'The xdebug.profiler_enable setting is enabled,' .
-                            ' this can slow down execution a lot.'
-                        );
-                    }
-                } else {
-                    $output->writeln(
-                        sprintf(
-                            '- %s extension loaded %s',
-                            $matches[1],
-                            $value ? '<info>YES</info>' : '<error>FAIL</error>'
-                        )
-                    );
-                }
+            if ($flag == 'OK') {
+                $flag = '<diagpass>   OK    </diagpass>';
+            } elseif ($flag == 'WARN') {
+                $flag = '<warning> WARNING </warning>';
+            } else {
+                $flag = '<error>   KO    </error>';
+                $withError = true;
             }
+            $output->writeln($flag . ' ' . $message);
         }
-    }
 
-    protected function writeComment($output, $comment)
-    {
-        $output->writeln(
-            sprintf('  : <comment>%s</comment>', $comment)
-        );
+        $summary = sprintf('(%d diagnostics checks)', count($response));
+
+        if ($withError) {
+            $message = str_pad('KO ' . $summary, 80);
+            $message = '<error>' . $message . '</error>';
+        } else {
+            $message = str_pad('OK ' . $summary, 80);
+            $message = '<diagpass>' . $message . '</diagpass>';
+        }
+        $output->writeln(['', $message], true);
     }
 }
