@@ -150,7 +150,6 @@ class Analyser extends Common
             $namespaces['Bartlett\CompatInfo\Analyser']
                 = file_exists($baseAnalyser) ? $baseAnalyser : $vendorAnalyser
             ;
-
         } elseif ($path = stream_resolve_include_path($file)) {
             // CompatInfo only, without composer
             $namespaces['Bartlett\CompatInfo\Analyser'] = dirname($path);

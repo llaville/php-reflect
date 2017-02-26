@@ -61,7 +61,6 @@ class ReflectionAnalyser extends AbstractAnalyser
             }
             $node->setAttribute('fileName', $this->file);
             $this->metrics->add($node);
-
         } elseif ($node instanceof Node\Stmt\Function_
             || $node instanceof Node\Expr\Closure
         ) {
@@ -73,7 +72,6 @@ class ReflectionAnalyser extends AbstractAnalyser
             }
             $node->setAttribute('fileName', $this->file);
             $this->metrics->add($node);
-
         } elseif ($node instanceof Node\Stmt\Const_) {
             $node->setAttribute('fileName', $this->file);
             $this->metrics->add($node);

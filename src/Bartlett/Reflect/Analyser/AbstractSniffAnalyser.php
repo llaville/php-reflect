@@ -144,7 +144,6 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         } elseif ($node instanceof Node\Expr\Closure) {
             $this->currentClosure = null;
         }
-
     }
 
     public function afterTraverse(array $nodes)

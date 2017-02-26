@@ -43,12 +43,10 @@ class ReflectionCollection extends ArrayCollection
             || $node instanceof Node\Stmt\Trait_
         ) {
             $model = new ClassModel($node);
-
         } elseif ($node instanceof Node\Stmt\Function_
             || $node instanceof Node\Expr\Closure
         ) {
             $model = new FunctionModel($node);
-
         } elseif ($node instanceof Node\Stmt\Const_) {
             $model = new ConstantModel($node);
         }

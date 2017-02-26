@@ -290,7 +290,6 @@ class Reflect extends AbstractDispatcher
                 );
                 // uses cached response (AST built by PHP-Parser)
                 $stmts = $event['notModified'];
-
             } else {
                 // live request
                 try {
@@ -298,7 +297,7 @@ class Reflect extends AbstractDispatcher
                         file_get_contents($file->getPathname())
                     );
                     $tokens = $lexer->getTokens();
-
+                    //
                 } catch (\PhpParser\Error $e) {
                     $this->dispatch(
                         Events::ERROR,

@@ -301,8 +301,10 @@ class CommandFactory
 
             // calls the Api method
             try {
-                $response = call_user_func_array(array($api, $methodName), $args);
-
+                $response = call_user_func_array(
+                    array($api, $methodName),
+                    $args
+                );
             } catch (\Exception $e) {
                 $response = $e;
             }
