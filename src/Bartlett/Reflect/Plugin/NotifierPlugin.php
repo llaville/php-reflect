@@ -38,6 +38,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 class NotifierPlugin implements PluginInterface, EventSubscriberInterface
 {
     private $notifier;
+    private $stopwatch;
 
     /**
      * Initialize the notification
