@@ -29,6 +29,8 @@ use PhpParser\Node;
  */
 class MethodModel extends AbstractFunctionModel
 {
+    protected $declaringClass;
+
     /**
      * Creates a new MethodModel instance.
      *
