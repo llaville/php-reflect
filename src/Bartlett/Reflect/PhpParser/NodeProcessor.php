@@ -33,7 +33,7 @@ interface NodeProcessor
      *
      * @return void
      */
-    public function push($callback);
+    public function push(callable $callback);
 
     /**
      * Gets list of processors that will check pre-conditions.
