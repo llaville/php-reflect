@@ -43,6 +43,7 @@ class DefaultLogger extends AbstractLogger
 
     private $channel;
     private $level;
+    private $handler;
     private $processors;
 
     /**
