@@ -153,7 +153,7 @@ class CommandFactory
             $command->setDefinition(
                 $this->buildDefinition($namespace, $method, $params, $cmdExceptions)
             );
-            $command->setDescription($docBlock->getShortDescription());
+            $command->setDescription($docBlock->getDescription());
             $command->setCode($this->createCode($namespace, $method));
         }
         return $command;
