@@ -15,7 +15,6 @@
 namespace Bartlett\Reflect\Model;
 
 use PhpParser\Node;
-use PhpParser\PrettyPrinter;
 
 /**
  * The PropertyModel class reports information about a class property.
@@ -69,12 +68,8 @@ class PropertyModel extends AbstractModel
      */
     public function getValue()
     {
-        if (!empty($this->node->props[0]->default)) {
-            $prettyPrinter = new PrettyPrinter\Standard;
-            return trim(
-                $prettyPrinter->prettyPrintExpr($this->node->props[0]->default),
-                '"\''
-            );
+        if (!empty($this->node->props[0]->default->value)) {
+            return $this->node->props[0]->default->value;
         }
         return;
     }
