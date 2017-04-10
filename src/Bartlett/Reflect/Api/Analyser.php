@@ -64,7 +64,6 @@ class Analyser extends BaseApi
             || $filter === false
         ) {
             $closure = $filter;
-
         } else {
             if ($filterRes = stream_resolve_include_path($filter)) {
                 include_once $filterRes;

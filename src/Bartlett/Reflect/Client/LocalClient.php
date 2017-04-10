@@ -86,8 +86,10 @@ class LocalClient implements ClientInterface
                     sprintf('API class endpoint %s does not exist.', $className)
                 );
             }
-            $response = call_user_func_array(array($api, $methodName), $params);
-
+            $response = call_user_func_array(
+                array($api, $methodName),
+                $params
+            );
         } catch (\Exception $e) {
             $response = $e;
         }

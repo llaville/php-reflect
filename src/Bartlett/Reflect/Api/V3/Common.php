@@ -84,7 +84,6 @@ abstract class Common
 
             if (is_dir($src)) {
                 $provider = array('in' => $src);
-
             } elseif (is_file($src)) {
                 $ext = pathinfo($src, PATHINFO_EXTENSION);
 

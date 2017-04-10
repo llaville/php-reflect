@@ -128,7 +128,7 @@ class ClassModel extends AbstractModel
     /**
      * Gets the interfaces.
      *
-     * @return An associative array of interfaces, with keys as interface names
+     * @return array An associative array of interfaces, with keys as interface names
      *         and the array values as ClassModel objects.
      */
     public function getInterfaces()
@@ -139,7 +139,7 @@ class ClassModel extends AbstractModel
     /**
      * Gets the constants.
      *
-     * @return An array of constants. Constant name in key, constant value in value.
+     * @return array An array of constants. Constant name in key, constant value in value.
      */
     public function getConstants()
     {
@@ -197,7 +197,7 @@ class ClassModel extends AbstractModel
      * @param int $filter Filter the results to include only methods with certain attributes.
      *                    Defaults to no filtering.
      *
-     * @return An array of MethodModel objects reflecting each method.
+     * @return array An array of MethodModel objects reflecting each method.
      */
     public function getMethods($filter = null)
     {
@@ -256,7 +256,7 @@ class ClassModel extends AbstractModel
     /**
      * Gets the static properties.
      *
-     * @return An array of static properties. Property name in key, property value in value.
+     * @return array An array of static properties. Property name in key, property value in value.
      */
     public function getStaticProperties()
     {
@@ -299,7 +299,7 @@ class ClassModel extends AbstractModel
     /**
      * Gets the properties.
      *
-     * @return An array of PropertyModel objects reflecting each property.
+     * @return array An array of PropertyModel objects reflecting each property.
      */
     public function getProperties()
     {
@@ -318,7 +318,7 @@ class ClassModel extends AbstractModel
     /**
      * Gets default properties.
      *
-     * @return An array of default properties, with the key being the name of the property
+     * @return array An array of default properties, with the key being the name of the property
      *         and the value being the default value of the property
      *         or NULL if the property doesn't have a default value.
      *         The function does not distinguish between static and non static properties

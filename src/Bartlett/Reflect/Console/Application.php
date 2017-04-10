@@ -231,6 +231,7 @@ class Application extends BaseApplication
                     $output  = new StreamOutput(fopen($target, $mode), null, false);
                 }
             }
+            $output->getFormatter()->setStyle('diagpass', new OutputFormatterStyle('green', null, ['reverse']));
             $output->getFormatter()->setStyle('warning', new OutputFormatterStyle('black', 'yellow'));
             $output->getFormatter()->setStyle('debug', new OutputFormatterStyle('black', 'cyan'));
             $output->getFormatter()->setStyle('php', new OutputFormatterStyle('white', 'magenta'));
@@ -265,17 +266,6 @@ class Application extends BaseApplication
         }
 
         $exitCode = parent::doRun($input, $output);
-
-        $name = $this->getCommandName($input);
-        if (!$name
-            && $exitCode == 0
-            && (false === $input->hasParameterOption(array('--version', '-V', '--help', '-h')))
-        ) {
-            $output->writeln("\n<comment>Auto-Diagnose:</comment>");
-            $command = $this->find('diagnose:run');
-            $input = new ArrayInput(array('command' => 'diagnose:run'));
-            $exitCode = $this->doRunCommand($command, $input, $output);
-        }
 
         return $exitCode;
     }

@@ -119,7 +119,7 @@ class GrowlNotifier implements NotifierInterface
                 $event['formatted'],
                 $notifications[$name]
             );
-
+            //
         } catch (\Net_Growl_Exception $e) {
             return false;
         }

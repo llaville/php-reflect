@@ -39,7 +39,6 @@ class Analyser extends OutputFormatter
     {
         if (empty($response)) {
             $output->writeln('<error>No analysers detected.</error>');
-
         } else {
             $headers = array('Analyser Name', 'Analyser Class');
             $rows    = array();

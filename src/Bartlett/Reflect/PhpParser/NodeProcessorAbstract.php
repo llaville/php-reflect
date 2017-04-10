@@ -33,11 +33,9 @@ class NodeProcessorAbstract implements NodeProcessor
     /**
      * {@inheritdoc}
      */
-    public function push($callback)
+    public function push(callable $callback)
     {
-        if (is_callable($callback)) {
-            array_push($this->processors, $callback);
-        }
+        array_push($this->processors, $callback);
     }
 
     /**

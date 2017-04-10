@@ -21,7 +21,7 @@ use Bartlett\Reflect\Events;
 use Bartlett\Reflect\Visitor\VisitorInterface;
 
 use PhpParser\Lexer\Emulative;
-use PhpParser\Parser;
+use PhpParser\ParserFactory;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitor;
@@ -123,8 +123,8 @@ class Reflect extends AbstractDispatcher
                 'comments', 'startLine', 'endLine', 'startTokenPos', 'endTokenPos'
             )
         ));
-        $parser    = new Parser($lexer);
-        $traverser = new NodeTraverser;
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7, $lexer);
+        $traverser = new NodeTraverser(false);
         $traverser->addVisitor(new NameResolver);
         $conditionalCode = false;
 
@@ -290,7 +290,6 @@ class Reflect extends AbstractDispatcher
                 );
                 // uses cached response (AST built by PHP-Parser)
                 $stmts = $event['notModified'];
-
             } else {
                 // live request
                 try {
@@ -298,7 +297,7 @@ class Reflect extends AbstractDispatcher
                         file_get_contents($file->getPathname())
                     );
                     $tokens = $lexer->getTokens();
-
+                    //
                 } catch (\PhpParser\Error $e) {
                     $this->dispatch(
                         Events::ERROR,

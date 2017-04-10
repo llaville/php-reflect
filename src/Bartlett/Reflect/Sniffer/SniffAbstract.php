@@ -98,4 +98,12 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
             'line'    => $node->getLine()
         );
     }
+
+    protected function getCurrentSeverity($version, $operator = 'lt', $severity = 'error')
+    {
+        if (version_compare(PHP_VERSION, $version, $operator)) {
+            return 'warning';
+        }
+        return $severity;
+    }
 }

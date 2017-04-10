@@ -33,7 +33,6 @@ class Reflection extends Common
     {
         if ('class' == $name) {
             return call_user_func_array(array($this, 'class_'), $args);
-
         } elseif ('function' == $name) {
             return call_user_func_array(array($this, 'function_'), $args);
         }

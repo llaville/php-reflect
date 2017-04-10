@@ -106,24 +106,18 @@ class StructureAnalyser extends AbstractAnalyser
 
         if ($node instanceof Node\Stmt\Namespace_) {
             $this->visitNamespace($node);
-
         } elseif ($node instanceof Node\Stmt\Class_) {
             $this->visitClass($node);
-
         } elseif ($node instanceof Node\Stmt\Interface_) {
             $this->visitInterface($node);
-
         } elseif ($node instanceof Node\Stmt\Trait_) {
             $this->visitTrait($node);
-
         } elseif ($node instanceof Node\Stmt\Function_
             || $node instanceof Node\Expr\Closure
         ) {
             $this->visitFunction($node);
-
         } elseif ($node instanceof Node\Scalar\MagicConst) {
             $this->constants[] = $node->getName();
-
         } elseif ($node instanceof Node\Expr\FuncCall
             && $node->name instanceof Node\Name
         ) {
@@ -167,10 +161,8 @@ class StructureAnalyser extends AbstractAnalyser
             foreach ($class->stmts as $stmt) {
                 if ($stmt instanceof Node\Stmt\ClassConst) {
                     $this->metrics['classConstants']++;
-
                 } elseif ($stmt instanceof Node\Stmt\Property) {
                     // @TODO
-
                 } elseif ($stmt instanceof Node\Stmt\ClassMethod) {
                     $this->visitMethod($stmt);
                 }

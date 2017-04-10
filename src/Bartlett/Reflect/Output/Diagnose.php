@@ -38,6 +38,8 @@ class Diagnose extends OutputFormatter
      */
     public function run(OutputInterface $output, $response)
     {
+        $output->writeln('<comment>Diagnostics:</comment>');
+
         foreach ($response as $key => $value) {
             if (strcasecmp('php_version', $key) == 0) {
                 $output->writeln('Checking php settings:');
