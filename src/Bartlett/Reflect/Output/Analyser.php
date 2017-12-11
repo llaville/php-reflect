@@ -79,13 +79,31 @@ class Analyser extends OutputFormatter
             $text = sprintf(
                 "%s" .
                 "Directories                                 %10d%s" .
-                "Files                                       %10d",
+                "Files                                       %10d%s" .
+                "Errors                                      %10d%s",
                 PHP_EOL,
                 count($directories),
                 PHP_EOL,
-                count($response['files'])
+                count($response['files']),
+                PHP_EOL,
+                count($response['errors']),
+                PHP_EOL
             );
             $output->writeln($text);
+        }
+
+        if (count($response['errors'])) {
+            $output->writeln('<info>Errors found</info>');
+
+            foreach ($response['errors'] as $file => $msg) {
+                $text = sprintf(
+                    '%s <info>></info> %s in file %s',
+                    PHP_EOL,
+                    $msg,
+                    $file
+                );
+                $output->writeln($text);
+            }
         }
 
         // print each analyser results
