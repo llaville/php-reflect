@@ -264,7 +264,7 @@ class Reflect extends AbstractDispatcher
             }
         }
 
-        $files = array();
+        $files = $parserErrors = array();
 
         // generate a data source identifier if not provided
         if (!isset($this->dataSourceId)) {
@@ -307,6 +307,7 @@ class Reflect extends AbstractDispatcher
                             'error'  => $e->getMessage()
                         )
                     );
+                    $parserErrors[$file->getPathname()] = $e->getMessage();
                     continue; // skip to next file of the data source
                 }
             }
@@ -337,6 +338,9 @@ class Reflect extends AbstractDispatcher
 
         // list of files parsed
         $metrics['files'] = $files;
+
+        // list of PHP-Parser errors
+        $metrics['errors'] = $parserErrors;
 
         // collect metrics of each analyser selected
         foreach ($this->analysers as $analyser) {
