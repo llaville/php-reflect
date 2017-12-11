@@ -58,8 +58,7 @@ class Analyser extends BaseApi
             throw new \DomainException(
                 sprintf(
                     '%s is unable to parse PHP scripts with syntax PHP 7.1 or greater',
-                    $this->applicationName,
-                    PHP_VERSION
+                    $this->applicationName
                 )
             );
         }
