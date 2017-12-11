@@ -50,19 +50,9 @@ class Analyser extends BaseApi
      * @return array metrics
      * @throws \InvalidArgumentException if an analyser required is not installed
      * @throws \RuntimeException         if filter provided is not a closure
-     * @throws \DomainException          if plateform constraint is not solved
      */
     public function run($source, array $analysers, $alias = null, $format = false, $filter = false)
     {
-        if (version_compare(PHP_VERSION, '7.1.0', 'ge')) {
-            throw new \DomainException(
-                sprintf(
-                    '%s is unable to parse PHP scripts with syntax PHP 7.1 or greater',
-                    $this->applicationName
-                )
-            );
-        }
-
         $source = trim($source);
         if ($alias) {
             $alias = $source;

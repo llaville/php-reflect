@@ -34,7 +34,6 @@ class Client
 
     private $client;
     private $token;
-    private $applicationName;
 
     /**
      * Initialize a client for interacting with the API
@@ -43,12 +42,9 @@ class Client
      * @param string          $url
      * @param string          $appName
      */
-    public function __construct(ClientInterface $client = null, $url = self::API_V3, $appName = 'MyApplication')
+    public function __construct(ClientInterface $client = null, $url = self::API_V3)
     {
         $this->initializeClient($url, $client);
-
-        // available since release 4.2.0
-        $this->applicationName = $appName;
     }
 
     /**
@@ -93,8 +89,7 @@ class Client
         if ($this->client instanceof LocalClient) {
             $this->client->setNamespace($ns . 'V3');
         }
-        $api = new $class($this->client, $this->token, $this->applicationName);
-        return $api;
+        return new $class($this->client, $this->token);
     }
 
     /**

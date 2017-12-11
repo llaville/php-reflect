@@ -31,7 +31,6 @@ use Bartlett\Reflect\Event\AbstractDispatcher;
 abstract class BaseApi extends AbstractDispatcher
 {
     protected $client;
-    protected $applicationName;
 
     private $token;
     private $registerPlugins = true;
@@ -43,11 +42,10 @@ abstract class BaseApi extends AbstractDispatcher
      * @param string          $token
      * @param string          $appName
      */
-    public function __construct(ClientInterface $client, $token = null, $appName = 'MyApplication')
+    public function __construct(ClientInterface $client, $token = null)
     {
         $this->client = $client;
         $this->token  = $token;
-        $this->applicationName = (string) $appName;
     }
 
     /**

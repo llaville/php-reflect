@@ -247,7 +247,7 @@ class CommandFactory
         return function (InputInterface $input, OutputInterface $output) use ($namespace, $method, $app) {
             $methodName = $method->getName();
 
-            $client = new Client(Environment::getClient(), Client::API_V3, $app->getName() . ' ' . $app->getVersion());
+            $client = new Client(Environment::getClient());
             $api    = $client->api(strtolower($namespace));
             $api->setEventDispatcher($app->getDispatcher());
 
