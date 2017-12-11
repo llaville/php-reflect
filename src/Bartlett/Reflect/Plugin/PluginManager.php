@@ -70,6 +70,8 @@ class PluginManager
                     $options = $plugin['options'];
                     if (is_string($options) && class_exists($options)) {
                         $options = new $options;
+                    } else {
+                        $options = null;
                     }
                 } else {
                     $options = null;
