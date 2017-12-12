@@ -26,7 +26,6 @@
         "vendor/webmozart/assert/LICENSE",
         "vendor/doctrine/cache/LICENSE",
         "vendor/doctrine/collections/LICENSE",
-        "vendor/psr/container/LICENSE",
         "vendor/psr/log/LICENSE",
         "vendor/monolog/monolog/LICENSE",
         "vendor/bartlett/umlwriter/LICENSE",
@@ -85,10 +84,6 @@
         {
             "name": "*.php",
             "in": "vendor/psr/log/Psr"
-        },
-        {
-            "name": "*.php",
-            "in": "vendor/psr/container/src"
         },
         {
             "name": "*.php",
