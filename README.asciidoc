@@ -29,6 +29,8 @@ AsciiDoc source code are available on `docs` folder of the repository.
 == Authors
 
 * Laurent Laville
+* Thanks to Nikita Popov who wrote a marvellous https://github.com/nikic/PHP-Parser[PHP Parser] and simplify the job of PHP Reflect.
+* Thanks also to Remi Collet, a contributor of first hours.
 
 == License
 
