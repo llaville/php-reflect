@@ -7,6 +7,10 @@ adds the ability to reverse-engineer classes, interfaces, functions, constants, 
 Both were distributed as source code (install via composer) and a PHAR version
 that bundles all dependencies in a single file.
 
+== Requirements
+
+PHP 5.5.0 or above.
+
 == Install
 
 You can either :
