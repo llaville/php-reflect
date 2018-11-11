@@ -19,6 +19,7 @@ use Bartlett\Reflect\Event\AbstractDispatcher;
 use Bartlett\Reflect\Events;
 use Bartlett\Reflect\Visitor\VisitorInterface;
 
+use PhpParser\ErrorHandler\Collecting;
 use PhpParser\Lexer\Emulative;
 use PhpParser\ParserFactory;
 use PhpParser\NodeTraverser;
@@ -116,7 +117,7 @@ class Reflect extends AbstractDispatcher
             return false;
         }
 
-        $lexer     = new Emulative(array(
+        $lexer = new Emulative(array(
             'usedAttributes' => array(
                 'comments', 'startLine', 'endLine', 'startTokenPos', 'endTokenPos'
             )
@@ -290,24 +291,29 @@ class Reflect extends AbstractDispatcher
                 $stmts = $event['notModified'];
             } else {
                 // live request
-                try {
-                    $stmts = $parser->parse(
-                        file_get_contents($file->getPathname())
-                    );
-                    $tokens = $lexer->getTokens();
-                    //
-                } catch (\PhpParser\Error $e) {
-                    $this->dispatch(
-                        Events::ERROR,
-                        array(
-                            'source' => $this->dataSourceId,
-                            'file'   => $file,
-                            'error'  => $e->getMessage()
-                        )
-                    );
-                    $parserErrors[$file->getPathname()] = $e->getMessage();
+                $errorHandler = new Collecting();
+
+                $stmts = $parser->parse(
+                    file_get_contents($file->getPathname()),
+                    $errorHandler
+                );
+
+                if ($errorHandler->hasErrors()) {
+                    foreach ($errorHandler->getErrors() as $e) {
+                        $this->dispatch(
+                            Events::ERROR,
+                            array(
+                                'source' => $this->dataSourceId,
+                                'file'   => $file,
+                                'error'  => $e->getMessage()
+                            )
+                        );
+                        $parserErrors[$file->getPathname()] = $e->getMessage();
+                    }
                     continue; // skip to next file of the data source
                 }
+
+                $tokens = $lexer->getTokens();
             }
 
             // update context for each analyser selected
