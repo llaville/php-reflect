@@ -342,7 +342,7 @@ class ParameterModelTest extends GenericModelTest
         $parameters = $methods[$m]->getParameters();
 
         $this->assertEquals(
-            'TRUE',
+            '\TRUE',
             $parameters[$p]->getDefaultValue(),
             $methods[$m]->getName()
             . ", parameter #$p default value does not match."
@@ -364,7 +364,7 @@ class ParameterModelTest extends GenericModelTest
         $parameters = self::$models[$f]->getParameters();
 
         $this->assertEquals(
-            'NULL',
+            '\NULL',
             $parameters[2]->getDefaultValue(),
             self::$models[$f]->getName() . ", parameter #$p default value does not match."
         );
@@ -441,7 +441,7 @@ class ParameterModelTest extends GenericModelTest
         $parameters = $methods[$m]->getParameters();
 
         $this->assertEquals(
-            'Parameter #0 [ <optional> stdClass $param = NULL ]' . "\n",
+            'Parameter #0 [ <optional> stdClass $param = \NULL ]' . "\n",
             $parameters[$p]->__toString(),
             $methods[$m]->getName()
             . ", parameter #$p string representation does not match."

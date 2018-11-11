@@ -615,8 +615,8 @@ Class [ <user> class Bar ] {
       @@ %filename% 65 - 66
 
       - Parameters [2] {
-        Parameter #0 [ <optional> stdClass $param = NULL ]
-        Parameter #1 [ <optional> $otherparam = TRUE ]
+        Parameter #0 [ <optional> stdClass $param = \NULL ]
+        Parameter #1 [ <optional> $otherparam = \TRUE ]
       }
     }
 
