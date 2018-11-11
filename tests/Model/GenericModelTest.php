@@ -27,7 +27,7 @@ use Bartlett\Reflect\Client;
  * @license    https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link       http://php5.laurent-laville.org/reflect/
  */
-abstract class GenericModelTest extends \PHPUnit_Framework_TestCase
+abstract class GenericModelTest extends \PHPUnit\Framework\TestCase
 {
     protected static $fixtures;
     protected static $fixture;

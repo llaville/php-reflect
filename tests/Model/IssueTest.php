@@ -28,7 +28,7 @@ use Bartlett\Reflect\Client;
  * @license    https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link       http://php5.laurent-laville.org/reflect/
  */
-class IssueTest extends \PHPUnit_Framework_TestCase
+class IssueTest extends \PHPUnit\Framework\TestCase
 {
     const GH4 = 'packages.php';
 

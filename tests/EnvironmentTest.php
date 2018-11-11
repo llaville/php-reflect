@@ -27,7 +27,7 @@ use Bartlett\Reflect\Environment;
  * @license    https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link       http://php5.laurent-laville.org/reflect/
  */
-class EnvironmentTest extends \PHPUnit_Framework_TestCase
+class EnvironmentTest extends \PHPUnit\Framework\TestCase
 {
     const DIST_RC = 'phpreflect.json.dist';
 

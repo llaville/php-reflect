@@ -27,7 +27,7 @@ use Bartlett\Reflect\Analyser\AnalyserManager;
  * @license    https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link       http://php5.laurent-laville.org/reflect/
  */
-class AnalyserManagerTest extends \PHPUnit_Framework_TestCase
+class AnalyserManagerTest extends \PHPUnit\Framework\TestCase
 {
     protected $am;
 
