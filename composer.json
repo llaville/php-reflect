@@ -25,7 +25,7 @@
         "ext-date": "*",
         "ext-reflection": "*",
         "sebastian/version": "^1.0|^2.0",
-        "nikic/php-parser": "^2.1",
+        "nikic/php-parser": "^3.1",
         "doctrine/collections": "^1.2",
         "symfony/event-dispatcher": "^2.5|^3.0",
         "symfony/finder": "^2.5|^3.0",
