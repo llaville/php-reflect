@@ -227,7 +227,7 @@ class ConstantModelTest extends GenericModelTest
     {
         $c = 4;  // sandbox\TWO
 
-        $expected = <<<EOS
+        $expected = <<<'EOS'
 Constant [ sandbox\TWO ] { ONE + 1 }
 
 EOS;

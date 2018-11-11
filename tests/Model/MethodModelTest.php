@@ -436,13 +436,13 @@ class MethodModelTest extends GenericModelTest
         $c = 6;  // class Bar
         $m = 0; // method myfunction
 
-        $expected = <<<EOS
+        $expected = <<<'EOS'
 Method [ <user> public method myfunction ] {
   @@ %filename% 65 - 66
 
   - Parameters [2] {
-    Parameter #0 [ <optional> stdClass \$param = NULL ]
-    Parameter #1 [ <optional> \$otherparam = TRUE ]
+    Parameter #0 [ <optional> stdClass $param = NULL ]
+    Parameter #1 [ <optional> $otherparam = TRUE ]
   }
 }
 

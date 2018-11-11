@@ -598,7 +598,7 @@ class ClassModelTest extends GenericModelTest
     {
         $c = 6;  // class Bar
 
-        $expected = <<<EOS
+        $expected = <<<'EOS'
 Class [ <user> class Bar ] {
   @@ %filename% 60 - 72
 
@@ -615,8 +615,8 @@ Class [ <user> class Bar ] {
       @@ %filename% 65 - 66
 
       - Parameters [2] {
-        Parameter #0 [ <optional> stdClass \$param = NULL ]
-        Parameter #1 [ <optional> \$otherparam = TRUE ]
+        Parameter #0 [ <optional> stdClass $param = NULL ]
+        Parameter #1 [ <optional> $otherparam = TRUE ]
       }
     }
 
@@ -624,8 +624,8 @@ Class [ <user> class Bar ] {
       @@ %filename% 68 - 70
 
       - Parameters [2] {
-        Parameter #0 [ <required> Baz \$baz ]
-        Parameter #1 [ <required> \$param ]
+        Parameter #0 [ <required> Baz $baz ]
+        Parameter #1 [ <required> $param ]
       }
     }
   }
