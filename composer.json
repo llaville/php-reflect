@@ -29,12 +29,13 @@
         "phpdocumentor/reflection-docblock": "^3.0",
         "justinrainbow/json-schema": "^1.3",
         "seld/jsonlint": "^1.1",
-        "psr/log": "^1.0",
+        "psr/log": "^1.0"
+    },
+    "require-dev": {
         "monolog/monolog": "^1.10"
     },
     "suggest": {
         "doctrine/cache": "Allow caching results",
-        "monolog/monolog": "Allow logging events with the LogPlugin",
         "bartlett/monolog-callbackfilterhandler": "Advanced filtering strategies for Monolog",
         "bartlett/monolog-growlhandler": "Sends notifications to Growl for Monolog",
         "bartlett/phpunit-loggertestlistener": "Allow logging unit tests to your favorite PSR-3 logger interface",
