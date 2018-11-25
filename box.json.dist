@@ -1,34 +1,30 @@
 {
-    "alias": "phpreflect.phar",
-    "chmod": "0755",
     "directories": ["src"],
-    "extract": false,
     "compression": "GZ",
+    "dump-autoload": false,
     "files": [
         "bin/phpreflect.json-schema",
         "bin/phpreflect.json.dist",
         "manifest.txt",
         "LICENSE",
+        "vendor/doctrine/collections/LICENSE",
+        "vendor/justinrainbow/json-schema/LICENSE",
+        "vendor/monolog/monolog/LICENSE",
         "vendor/nikic/php-parser/LICENSE",
+        "vendor/phpdocumentor/reflection-common/LICENSE",
+        "vendor/phpdocumentor/reflection-docblock/LICENSE",
+        "vendor/phpdocumentor/type-resolver/LICENSE",
+        "vendor/psr/container/LICENSE",
+        "vendor/psr/log/LICENSE",
         "vendor/sebastian/version/LICENSE",
+        "vendor/seld/jsonlint/LICENSE",
         "vendor/symfony/console/LICENSE",
-        "vendor/symfony/debug/LICENSE",
+        "vendor/symfony/dependency-injection/LICENSE",
         "vendor/symfony/event-dispatcher/LICENSE",
         "vendor/symfony/finder/LICENSE",
         "vendor/symfony/polyfill-mbstring/LICENSE",
         "vendor/symfony/stopwatch/LICENSE",
-        "vendor/symfony/dependency-injection/LICENSE",
-        "vendor/seld/jsonlint/LICENSE",
-        "vendor/justinrainbow/json-schema/LICENSE",
-        "vendor/phpdocumentor/reflection-common/LICENSE",
-        "vendor/phpdocumentor/reflection-docblock/LICENSE",
-        "vendor/phpdocumentor/type-resolver/LICENSE",
         "vendor/webmozart/assert/LICENSE",
-        "vendor/doctrine/cache/LICENSE",
-        "vendor/doctrine/collections/LICENSE",
-        "vendor/psr/log/LICENSE",
-        "vendor/monolog/monolog/LICENSE",
-        "vendor/bartlett/umlwriter/LICENSE",
         "vendor/autoload.php"
     ],
     "finder": [
@@ -75,11 +71,11 @@
         },
         {
             "name": "*.php",
-            "in": "vendor/doctrine/cache/lib"
+            "in": "vendor/doctrine/collections/lib"
         },
         {
             "name": "*.php",
-            "in": "vendor/doctrine/collections/lib"
+            "in": "vendor/psr/container/src"
         },
         {
             "name": "*.php",
@@ -88,16 +84,7 @@
         {
             "name": "*.php",
             "in": "vendor/monolog/monolog/src"
-        },
-        {
-            "name": "*.php",
-            "in": "vendor/bartlett/umlwriter/src"
         }
     ],
-    "git-version": "package_version",
-    "main": "bin/phpreflect",
-    "output": "phpreflect-@git-version@.phar",
-    "stub": "phar-stub.php",
-    "web": false,
-    "shebang": false
+    "stub": "phar-stub.php"
 }
