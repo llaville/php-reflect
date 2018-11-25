@@ -19,7 +19,6 @@ use Bartlett\Reflect\Event\CacheAwareEventDispatcher;
 
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -80,7 +79,7 @@ class Application extends BaseApplication
             $jsonFile =  './' . getenv("BARTLETTRC");
         }
 
-        parent::__construct($appName, '@package_version@');
+        parent::__construct($appName);
         $this->release = $appVersion;
 
         $defaultAnalyser = (strcasecmp($appName, 'phpcompatinfo') === 0)
@@ -180,7 +179,7 @@ class Application extends BaseApplication
     {
         $version = parent::getVersion();
 
-        if ('@' . 'package_version@' == $version) {
+        if ('UNKNOWN' == $version) {
             $version = new \SebastianBergmann\Version(
                 $this->release,
                 dirname(dirname(dirname(dirname(__DIR__))))
