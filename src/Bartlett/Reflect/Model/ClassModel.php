@@ -486,24 +486,6 @@ class ClassModel extends AbstractModel
     public function isSubclassOf($class)
     {
         return false;  // @FIXME see unit tests
-
-        if (in_array($class, $this->struct['interfaces'])) {
-            // checks first if implement a specified interface
-            return true;
-        }
-
-        $parent = $this->getParentClass();
-        if (!empty($parent)) {
-            // checks second inheritance
-
-            if ($parent->getName() === $class) {
-                // checks class name
-                return true;
-            }
-            // then checks interfaces implemented
-            return in_array($class, $parent->getInterfaceNames());
-        }
-        return false;
     }
 
     /**
