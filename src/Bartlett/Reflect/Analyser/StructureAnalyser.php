@@ -124,7 +124,7 @@ class StructureAnalyser extends AbstractAnalyser
         } elseif ($node instanceof Node\Expr\FuncCall
             && $node->name instanceof Node\Name
         ) {
-            if (strcasecmp('define', $node->name) === 0) {
+            if (strcasecmp('define', (string) $node->name) === 0) {
                 $this->visitConstant($node);
             }
         }

@@ -166,7 +166,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
             // Treat the class as a test case class if the name
             // of the parent class ends with "TestCase".
 
-            if (substr($class->name, -8) == 'TestCase') {
+            if (substr((string) $class->name, -8) == 'TestCase') {
                 $this->testClass = true;
             }
         } else {
