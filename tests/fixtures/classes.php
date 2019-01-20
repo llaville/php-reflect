@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 // Declare the interface 'iTemplate'
 interface iTemplate
 {

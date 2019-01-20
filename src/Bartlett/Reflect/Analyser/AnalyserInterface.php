@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Common interface to all analysers accessible through the AnalyserManager.
  *

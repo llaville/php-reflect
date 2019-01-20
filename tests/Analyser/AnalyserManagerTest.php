@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Unit tests for PHP_Reflect package, Analyser Manager Component
  *

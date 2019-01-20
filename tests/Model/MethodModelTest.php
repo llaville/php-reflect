@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Unit Test Case that covers the Method Model representative.
  *

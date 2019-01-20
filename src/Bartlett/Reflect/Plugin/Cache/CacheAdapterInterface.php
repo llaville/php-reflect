@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Cache Adapter interface that should be implemented by all adapters.
  *

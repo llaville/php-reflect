@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Prints the result of a TestRunner run using a PSR-3 logger.
  *

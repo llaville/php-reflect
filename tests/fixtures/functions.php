@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 interface iB
 {
     public function baz(Baz $baz);

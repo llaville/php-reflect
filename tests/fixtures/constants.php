@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace sandbox;
 /** connection semaphore */
 const CONNECT_OK = 1;

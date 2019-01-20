@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * An abstract Node processor to check pre-condition before traversing AST.
  *
