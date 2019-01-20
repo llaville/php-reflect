@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Bartlett\Reflect\PhpParser;
 
+use PhpParser\Node;
+
 /**
  * Node processor to check pre-condition before traversing AST.
  * Should be used in each Node visitor into beforeTraverse().
