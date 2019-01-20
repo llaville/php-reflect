@@ -512,7 +512,7 @@ class ClassModel extends AbstractModel
 
         $modifiers = '';
         if ($this->isFinal()) {
-            $modifier .= ' final';
+            $modifiers .= ' final';
         }
         if ($this->isAbstract()) {
             $modifiers .= ' abstract';
