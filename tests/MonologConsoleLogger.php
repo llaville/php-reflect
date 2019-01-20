@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Prints the result of a TestRunner run using Monolog.
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category   PHP
  * @package    PHP_Reflect

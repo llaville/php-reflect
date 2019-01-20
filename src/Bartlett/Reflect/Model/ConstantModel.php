@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * ConstantModel represents a constant definition.
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category PHP
  * @package  PHP_Reflect

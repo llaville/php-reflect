@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Diagnoses the system to identify common errors.
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category PHP
  * @package  PHP_Reflect

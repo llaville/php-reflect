@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Validates structure of the JSON configuration file.
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category PHP
  * @package  PHP_Reflect

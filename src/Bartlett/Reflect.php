@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Reverse-engineer classes, interfaces, traits, functions, constants, namespaces
  * and more.
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category PHP
  * @package  PHP_Reflect

@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Client for interacting with the API
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category PHP
  * @package  PHP_Reflect
