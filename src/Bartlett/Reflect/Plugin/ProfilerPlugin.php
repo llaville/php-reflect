@@ -134,7 +134,8 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
     public function onReflectError($event)
     {
         $filename = $event['file']->getPathname();
-        $this->stopwatch->stop($filename);
+        $appEvent = $this->stopwatch->stop($filename);
+        $time     = $appEvent->getDuration();
 
         self::$logger->error(
             'Parse error in {time} on file "{file"}: {error}',
