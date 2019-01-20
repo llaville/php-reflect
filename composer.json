@@ -36,7 +36,6 @@
     },
     "suggest": {
         "doctrine/cache": "Allow caching results",
-        "bartlett/monolog-callbackfilterhandler": "Advanced filtering strategies for Monolog",
         "bartlett/phpunit-loggertestlistener": "Allow logging unit tests to your favorite PSR-3 logger interface",
         "bartlett/umlwriter": "Allow writing UML class diagrams (Graphviz or PlantUML)"
     },

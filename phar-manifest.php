@@ -23,8 +23,6 @@ $lock = json_decode(file_get_contents(__DIR__ . '/composer.lock'));
 $excludes = array(
     'bartlett/phpunit-loggertestlistener',
     'bartlett/monolog-callbackfilterhandler',
-    'bartlett/monolog-growlhandler',
-    'pear-pear.php.net/Net_Growl',
 );
 
 $packages = function ($package) use ($excludes) {

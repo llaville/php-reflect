@@ -24,9 +24,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FilterHandler;
 use Monolog\Formatter\LineFormatter;
 
-use Bartlett\Monolog\Handler\CallbackFilterHandler;
-use Bartlett\Monolog\Handler\GrowlHandler;
-
 /**
  * Prints the result of a TestRunner run using Monolog and few handlers.
  *
@@ -71,39 +68,6 @@ class MonologConsoleLogger extends Logger
         $filter = new FilterHandler($console);
 
         $handlers = array($filter, $stream);
-
-        if (class_exists('GrowlHandler')
-            && class_exists('CallbackFilterHandler')
-        ) {
-            try {
-                $options = array(
-                    'resourceDir' => dirname(__DIR__) . '/vendor/pear-pear.php.net/Net_Growl/data/Net_Growl/data',
-                    'defaultIcon' => '80/growl_phpunit.png',
-                );
-
-                $growl = new GrowlHandler(
-                    array(
-                        'name'    => 'PHPUnit ResultPrinter',
-                        'options' => $options
-                    ),
-                    Logger::NOTICE
-                );
-                $growl->setFormatter(
-                    new LineFormatter(
-                        "PHP Reflect\n" .
-                        "%message%"
-                    )
-                );
-
-                $handlers[] = new CallbackFilterHandler(
-                    $growl,
-                    $filterRules
-                );
-
-            } catch (\Exception $e) {
-                // Growl server is probably not started
-            }
-        }
 
         parent::__construct($name, $handlers);
     }
