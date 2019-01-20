@@ -20,8 +20,11 @@ namespace Bartlett\Tests\Reflect;
 
 use Bartlett\LoggerTestListenerTrait;
 
+use Monolog\Logger;
+use PHPUnit\Framework\TestResult;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
+use SebastianBergmann\Timer\Timer;
 
 /**
  * Prints the result of a TestRunner run using a PSR-3 logger.
@@ -36,31 +39,31 @@ use Psr\Log\LogLevel;
  * @license    https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link       http://php5.laurent-laville.org/reflect/
  */
-class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter
+class ResultPrinter extends \PHPUnit\TextUI\ResultPrinter
 {
     use LoggerTestListenerTrait, LoggerAwareTrait;
 
     /**
      * {@inheritDoc}
      */
-    public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT, $debug = false, $numberOfColumns = 80)
+    public function __construct($out = null, bool $verbose = false, $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
     {
-        parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns);
+        parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
         if ($this->debug) {
             $minLevelOrList = LogLevel::INFO;
         } elseif ($this->verbose) {
             $minLevelOrList = LogLevel::NOTICE;
         } else {
-            $minLevelOrList = array(LogLevel::NOTICE, LogLevel::ERROR);
+            $minLevelOrList = [LogLevel::NOTICE, LogLevel::ERROR];
         }
 
-        $console = new MonologConsoleLogger('ResultPrinter');
+        $console = new MonologConsoleLogger('ResultPrinter', !$debug ? Logger::ERROR : Logger::DEBUG);
         $console->setAcceptedLevels($minLevelOrList);
 
         $handlers = $console->getHandlers();
         foreach ($handlers as &$handler) {
-            // attachs processors only to console handler
+            // attach processors only to console handler
             if ($handler instanceof \Monolog\Handler\FilterHandler) {
                 // new results presentation when color is supported or not
                 $handler->pushProcessor(array($this, 'messageProcessor'));
@@ -72,22 +75,22 @@ class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter
     /**
      * {@inheritDoc}
      */
-    public function printResult(\PHPUnit_Framework_TestResult $result)
+    public function printResult(TestResult $result) : void
     {
         $this->printHeader();
         $this->printFooter($result);
     }
 
-    protected function printHeader()
+    protected function printHeader() : void
     {
         $this->logger->notice(
-            \PHP_Timer::resourceUsage() .
+            Timer::resourceUsage() .
             "\n",
             array('operation' => __FUNCTION__)
         );
     }
 
-    public function messageProcessor(array $record)
+    public function messageProcessor(array $record) : array
     {
         $self  = $this;
         $debug = $this->debug;

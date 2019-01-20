@@ -46,20 +46,20 @@ class MonologConsoleLogger extends Logger
      * Console logger class constructor
      *
      * @param string $name  The logging channel
-     * @param string $level The minimum logging level
+     * @param int    $level The minimum logging level
      */
-    public function __construct($name = 'YourLogger', $level = Logger::DEBUG)
+    public function __construct(string $name = 'YourLogger', int $level = Logger::DEBUG)
     {
-        $filterRules = array(
+        $filterRules = [
             function ($record) {
                 if (!array_key_exists('operation', $record['context'])) {
                     return false;
                 }
                 return ('printFooter' === $record['context']['operation']);
             }
-        );
+        ];
 
-        $stream = new RotatingFileHandler(__DIR__ . '/phpunit-phpreflect-php' . PHP_VERSION_ID . '.log', 30);
+        $stream = new RotatingFileHandler(__DIR__ . '/phpunit-phpreflect-php' . PHP_VERSION_ID . '.log', 30, $level);
         $stream->setFilenameFormat('{filename}-{date}', 'Ymd');
 
         $console = new StreamHandler('php://stdout');
@@ -77,7 +77,7 @@ class MonologConsoleLogger extends Logger
      *
      * @return array
      */
-    public function getAcceptedLevels()
+    public function getAcceptedLevels() : array
     {
         $handlers = $this->getHandlers();
         foreach ($handlers as &$handler) {
@@ -85,7 +85,7 @@ class MonologConsoleLogger extends Logger
                 return $handler->getAcceptedLevels();
             }
         }
-        return array();
+        return [];
     }
 
     /**
@@ -96,7 +96,7 @@ class MonologConsoleLogger extends Logger
      *
      * @return void
      */
-    public function setAcceptedLevels($minLevelOrList = Logger::DEBUG, $maxLevel = Logger::EMERGENCY)
+    public function setAcceptedLevels($minLevelOrList = Logger::DEBUG, $maxLevel = Logger::EMERGENCY) : void
     {
         $handlers = $this->getHandlers();
         foreach ($handlers as &$handler) {
