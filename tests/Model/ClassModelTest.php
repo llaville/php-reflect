@@ -74,7 +74,7 @@ class ClassModelTest extends GenericModelTest
         $c = 3;  // class Foo implements iB
 
         $this->assertEquals(
-            21,
+            24,
             self::$models[$c]->getStartLine(),
             self::$models[$c]->getName() . ' starting line does not match.'
         );
@@ -92,7 +92,7 @@ class ClassModelTest extends GenericModelTest
         $c = 3;  // class Foo implements iB
 
         $this->assertEquals(
-            33,
+            36,
             self::$models[$c]->getEndLine(),
             self::$models[$c]->getName() . ' ending line does not match.'
         );
@@ -603,7 +603,7 @@ class ClassModelTest extends GenericModelTest
 
         $expected = <<<'EOS'
 Class [ <user> class Bar ] {
-  @@ %filename% 60 - 72
+  @@ %filename% 63 - 75
 
   - Constants [2] {
     Constant [ ONE ] { Number one }
@@ -615,7 +615,7 @@ Class [ <user> class Bar ] {
 
   - Methods [2] {
     Method [ <user> public method myfunction ] {
-      @@ %filename% 65 - 66
+      @@ %filename% 68 - 69
 
       - Parameters [2] {
         Parameter #0 [ <optional> stdClass $param = \NULL ]
@@ -624,7 +624,7 @@ Class [ <user> class Bar ] {
     }
 
     Method [ <user> protected method otherfunction ] {
-      @@ %filename% 68 - 70
+      @@ %filename% 71 - 73
 
       - Parameters [2] {
         Parameter #0 [ <required> Baz $baz ]

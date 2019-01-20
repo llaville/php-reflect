@@ -53,7 +53,7 @@ class FunctionModelTest extends GenericModelTest
         $f = 3;  // function glob\myprocess
 
         $this->assertEquals(
-            29,
+            31,
             self::$models[$f]->getStartLine(),
             self::$models[$f]->getName() . ' starting line does not match.'
         );
@@ -71,7 +71,7 @@ class FunctionModelTest extends GenericModelTest
         $f = 3;  // function glob\myprocess
 
         $this->assertEquals(
-            32,
+            34,
             self::$models[$f]->getEndLine(),
             self::$models[$f]->getName() . ' ending line does not match.'
         );
@@ -302,7 +302,7 @@ class FunctionModelTest extends GenericModelTest
 
         $expected = <<<'EOS'
 Function [ <user> function glob\singleFunction ] {
-  @@ %filename% 25 - 27
+  @@ %filename% 27 - 29
 
   - Parameters [3] {
     Parameter #0 [ <required> array $someparam ]

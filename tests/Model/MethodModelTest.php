@@ -78,7 +78,7 @@ class MethodModelTest extends GenericModelTest
         $methods = self::$models[$c]->getMethods();
 
         $this->assertEquals(
-            54,
+            57,
             $methods[$m]->getStartLine(),
             $methods[$m]->getName()
             . ' starting line does not match.'
@@ -100,7 +100,7 @@ class MethodModelTest extends GenericModelTest
         $methods = self::$models[$c]->getMethods();
 
         $this->assertEquals(
-            57,
+            60,
             $methods[$m]->getEndLine(),
             $methods[$m]->getName()
             . ' ending line does not match.'
@@ -441,7 +441,7 @@ class MethodModelTest extends GenericModelTest
 
         $expected = <<<'EOS'
 Method [ <user> public method myfunction ] {
-  @@ %filename% 65 - 66
+  @@ %filename% 68 - 69
 
   - Parameters [2] {
     Parameter #0 [ <optional> stdClass $param = \NULL ]
