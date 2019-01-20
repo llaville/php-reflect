@@ -83,7 +83,7 @@ class CommandFactory
 
         foreach ($iterator as $file) {
             if (fnmatch('*.php', $file->getPathName())) {
-                $classes[] = Application::API_NAMESPACE . basename($file, '.php');
+                $classes[] = Application::API_NAMESPACE . $file->getBasename('.php');
             }
         }
 

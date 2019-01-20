@@ -53,7 +53,7 @@ class Client
      *
      * @param string $name Api method to perform
      *
-     * @return Api
+     * @return Api\BaseApi
      * @throws \InvalidArgumentException
      */
     public function api($name)

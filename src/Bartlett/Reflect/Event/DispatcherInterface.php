@@ -17,8 +17,11 @@ declare(strict_types=1);
 
 namespace Bartlett\Reflect\Event;
 
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 
 /**
  * Holds an event dispatcher.
@@ -45,7 +48,7 @@ interface DispatcherInterface
     /**
      * Get the EventDispatcher of the request
      *
-     * @return Symfony\Component\EventDispatcher\EventDispatcher
+     * @return EventDispatcher
      */
     public function getEventDispatcher();
 
@@ -55,7 +58,7 @@ interface DispatcherInterface
      * @param string $eventName The name of the event to dispatch
      * @param array  $context   (optional) Contextual event data
      *
-     * @return Symfony\Component\EventDispatcher\GenericEvent
+     * @return Event
      */
     public function dispatch($eventName, array $context = array());
 
