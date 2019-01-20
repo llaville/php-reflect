@@ -33,14 +33,14 @@ class DoctrineCacheAdapter implements CacheAdapterInterface
 {
     /**
      * Instance of a Doctrine cache
-     * @var Doctrine\Common\Cache\Cache
+     * @var Cache
      */
     protected $cache;
 
     /**
      * Doctrine 2 cache adapter constructor.
      *
-     * @param Doctrine\Common\Cache\Cache $cache Doctrine cache object
+     * @param Cache $cache Doctrine cache object
      *
      * @return DoctrineCacheAdapter
      */
