@@ -151,7 +151,7 @@ class ClassModel extends AbstractModel
             foreach ($this->node->stmts as $stmt) {
                 if ($stmt instanceof Node\Stmt\ClassConst) {
                     foreach ($stmt->consts as $const) {
-                        $this->constants[$const->name] = trim(
+                        $this->constants[$const->name->name] = trim(
                             $prettyPrinter->prettyPrintExpr($const->value),
                             '"\''
                         );
@@ -208,7 +208,7 @@ class ClassModel extends AbstractModel
             foreach ($this->node->stmts as $stmt) {
                 if ($stmt instanceof Node\Stmt\ClassMethod) {
                     $stmt->setAttribute('fileName', $this->getFileName());
-                    $this->methods[$stmt->name] = new MethodModel($this, $stmt);
+                    $this->methods[(string) $stmt->name] = new MethodModel($this, $stmt);
                 }
             }
         }

@@ -59,9 +59,9 @@ abstract class AbstractFunctionModel extends AbstractModel
             return '{closure}';
         }
         if (isset($this->node->namespacedName)) {
-            return $this->node->namespacedName;
+            return (string) $this->node->namespacedName;
         }
-        return $this->node->name;
+        return (string) $this->node->name;
     }
 
     /**
@@ -83,7 +83,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      */
     public function getShortName()
     {
-        return $this->node->name;
+        return (string) $this->node->name;
     }
 
     /**
@@ -142,7 +142,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      */
     public function inNamespace()
     {
-        return $this->getName()->isQualified();
+        return $this->node->namespacedName->isQualified();
     }
 
     /**

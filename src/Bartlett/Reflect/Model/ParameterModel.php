@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Bartlett\Reflect\Model;
 
-use Bartlett\Reflect\Model\AbstractModel;
 use Bartlett\Reflect\Exception\ModelException;
 
 use PhpParser\Node;
@@ -53,7 +52,7 @@ class ParameterModel extends AbstractModel
      */
     public function getName()
     {
-        return $this->node->name;
+        return $this->node->var->name;
     }
 
     /**
@@ -140,7 +139,7 @@ class ParameterModel extends AbstractModel
      */
     public function isArray()
     {
-        return ($this->node->type === 'array');
+        return ((string) $this->node->type === 'array');
     }
 
     /**
