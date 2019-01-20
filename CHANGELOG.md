@@ -14,3 +14,4 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 ### Changed
 
 - drop support to PHP 5. Requires at least PHP 7.1 or greater
+- drop Growl notifier support
