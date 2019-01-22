@@ -7,11 +7,45 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 ## [Unreleased]
 
 
-### Added
-
-- no new features
+## [5.0.0-alpha1] - 2019-01-20
 
 ### Changed
 
 - drop support to PHP 5. Requires at least PHP 7.1 or greater
 - drop Growl notifier support
+- update PHP-Parser to 4.0 for parsing code from PHP 5.2 to 7.3 on PHP  
+ platform 7.0 or better
+
+## [4.3.0] - 2018-11-25
+
+### Changed
+
+- update PHP-Parser to 3.1 for parsing code from PHP 5.2 to 7.2 on PHP  
+ platform 5.5 or better
+- add support to Symfony Components 4.x
+
+## [4.2.2] - 2017-12-14
+
+### Fixed
+
+- fix regression with previous cache configuration (thanks to Remi Collet)
+
+## [4.2.1] - 2017-12-12
+
+### Changed
+
+- fix minimum requirements to PHP 5.5
+
+## [4.2.0] - 2017-12-12
+
+### Added 
+
+- show PHP-Parser errors, when found on php scripts
+
+## [4.1.0] - 2017-04-10
+
+- update to PHP-Parser 2.1
+
+## [4.0.0] - 2015-12-04
+
+- introduce sniff architecture, and drop support to PHP 5.3
