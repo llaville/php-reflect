@@ -6,6 +6,9 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 ## [Unreleased]
 
+### Changed
+
+- remove extra/useless `Bartlett` directory level to match PSR-4
 
 ## [5.0.0-alpha1] - 2019-01-20
 
