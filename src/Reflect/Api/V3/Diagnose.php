@@ -38,7 +38,7 @@ class Diagnose extends Common
      */
     public function run()
     {
-        $response = array();
+        $response = [];
 
         if (version_compare(PHP_VERSION, self::PHP_MIN, '<')) {
             $response['php_version'] = false;

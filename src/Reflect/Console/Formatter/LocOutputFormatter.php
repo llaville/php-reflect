@@ -69,7 +69,7 @@ class LocOutputFormatter extends OutputFormatter
             ;
         }
 
-        $lines = array();
+        $lines = [];
 
         $lines['loc'] = array(
             '  Lines of Code (LOC)                       %10d',
@@ -139,7 +139,7 @@ class LocOutputFormatter extends OutputFormatter
         $output->writeln(sprintf('%s<info>Size</info>', PHP_EOL));
         $this->printFormattedLines($output, $lines);
 
-        $lines = array();
+        $lines = [];
 
         $lines['ccnByLloc'] = array(
             '  Cyclomatic Complexity / LLOC              %10.2f',

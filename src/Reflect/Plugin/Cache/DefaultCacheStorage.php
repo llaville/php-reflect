@@ -141,7 +141,7 @@ class DefaultCacheStorage implements CacheStorageInterface
     public function cache($request)
     {
         $currentTime = time();
-        $entries     = array();
+        $entries     = [];
 
         if ($this->exists($request)) {
             foreach ($this->entries as $entry) {

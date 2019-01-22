@@ -60,7 +60,7 @@ interface DispatcherInterface
      *
      * @return Event
      */
-    public function dispatch($eventName, array $context = array());
+    public function dispatch($eventName, array $context = []);
 
     /**
      * Adds an event subscriber.

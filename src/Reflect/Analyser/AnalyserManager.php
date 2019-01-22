@@ -31,7 +31,7 @@ use Bartlett\Reflect\Api\V3\Config;
  */
 class AnalyserManager
 {
-    protected $analysers = array();
+    protected $analysers = [];
 
     /**
      * Initializes analyser manager
@@ -127,7 +127,7 @@ class AnalyserManager
      */
     public function toArray()
     {
-        $array = array();
+        $array = [];
 
         foreach ($this->analysers as $analyser) {
             $array[$analyser->getShortName()] = get_class($analyser);

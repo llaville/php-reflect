@@ -106,7 +106,7 @@ class Application extends BaseApplication
             ),
         );
 
-        $classes = array();
+        $classes = [];
         if (strcasecmp($appName, 'phpcompatinfo') === 0) {
             $classes[] = 'Bartlett\CompatInfo\Api\Reference';
         }

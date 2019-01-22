@@ -28,8 +28,8 @@ use PhpParser\Node;
  */
 class NodeProcessorAbstract implements NodeProcessor
 {
-    protected $processors    = array();
-    protected $preConditions = array();
+    protected $processors    = [];
+    protected $preConditions = [];
 
     /**
      * {@inheritdoc}

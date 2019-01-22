@@ -70,7 +70,7 @@ class LocalClient implements ClientInterface
     /**
      * {@inheritDoc}
      */
-    public function request($method, $url, array $params = array())
+    public function request($method, $url, array $params = [])
     {
         $parts = explode('/', $url);
 

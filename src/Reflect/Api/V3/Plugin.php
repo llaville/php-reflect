@@ -53,11 +53,11 @@ class Plugin extends Common
         }
 
         $plugins = $pm->getPlugins();
-        $rows    = array();
+        $rows    = [];
 
         foreach ($plugins as $plugin) {
             if (!$plugin instanceof EventSubscriberInterface) {
-                $events = array();
+                $events = [];
             } else {
                 $events = $plugin::getSubscribedEvents();
             }

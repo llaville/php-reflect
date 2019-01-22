@@ -59,7 +59,7 @@ class DefaultLogger extends AbstractLogger
         $name = 'DefaultLoggerChannel',
         $level = LogLevel::INFO,
         $handler = null,
-        array $processors = array()
+        array $processors = []
     ) {
         $this->channel = $name;
         $this->level   = array_search($level, self::$levels);
@@ -99,14 +99,14 @@ class DefaultLogger extends AbstractLogger
      *
      * @return void
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         $record = array(
             'channel'  => $this->channel,
             'level'    => $level,
             'message'  => $message,
             'context'  => $context,
-            'extra'    => array(),
+            'extra'    => [],
             'datetime' => new \DateTime(),
         );
 
@@ -152,7 +152,7 @@ class DefaultLogger extends AbstractLogger
             return $record;
         }
 
-        $replacements = array();
+        $replacements = [];
         foreach ($record['context'] as $key => $val) {
             if (is_null($val)
                 || is_scalar($val)

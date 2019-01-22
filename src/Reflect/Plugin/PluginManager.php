@@ -36,8 +36,8 @@ class PluginManager
 {
     protected $eventDispatcher;
 
-    protected $plugins = array();
-    protected $registeredPlugins = array();
+    protected $plugins = [];
+    protected $registeredPlugins = [];
 
     /**
      * Initializes plugin manager

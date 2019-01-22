@@ -85,7 +85,7 @@ class Analyser extends Common
 
         $am = $this->registerAnalysers();
 
-        $analysersAvailable = array();
+        $analysersAvailable = [];
         foreach ($am->getAnalysers() as $analyser) {
             $analysersAvailable[$analyser->getShortName()] = $analyser;
         }
@@ -142,7 +142,7 @@ class Analyser extends Common
         $baseAnalyser   = $baseDir . '/src/Bartlett/CompatInfo/Analyser';
         $vendorAnalyser = $vendorDir . '/bartlett/php-compatinfo/src/Bartlett/CompatInfo/Analyser';
 
-        $namespaces = array();
+        $namespaces = [];
 
         if (file_exists($vendorDir) && is_dir($vendorDir)
             && (file_exists($baseAnalyser) || file_exists($vendorAnalyser))

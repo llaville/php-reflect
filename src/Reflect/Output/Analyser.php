@@ -42,7 +42,7 @@ class Analyser extends OutputFormatter
             $output->writeln('<error>No analysers detected.</error>');
         } else {
             $headers = array('Analyser Name', 'Analyser Class');
-            $rows    = array();
+            $rows    = [];
 
             foreach ($response as $name => $class) {
                 $rows[] = array($name, $class);
@@ -68,7 +68,7 @@ class Analyser extends OutputFormatter
 
         $output->writeln('<info>Data Source Analysed</info>');
 
-        $directories = array();
+        $directories = [];
 
         foreach ($response['files'] as $file) {
             $directories[] = dirname($file);

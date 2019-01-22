@@ -55,7 +55,7 @@ class Reflect extends AbstractDispatcher
      */
     public function __construct()
     {
-        $this->analysers = array();
+        $this->analysers = [];
     }
 
     /**
@@ -114,7 +114,7 @@ class Reflect extends AbstractDispatcher
      */
     public function parse(Finder $finder)
     {
-        $metrics = array();
+        $metrics = [];
 
         if (empty($this->analysers)) {
             return false;
@@ -143,7 +143,7 @@ class Reflect extends AbstractDispatcher
         }
 
         $queue    = new \SplQueue();
-        $priority = array();
+        $priority = [];
 
         if ($conditionalCode) {
             // files to process with highest priority
@@ -266,7 +266,7 @@ class Reflect extends AbstractDispatcher
             }
         }
 
-        $files = $parserErrors = array();
+        $files = $parserErrors = [];
 
         // generate a data source identifier if not provided
         if (!isset($this->dataSourceId)) {

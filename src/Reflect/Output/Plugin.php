@@ -42,7 +42,7 @@ class Plugin extends OutputFormatter
             $output->writeln('<info>No plugin installed</info>');
         } else {
             $headers = array('Plugin Class', 'Events Subscribed');
-            $rows    = array();
+            $rows    = [];
 
             foreach ($response as $pluginClass => $events) {
                 $first  = true;

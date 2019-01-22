@@ -208,7 +208,7 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
         if (isset($options['backend']['args'])) {
             $args = self::replaceTokens($options['backend']['args']);
         } else {
-            $args = array();
+            $args = [];
         }
 
         $backend      = $rc->newInstanceArgs($args);

@@ -58,7 +58,7 @@ class CommandFactory
     public function __construct(Application $app, array $cmdExceptions = null)
     {
         $this->application   = $app;
-        $this->cmdExceptions = $cmdExceptions ? : array();
+        $this->cmdExceptions = $cmdExceptions ? : [];
     }
 
     /**
@@ -71,7 +71,7 @@ class CommandFactory
     public function generateCommands(array $classes = null)
     {
         if (!isset($classes)) {
-            $classes = array();
+            $classes = [];
         }
         $path = dirname(__DIR__) . '/Api';
 
@@ -87,7 +87,7 @@ class CommandFactory
             }
         }
 
-        $commands = array();
+        $commands = [];
 
         foreach ($classes as $class) {
             $api = new \ReflectionClass($class);
@@ -125,7 +125,7 @@ class CommandFactory
 
         $command = new Command($namespace . ':' . $this->dash($methodShortName));
 
-        $cmdExceptions = array();
+        $cmdExceptions = [];
 
         if (isset($this->cmdExceptions[$namespace])) {
             if (isset($this->cmdExceptions[$namespace][$methodShortName])) {
@@ -142,7 +142,7 @@ class CommandFactory
             $command->disable();
         } else {
             if (!empty($aliases)) {
-                $names = array();
+                $names = [];
                 foreach ($aliases as $aliasTag) {
                     $names[] = $namespace . ':' . (string) $aliasTag->getDescription();
                 }
@@ -286,7 +286,7 @@ class CommandFactory
                 );
             }
 
-            $args = array();
+            $args = [];
 
             foreach ($method->getParameters() as $parameter) {
                 if ($parameter->isOptional()) {

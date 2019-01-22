@@ -62,7 +62,7 @@ class ClassModel extends AbstractModel
      */
     public function getInterfaceNames()
     {
-        $interfaces = array();
+        $interfaces = [];
 
         if ($this->node instanceof Node\Stmt\Class_) {
             foreach ($this->node->implements as $interface) {
@@ -134,7 +134,7 @@ class ClassModel extends AbstractModel
      */
     public function getInterfaces()
     {
-        return $interfaces = array();
+        return $interfaces = [];
     }
 
     /**
@@ -147,7 +147,7 @@ class ClassModel extends AbstractModel
         if ($this->constants === null) {
             $prettyPrinter = new PrettyPrinter\Standard;
             // lazy load class constants list
-            $this->constants = array();
+            $this->constants = [];
             foreach ($this->node->stmts as $stmt) {
                 if ($stmt instanceof Node\Stmt\ClassConst) {
                     foreach ($stmt->consts as $const) {
@@ -204,7 +204,7 @@ class ClassModel extends AbstractModel
     {
         if ($this->methods === null) {
             // lazy load class methods list
-            $this->methods = array();
+            $this->methods = [];
             foreach ($this->node->stmts as $stmt) {
                 if ($stmt instanceof Node\Stmt\ClassMethod) {
                     $stmt->setAttribute('fileName', $this->getFileName());
@@ -306,7 +306,7 @@ class ClassModel extends AbstractModel
     {
         if ($this->properties === null) {
             // lazy load class properties list
-            $this->properties = array();
+            $this->properties = [];
             foreach ($this->node->stmts as $stmt) {
                 if ($stmt instanceof Node\Stmt\Property) {
                     $this->properties[] = new PropertyModel($this, $stmt);

@@ -63,7 +63,7 @@ use PhpParser\Node;
  */
 class StructureAnalyser extends AbstractAnalyser
 {
-    private $constants  = array();
+    private $constants  = [];
 
     public function __construct()
     {

@@ -77,7 +77,7 @@ class AbstractDispatcher implements DispatcherInterface
      * @return Event
      * @disabled
      */
-    public function dispatch($eventName, array $context = array())
+    public function dispatch($eventName, array $context = [])
     {
         return $this->getEventDispatcher()->dispatch(
             $eventName,

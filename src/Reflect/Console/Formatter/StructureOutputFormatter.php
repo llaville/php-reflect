@@ -49,7 +49,7 @@ class StructureOutputFormatter extends OutputFormatter
                 + $count['magicConstants'];
         }
 
-        $lines = array();
+        $lines = [];
 
         if (array_key_exists('namespaces', $count)
             && is_int($count['namespaces'])
@@ -120,7 +120,7 @@ class StructureOutputFormatter extends OutputFormatter
 
             $lines['methodsScope'] = array(
                 '    Scope',
-                array()
+                []
             );
             if (array_key_exists('nonStaticMethods', $count)
                 && is_int($count['nonStaticMethods'])
@@ -147,7 +147,7 @@ class StructureOutputFormatter extends OutputFormatter
 
             $lines['methodsVisibility'] = array(
                 '    Visibility',
-                array()
+                []
             );
             if (array_key_exists('publicMethods', $count)
                 && is_int($count['publicMethods'])
@@ -263,7 +263,7 @@ class StructureOutputFormatter extends OutputFormatter
         ) {
             $lines['tests'] = array(
                 '  Tests',
-                array()
+                []
             );
 
             $lines['testClasses'] = array(

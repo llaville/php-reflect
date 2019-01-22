@@ -54,7 +54,7 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
     public function __construct(LoggerInterface $logger = null)
     {
         if (!isset($logger)) {
-            $logger = new DefaultLogger('DefaultLoggerChannel', LogLevel::INFO, null, array());
+            $logger = new DefaultLogger('DefaultLoggerChannel', LogLevel::INFO, null, []);
         }
         $this->logger = $logger;
     }

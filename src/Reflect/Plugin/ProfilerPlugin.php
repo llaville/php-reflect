@@ -61,7 +61,7 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
         $this->stopwatch = new Stopwatch();
 
         if (!isset($logger)) {
-            $logger = new DefaultLogger('DefaultLoggerChannel', LogLevel::INFO, null, array());
+            $logger = new DefaultLogger('DefaultLoggerChannel', LogLevel::INFO, null, []);
         }
         self::$logger = $logger;
     }

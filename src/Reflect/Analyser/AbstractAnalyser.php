@@ -33,11 +33,11 @@ use PhpParser\NodeVisitor;
  */
 abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
 {
-    protected $namespaces = array();
+    protected $namespaces = [];
     protected $testClass;
     protected $tokens;
     protected $file;
-    protected $metrics = array();
+    protected $metrics = [];
 
     protected $subject;
 

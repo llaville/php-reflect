@@ -125,7 +125,7 @@ abstract class AbstractFunctionModel extends AbstractModel
     {
         if ($this->parameters === null) {
             // lazy load function parameters list
-            $this->parameters = array();
+            $this->parameters = [];
             foreach ($this->node->params as $pos => $param) {
                 if ($param instanceof Node\Param) {
                     $this->parameters[] = new ParameterModel($param, $pos);

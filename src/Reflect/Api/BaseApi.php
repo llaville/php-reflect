@@ -69,7 +69,7 @@ abstract class BaseApi extends AbstractDispatcher
      * @param string $method
      * @param array  $params
      */
-    protected function request($url, $method = 'GET', array $params = array())
+    protected function request($url, $method = 'GET', array $params = [])
     {
         $this->client->setEventDispatcher($this->getEventDispatcher());
         $this->client->activatePlugins($this->registerPlugins);
