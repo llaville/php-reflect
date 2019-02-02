@@ -24,7 +24,7 @@ class AnalyserRunHandler extends AnalyserBaseHandler implements CommandHandlerIn
         $filter = $command->filter;
         $analysers = $command->analysers;
 
-        $finder = $this->findProvider($source, $alias = null);
+        $finder = $this->findProvider($source, $alias = '');
         $dataSourceId = realpath($source);
 
         if ($finder === false) {

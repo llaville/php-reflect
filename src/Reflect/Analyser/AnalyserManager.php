@@ -15,8 +15,8 @@ declare(strict_types=1);
 
 namespace Bartlett\Reflect\Analyser;
 
-use Bartlett\Reflect\Environment;
-use Bartlett\Reflect\Api\V3\Config;
+use Bartlett\Reflect\Application\Command\ConfigValidateCommand;
+use Bartlett\Reflect\Application\Command\ConfigValidateHandler;
 
 /**
  * Analyser manager
@@ -32,22 +32,21 @@ use Bartlett\Reflect\Api\V3\Config;
 class AnalyserManager
 {
     protected $analysers = [];
+    protected $configFilename;
 
     /**
      * Initializes analyser manager
      *
-     * @param array $namespaces (optional) other analysers location to grab
+     * @param array  $namespaces      Other analysers location to grab
+     * @param string $configFilename  Path to json configuration file
      */
-    public function __construct(array $namespaces = null)
+    public function __construct(array $namespaces, string $configFilename)
     {
         $defaultNamespace = array(
             __NAMESPACE__ => __DIR__,
         );
-        if (isset($namespaces)) {
-            $namespaces = array_merge($defaultNamespace, $namespaces);
-        } else {
-            $namespaces = $defaultNamespace;
-        }
+        $namespaces = array_merge($defaultNamespace, $namespaces);
+        $this->configFilename = $configFilename;
 
         foreach ($namespaces as $ns => $path) {
             if (\Phar::running(false)) {
@@ -79,13 +78,9 @@ class AnalyserManager
      */
     public function registerAnalysers()
     {
-        $jsonFile = Environment::getJsonConfigFilename();
-        if (!$jsonFile) {
-            return;
-        }
-
-        $config = new Config;
-        $var    = $config->validate($jsonFile);
+        $command = new ConfigValidateCommand($this->configFilename);
+        $configValidateHandler = new ConfigValidateHandler();
+        $var = $configValidateHandler($command);
 
         foreach ($var['analysers'] as $analyser) {
             if (class_exists($analyser['class'])) {
