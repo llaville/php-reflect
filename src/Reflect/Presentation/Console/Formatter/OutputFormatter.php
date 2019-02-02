@@ -2,19 +2,7 @@
 
 declare(strict_types=1);
 
-/**
- * Common formatter class for console output.
- *
- * PHP version 7
- *
- * @category PHP
- * @package  PHP_Reflect
- * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
- */
-
-namespace Bartlett\Reflect\Console\Formatter;
+namespace Bartlett\Reflect\Presentation\Console\Formatter;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
@@ -23,12 +11,13 @@ use Symfony\Component\Console\Formatter\OutputFormatter as BaseOutputFormatter;
 /**
  * Common formatter helpers for console output.
  *
+ * PHP version 7
+ *
  * @category PHP
- * @package  PHP_Reflect
+ * @package  bartlett/php-reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link     http://php5.laurent-laville.org/reflect/
- * @since    Class available since Release 3.0.0-alpha1
  */
 class OutputFormatter extends BaseOutputFormatter
 {

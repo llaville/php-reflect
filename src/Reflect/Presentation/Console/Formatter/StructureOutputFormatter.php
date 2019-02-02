@@ -2,31 +2,20 @@
 
 declare(strict_types=1);
 
-/**
- * Structure Analyser formatter class for console output.
- *
- * PHP version 7
- *
- * @category PHP
- * @package  PHP_Reflect
- * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
- */
-
-namespace Bartlett\Reflect\Console\Formatter;
+namespace Bartlett\Reflect\Presentation\Console\Formatter;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Structure Analyser formatter class for console output.
  *
+ * PHP version 7
+ *
  * @category PHP
- * @package  PHP_Reflect
+ * @package  bartlett/php-reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link     http://php5.laurent-laville.org/reflect/
- * @since    Class available since Release 3.0.0-alpha1
  */
 class StructureOutputFormatter extends OutputFormatter
 {
@@ -38,7 +27,7 @@ class StructureOutputFormatter extends OutputFormatter
      *
      * @return void
      */
-    public function __invoke(OutputInterface $output, $count)
+    public function __invoke(OutputInterface $output, array $count): void
     {
         if (is_int($count['classConstants'])
             && is_int($count['globalConstants'])

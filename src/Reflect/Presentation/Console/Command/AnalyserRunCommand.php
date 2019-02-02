@@ -118,7 +118,7 @@ class AnalyserRunCommand extends AbstractCommand
                 '',
                 $analyserName
             );
-            $outputFormatter = $baseNamespace . 'Console\Formatter\\' .
+            $outputFormatter = $baseNamespace . 'Presentation\Console\Formatter\\' .
                 substr(basename(str_replace('\\', '/', $analyserName)), 0, -8) . 'OutputFormatter';
 
             if (class_exists($outputFormatter)) {
