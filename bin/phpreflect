@@ -1,32 +1,33 @@
 #!/usr/bin/env php
 <?php
-$appName = 'phpReflect';
+// @link https://www.tomasvotruba.cz/blog/2018/08/02/5-gotchas-of-the-bin-file-in-php-cli-applications/
 
-if (\Phar::running()) {
-    $vendorDir = 'phar://' . strtolower($appName) . '.phar/vendor';
-} else {
-    $baseDir   = dirname(__DIR__);
-    $vendorDir = $baseDir . '/vendor';
+declare(strict_types=1);
 
-    if (!file_exists($vendorDir . '/autoload.php')) {
-        $vendorDir = dirname(dirname($baseDir));
-    }
+gc_disable(); // performance boost
 
-    if (!getenv("BARTLETTRC")) {
-        putenv("BARTLETTRC=" . strtolower($appName) . '.json');
+$possibleAutoloadPaths = [
+    // local dev repository
+    __DIR__ . '/../vendor/autoload.php',
+    // dependency
+    __DIR__ . '/../../../../vendor/autoload.php',
+];
+
+$isAutoloadFound = false;
+foreach ($possibleAutoloadPaths as $possibleAutoloadPath) {
+    if (file_exists($possibleAutoloadPath)) {
+        require_once $possibleAutoloadPath;
+        $isAutoloadFound = true;
+        break;
     }
 }
-$loader = require_once $vendorDir . '/autoload.php';
-$loader->setUseIncludePath(true);
 
-if (PHP_SAPI !== 'cli') {
-    return;
+if ($isAutoloadFound === false) {
+    throw new RuntimeException(sprintf(
+        'Unable to find "vendor/autoload.php" in "%s" paths.',
+        implode('", "', $possibleAutoloadPaths)
+    ));
 }
 
-use Bartlett\Reflect\Environment;
-use Bartlett\Reflect\Console\Application;
-
-Environment::setScanDir();
-
-$application = new Application($appName, '5.0-dev');
+$application = new \Bartlett\Reflect\Presentation\Console\Application('phpReflect');
 $application->run();

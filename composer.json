@@ -29,10 +29,14 @@
         "phpdocumentor/reflection-docblock": "^3.0",
         "justinrainbow/json-schema": "^1.3",
         "seld/jsonlint": "^1.1",
-        "psr/log": "^1.0"
+        "psr/log": "^1.0",
+        "league/tactician": "^1.0",
+        "jean85/pretty-package-versions": "^1.2",
+        "zendframework/zenddiagnostics": "^1.4"
     },
     "require-dev": {
-        "monolog/monolog": "^1.10"
+        "monolog/monolog": "^1.10",
+        "bartlett/umlwriter": "^1.3"
     },
     "suggest": {
         "doctrine/cache": "Allow caching results",
@@ -52,7 +56,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Bartlett\\": "src/Bartlett"
+            "Bartlett\\": "src/"
         }
     },
     "autoload-dev": {
