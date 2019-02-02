@@ -101,8 +101,8 @@ class Application extends \Symfony\Component\Console\Application
     protected function getDefaultCommands() : array
     {
         $locator = new InMemoryLocator();
-        $locator->addHandler(new AnalyserListHandler(), AppAnalyserListCommand::class);
-        $locator->addHandler(new AnalyserRunHandler(), AppAnalyserRunCommand::class);
+        $locator->addHandler(new AnalyserListHandler($this->getJsonConfigFilename()), AppAnalyserListCommand::class);
+        $locator->addHandler(new AnalyserRunHandler($this->getJsonConfigFilename()), AppAnalyserRunCommand::class);
         $locator->addHandler(new DiagnoseHandler(), AppDiagnoseCommand::class);
         $locator->addHandler(new ConfigValidateHandler(), AppConfigValidateCommand::class);
         $locator->addHandler(new PluginListHandler(), AppPluginListCommand::class);
@@ -158,6 +158,52 @@ class Application extends \Symfony\Component\Console\Application
     public function getBaseAnalyserDir() : string
     {
         return $this->baseDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Reflect' . DIRECTORY_SEPARATOR . 'Analyser';
+    }
+
+    /**
+     * Search a json file on a list of scan directory pointed by
+     * the BARTLETT_SCAN_DIR env var.
+     * Config filename is identify by the BARTLETTRC env var.
+     *
+     * @return string
+     * @throws \RuntimeException
+     */
+    public function getJsonConfigFilename(): string
+    {
+        static $filename = null;
+
+        if (null !== $filename) {
+            return $filename;
+        }
+
+        if (!getenv("BARTLETTRC")) {
+            putenv("BARTLETTRC=" . strtolower($this->getName()) . '.json');
+        }
+
+        if (!getenv("BARTLETT_SCAN_DIR")) {
+            $home = defined('PHP_WINDOWS_VERSION_BUILD') ? 'USERPROFILE' : 'HOME';
+            $dirs = [
+                getcwd(),
+                getenv($home) . DIRECTORY_SEPARATOR . '.config',
+                DIRECTORY_SEPARATOR . 'etc',
+            ];
+            putenv("BARTLETT_SCAN_DIR=" . implode(PATH_SEPARATOR, $dirs));
+        }
+
+        $scanDir = getenv('BARTLETT_SCAN_DIR');
+        if ($scanDir) {
+            $dirs = explode(PATH_SEPARATOR, $scanDir);
+
+            foreach ($dirs as $scanDir) {
+                $filename = $scanDir . DIRECTORY_SEPARATOR . getenv('BARTLETTRC');
+                if (file_exists($filename) && is_file($filename)) {
+                    return realpath($filename);
+                }
+            }
+        }
+        $filename = null;
+
+        throw new \RuntimeException('No configuration file available');
     }
 
     public function setDispatcher(EventDispatcherInterface $dispatcher)

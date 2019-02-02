@@ -28,9 +28,6 @@ class AnalyserRunHandler extends AnalyserBaseHandler implements CommandHandlerIn
         $dataSourceId = realpath($source);
 
         if ($finder === false) {
-            throw new \RuntimeException(
-                'None data source matching'
-            );
         }
 
         if ($filter === false) {

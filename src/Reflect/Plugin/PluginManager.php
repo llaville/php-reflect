@@ -16,8 +16,8 @@ declare(strict_types=1);
 
 namespace Bartlett\Reflect\Plugin;
 
-use Bartlett\Reflect\Environment;
-use Bartlett\Reflect\Api\V3\Config;
+use Bartlett\Reflect\Application\Command\ConfigValidateCommand;
+use Bartlett\Reflect\Application\Command\ConfigValidateHandler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -38,16 +38,19 @@ class PluginManager
 
     protected $plugins = [];
     protected $registeredPlugins = [];
+    protected $configFilename;
 
     /**
      * Initializes plugin manager
      *
      * @param EventDispatcherInterface $eventDispatcher Instance of an event
      *        dispatcher
+     * @param string                   $configFilename  Path to json configuration file
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher, string $configFilename)
     {
         $this->eventDispatcher = $eventDispatcher;
+        $this->configFilename = $configFilename;
     }
 
     /**
@@ -57,13 +60,9 @@ class PluginManager
      */
     public function registerPlugins()
     {
-        $jsonFile = Environment::getJsonConfigFilename();
-        if (!$jsonFile) {
-            return;
-        }
-
-        $config = new Config;
-        $var    = $config->validate($jsonFile);
+        $command = new ConfigValidateCommand($this->configFilename);
+        $configValidateHandler = new ConfigValidateHandler();
+        $var = $configValidateHandler($command);
 
         foreach ($var['plugins'] as $plugin) {
             if (class_exists($plugin['class'])) {

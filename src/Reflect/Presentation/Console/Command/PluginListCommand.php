@@ -34,7 +34,7 @@ class PluginListCommand extends AbstractCommand
         $command = new AppPluginListCommand(
             $this->getApplication()->getVendorDir(),
             $this->getApplication()->getBaseAnalyserDir(),
-            $this->getApplication()->getBaseDir() . '/phpreflect.json',
+            $this->getApplication()->getJsonConfigFilename(),
             $input->getOption('no-plugins')
         );
 

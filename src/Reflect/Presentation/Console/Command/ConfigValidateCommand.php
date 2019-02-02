@@ -31,7 +31,7 @@ class ConfigValidateCommand extends AbstractCommand
                 'file',
                 InputArgument::OPTIONAL,
                 'Path to phpreflect.json file',
-                getcwd() . '/phpreflect.json'
+                getcwd() . DIRECTORY_SEPARATOR . getenv('BARTLETTRC')
             )
         ;
     }
