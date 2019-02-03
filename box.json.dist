@@ -11,9 +11,6 @@
         "vendor/justinrainbow/json-schema/LICENSE",
         "vendor/monolog/monolog/LICENSE",
         "vendor/nikic/php-parser/LICENSE",
-        "vendor/phpdocumentor/reflection-common/LICENSE",
-        "vendor/phpdocumentor/reflection-docblock/LICENSE",
-        "vendor/phpdocumentor/type-resolver/LICENSE",
         "vendor/psr/container/LICENSE",
         "vendor/psr/log/LICENSE",
         "vendor/sebastian/version/LICENSE",
@@ -52,18 +49,6 @@
         {
             "name": "*.php",
             "in": "vendor/justinrainbow/json-schema/src"
-        },
-        {
-            "name": "*.php",
-            "in": "vendor/phpdocumentor/reflection-common/src"
-        },
-        {
-            "name": "*.php",
-            "in": "vendor/phpdocumentor/reflection-docblock/src"
-        },
-        {
-            "name": "*.php",
-            "in": "vendor/phpdocumentor/type-resolver/src"
         },
         {
             "name": "*.php",

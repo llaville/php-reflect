@@ -2,9 +2,6 @@ bartlett/php-reflect: <info>5.0@ef6c7363e1d15c92972b9b2aeba7a8c57f6d63da</info>
 doctrine/collections: <info>v1.5.0</info>
 justinrainbow/json-schema: <info>1.6.1</info>
 nikic/php-parser: <info>v4.2.0</info>
-phpdocumentor/reflection-common: <info>1.0.1</info>
-phpdocumentor/reflection-docblock: <info>3.3.2</info>
-phpdocumentor/type-resolver: <info>0.4.0</info>
 psr/container: <info>1.0.0</info>
 psr/log: <info>1.1.0</info>
 sebastian/version: <info>2.0.1</info>
