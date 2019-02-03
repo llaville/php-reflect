@@ -2,18 +2,7 @@
 
 declare(strict_types=1);
 
-/**
- * The Reflect Reflection Analyser.
- *
- * @category PHP
- * @package  PHP_Reflect
- * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version  GIT: $Id$
- * @link     http://php5.laurent-laville.org/reflect/
- */
-
-namespace Bartlett\Reflect\Analyser;
+namespace Bartlett\Reflect\Application\Analyser;
 
 use Bartlett\Reflect\Collection\ReflectionCollection;
 
@@ -23,13 +12,13 @@ use PhpParser\Node;
  * This analyzer collects information about
  * classes, interfaces, traits, to produce report like PHP Reflection API
  *
+ * PHP version 7
+ *
  * @category PHP
- * @package  PHP_Reflect
+ * @package  bartlett/php-reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version  Release: @package_version@
+ * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link     http://php5.laurent-laville.org/reflect/
- * @since    Class available since Release 3.0.0-alpha1
  */
 class ReflectionAnalyser extends AbstractAnalyser
 {

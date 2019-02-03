@@ -2,18 +2,7 @@
 
 declare(strict_types=1);
 
-/**
- * Base class to all analysers accessible through the AnalyserPlugin.
- *
- * @category PHP
- * @package  PHP_Reflect
- * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version  GIT: $Id$
- * @link     http://php5.laurent-laville.org/reflect/
- */
-
-namespace Bartlett\Reflect\Analyser;
+namespace Bartlett\Reflect\Application\Analyser;
 
 use Bartlett\Reflect;
 
@@ -21,15 +10,16 @@ use PhpParser\Node;
 use PhpParser\NodeVisitor;
 
 /**
+ * Base class to all analysers accessible through the AnalyserPlugin.
  * Provides common metrics for all analysers.
  *
+ * PHP version 7
+ *
  * @category PHP
- * @package  PHP_Reflect
+ * @package  bartlett/php-reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version  Release: @package_version@
+ * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link     http://php5.laurent-laville.org/reflect/
- * @since    Class available since Release 2.0.0RC2
  */
 abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
 {
@@ -38,56 +28,55 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     protected $tokens;
     protected $file;
     protected $metrics = [];
-
     protected $subject;
 
-    public function getSubject()
+    public function getSubject(): Reflect
     {
         return $this->subject;
     }
 
-    public function getCurrentFile()
+    public function getCurrentFile(): string
     {
         return $this->file;
     }
 
-    public function getTokens()
+    public function getTokens(): array
     {
         return $this->tokens;
     }
 
-    public function setSubject(Reflect $reflect)
+    public function setSubject(Reflect $reflect): void
     {
         $this->subject = $reflect;
     }
 
-    public function setTokens(array $tokens)
+    public function setTokens(array $tokens): void
     {
         $this->tokens = $tokens;
     }
 
-    public function setCurrentFile($path)
+    public function setCurrentFile(string $path): void
     {
         $this->file = $path;
     }
 
-    public function getMetrics()
+    public function getMetrics(): array
     {
-        return array(get_class($this) => $this->metrics);
+        return [get_class($this) => $this->metrics];
     }
 
-    public function getName()
+    public function getName(): string
     {
         $parts = explode('\\', get_class($this));
         return array_pop($parts);
     }
 
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return implode('\\', array_slice(explode('\\', get_class($this)), 0, -1));
     }
 
-    public function getShortName()
+    public function getShortName(): string
     {
         return strtolower(str_replace('Analyser', '', $this->getName()));
     }
@@ -96,10 +85,10 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     {
         $this->subject->dispatch(
             Reflect\Events::BUILD,
-            array(
+            [
                 'method' => get_class($this) . '::' . __FUNCTION__,
                 'node'   => null,
-            )
+            ]
         );
     }
 
@@ -107,10 +96,10 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     {
         $this->subject->dispatch(
             Reflect\Events::BUILD,
-            array(
+            [
                 'method' => get_class($this) . '::' . __FUNCTION__,
                 'node'   => $node,
-            )
+            ]
         );
     }
 
@@ -118,10 +107,10 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     {
         $this->subject->dispatch(
             Reflect\Events::BUILD,
-            array(
+            [
                 'method' => get_class($this) . '::' . __FUNCTION__,
                 'node'   => $node,
-            )
+            ]
         );
     }
 
@@ -129,10 +118,10 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     {
         $this->subject->dispatch(
             Reflect\Events::BUILD,
-            array(
+            [
                 'method' => get_class($this) . '::' . __FUNCTION__,
                 'node'   => null,
-            )
+            ]
         );
     }
 
@@ -143,7 +132,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
      *
      * @return void
      */
-    protected function visitNamespace(Node\Stmt\Namespace_ $namespace)
+    protected function visitNamespace(Node\Stmt\Namespace_ $namespace): void
     {
         $this->namespaces[] = $namespace->name;
     }
@@ -155,7 +144,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
      *
      * @return void
      */
-    protected function visitClass(Node\Stmt\Class_ $class)
+    protected function visitClass(Node\Stmt\Class_ $class): void
     {
         $this->testClass = false;
 
@@ -186,9 +175,9 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
      * @param array              $tokens
      * @param Node\Stmt\Property $prop
      *
-     * @return boolean
+     * @return bool
      */
-    protected function isImplicitlyPublicProperty(array $tokens, Node\Stmt\Property $prop)
+    protected function isImplicitlyPublicProperty(array $tokens, Node\Stmt\Property $prop): bool
     {
         $i = $prop->getAttribute('startTokenPos');
         return (isset($tokens[$i]) && $tokens[$i][0] == T_VAR);
@@ -200,9 +189,9 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
      * @param array                 $tokens
      * @param Node\Stmt\ClassMethod $method
      *
-     * @return boolean
+     * @return bool
      */
-    protected function isImplicitlyPublicFunction(array $tokens, Node\Stmt\ClassMethod $method)
+    protected function isImplicitlyPublicFunction(array $tokens, Node\Stmt\ClassMethod $method): bool
     {
         $i = $method->getAttribute('startTokenPos');
         for ($c = count($tokens); $i < $c; ++$i) {
@@ -223,9 +212,9 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
      * @param array            $tokens
      * @param Node\Expr\Array_ $array
      *
-     * @return boolean
+     * @return bool
      */
-    protected function isShortArraySyntax(array $tokens, Node\Expr\Array_ $array)
+    protected function isShortArraySyntax(array $tokens, Node\Expr\Array_ $array): bool
     {
         $i = $array->getAttribute('startTokenPos');
         return is_string($tokens[$i]);

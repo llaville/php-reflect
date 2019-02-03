@@ -47,7 +47,9 @@ class AnalyserRunCommand extends AbstractCommand
 
         $command = new AppAnalyserRunCommand(
             $input->getArgument('source'),
-            $analysers
+            $analysers,
+            $input->getOption('no-plugins')
+
         );
 
         $response = $this->commandBus->handle($command);
@@ -114,7 +116,7 @@ class AnalyserRunCommand extends AbstractCommand
                 continue;
             }
             $baseNamespace = str_replace(
-                'Analyser\\' . basename(str_replace('\\', '/', $analyserName)),
+                'Application\\Analyser\\' . basename(str_replace('\\', '/', $analyserName)),
                 '',
                 $analyserName
             );

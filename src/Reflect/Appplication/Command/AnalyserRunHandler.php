@@ -7,6 +7,8 @@ namespace Bartlett\Reflect\Application\Command;
 use Bartlett\Reflect;
 use Bartlett\Reflect\Appplication\Command\AnalyserBaseHandler;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 /**
  * PHP version 7
  *
@@ -18,27 +20,24 @@ use Bartlett\Reflect\Appplication\Command\AnalyserBaseHandler;
  */
 class AnalyserRunHandler extends AnalyserBaseHandler implements CommandHandlerInterface
 {
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcher $eventDispatcher, string $configFilename)
+    {
+        parent::__construct($configFilename);
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     public function __invoke(AnalyserRunCommand $command): array
     {
         $source = $command->source;
-        $filter = $command->filter;
         $analysers = $command->analysers;
 
         $finder = $this->findProvider($source, $alias = '');
         $dataSourceId = realpath($source);
 
-        if ($finder === false) {
-        }
-
-        if ($filter === false) {
-            // filter feature is not possible on reflection:* commands
-            $filter = function ($data) {
-                return $data;
-            };
-        }
-
         $reflect = new Reflect();
-        //$reflect->setEventDispatcher($this->eventDispatcher);
+        $reflect->setEventDispatcher($this->eventDispatcher);
         $reflect->setDataSourceId($dataSourceId);
 
         $am = $this->registerAnalysers();
@@ -61,25 +60,12 @@ class AnalyserRunHandler extends AnalyserBaseHandler implements CommandHandlerIn
             $reflect->addAnalyser($analysersAvailable[$analyserName]);
         }
 
-        /*
-        $pm = new PluginManager($this->eventDispatcher);
-        if ($this->registerPlugins) {
+        $pm = new Reflect\Plugin\PluginManager($this->eventDispatcher, $this->configFilename);
+        if ($command->withPlugins()) {
             $pm->registerPlugins();
-        }*/
+        }
 
         $response = $reflect->parse($finder);
-
-        $response = $filter($response);
-
-        if (!empty($format)) {
-            $transformMethod = sprintf('transformTo%s', ucfirst($format));
-            if (!method_exists($this, $transformMethod)) {
-                throw new \InvalidArgumentException(
-                    'Could not render result in this format (not implemented).'
-                );
-            }
-            $response = $this->$transformMethod($response);
-        }
 
         return $response;
     }

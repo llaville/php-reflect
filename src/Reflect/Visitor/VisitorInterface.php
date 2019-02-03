@@ -2,23 +2,21 @@
 
 declare(strict_types=1);
 
-/**
- * Common interface to all analysers using sniffs accessible through the AnalyserManager.
- *
- * @category PHP
- * @package  PHP_Reflect
- * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
- */
-
 namespace Bartlett\Reflect\Visitor;
 
 /**
  * Interface that all analysers using sniffs must implement.
+ *
+ * PHP version 7
+ *
+ * @category PHP
+ * @package  bartlett/php-reflect
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
+ * @link     http://php5.laurent-laville.org/reflect/
  */
 interface VisitorInterface
 {
-    public function setUpBeforeVisitor();
-    public function tearDownAfterVisitor();
+    public function setUpBeforeVisitor(): void;
+    public function tearDownAfterVisitor(): void;
 }

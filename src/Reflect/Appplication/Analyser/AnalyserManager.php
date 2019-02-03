@@ -2,18 +2,7 @@
 
 declare(strict_types=1);
 
-/**
- * Analyser manager
- *
- * @category PHP
- * @package  PHP_Reflect
- * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version  GIT: $Id$
- * @link     http://php5.laurent-laville.org/reflect/
- */
-
-namespace Bartlett\Reflect\Analyser;
+namespace Bartlett\Reflect\Application\Analyser;
 
 use Bartlett\Reflect\Application\Command\ConfigValidateCommand;
 use Bartlett\Reflect\Application\Command\ConfigValidateHandler;
@@ -21,17 +10,17 @@ use Bartlett\Reflect\Application\Command\ConfigValidateHandler;
 /**
  * Analyser manager
  *
+ * PHP version 7
+ *
  * @category PHP
- * @package  PHP_Reflect
+ * @package  bartlett/php-reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version  Release: @package_version@
+ * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link     http://php5.laurent-laville.org/reflect/
- * @since    Class available since Release 3.0.0-alpha2+1
  */
 class AnalyserManager
 {
-    protected $analysers = [];
+    protected $analysers;
     protected $configFilename;
 
     /**
@@ -42,9 +31,11 @@ class AnalyserManager
      */
     public function __construct(array $namespaces, string $configFilename)
     {
-        $defaultNamespace = array(
+        $this->analysers = [];
+
+        $defaultNamespace = [
             __NAMESPACE__ => __DIR__,
-        );
+        ];
         $namespaces = array_merge($defaultNamespace, $namespaces);
         $this->configFilename = $configFilename;
 
@@ -76,7 +67,7 @@ class AnalyserManager
      *
      * @return void
      */
-    public function registerAnalysers()
+    public function registerAnalysers(): void
     {
         $command = new ConfigValidateCommand($this->configFilename);
         $configValidateHandler = new ConfigValidateHandler();
@@ -100,7 +91,7 @@ class AnalyserManager
      *
      * @return void
      */
-    public function addAnalyser(AnalyserInterface $analyser)
+    public function addAnalyser(AnalyserInterface $analyser): void
     {
         $this->analysers[] = $analyser;
     }
@@ -110,7 +101,7 @@ class AnalyserManager
      *
      * @return array analysers
      */
-    public function getAnalysers()
+    public function getAnalysers(): array
     {
         return $this->analysers;
     }
@@ -120,7 +111,7 @@ class AnalyserManager
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $array = [];
 

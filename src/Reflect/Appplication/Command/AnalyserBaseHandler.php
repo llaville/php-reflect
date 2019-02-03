@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bartlett\Reflect\Appplication\Command;
 
-use Bartlett\Reflect\Analyser\AnalyserManager;
+use Bartlett\Reflect\Application\Analyser\AnalyserManager;
 use Bartlett\Reflect\Application\Command\ConfigValidateCommand;
 use Bartlett\Reflect\Application\Command\ConfigValidateHandler;
 

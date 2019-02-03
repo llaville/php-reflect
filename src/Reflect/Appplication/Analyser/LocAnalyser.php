@@ -2,8 +2,14 @@
 
 declare(strict_types=1);
 
+namespace Bartlett\Reflect\Application\Analyser;
+
+use Bartlett\Reflect\Tokenizer\DefaultTokenizer;
+
+use PhpParser\Node;
+
 /**
- * The Reflect Lines Of Code (loc) Analyser.
+ * This analyzer collects different size metrics about lines of code.
  *
  * It analyse source code like Sebastian Bergmann phploc solution
  * (https://github.com/sebastianbergmann/phploc), and give a text report
@@ -26,31 +32,15 @@ declare(strict_types=1);
  *     Not in classes or functions                     24 (8.30%)
  * </code>
  *
- * @category PHP
- * @package  PHP_Reflect
- * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version  GIT: $Id$
- * @link     http://php5.laurent-laville.org/reflect/
- */
-
-namespace Bartlett\Reflect\Analyser;
-
-use Bartlett\Reflect\Tokenizer\DefaultTokenizer;
-
-use PhpParser\Node;
-
-/**
- * This analyzer collects different size metrics about lines of code.
+ * PHP version 7
  *
  * @category PHP
- * @package  PHP_Reflect
+ * @package  bartlett/php-reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version  Release: @package_version@
+ * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link     http://php5.laurent-laville.org/reflect/
- * @since    Class available since Release 3.0.0-alpha1
  */
+
 class LocAnalyser extends AbstractAnalyser
 {
     private $llocClasses;
@@ -58,7 +48,7 @@ class LocAnalyser extends AbstractAnalyser
 
     public function __construct()
     {
-        $this->metrics = array(
+        $this->metrics = [
             'llocClasses'   => 0,
             'llocByNoc'     => 0,
             'llocByNom'     => 0,
@@ -75,7 +65,7 @@ class LocAnalyser extends AbstractAnalyser
             'loc'           => 0,
             'ccn'           => 0,
             'ccnMethods'    => 0,
-        );
+        ];
     }
 
     public function enterNode(Node $node)
@@ -121,7 +111,7 @@ class LocAnalyser extends AbstractAnalyser
      *
      * @return void
      */
-    protected function visitClass(Node\Stmt\Class_ $class)
+    protected function visitClass(Node\Stmt\Class_ $class): void
     {
         $this->metrics['classes']++;
         $this->metrics['llocClasses'] += $this->llocClasses;
@@ -135,7 +125,7 @@ class LocAnalyser extends AbstractAnalyser
      *
      * @return void
      */
-    protected function visitMethod(Node\Stmt\ClassMethod $method)
+    protected function visitMethod(Node\Stmt\ClassMethod $method): void
     {
         $this->metrics['methods']++;
 
@@ -162,7 +152,7 @@ class LocAnalyser extends AbstractAnalyser
      *
      * @return void
      */
-    protected function visitFunction(Node $function)
+    protected function visitFunction(Node $function): void
     {
         $this->metrics['functions']++;
 
@@ -200,7 +190,7 @@ class LocAnalyser extends AbstractAnalyser
      *
      * @return array
      */
-    private function getLinesOfCode(array $nodes)
+    private function getLinesOfCode(array $nodes): array
     {
         $length = $nodes[count($nodes)-1]->getAttribute('endTokenPos')
             - $nodes[0]->getAttribute('startTokenPos')

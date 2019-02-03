@@ -17,11 +17,18 @@ class AnalyserRunCommand
 {
     public $source;
     public $analysers;
-    public $filter = false;
 
-    public function __construct(string $source, array $analysers)
+    private $withoutPlugins;
+
+    public function __construct(string $source, array $analysers, bool $withoutPlugins)
     {
         $this->source = $source;
         $this->analysers = $analysers;
+        $this->withoutPlugins = $withoutPlugins;
+    }
+
+    public function withPlugins(): bool
+    {
+        return !$this->withoutPlugins;
     }
 }

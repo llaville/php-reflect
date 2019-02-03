@@ -2,19 +2,7 @@
 
 declare(strict_types=1);
 
-/**
- * Base class to all analysers accessible through the AnalyserPlugin
- * that used sniff.
- *
- * @category PHP
- * @package  PHP_Reflect
- * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version  GIT: $Id$
- * @link     http://php5.laurent-laville.org/reflect/
- */
-
-namespace Bartlett\Reflect\Analyser;
+namespace Bartlett\Reflect\Application\Analyser;
 
 use Bartlett\Reflect;
 use Bartlett\Reflect\Visitor\VisitorInterface;
@@ -22,31 +10,31 @@ use Bartlett\Reflect\Visitor\VisitorInterface;
 use PhpParser\Node;
 
 /**
- * Base code for all analysers that used sniffs.
+ * Base class to all analysers accessible through the AnalyserPlugin
+ * that used sniff.
+ *
+ * PHP version 7
  *
  * @category PHP
- * @package  PHP_Reflect
+ * @package  bartlett/php-reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version  Release: @package_version@
+ * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link     http://php5.laurent-laville.org/reflect/
- * @since    Class available since Release 4.0.0
  */
 abstract class AbstractSniffAnalyser extends AbstractAnalyser implements VisitorInterface
 {
     protected $sniffs;
-
     protected $currentObject;
     protected $currentMethod;
     protected $currentFunction;
     protected $currentClosure;
 
-    public function setMetrics(array $values)
+    public function setMetrics(array $values): void
     {
         $this->metrics = array_merge($this->metrics, $values);
     }
 
-    public function inContext($id)
+    public function inContext($id): bool
     {
         if (strcasecmp($id, 'object') === 0) {
             return (null !== $this->currentObject);
@@ -63,7 +51,7 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         return false;
     }
 
-    public function setUpBeforeVisitor()
+    public function setUpBeforeVisitor(): void
     {
         $this->subject->dispatch(
             Reflect\Events::SNIFF,
@@ -79,7 +67,7 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         }
     }
 
-    public function tearDownAfterVisitor()
+    public function tearDownAfterVisitor(): void
     {
         $this->subject->dispatch(
             Reflect\Events::SNIFF,

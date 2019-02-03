@@ -84,6 +84,7 @@ class Application extends \Symfony\Component\Console\Application
     /** @var string */
     private $baseDir;
 
+    /** @var EventDispatcher */
     private $eventDispatcher;
 
     public function __construct(string $name = 'UNKNOWN')
@@ -102,7 +103,7 @@ class Application extends \Symfony\Component\Console\Application
     {
         $locator = new InMemoryLocator();
         $locator->addHandler(new AnalyserListHandler($this->getJsonConfigFilename()), AppAnalyserListCommand::class);
-        $locator->addHandler(new AnalyserRunHandler($this->getJsonConfigFilename()), AppAnalyserRunCommand::class);
+        $locator->addHandler(new AnalyserRunHandler($this->getDispatcher(), $this->getJsonConfigFilename()), AppAnalyserRunCommand::class);
         $locator->addHandler(new DiagnoseHandler(), AppDiagnoseCommand::class);
         $locator->addHandler(new ConfigValidateHandler(), AppConfigValidateCommand::class);
         $locator->addHandler(new PluginListHandler(), AppPluginListCommand::class);
@@ -157,7 +158,12 @@ class Application extends \Symfony\Component\Console\Application
 
     public function getBaseAnalyserDir() : string
     {
-        return $this->baseDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Reflect' . DIRECTORY_SEPARATOR . 'Analyser';
+        return $this->baseDir . DIRECTORY_SEPARATOR .
+            'src' . DIRECTORY_SEPARATOR .
+            'Reflect' . DIRECTORY_SEPARATOR .
+            'Application' . DIRECTORY_SEPARATOR .
+            'Analyser'
+        ;
     }
 
     /**
