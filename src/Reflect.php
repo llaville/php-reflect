@@ -2,25 +2,11 @@
 
 declare(strict_types=1);
 
-/**
- * Reflect
- * Reverse-engineer classes, interfaces, traits, functions, constants, namespaces
- * and more.
- *
- * PHP version 7
- *
- * @category PHP
- * @package  PHP_Reflect
- * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
- */
-
 namespace Bartlett;
 
-use Bartlett\Reflect\Event\AbstractDispatcher;
-use Bartlett\Reflect\Events;
-use Bartlett\Reflect\Visitor\VisitorInterface;
+use Bartlett\Reflect\Application\Events;
+use Bartlett\Reflect\Application\Event\AbstractDispatcher;
+use Bartlett\Reflect\Application\Visitor\VisitorInterface;
 
 use PhpParser\ErrorHandler\Collecting;
 use PhpParser\Lexer\Emulative;
@@ -33,17 +19,17 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Iterator\CustomFilterIterator;
 
 /**
+ * Reverse-engineer classes, interfaces, traits, functions, constants, namespaces
+ * and more.
  * Reflect analyse your source code with the tokenizer extension.
  *
- * All data sources (archive, local or remote script) are parsable.
- * You can cache or logs results and even more. API is extensible simply.
+ * PHP version 7
  *
  * @category PHP
- * @package  PHP_Reflect
+ * @package  bartlett/php-reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link     http://php5.laurent-laville.org/reflect/
- * @since    Class available since Release 2.0.0RC1
  */
 class Reflect extends AbstractDispatcher
 {

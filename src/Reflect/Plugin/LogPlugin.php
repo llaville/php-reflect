@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace Bartlett\Reflect\Plugin;
 
-use Bartlett\Reflect;
+use Bartlett\Reflect\Application\Events;
 use Bartlett\Reflect\Plugin\Log\DefaultLogger;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -72,12 +72,12 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Reflect\Events::PROGRESS => 'onReflectProgress',
-            Reflect\Events::SUCCESS  => 'onReflectSuccess',
-            Reflect\Events::ERROR    => 'onReflectError',
-            Reflect\Events::COMPLETE => 'onReflectComplete',
-            Reflect\Events::BUILD    => 'onAstBuild',
-            Reflect\Events::SNIFF    => 'onSniff',
+            Events::PROGRESS => 'onReflectProgress',
+            Events::SUCCESS  => 'onReflectSuccess',
+            Events::ERROR    => 'onReflectError',
+            Events::COMPLETE => 'onReflectComplete',
+            Events::BUILD    => 'onAstBuild',
+            Events::SNIFF    => 'onSniff',
         );
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bartlett\Reflect\Application\Analyser;
 
 use Bartlett\Reflect;
+use Bartlett\Reflect\Application\Events;
 
 use PhpParser\Node;
 use PhpParser\NodeVisitor;
@@ -84,7 +85,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     public function beforeTraverse(array $nodes)
     {
         $this->subject->dispatch(
-            Reflect\Events::BUILD,
+            Events::BUILD,
             [
                 'method' => get_class($this) . '::' . __FUNCTION__,
                 'node'   => null,
@@ -95,7 +96,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     public function enterNode(Node $node)
     {
         $this->subject->dispatch(
-            Reflect\Events::BUILD,
+            Events::BUILD,
             [
                 'method' => get_class($this) . '::' . __FUNCTION__,
                 'node'   => $node,
@@ -106,7 +107,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     public function leaveNode(Node $node)
     {
         $this->subject->dispatch(
-            Reflect\Events::BUILD,
+            Events::BUILD,
             [
                 'method' => get_class($this) . '::' . __FUNCTION__,
                 'node'   => $node,
@@ -117,7 +118,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     public function afterTraverse(array $nodes)
     {
         $this->subject->dispatch(
-            Reflect\Events::BUILD,
+            Events::BUILD,
             [
                 'method' => get_class($this) . '::' . __FUNCTION__,
                 'node'   => null,

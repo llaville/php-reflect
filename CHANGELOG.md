@@ -6,8 +6,16 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 ## [Unreleased]
 
+## [5.0.0-alpha2] - 2019-02-03
+
 ### Changed
 
+- cache plugin feature was removed
+- filter and transform final results features were removed since version 4.3
+- diagram commands are only available on symfony console if `bartlett/umlwriter` package is installed
+- diagnose command use `zendframework/zenddiagnostics` package
+- console commands are now in `bartlett` namespace 
+- use command bus as new architecture
 - remove extra/useless `Bartlett` directory level to match PSR-4
 
 ## [5.0.0-alpha1] - 2019-01-20

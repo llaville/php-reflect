@@ -33,6 +33,7 @@ use Bartlett\Reflect\Presentation\Console\Command\ReflectionClassCommand;
 use Bartlett\Reflect\Presentation\Console\Command\ReflectionFunctionCommand;
 use Bartlett\Reflect\Presentation\Console\Command\DiagramClassCommand;
 use Bartlett\Reflect\Presentation\Console\Command\DiagramPackageCommand;
+use Bartlett\Reflect\Presentation\Util\Timer;
 
 use Bartlett\UmlWriter\Processor\ProcessorInterface;
 
@@ -245,7 +246,7 @@ class Application extends \Symfony\Component\Console\Application
                 $text = sprintf(
                     '%s<comment>Time: %s, Memory: %4.2fMb</comment>',
                     PHP_EOL,
-                    $time, //Timer::toTimeString($time),
+                    Timer::toTimeString($time),
                     $memory / (1024 * 1024)
                 );
                 $output->writeln($text);
@@ -259,7 +260,6 @@ class Application extends \Symfony\Component\Console\Application
     public function getDispatcher()
     {
         if (!$this->eventDispatcher) {
-            //$this->setDispatcher(new CacheAwareEventDispatcher());
             $this->setDispatcher(new EventDispatcher());
         }
         return $this->eventDispatcher;

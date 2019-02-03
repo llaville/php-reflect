@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bartlett\Reflect\Application\Analyser;
 
-use Bartlett\Reflect\Tokenizer\DefaultTokenizer;
+use Bartlett\Reflect\Application\Tokenizer\DefaultTokenizer;
 
 use PhpParser\Node;
 

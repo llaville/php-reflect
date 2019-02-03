@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bartlett\Reflect\Application\Analyser;
 
-use Bartlett\Reflect\Collection\ReflectionCollection;
+use Bartlett\Reflect\Application\Collection\ReflectionCollection;
 
 use PhpParser\Node;
 

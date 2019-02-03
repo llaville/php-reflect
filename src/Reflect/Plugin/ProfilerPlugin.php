@@ -2,23 +2,11 @@
 
 declare(strict_types=1);
 
-/**
- * Plugin to track memory and time consumption.
- *
- * PHP version 7
- *
- * @category PHP
- * @package  PHP_Reflect
- * @author   Laurent Laville <pear@laurent-laville.org>
- * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
- */
-
 namespace Bartlett\Reflect\Plugin;
 
-use Bartlett\Reflect;
+use Bartlett\Reflect\Application\Events;
 use Bartlett\Reflect\Plugin\Log\DefaultLogger;
-use Bartlett\Reflect\Util\Timer;
+use Bartlett\Reflect\Presentation\Util\Timer;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -32,12 +20,13 @@ use Psr\Log\LogLevel;
 /**
  * Plugin to track memory and time consumption.
  *
+ * PHP version 7
+ *
  * @category PHP
- * @package  PHP_Reflect
+ * @package  bartlett/php-reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
  * @link     http://php5.laurent-laville.org/reflect/
- * @since    Class available since Release 3.0.0-alpha1
  */
 class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -79,10 +68,10 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         $events = array(
-            Reflect\Events::PROGRESS => 'onReflectProgress',
-            Reflect\Events::SUCCESS  => 'onReflectSuccess',
-            Reflect\Events::ERROR    => 'onReflectError',
-            Reflect\Events::COMPLETE => 'onReflectComplete',
+            Events::PROGRESS => 'onReflectProgress',
+            Events::SUCCESS  => 'onReflectSuccess',
+            Events::ERROR    => 'onReflectError',
+            Events::COMPLETE => 'onReflectComplete',
         );
         return $events;
     }
@@ -120,7 +109,7 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
 
         self::$logger->info(
             'AST built in {time} on file "{file}"',
-            array('time' => Timer::toTimeString($time), 'file' => $filename)
+            ['time' => Timer::toTimeString($time), 'file' => $filename]
         );
     }
 
@@ -139,11 +128,11 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
 
         self::$logger->error(
             'Parse error in {time} on file "{file"}: {error}',
-            array(
+            [
                 'time'  => Timer::toTimeString($time),
                 'file'  => $filename,
                 'error' => $event['error']
-            )
+            ]
         );
     }
 
@@ -161,7 +150,7 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
 
         self::$logger->notice(
             'Parsing data source {source} completed in {time}',
-            array('time' => Timer::toTimeString($time), 'source' => $event['source'])
+            ['time' => Timer::toTimeString($time), 'source' => $event['source']]
         );
     }
 }

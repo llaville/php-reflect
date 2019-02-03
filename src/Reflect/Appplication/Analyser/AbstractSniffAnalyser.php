@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Bartlett\Reflect\Application\Analyser;
 
-use Bartlett\Reflect;
-use Bartlett\Reflect\Visitor\VisitorInterface;
+use Bartlett\Reflect\Application\Events;
+use Bartlett\Reflect\Application\Visitor\VisitorInterface;
 
 use PhpParser\Node;
 
@@ -54,7 +54,7 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     public function setUpBeforeVisitor(): void
     {
         $this->subject->dispatch(
-            Reflect\Events::SNIFF,
+            Events::SNIFF,
             array(
                 'method' => get_class($this) . '::' . __FUNCTION__,
                 'node'   => null,
@@ -70,7 +70,7 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     public function tearDownAfterVisitor(): void
     {
         $this->subject->dispatch(
-            Reflect\Events::SNIFF,
+            Events::SNIFF,
             array(
                 'method' => get_class($this) . '::' . __FUNCTION__,
                 'node'   => null,
