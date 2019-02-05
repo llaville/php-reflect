@@ -134,10 +134,10 @@ class Application extends \Symfony\Component\Console\Application
         $defaultCommands[] = new ReflectionClassCommand($commandBus);
         $defaultCommands[] = new ReflectionFunctionCommand($commandBus);
 
-        if (interface_exists(ProcessorInterface::class)) {
+        /*if (interface_exists(ProcessorInterface::class)) {
             $defaultCommands[] = new DiagramClassCommand($commandBus);
             $defaultCommands[] = new DiagramPackageCommand($commandBus);
-        }
+        }*/
 
         return $defaultCommands;
     }
