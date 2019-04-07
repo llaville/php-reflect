@@ -31,11 +31,7 @@ use Bartlett\Reflect\Presentation\Console\Command\DiagnoseCommand;
 use Bartlett\Reflect\Presentation\Console\Command\PluginListCommand;
 use Bartlett\Reflect\Presentation\Console\Command\ReflectionClassCommand;
 use Bartlett\Reflect\Presentation\Console\Command\ReflectionFunctionCommand;
-use Bartlett\Reflect\Presentation\Console\Command\DiagramClassCommand;
-use Bartlett\Reflect\Presentation\Console\Command\DiagramPackageCommand;
 use Bartlett\Reflect\Presentation\Util\Timer;
-
-use Bartlett\UmlWriter\Processor\ProcessorInterface;
 
 use League\Tactician\CommandBus;
 use League\Tactician\Handler\CommandHandlerMiddleware;
@@ -111,11 +107,6 @@ class Application extends \Symfony\Component\Console\Application
         $locator->addHandler(new ReflectionClassHandler(), AppReflectionClassCommand::class);
         $locator->addHandler(new ReflectionFunctionHandler(), AppReflectionFunctionCommand::class);
 
-        if (interface_exists(ProcessorInterface::class)) {
-            $locator->addHandler(new DiagramClassHandler(), AppDiagramClassCommand::class);
-            $locator->addHandler(new DiagramPackageHandler(), AppDiagramPackageCommand::class);
-        }
-
         $handlerMiddleware = new CommandHandlerMiddleware(
             new ClassNameExtractor(),
             $locator,
@@ -133,12 +124,7 @@ class Application extends \Symfony\Component\Console\Application
         $defaultCommands[] = new PluginListCommand($commandBus);
         $defaultCommands[] = new ReflectionClassCommand($commandBus);
         $defaultCommands[] = new ReflectionFunctionCommand($commandBus);
-
-        /*if (interface_exists(ProcessorInterface::class)) {
-            $defaultCommands[] = new DiagramClassCommand($commandBus);
-            $defaultCommands[] = new DiagramPackageCommand($commandBus);
-        }*/
-
+        
         return $defaultCommands;
     }
 
