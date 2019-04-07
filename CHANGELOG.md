@@ -6,6 +6,12 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 ## [Unreleased]
 
+## [5.0.0-beta1] - 2019-04-07
+
+### Changed
+
+- remove extra uml writer commands
+
 ## [5.0.0-alpha2] - 2019-02-03
 
 ### Changed
