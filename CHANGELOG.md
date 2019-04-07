@@ -6,7 +6,7 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 ## [Unreleased]
 
-## [5.0.0-beta1] - 2019-04-07
+## [5.0.0-alpha3] - 2019-04-07
 
 ### Changed
 
