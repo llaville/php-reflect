@@ -11,8 +11,6 @@ use Bartlett\Reflect\Application\Command\DiagnoseHandler;
 use Bartlett\Reflect\Application\Command\PluginListHandler;
 use Bartlett\Reflect\Application\Command\ReflectionClassHandler;
 use Bartlett\Reflect\Application\Command\ReflectionFunctionHandler;
-use Bartlett\Reflect\Application\Command\DiagramClassHandler;
-use Bartlett\Reflect\Application\Command\DiagramPackageHandler;
 
 use Bartlett\Reflect\Application\Command\AnalyserListCommand as AppAnalyserListCommand;
 use Bartlett\Reflect\Application\Command\AnalyserRunCommand as AppAnalyserRunCommand;
@@ -21,8 +19,6 @@ use Bartlett\Reflect\Application\Command\DiagnoseCommand as AppDiagnoseCommand;
 use Bartlett\Reflect\Application\Command\PluginListCommand as AppPluginListCommand;
 use Bartlett\Reflect\Application\Command\ReflectionClassCommand as AppReflectionClassCommand;
 use Bartlett\Reflect\Application\Command\ReflectionFunctionCommand as AppReflectionFunctionCommand;
-use Bartlett\Reflect\Application\Command\DiagramClassCommand as AppDiagramClassCommand;
-use Bartlett\Reflect\Application\Command\DiagramPackageCommand as AppDiagramPackageCommand;
 
 use Bartlett\Reflect\Presentation\Console\Command\AnalyserListCommand;
 use Bartlett\Reflect\Presentation\Console\Command\AnalyserRunCommand;
@@ -124,7 +120,7 @@ class Application extends \Symfony\Component\Console\Application
         $defaultCommands[] = new PluginListCommand($commandBus);
         $defaultCommands[] = new ReflectionClassCommand($commandBus);
         $defaultCommands[] = new ReflectionFunctionCommand($commandBus);
-        
+
         return $defaultCommands;
     }
 
