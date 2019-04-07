@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace Bartlett\Tests\Reflect\Analyser;
 
-use Bartlett\Reflect\Analyser\AnalyserManager;
+use Bartlett\Reflect\Application\Analyser\AnalyserManager;
 
 /**
  * Tests for PHP_CompatInfo, handling analysers.
@@ -44,7 +44,7 @@ class AnalyserManagerTest extends \PHPUnit\Framework\TestCase
         putenv("BARTLETT_SCAN_DIR=" . __DIR__);
         putenv("BARTLETTRC=phpreflect.json");
 
-        $this->am = new AnalyserManager();
+        $this->am = new AnalyserManager([], __DIR__ . '/phpreflect.json');
     }
 
     /**
@@ -68,7 +68,7 @@ class AnalyserManagerTest extends \PHPUnit\Framework\TestCase
     public function testContainsOnlyAnalyserInterfaces()
     {
         $this->assertContainsOnlyInstancesOf(
-            'Bartlett\Reflect\Analyser\AnalyserInterface',
+            'Bartlett\Reflect\Application\Analyser\AnalyserInterface',
             $this->am->getAnalysers()
         );
     }
@@ -194,9 +194,9 @@ class AnalyserManagerTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             array(
-                'loc'        => 'Bartlett\Reflect\Analyser\LocAnalyser',
-                'reflection' => 'Bartlett\Reflect\Analyser\ReflectionAnalyser',
-                'structure'  => 'Bartlett\Reflect\Analyser\StructureAnalyser',
+                'loc'        => 'Bartlett\Reflect\Application\Analyser\LocAnalyser',
+                'reflection' => 'Bartlett\Reflect\Application\Analyser\ReflectionAnalyser',
+                'structure'  => 'Bartlett\Reflect\Application\Analyser\StructureAnalyser',
             ),
             $this->am->toArray()
         );
