@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace Bartlett\Tests\Reflect\Model;
 
-use Bartlett\Reflect\Exception\ModelException;
+use Bartlett\Reflect\Application\Exception\ModelException;
 
 /**
  * Unit Test Case that covers Bartlett\Reflect\Model\ClassModel
@@ -274,7 +274,7 @@ class ClassModelTest extends GenericModelTest
         $m = 'otherfunction';
 
         $this->assertInstanceOf(
-            'Bartlett\Reflect\Model\MethodModel',
+            'Bartlett\Reflect\Application\Model\MethodModel',
             self::$models[$c]->getMethod($m),
             'This is not a MethodModel object'
         );
@@ -304,7 +304,7 @@ class ClassModelTest extends GenericModelTest
             return;
         }
         $this->fail(
-            'An expected Bartlett\Reflect\Exception\ModelException exception' .
+            'An expected Bartlett\Reflect\Application\Exception\ModelException exception' .
             ' has not been raised.'
         );
     }

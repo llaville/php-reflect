@@ -18,7 +18,16 @@ declare(strict_types=1);
 
 namespace Bartlett\Tests\Reflect\Model;
 
-use Bartlett\Reflect\Client;
+use Bartlett\Reflect\Application\Analyser\ReflectionAnalyser;
+use Bartlett\Reflect\Application\Command\AnalyserRunCommand;
+use Bartlett\Reflect\Application\Command\AnalyserRunHandler;
+
+use League\Tactician\CommandBus;
+use League\Tactician\Handler\CommandHandlerMiddleware;
+use League\Tactician\Handler\Locator\InMemoryLocator;
+use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
+use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Unit Test Case that covers Bartlett\Reflect\Model\*Model
@@ -50,15 +59,30 @@ abstract class GenericModelTest extends \PHPUnit\Framework\TestCase
 
         self::$fixture = self::$fixtures . self::$fixture;
 
-        $client = new Client();
+        $locator = new InMemoryLocator();
+        $locator->addHandler(
+            new AnalyserRunHandler(
+                new EventDispatcher(),
+                __DIR__ . '/../Environment/phpreflect.json'
+            ),
+            AnalyserRunCommand::class
+        );
 
-        // request for a Bartlett\Reflect\Api\Analyser
-        self::$api = $client->api('analyser');
+        $handlerMiddleware = new CommandHandlerMiddleware(
+            new ClassNameExtractor(),
+            $locator,
+            new InvokeInflector()
+        );
 
-        $analyserId   = 'Bartlett\Reflect\Analyser\ReflectionAnalyser';
+        $commandBus = new CommandBus([$handlerMiddleware]);
+
+        $analyserId   = ReflectionAnalyser::class;
         $dataSource   = self::$fixture;
-        $analysers    = array('reflection');
-        $metrics      = self::$api->run($dataSource, $analysers);
+        $analysers    = ['reflection'];
+
+        $command = new AnalyserRunCommand($dataSource, $analysers, true);
+
+        $metrics = $commandBus->handle($command);
         self::$models = $metrics[$analyserId];
     }
 }
