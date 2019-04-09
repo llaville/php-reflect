@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Bartlett\Reflect\Application\Command;
 
 use Bartlett\Reflect;
-use Bartlett\Reflect\Appplication\Command\AnalyserBaseHandler;
+use Bartlett\Reflect\Application\Command\AnalyserBaseHandler;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 

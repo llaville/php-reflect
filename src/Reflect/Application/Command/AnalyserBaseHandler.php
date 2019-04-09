@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bartlett\Reflect\Appplication\Command;
+namespace Bartlett\Reflect\Application\Command;
 
 use Bartlett\Reflect\Application\Analyser\AnalyserManager;
 use Bartlett\Reflect\Application\Command\ConfigValidateCommand;
