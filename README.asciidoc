@@ -9,7 +9,7 @@ that bundles all dependencies in a single file.
 
 == Requirements
 
-PHP 5.5.0 or above.
+PHP 5.6.0 or above.
 
 == Install
 
