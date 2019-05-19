@@ -1,5 +1,5 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/bartlett/php-reflect.svg?style=flat-square)](https://packagist.org/packages/bartlett/php-reflect)
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.1-8892BF.svg?style=flat-square)](https://php.net/)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.5-8892BF.svg?style=flat-square)](https://php.net/)
 
 # Introduction
 
