@@ -223,9 +223,9 @@ class Application extends BaseApplication
                 if (isset($url['scheme']) && $url['scheme'] == 'ftp') {
                     $options = array($url['scheme'] => array('overwrite' => true));
                     $context = stream_context_create($options);
-                    $output  = new StreamOutput(fopen($target, $mode, false, $context), null, false);
+                    $output  = new StreamOutput(fopen($target, $mode, false, $context), StreamOutput::VERBOSITY_NORMAL, false);
                 } else {
-                    $output  = new StreamOutput(fopen($target, $mode), null, false);
+                    $output  = new StreamOutput(fopen($target, $mode), StreamOutput::VERBOSITY_NORMAL, false);
                 }
             }
             $output->getFormatter()->setStyle('diagpass', new OutputFormatterStyle('green', null, ['reverse']));
