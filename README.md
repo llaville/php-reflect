@@ -18,7 +18,7 @@ that bundles all dependencies in a single file.
 
 You can either :
 
-* download the phar version [4.3.0](http://bartlett.laurent-laville.org/get/phpreflect-4.3.0.phar)
+* download the phar version [4.3.1](http://bartlett.laurent-laville.org/get/phpreflect-4.3.1.phar)
 * install via [packagist](https://packagist.org/packages/bartlett/php-reflect/) the current source dev-master
 
 # Documentation
