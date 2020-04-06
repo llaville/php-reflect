@@ -21,8 +21,12 @@
         "vendor/symfony/console/LICENSE",
         "vendor/symfony/dependency-injection/LICENSE",
         "vendor/symfony/event-dispatcher/LICENSE",
+        "vendor/symfony/event-dispatcher-contracts/LICENSE",
         "vendor/symfony/finder/LICENSE",
+        "vendor/symfony/polyfill-ctype/LICENSE",
         "vendor/symfony/polyfill-mbstring/LICENSE",
+        "vendor/symfony/polyfill-php73/LICENSE",
+        "vendor/symfony/service-contracts/LICENSE",
         "vendor/symfony/stopwatch/LICENSE",
         "vendor/webmozart/assert/LICENSE",
         "vendor/autoload.php"
