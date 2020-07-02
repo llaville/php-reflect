@@ -4,3 +4,4 @@ Thumbs.db
 *.zip
 vendor/
 phpunit.xml
+composer.lock
