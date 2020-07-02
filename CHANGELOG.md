@@ -6,6 +6,9 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 ## [Unreleased]
 
+- Drop support to Symfony 2 and 3, and allows only Symfony 4 LTS and Symfony 5
+- Drop support to PHP 5
+
 ## [4.3.1] - 2020-02-26
 
 ### Changed
@@ -78,3 +81,12 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 ## [4.0.0] - 2015-12-04
 
 - introduce sniff architecture, and drop support to PHP 5.3
+
+[unreleased]: https://github.com/llaville/php-reflect/compare/4.3.1...HEAD
+[4.3.1]: https://github.com/llaville/php-reflect/compare/4.3.0...4.3.1
+[4.3.0]: https://github.com/llaville/php-reflect/compare/4.2.2...4.3.0
+[4.2.2]: https://github.com/llaville/php-reflect/compare/4.2.1...4.2.2
+[4.2.1]: https://github.com/llaville/php-reflect/compare/4.2.0...4.2.1
+[4.2.0]: https://github.com/llaville/php-reflect/compare/4.2.1...4.2.0
+[4.1.0]: https://github.com/llaville/php-reflect/compare/4.0.0...4.1.0
+[4.0.0]: https://github.com/llaville/php-reflect/compare/3.1.2...4.0.0
