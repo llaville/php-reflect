@@ -29,7 +29,7 @@
         "phpdocumentor/reflection-docblock": "^4.3",
         "phpdocumentor/type-resolver": "^0.5",
         "justinrainbow/json-schema": "^5.2",
-        "seld/jsonlint": "^1.1",
+        "seld/jsonlint": "^1.4",
         "psr/log": "^1.0"
     },
     "require-dev": {
