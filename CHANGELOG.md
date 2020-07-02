@@ -11,6 +11,7 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 - Drop support to `sebastian/version` v1
 - Raise `phpdocumentor/reflection-docblock` constraint to v4 to allows only PHP 7 compatibility
 - Raise `phpdocumentor/type-resolver` constraint to v0.5 to allows only PHP 7 compatibility
+- Raise `justinrainbow/json-schema` constraint to v5.2
 
 ## [4.3.1] - 2020-02-26
 
