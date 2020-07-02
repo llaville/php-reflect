@@ -8,6 +8,7 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 - Drop support to Symfony 2 and 3, and allows only Symfony 4 LTS and Symfony 5
 - Drop support to PHP 5
+- Drop support to `sebastian/version` v1
 
 ## [4.3.1] - 2020-02-26
 
