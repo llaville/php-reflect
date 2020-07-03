@@ -6,6 +6,8 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 ## [Unreleased]
 
+### Changed
+
 - Drop support to Symfony 2 and 3, and allows only Symfony 4 LTS and Symfony 5
 - Drop support to PHP 5
 - Drop support to `sebastian/version` v1
@@ -13,6 +15,7 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 - Raise `phpdocumentor/type-resolver` constraint to v0.5 to allows only PHP 7 compatibility
 - Raise `justinrainbow/json-schema` constraint to v5.2
 - Raise `seld/jsonlint` constraint to v1.4
+- [Simpler event dispatching](https://symfony.com/blog/new-in-symfony-4-3-simpler-event-dispatching) is possible since Symfony 4.3
 
 ## [4.3.1] - 2020-02-26
 

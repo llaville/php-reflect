@@ -2,20 +2,19 @@
 /**
  * Event-driven architecture.
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category PHP
  * @package  PHP_Reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
  */
 
 namespace Bartlett\Reflect\Event;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -25,7 +24,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @package  PHP_Reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
 class AbstractDispatcher implements DispatcherInterface
@@ -41,7 +39,7 @@ class AbstractDispatcher implements DispatcherInterface
      * @param EventDispatcherInterface $eventDispatcher Instance of the event
      *        dispatcher
      *
-     * @return self for a fuent interface
+     * @return self for a fluent interface
      * @disabled
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
@@ -53,7 +51,7 @@ class AbstractDispatcher implements DispatcherInterface
     /**
      * Get the EventDispatcher of the request
      *
-     * @return Symfony\Component\EventDispatcher\EventDispatcher
+     * @return EventDispatcherInterface
      * @disabled
      */
     public function getEventDispatcher()
@@ -70,13 +68,12 @@ class AbstractDispatcher implements DispatcherInterface
      * @param string $eventName The name of the event to dispatch
      * @param array  $context   (optional) Contextual event data
      *
-     * @return Symfony\Component\EventDispatcher\GenericEvent
+     * @return object
      * @disabled
      */
     public function dispatch($eventName, array $context = array())
     {
         return $this->getEventDispatcher()->dispatch(
-            $eventName,
             new GenericEvent($this, $context)
         );
     }
@@ -87,7 +84,7 @@ class AbstractDispatcher implements DispatcherInterface
      * @param EventSubscriberInterface $subscriber The subscriber which is
      *        interested by events
      *
-     * @return self for a fuent interface
+     * @return self for a fluent interface
      * @disabled
      */
     public function addSubscriber(EventSubscriberInterface $subscriber)

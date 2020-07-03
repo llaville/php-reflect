@@ -31,7 +31,7 @@ use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 
 use Symfony\Component\Stopwatch\Stopwatch;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Console Application.
