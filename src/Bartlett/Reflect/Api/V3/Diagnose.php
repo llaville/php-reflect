@@ -23,8 +23,8 @@ namespace Bartlett\Reflect\Api\V3;
  */
 class Diagnose extends Common
 {
-    const PHP_MIN         = '5.5.0';
-    const PHP_RECOMMANDED = '5.6.0';
+    const PHP_MIN         = '7.1.3';
+    const PHP_RECOMMANDED = '7.3.0';
 
     /**
      * Diagnoses the system to identify common errors.
