@@ -6,7 +6,6 @@
  * @package  PHP_Reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
  * @link     http://growl.laurent-laville.org/
  * @link     http://pear.php.net/package/Net_Growl
  */
@@ -26,7 +25,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package  PHP_Reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 3.0.0-alpha3+1
  */
 class GrowlNotifier implements NotifierInterface

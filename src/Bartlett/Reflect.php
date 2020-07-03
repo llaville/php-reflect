@@ -4,13 +4,12 @@
  * Reverse-engineer classes, interfaces, traits, functions, constants, namespaces
  * and more.
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category PHP
  * @package  PHP_Reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
  */
 
 namespace Bartlett;
@@ -39,7 +38,6 @@ use Symfony\Component\Finder\Iterator\CustomFilterIterator;
  * @package  PHP_Reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 2.0.0RC1
  */
 class Reflect extends AbstractDispatcher

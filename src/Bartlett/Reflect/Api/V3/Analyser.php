@@ -2,13 +2,12 @@
 /**
  * Collect and analyse metrics of parsing results.
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category PHP
  * @package  PHP_Reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
 */
 
 namespace Bartlett\Reflect\Api\V3;
@@ -24,7 +23,6 @@ use Bartlett\Reflect\Plugin\PluginManager;
  * @package  PHP_Reflect
  * @author   Laurent Laville <pear@laurent-laville.org>
  * @license  https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link     http://php5.laurent-laville.org/reflect/
  * @since    Class available since Release 3.0.0-alpha1
  */
 class Analyser extends Common

@@ -2,14 +2,13 @@
 /**
  * Unit Test Case that covers each Model representative.
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
  * @license    https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link       http://php5.laurent-laville.org/reflect/
  * @since      Class available since Release 3.0.0-alpha2
  */
 
@@ -25,7 +24,6 @@ use Bartlett\Reflect\Client;
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
  * @license    https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link       http://php5.laurent-laville.org/reflect/
  */
 abstract class GenericModelTest extends \PHPUnit\Framework\TestCase
 {

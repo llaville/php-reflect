@@ -16,6 +16,7 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 - Raise `justinrainbow/json-schema` constraint to v5.2
 - Raise `seld/jsonlint` constraint to v1.4
 - [Simpler event dispatching](https://symfony.com/blog/new-in-symfony-4-3-simpler-event-dispatching) is possible since Symfony 4.3
+- Clean-up phpDoc tags
 
 ## [4.3.1] - 2020-02-26
 

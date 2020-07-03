@@ -2,14 +2,13 @@
 /**
  * Unit Test Case that covers the Environment component.
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
  * @license    https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link       http://php5.laurent-laville.org/reflect/
  * @since      Class available since Release 2.6.0
  */
 
@@ -25,7 +24,6 @@ use Bartlett\Reflect\Environment;
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
  * @license    https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link       http://php5.laurent-laville.org/reflect/
  */
 class EnvironmentTest extends \PHPUnit\Framework\TestCase
 {

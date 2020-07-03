@@ -2,14 +2,13 @@
 /**
  * Unit tests for PHP_Reflect package, issues reported
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category   PHP
  * @package    PHP_Reflect
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
  * @license    https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link       http://php5.laurent-laville.org/reflect/
  * @since      Class available since Release 3.0.0-alpha2
  */
 
@@ -18,7 +17,7 @@ namespace Bartlett\Tests\Reflect\Model;
 use Bartlett\Reflect\Client;
 
 /**
- * Tests for PHP_CompatInfo, retrieving reference elements,
+ * Tests for PHP_Reflect, retrieving reference elements,
  * and versioning information.
  *
  * @category   PHP
@@ -26,7 +25,6 @@ use Bartlett\Reflect\Client;
  * @subpackage Tests
  * @author     Laurent Laville <pear@laurent-laville.org>
  * @license    https://opensource.org/licenses/BSD-3-Clause The 3-Clause BSD License
- * @link       http://php5.laurent-laville.org/reflect/
  */
 class IssueTest extends \PHPUnit\Framework\TestCase
 {
