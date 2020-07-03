@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * Event-driven architecture.
  * All dispatchers should implement this interface.

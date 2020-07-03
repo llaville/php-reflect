@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * Reflect
  * Reverse-engineer classes, interfaces, traits, functions, constants, namespaces
