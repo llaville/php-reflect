@@ -28,6 +28,10 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 - Application Events class constants `Bartlett\Reflect\Events` (replaced by individual Event class. See simpler event dispatching)
 
+### Fixed
+
+- **CachePlugin** : if TEMP env var is not defined, fallback to [sys_get_temp_dir()](https://www.php.net/manual/en/function.sys-get-temp-dir.php)
+
 ## [4.3.1] - 2020-02-26
 
 ### Changed

@@ -234,6 +234,15 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
                         $val,
                         $args[$a]
                     );
+                } else {
+                    // if TEMP env var is not defined, fallback to https://www.php.net/manual/en/function.sys-get-temp-dir.php
+                    if ($reg[1][$i] == 'TEMP') {
+                        $args[$a] = str_replace(
+                            $reg[0][$i],
+                            sys_get_temp_dir(),
+                            $args[$a]
+                        );
+                    }
                 }
             }
         }
