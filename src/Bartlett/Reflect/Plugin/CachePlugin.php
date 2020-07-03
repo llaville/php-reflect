@@ -15,11 +15,12 @@ namespace Bartlett\Reflect\Plugin;
 use Bartlett\Reflect\Plugin\Cache\CacheStorageInterface;
 use Bartlett\Reflect\Plugin\Cache\DefaultCacheStorage;
 
-use Bartlett\Reflect;
+use Bartlett\Reflect\Event\ProgressEvent;
+use Bartlett\Reflect\Event\SuccessEvent;
+use Bartlett\Reflect\Event\CompleteEvent;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Plugin that allow to cache parsing results
@@ -80,20 +81,20 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Reflect\Events::PROGRESS => 'onReflectProgress',
-            Reflect\Events::SUCCESS  => 'onReflectSuccess',
-            Reflect\Events::COMPLETE => 'onReflectComplete',
+            ProgressEvent::class => 'onReflectProgress',
+            SuccessEvent::class  => 'onReflectSuccess',
+            CompleteEvent::class => 'onReflectComplete',
         );
     }
 
     /**
      * Checks if results in cache will satisfy the source before parsing.
      *
-     * @param Event $event Current event emitted by the manager (Reflect class)
+     * @param ProgressEvent $event Current event emitted by the manager (Reflect class)
      *
      * @return void
      */
-    public function onReflectProgress(GenericEvent $event)
+    public function onReflectProgress(ProgressEvent $event)
     {
         if ($response = $this->storage->fetch($event)) {
             ++$this->stats[self::STATS_HITS];
@@ -107,11 +108,11 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
     /**
      * If possible, store results in cache after source parsing.
      *
-     * @param Event $event Current event emitted by the manager (Reflect class)
+     * @param SuccessEvent $event Current event emitted by the manager (Reflect class)
      *
      * @return void
      */
-    public function onReflectSuccess(GenericEvent $event)
+    public function onReflectSuccess(SuccessEvent $event)
     {
         if (sha1(serialize($event['ast'])) !== $this->hashUserData) {
             // cache need to be refresh
@@ -123,9 +124,9 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Cache statistics at end of a parse process.
      *
-     * @param Event $event
+     * @param CompleteEvent $event
      */
-    public function onReflectComplete(GenericEvent $event)
+    public function onReflectComplete(CompleteEvent $event)
     {
         $event['extra'] = array('cache' => $this->stats);
     }

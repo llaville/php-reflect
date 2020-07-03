@@ -6,6 +6,10 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 ## [Unreleased]
 
+### Added
+
+- Event classes `Bartlett\Reflect\Event\*Event` to follow principle of simpler event dispatching
+
 ### Changed
 
 - Drop support to Symfony 2 and 3, and allows only Symfony 4 LTS and Symfony 5
@@ -19,6 +23,10 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 - [Simpler event dispatching](https://symfony.com/blog/new-in-symfony-4-3-simpler-event-dispatching) is possible since Symfony 4.3
 - Clean-up phpDoc tags
 - Sets PHP minimum requirement to 7.1.3
+
+### Removed
+
+- Application Events class constants `Bartlett\Reflect\Events` (replaced by individual Event class. See simpler event dispatching)
 
 ## [4.3.1] - 2020-02-26
 

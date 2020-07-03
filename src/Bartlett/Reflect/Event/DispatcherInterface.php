@@ -47,12 +47,11 @@ interface DispatcherInterface
     /**
      * Dispatches an event to all registered listeners.
      *
-     * @param string $eventName The name of the event to dispatch
-     * @param array  $context   (optional) Contextual event data
+     * @param object $event The event to dispatch
      *
-     * @return Symfony\Component\EventDispatcher\GenericEvent
+     * @return object
      */
-    public function dispatch($eventName, array $context = array());
+    public function dispatch(object $event);
 
     /**
      * Adds an event subscriber.

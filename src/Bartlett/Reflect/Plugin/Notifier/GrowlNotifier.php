@@ -12,7 +12,8 @@
 
 namespace Bartlett\Reflect\Plugin\Notifier;
 
-use Bartlett\Reflect\Events;
+use Bartlett\Reflect\Event\ErrorEvent;
+use Bartlett\Reflect\Event\CompleteEvent;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -62,8 +63,8 @@ class GrowlNotifier implements NotifierInterface
         $notifications = array_merge(
             // default notifications
             array(
-                Events::ERROR    => array('enabled' => true, 'sticky' => true),
-                Events::COMPLETE => array('enabled' => true, 'sticky' => true),
+                ErrorEvent::class    => array('enabled' => true, 'sticky' => true),
+                CompleteEvent::class => array('enabled' => true, 'sticky' => true),
             ),
             // custom notifications
             $notifications

@@ -12,12 +12,16 @@
 
 namespace Bartlett\Reflect\Plugin;
 
-use Bartlett\Reflect;
+use Bartlett\Reflect\Event\ProgressEvent;
+use Bartlett\Reflect\Event\SuccessEvent;
+use Bartlett\Reflect\Event\ErrorEvent;
+use Bartlett\Reflect\Event\CompleteEvent;
+use Bartlett\Reflect\Event\BuildEvent;
+use Bartlett\Reflect\Event\SniffEvent;
 use Bartlett\Reflect\Plugin\Log\DefaultLogger;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -67,23 +71,23 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Reflect\Events::PROGRESS => 'onReflectProgress',
-            Reflect\Events::SUCCESS  => 'onReflectSuccess',
-            Reflect\Events::ERROR    => 'onReflectError',
-            Reflect\Events::COMPLETE => 'onReflectComplete',
-            Reflect\Events::BUILD    => 'onAstBuild',
-            Reflect\Events::SNIFF    => 'onSniff',
+            ProgressEvent::class => 'onReflectProgress',
+            SuccessEvent::class  => 'onReflectSuccess',
+            ErrorEvent::class    => 'onReflectError',
+            CompleteEvent::class => 'onReflectComplete',
+            BuildEvent::class    => 'onAstBuild',
+            SniffEvent::class    => 'onSniff',
         );
     }
 
     /**
      * Logs PROGRESS event.
      *
-     * @param Event $event Current event emitted by the manager (Reflect class)
+     * @param ProgressEvent $event Current event emitted by the manager (Reflect class)
      *
      * @return void
      */
-    public function onReflectProgress(GenericEvent $event)
+    public function onReflectProgress(ProgressEvent $event)
     {
         $context = $event->getArguments();
         $this->logger->info('Parsing file "{file}" in progress.', $context);
@@ -92,11 +96,11 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Logs SUCCESS event.
      *
-     * @param Event $event Current event emitted by the manager (Reflect class)
+     * @param SuccessEvent $event Current event emitted by the manager (Reflect class)
      *
      * @return void
      */
-    public function onReflectSuccess(GenericEvent $event)
+    public function onReflectSuccess(SuccessEvent $event)
     {
         $context = $event->getArguments();
         $this->logger->info('Analyze file "{file}" successful.', $context);
@@ -105,11 +109,11 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Logs ERROR event.
      *
-     * @param Event $event Current event emitted by the manager (Reflect class)
+     * @param ErrorEvent $event Current event emitted by the manager (Reflect class)
      *
      * @return void
      */
-    public function onReflectError(GenericEvent $event)
+    public function onReflectError(ErrorEvent $event)
     {
         $context = $event->getArguments();
         $this->logger->error('Parser has detected an error on file "{file}". {error}', $context);
@@ -118,11 +122,11 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Logs COMPLETE event.
      *
-     * @param Event $event Current event emitted by the manager (Reflect class)
+     * @param CompleteEvent $event Current event emitted by the manager (Reflect class)
      *
      * @return void
      */
-    public function onReflectComplete(GenericEvent $event)
+    public function onReflectComplete(CompleteEvent $event)
     {
         $context = $event->getArguments();
         unset($context['extra']);
@@ -132,11 +136,11 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Logs BUILD event.
      *
-     * @param Event $event Current event emitted by the builder
+     * @param BuildEvent $event Current event emitted by the builder
      *
      * @return void
      */
-    public function onAstBuild(GenericEvent $event)
+    public function onAstBuild(BuildEvent $event)
     {
         $context = $event->getArguments();
 
@@ -153,11 +157,11 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Logs SNIFF event.
      *
-     * @param Event $event Current event emitted by the sniffer
+     * @param SniffEvent $event Current event emitted by the sniffer
      *
      * @return void
      */
-    public function onSniff(GenericEvent $event)
+    public function onSniff(SniffEvent $event)
     {
         $context = $event->getArguments();
 

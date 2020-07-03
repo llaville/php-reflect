@@ -10,7 +10,7 @@
 
 namespace Bartlett\Reflect\Sniffer;
 
-use Bartlett\Reflect;
+use Bartlett\Reflect\Event\SniffEvent;
 
 use PhpParser\NodeVisitorAbstract;
 
@@ -37,11 +37,13 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
     public function setUpBeforeSniff()
     {
         $this->visitor->getSubject()->dispatch(
-            Reflect\Events::SNIFF,
-            array(
-                'method' => get_class($this) . '::' . __FUNCTION__,
-                'node'   => null,
-                'sniff'  => get_class($this),
+            new SniffEvent(
+                $this,
+                array(
+                    'method' => get_class($this) . '::' . __FUNCTION__,
+                    'node'   => null,
+                    'sniff'  => get_class($this),
+                )
             )
         );
     }
@@ -49,11 +51,13 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
     public function enterSniff()
     {
         $this->visitor->getSubject()->dispatch(
-            Reflect\Events::SNIFF,
-            array(
-                'method' => get_class($this) . '::' . __FUNCTION__,
-                'node'   => null,
-                'sniff'  => get_class($this),
+            new SniffEvent(
+                $this,
+                array(
+                    'method' => get_class($this) . '::' . __FUNCTION__,
+                    'node'   => null,
+                    'sniff'  => get_class($this),
+                )
             )
         );
     }
@@ -61,11 +65,13 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
     public function leaveSniff()
     {
         $this->visitor->getSubject()->dispatch(
-            Reflect\Events::SNIFF,
-            array(
-                'method' => get_class($this) . '::' . __FUNCTION__,
-                'node'   => null,
-                'sniff'  => get_class($this),
+            new SniffEvent(
+                $this,
+                array(
+                    'method' => get_class($this) . '::' . __FUNCTION__,
+                    'node'   => null,
+                    'sniff'  => get_class($this),
+                )
             )
         );
     }
@@ -73,11 +79,13 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
     public function tearDownAfterSniff()
     {
         $this->visitor->getSubject()->dispatch(
-            Reflect\Events::SNIFF,
-            array(
-                'method' => get_class($this) . '::' . __FUNCTION__,
-                'node'   => null,
-                'sniff'  => get_class($this),
+            new SniffEvent(
+                $this,
+                array(
+                    'method' => get_class($this) . '::' . __FUNCTION__,
+                    'node'   => null,
+                    'sniff'  => get_class($this),
+                )
             )
         );
     }

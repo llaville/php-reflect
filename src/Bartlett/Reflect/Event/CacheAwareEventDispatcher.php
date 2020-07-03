@@ -12,10 +12,7 @@
 
 namespace Bartlett\Reflect\Event;
 
-use Bartlett\Reflect\Events;
-
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -35,7 +32,7 @@ class CacheAwareEventDispatcher extends EventDispatcher
     protected function doDispatch($listeners, $eventName, Event $event)
     {
         foreach ($listeners as $listener) {
-            $evt = $this->preNotify($listener, $eventName, clone($event));
+            $evt = $this->preNotify($listener, clone($event));
             call_user_func($listener, $evt, $eventName, $this);
             if ($evt->isPropagationStopped()) {
                 break;
@@ -47,16 +44,13 @@ class CacheAwareEventDispatcher extends EventDispatcher
      * Called before notify a listener about the event.
      *
      * @param mixed  $listener  The listener to notify with that $event
-     * @param string $eventName The event name
      * @param Event  $event     The event
      *
      * @return Event
      */
-    protected function preNotify($listener, $eventName, Event $event)
+    protected function preNotify($listener, Event $event)
     {
-        if (Events::SUCCESS == $eventName
-            && $event instanceof GenericEvent
-        ) {
+        if ($event instanceof SuccessEvent) {
             /*
              * 'ast' argument of 'reflect.success' event is used only by the cache plugin.
              *  Remove it improve performance.

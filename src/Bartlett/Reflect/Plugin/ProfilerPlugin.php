@@ -12,13 +12,15 @@
 
 namespace Bartlett\Reflect\Plugin;
 
-use Bartlett\Reflect;
+use Bartlett\Reflect\Event\ProgressEvent;
+use Bartlett\Reflect\Event\ErrorEvent;
+use Bartlett\Reflect\Event\SuccessEvent;
+use Bartlett\Reflect\Event\CompleteEvent;
 use Bartlett\Reflect\Plugin\Log\DefaultLogger;
 use Bartlett\Reflect\Util\Timer;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -74,10 +76,10 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         $events = array(
-            Reflect\Events::PROGRESS => 'onReflectProgress',
-            Reflect\Events::SUCCESS  => 'onReflectSuccess',
-            Reflect\Events::ERROR    => 'onReflectError',
-            Reflect\Events::COMPLETE => 'onReflectComplete',
+            ProgressEvent::class => 'onReflectProgress',
+            SuccessEvent::class  => 'onReflectSuccess',
+            ErrorEvent::class    => 'onReflectError',
+            CompleteEvent::class => 'onReflectComplete',
         );
         return $events;
     }
@@ -85,11 +87,11 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Just before parsing a new file of the data source.
      *
-     * @param GenericEvent $event A 'reflect.progress' event
+     * @param ProgressEvent $event A 'reflect.progress' event
      *
      * @return void
      */
-    public function onReflectProgress(GenericEvent $event)
+    public function onReflectProgress(ProgressEvent $event)
     {
         static $start = false;
 
@@ -103,11 +105,11 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * After parsing a file of the data source.
      *
-     * @param GenericEvent $event A 'reflect.success' event
+     * @param SuccessEvent $event A 'reflect.success' event
      *
      * @return void
      */
-    public function onReflectSuccess($event)
+    public function onReflectSuccess(SuccessEvent $event)
     {
         $filename = $event['file']->getPathname();
         $appEvent = $this->stopwatch->stop($filename);
@@ -122,11 +124,11 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * PHP-Parser raised an error.
      *
-     * @param GenericEvent $event A 'reflect.error' event
+     * @param ErrorEvent $event A 'reflect.error' event
      *
      * @return void
      */
-    public function onReflectError($event)
+    public function onReflectError(ErrorEvent $event)
     {
         $filename = $event['file']->getPathname();
         $this->stopwatch->stop($filename);
@@ -144,11 +146,11 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * A parse request is over.
      *
-     * @param GenericEvent $event A 'reflect.complete' event
+     * @param CompleteEvent $event A 'reflect.complete' event
      *
      * @return void
      */
-    public function onReflectComplete($event)
+    public function onReflectComplete(CompleteEvent $event)
     {
         $appEvent = $this->stopwatch->stop($event['source']);
         $time     = $appEvent->getDuration();

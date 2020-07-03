@@ -11,6 +11,7 @@
 namespace Bartlett\Reflect\Analyser;
 
 use Bartlett\Reflect;
+use Bartlett\Reflect\Event\BuildEvent;
 
 use PhpParser\Node;
 use PhpParser\NodeVisitor;
@@ -88,10 +89,12 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     public function beforeTraverse(array $nodes)
     {
         $this->subject->dispatch(
-            Reflect\Events::BUILD,
-            array(
-                'method' => get_class($this) . '::' . __FUNCTION__,
-                'node'   => null,
+            new BuildEvent(
+                $this,
+                array(
+                    'method' => get_class($this) . '::' . __FUNCTION__,
+                    'node'   => null,
+                )
             )
         );
     }
@@ -99,10 +102,12 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     public function enterNode(Node $node)
     {
         $this->subject->dispatch(
-            Reflect\Events::BUILD,
-            array(
-                'method' => get_class($this) . '::' . __FUNCTION__,
-                'node'   => $node,
+            new BuildEvent(
+                $this,
+                array(
+                    'method' => get_class($this) . '::' . __FUNCTION__,
+                    'node'   => $node,
+                )
             )
         );
     }
@@ -110,10 +115,12 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     public function leaveNode(Node $node)
     {
         $this->subject->dispatch(
-            Reflect\Events::BUILD,
-            array(
-                'method' => get_class($this) . '::' . __FUNCTION__,
-                'node'   => $node,
+            new BuildEvent(
+                $this,
+                array(
+                    'method' => get_class($this) . '::' . __FUNCTION__,
+                    'node'   => $node,
+                )
             )
         );
     }
@@ -121,10 +128,12 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     public function afterTraverse(array $nodes)
     {
         $this->subject->dispatch(
-            Reflect\Events::BUILD,
-            array(
-                'method' => get_class($this) . '::' . __FUNCTION__,
-                'node'   => null,
+            new BuildEvent(
+                $this,
+                array(
+                    'method' => get_class($this) . '::' . __FUNCTION__,
+                    'node'   => null,
+                )
             )
         );
     }

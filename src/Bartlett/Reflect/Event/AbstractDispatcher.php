@@ -12,7 +12,6 @@
 
 namespace Bartlett\Reflect\Event;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -65,17 +64,14 @@ class AbstractDispatcher implements DispatcherInterface
     /**
      * Dispatches an event to all registered listeners.
      *
-     * @param string $eventName The name of the event to dispatch
-     * @param array  $context   (optional) Contextual event data
+     * @param object $event The event to dispatch
      *
      * @return object
      * @disabled
      */
-    public function dispatch($eventName, array $context = array())
+    public function dispatch(object $event)
     {
-        return $this->getEventDispatcher()->dispatch(
-            new GenericEvent($this, $context)
-        );
+        return $this->getEventDispatcher()->dispatch($event);
     }
 
     /**

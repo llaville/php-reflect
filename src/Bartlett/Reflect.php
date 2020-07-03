@@ -15,7 +15,10 @@
 namespace Bartlett;
 
 use Bartlett\Reflect\Event\AbstractDispatcher;
-use Bartlett\Reflect\Events;
+use Bartlett\Reflect\Event\CompleteEvent;
+use Bartlett\Reflect\Event\ErrorEvent;
+use Bartlett\Reflect\Event\ProgressEvent;
+use Bartlett\Reflect\Event\SuccessEvent;
 use Bartlett\Reflect\Visitor\VisitorInterface;
 
 use PhpParser\ErrorHandler\Collecting;
@@ -273,10 +276,12 @@ class Reflect extends AbstractDispatcher
             $file = $queue->dequeue();
 
             $event = $this->dispatch(
-                Events::PROGRESS,
-                array(
-                    'source'   => $this->dataSourceId,
-                    'file'     => $file,
+                new ProgressEvent(
+                    $this,
+                    array(
+                        'source'   => $this->dataSourceId,
+                        'file'     => $file,
+                    )
                 )
             );
             $files[] = $file->getPathname();
@@ -299,11 +304,13 @@ class Reflect extends AbstractDispatcher
                 if ($errorHandler->hasErrors()) {
                     foreach ($errorHandler->getErrors() as $e) {
                         $this->dispatch(
-                            Events::ERROR,
-                            array(
-                                'source' => $this->dataSourceId,
-                                'file'   => $file,
-                                'error'  => $e->getMessage()
+                            new ErrorEvent(
+                                $this,
+                                array(
+                                    'source' => $this->dataSourceId,
+                                    'file'   => $file,
+                                    'error'  => $e->getMessage()
+                                )
                             )
                         );
                         $parserErrors[$file->getPathname()] = $e->getMessage();
@@ -323,17 +330,21 @@ class Reflect extends AbstractDispatcher
             $stmts = $traverser->traverse($stmts);
 
             $this->dispatch(
-                Events::SUCCESS,
-                array(
-                    'source' => $this->dataSourceId,
-                    'file'   => $file,
-                    'ast'    => $stmts,
+                new SuccessEvent(
+                    $this,
+                    array(
+                        'source' => $this->dataSourceId,
+                        'file'   => $file,
+                        'ast'    => $stmts,
+                    )
                 )
             );
         }
 
         // end of parsing the data source
-        $event = $this->dispatch(Events::COMPLETE, array('source' => $this->dataSourceId));
+        $event = $this->dispatch(
+            new CompleteEvent($this, array('source' => $this->dataSourceId))
+        );
         if (isset($event['extra'])) {
             $metrics['extra'] = $event['extra'];
         }

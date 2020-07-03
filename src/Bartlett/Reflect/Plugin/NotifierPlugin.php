@@ -12,7 +12,9 @@
 
 namespace Bartlett\Reflect\Plugin;
 
-use Bartlett\Reflect\Events;
+use Bartlett\Reflect\Event\ProgressEvent;
+use Bartlett\Reflect\Event\ErrorEvent;
+use Bartlett\Reflect\Event\CompleteEvent;
 use Bartlett\Reflect\Plugin\Notifier\NotifierInterface;
 use Bartlett\Reflect\Util\Timer;
 
@@ -21,6 +23,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Symfony\Component\Stopwatch\Stopwatch;
+
+use function get_class;
 
 /**
  * Notifies application events via different systems.
@@ -60,9 +64,9 @@ class NotifierPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         $events = array(
-            Events::PROGRESS => 'onNotification',
-            Events::ERROR    => 'onNotification',
-            Events::COMPLETE => 'onNotification',
+            ProgressEvent::class => 'onNotification',
+            ErrorEvent::class    => 'onNotification',
+            CompleteEvent::class => 'onNotification',
         );
         return $events;
     }
@@ -70,26 +74,25 @@ class NotifierPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Notifies all important application events
      *
-     * @param GenericEvent $event     Any event
-     * @param string       $eventName Name of event dispatched
+     * @param GenericEvent $event Any event
      *
      * @return void
      */
-    public function onNotification(GenericEvent $event, $eventName)
+    public function onNotification(GenericEvent $event)
     {
         static $start = false;
 
-        switch ($eventName) {
-            case Events::PROGRESS:
+        switch (get_class($event)) {
+            case ProgressEvent::class:
                 if (!$start) {
                     $this->stopwatch->start($event['source']);
                     $start = true;
                 }
                 return;
-            case Events::ERROR:
+            case ErrorEvent::class:
                 $message = 'Parser has detected an error on file "%filename%". %error%';
                 break;
-            case Events::COMPLETE:
+            case CompleteEvent::class:
                 $message  = "Parsing data source \"%source%\" completed.";
                 $appEvent = $this->stopwatch->stop($event['source']);
                 $time     = $appEvent->getDuration();
@@ -104,7 +107,7 @@ class NotifierPlugin implements PluginInterface, EventSubscriberInterface
         }
         $format = $this->notifier->getMessageFormat();
 
-        $event['eventname'] = $eventName;
+        $event['eventname'] = get_class($event);
         $event['message']   = strtr($message, $this->getPlaceholders($event));
         $event['formatted'] = strtr($format, $this->getPlaceholders($event));
 

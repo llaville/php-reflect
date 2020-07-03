@@ -13,7 +13,7 @@
 namespace Bartlett\Reflect\Console;
 
 use Bartlett\Reflect\Client;
-use Bartlett\Reflect\Events;
+use Bartlett\Reflect\Event\ProgressEvent;
 use Bartlett\Reflect\Environment;
 
 use Symfony\Component\Console\Input\InputArgument;
@@ -266,7 +266,7 @@ class CommandFactory
                 $progress->setMessage('');
 
                 $api->getEventDispatcher()->addListener(
-                    Events::PROGRESS,
+                    ProgressEvent::class,
                     function (GenericEvent $event) use ($progress) {
                         if ($progress instanceof ProgressBar) {
                             $progress->setMessage(

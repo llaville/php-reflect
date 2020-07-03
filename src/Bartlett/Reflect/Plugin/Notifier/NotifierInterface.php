@@ -45,7 +45,7 @@ interface NotifierInterface
      *
      * @param GenericEvent $event
      *
-     * @return bool TRUE on a succesfull notification, FALSE on failure
+     * @return bool TRUE on a successful notification, FALSE on failure
      */
     public function notify(GenericEvent $event);
 }

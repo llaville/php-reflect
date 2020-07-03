@@ -4,7 +4,7 @@ namespace YourNamespace;
 
 use Bartlett\Reflect\Plugin\CachePlugin as BaseCachePlugin;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CachePlugin extends BaseCachePlugin
 {
