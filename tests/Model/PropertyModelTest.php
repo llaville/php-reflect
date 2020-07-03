@@ -30,7 +30,7 @@ class PropertyModelTest extends GenericModelTest
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$fixture = 'properties.php';
         parent::setUpBeforeClass();

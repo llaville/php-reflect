@@ -32,7 +32,7 @@ class ParameterModelTest extends GenericModelTest
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$fixture = 'functions.php';
         parent::setUpBeforeClass();

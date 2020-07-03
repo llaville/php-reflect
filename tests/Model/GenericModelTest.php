@@ -38,7 +38,7 @@ abstract class GenericModelTest extends \PHPUnit\Framework\TestCase
      * @return void
      * @link   http://phpunit.de/manual/current/en/fixtures.html#fixtures.sharing-fixture
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$fixtures = dirname(__DIR__) . DIRECTORY_SEPARATOR
             . 'fixtures' . DIRECTORY_SEPARATOR;

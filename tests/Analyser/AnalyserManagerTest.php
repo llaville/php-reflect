@@ -34,7 +34,7 @@ class AnalyserManagerTest extends \PHPUnit\Framework\TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         putenv("BARTLETT_SCAN_DIR=" . __DIR__);
         putenv("BARTLETTRC=phpreflect.json");
@@ -47,7 +47,7 @@ class AnalyserManagerTest extends \PHPUnit\Framework\TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         putenv("BARTLETT_SCAN_DIR=");
         putenv("BARTLETTRC=");

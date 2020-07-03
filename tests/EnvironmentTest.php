@@ -34,7 +34,7 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         putenv("BARTLETT_SCAN_DIR=");
         putenv("BARTLETTRC=");
