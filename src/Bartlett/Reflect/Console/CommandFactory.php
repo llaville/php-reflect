@@ -79,7 +79,7 @@ class CommandFactory
 
         foreach ($iterator as $file) {
             if (fnmatch('*.php', $file->getPathName())) {
-                $classes[] = Application::API_NAMESPACE . basename($file, '.php');
+                $classes[] = Application::API_NAMESPACE . $file->getBasename('.php');
             }
         }
 
@@ -177,7 +177,7 @@ class CommandFactory
             $description = null;
             if (isset($params[$pos])) {
                 if (ltrim($params[$pos]->getVariableName(), '$') == $name) {
-                    $description = $params[$pos]->getDescription();
+                    $description = (string) $params[$pos]->getDescription();
                     // replace tokens if available
                     if (isset($cmdExceptions[$name]['replaceTokens'])) {
                         $description = strtr(
@@ -199,7 +199,7 @@ class CommandFactory
                     $mode = InputOption::VALUE_OPTIONAL;
                 }
                 if (isset($params[$pos])
-                    && strcasecmp($params[$pos]->getType(), 'array') === 0
+                    && strcasecmp((string) $params[$pos]->getType(), 'array') === 0
                 ) {
                     $mode = InputOption::VALUE_IS_ARRAY | $mode;
                 }
@@ -215,7 +215,7 @@ class CommandFactory
                     $mode    = InputArgument::REQUIRED;
                 }
                 if (isset($params[$pos])
-                    && strcasecmp($params[$pos]->getType(), 'array') === 0
+                    && strcasecmp((string) $params[$pos]->getType(), 'array') === 0
                 ) {
                     $mode = InputArgument::IS_ARRAY | $mode;
                 }
