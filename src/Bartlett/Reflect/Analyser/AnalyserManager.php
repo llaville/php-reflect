@@ -53,7 +53,7 @@ class AnalyserManager
                 if (fnmatch('*Analyser.php', $file->getPathName())) {
                     $name = basename(str_replace('Analyser.php', '', $file->getPathName()));
                     if (strpos($name, 'Abstract') !== 0) {
-                        $class    = rtrim($ns, '\\') . '\\' . basename($file, '.php');
+                        $class    = rtrim($ns, '\\') . '\\' . $file->getBasename('.php');
                         $analyser = new $class;
 
                         if ($analyser instanceof AnalyserInterface) {

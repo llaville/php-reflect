@@ -15,6 +15,7 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 - Raise `phpdocumentor/type-resolver` constraint to v0.5 to allows only PHP 7 compatibility
 - Raise `justinrainbow/json-schema` constraint to v5.2
 - Raise `seld/jsonlint` constraint to v1.4
+- Raise `nikic/php-parser` constraint to v4.5
 - [Simpler event dispatching](https://symfony.com/blog/new-in-symfony-4-3-simpler-event-dispatching) is possible since Symfony 4.3
 - Clean-up phpDoc tags
 - Sets PHP minimum requirement to 7.1.3

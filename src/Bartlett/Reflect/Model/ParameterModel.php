@@ -48,7 +48,7 @@ class ParameterModel extends AbstractModel
      */
     public function getName()
     {
-        return $this->node->name;
+        return (string) $this->node->var->name;
     }
 
     /**
@@ -135,7 +135,7 @@ class ParameterModel extends AbstractModel
      */
     public function isArray()
     {
-        return ($this->node->type === 'array');
+        return ((string) $this->node->type === 'array');
     }
 
     /**

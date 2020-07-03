@@ -121,7 +121,7 @@ class Reflect extends AbstractDispatcher
             )
         ));
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7, $lexer);
-        $traverser = new NodeTraverser(false);
+        $traverser = new NodeTraverser();
         $traverser->addVisitor(new NameResolver);
         $conditionalCode = false;
 

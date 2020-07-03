@@ -132,6 +132,11 @@ class LocAnalyser extends AbstractAnalyser
     {
         $this->metrics['methods']++;
 
+        if (!is_array($method->stmts)) {
+            // abstract or interface methods (without implementation)
+            return;
+        }
+
         if (count($method->stmts) === 0) {
             // abstract or interface methods (without implementation)
             return;
