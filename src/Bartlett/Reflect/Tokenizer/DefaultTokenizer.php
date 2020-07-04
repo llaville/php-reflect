@@ -43,12 +43,12 @@ class DefaultTokenizer
         return $this->tokenStack;
     }
 
-    public function setTokens(array $tokens)
+    public function setTokens(array $tokens): void
     {
         $this->tokenize($tokens);
     }
 
-    public function setSourceFile($file)
+    public function setSourceFile($file): void
     {
         $this->tokenize(
             token_get_all(
@@ -59,8 +59,10 @@ class DefaultTokenizer
 
     /**
      * @param string[] $tokens
+     *
+     * @return void
      */
-    protected function tokenize(array $tokens)
+    protected function tokenize(array $tokens): void
     {
         $this->tokenStack = new \SplDoublyLinkedList;
 

@@ -31,8 +31,10 @@ class Analyser extends OutputFormatter
      *
      * @param OutputInterface $output   Console Output concrete instance
      * @param array           $response Analysers list
+     *
+     * @return void
      */
-    public function dir(OutputInterface $output, $response)
+    public function dir(OutputInterface $output, $response): void
     {
         if (empty($response)) {
             $output->writeln('<error>No analysers detected.</error>');
@@ -53,8 +55,10 @@ class Analyser extends OutputFormatter
      *
      * @param OutputInterface $output   Console Output concrete instance
      * @param array           $response Analyser metrics
+     *
+     * @return void
      */
-    public function run(OutputInterface $output, $response)
+    public function run(OutputInterface $output, $response): void
     {
         if (empty($response)) {
             // No reports printed if there are no metrics.

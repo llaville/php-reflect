@@ -31,8 +31,10 @@ class Plugin extends OutputFormatter
      *
      * @param OutputInterface $output   Console Output concrete instance
      * @param array           $response Available plugins list
+     *
+     * @return void
      */
-    public function dir(OutputInterface $output, $response)
+    public function dir(OutputInterface $output, $response): void
     {
         if (empty($response)) {
             $output->writeln('<info>No plugin installed</info>');

@@ -51,37 +51,60 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
         return $this->tokens;
     }
 
+    /**
+     * @return void
+     */
     public function setSubject(Reflect $reflect)
     {
         $this->subject = $reflect;
     }
 
+    /**
+     * @return void
+     */
     public function setTokens(array $tokens)
     {
         $this->tokens = $tokens;
     }
 
+    /**
+     * @return void
+     */
     public function setCurrentFile($path)
     {
         $this->file = $path;
     }
 
+    /**
+     * @return array
+     *
+     * @psalm-return array<string, mixed>
+     */
     public function getMetrics()
     {
         return array(get_class($this) => $this->metrics);
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         $parts = explode('\\', get_class($this));
         return array_pop($parts);
     }
 
+    /**
+     * @return string
+     */
     public function getNamespace()
     {
         return implode('\\', array_slice(explode('\\', get_class($this)), 0, -1));
     }
 
+    /**
+     * @return string
+     */
     public function getShortName()
     {
         return strtolower(str_replace('Analyser', '', $this->getName()));

@@ -92,7 +92,7 @@ class Environment
         return self::getContainer()->get($prefix . '.logger');
     }
 
-    private static function createContainer()
+    private static function createContainer(): ContainerBuilder
     {
         // default values
         $clientClass = 'Bartlett\Reflect\Client\LocalClient';

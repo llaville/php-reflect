@@ -29,8 +29,10 @@ class CacheAwareEventDispatcher extends EventDispatcher
 {
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
-    protected function doDispatch($listeners, $eventName, Event $event)
+    protected function doDispatch($listeners, $eventName, Event $event): void
     {
         foreach ($listeners as $listener) {
             $evt = $this->preNotify($listener, clone($event));

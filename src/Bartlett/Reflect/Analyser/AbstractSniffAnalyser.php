@@ -35,12 +35,12 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     protected $currentFunction;
     protected $currentClosure;
 
-    public function setMetrics(array $values)
+    public function setMetrics(array $values): void
     {
         $this->metrics = array_merge($this->metrics, $values);
     }
 
-    public function inContext($id)
+    public function inContext($id): bool
     {
         if (strcasecmp($id, 'object') === 0) {
             return (null !== $this->currentObject);
@@ -57,7 +57,7 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         return false;
     }
 
-    public function setUpBeforeVisitor()
+    public function setUpBeforeVisitor(): void
     {
         $this->subject->dispatch(
             new SniffEvent(
@@ -75,7 +75,7 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         }
     }
 
-    public function tearDownAfterVisitor()
+    public function tearDownAfterVisitor(): void
     {
         $this->subject->dispatch(
             new SniffEvent(
@@ -93,9 +93,10 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     }
 
     /**
+     * @param array $nodes
      * @return void
      */
-    public function beforeTraverse(array $nodes)
+    public function beforeTraverse(array $nodes): void
     {
         parent::beforeTraverse($nodes);
 
@@ -105,9 +106,10 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     }
 
     /**
+     * @param Node $node
      * @return void
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): void
     {
         parent::enterNode($node);
 
@@ -131,9 +133,10 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     }
 
     /**
+     * @param Node $node
      * @return void
      */
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): void
     {
         parent::leaveNode($node);
 
@@ -157,6 +160,7 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     }
 
     /**
+     * @param array $nodes
      * @return void
      */
     public function afterTraverse(array $nodes)

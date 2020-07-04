@@ -33,7 +33,7 @@ class Command extends BaseCommand
      *
      * @return Command The current instance
      */
-    public function disable()
+    public function disable(): self
     {
         $this->enabled = false;
         return $this;
@@ -44,7 +44,7 @@ class Command extends BaseCommand
      *
      * @return bool
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }

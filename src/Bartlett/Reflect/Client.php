@@ -93,8 +93,10 @@ class Client
      * Authorizes an Api
      *
      * @param $token
+     *
+     * @return void
      */
-    public function authorize($token)
+    public function authorize($token): void
     {
         $this->token = $token;
     }

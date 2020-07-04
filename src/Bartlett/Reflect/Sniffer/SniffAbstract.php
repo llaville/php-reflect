@@ -35,6 +35,9 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
     // public function afterTraverse(array $nodes)     { }
 
     // SniffInterface implements
+    /**
+     * @return void
+     */
     public function setUpBeforeSniff()
     {
         $this->visitor->getSubject()->dispatch(
@@ -49,6 +52,9 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
         );
     }
 
+    /**
+     * @return void
+     */
     public function enterSniff()
     {
         $this->visitor->getSubject()->dispatch(
@@ -63,6 +69,9 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
         );
     }
 
+    /**
+     * @return void
+     */
     public function leaveSniff()
     {
         $this->visitor->getSubject()->dispatch(
@@ -77,6 +86,9 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
         );
     }
 
+    /**
+     * @return void
+     */
     public function tearDownAfterSniff()
     {
         $this->visitor->getSubject()->dispatch(
@@ -91,12 +103,20 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
         );
     }
 
+    /**
+     * @return void
+     */
     public function setVisitor($visitor)
     {
         $this->visitor = $visitor;
     }
 
-    protected function getCurrentSpot($node)
+    /**
+     * @return (false|mixed|string)[]
+     *
+     * @psalm-return array{file: false|string, line: mixed}
+     */
+    protected function getCurrentSpot($node): array
     {
         return array(
             'file'    => realpath($this->visitor->getCurrentFile()),

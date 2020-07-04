@@ -31,6 +31,8 @@ interface PluginInterface
      *
      * @param EventDispatcherInterface $eventDispatcher Instance of the event
      *        dispatcher
+     *
+     * @return void
      */
     public function activate(EventDispatcherInterface $eventDispatcher);
 }

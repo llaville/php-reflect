@@ -19,6 +19,7 @@ use Bartlett\Reflect\Event\CacheAwareEventDispatcher;
 
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -111,7 +112,10 @@ class Application extends BaseApplication
         $this->addCommands($factory->generateCommands($classes));
     }
 
-    public function setDispatcher(EventDispatcherInterface $dispatcher)
+    /**
+     * @return void
+     */
+    public function setDispatcher(EventDispatcherInterface $dispatcher): void
     {
         $stopwatch = new Stopwatch();
 
@@ -155,7 +159,7 @@ class Application extends BaseApplication
         parent::setDispatcher($dispatcher);
     }
 
-    public function getDispatcher()
+    public function getDispatcher(): EventDispatcherInterface
     {
         if (!$this->eventDispatcher) {
             $this->setDispatcher(new CacheAwareEventDispatcher());
@@ -166,7 +170,7 @@ class Application extends BaseApplication
     /**
      * {@inheritDoc}
      */
-    public function getHelp()
+    public function getHelp(): string
     {
         return '<comment>' . static::$logo . '</comment>' . parent::getHelp();
     }
@@ -174,7 +178,7 @@ class Application extends BaseApplication
     /**
      * {@inheritDoc}
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         $version = parent::getVersion();
 
@@ -193,7 +197,7 @@ class Application extends BaseApplication
      *
      * @return string The application version
      */
-    public function getLongVersion()
+    public function getLongVersion(): string
     {
         return sprintf(
             '<info>%s</info> version <comment>%s</comment>',
@@ -204,10 +208,8 @@ class Application extends BaseApplication
 
     /**
      * {@inheritDoc}
-     *
-     * @return void
      */
-    public function run(InputInterface $input = null, OutputInterface $output = null)
+    public function run(InputInterface $input = null, OutputInterface $output = null): int
     {
         if (null === $input) {
             $input = new ArgvInput();
@@ -244,7 +246,7 @@ class Application extends BaseApplication
     /**
      * {@inheritDoc}
      */
-    public function doRun(InputInterface $input, OutputInterface $output)
+    public function doRun(InputInterface $input, OutputInterface $output): int
     {
         if (\Phar::running()
             && true === $input->hasParameterOption('--manifest')
@@ -271,7 +273,7 @@ class Application extends BaseApplication
     /**
      * {@inheritDoc}
      */
-    protected function getDefaultInputDefinition()
+    protected function getDefaultInputDefinition(): InputDefinition
     {
         $definition = parent::getDefaultInputDefinition();
         $definition->addOption(

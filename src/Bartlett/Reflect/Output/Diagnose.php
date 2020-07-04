@@ -32,8 +32,10 @@ class Diagnose extends OutputFormatter
      *
      * @param OutputInterface $output   Console Output concrete instance
      * @param array           $response Render config:validate command
+     *
+     * @return void
      */
-    public function run(OutputInterface $output, $response)
+    public function run(OutputInterface $output, $response): void
     {
         $output->writeln('<comment>Diagnostics:</comment>');
 
@@ -102,7 +104,7 @@ class Diagnose extends OutputFormatter
         }
     }
 
-    protected function writeComment(OutputInterface $output, string $comment)
+    protected function writeComment(OutputInterface $output, string $comment): void
     {
         $output->writeln(
             sprintf('  : <comment>%s</comment>', $comment)

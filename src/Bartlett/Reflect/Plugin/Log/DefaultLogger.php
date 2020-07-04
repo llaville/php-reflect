@@ -140,6 +140,8 @@ class DefaultLogger extends AbstractLogger
      *
      * This code was copied from Monolog\Processor\PsrLogMessageProcessor
      *
+     * @param array $record
+     * @return array
      * @author Jordi Boggiano <j.boggiano@seld.be>
      */
     public function interpolate(array $record)

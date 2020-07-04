@@ -31,8 +31,10 @@ class Cache extends OutputFormatter
      *
      * @param OutputInterface $output   Console Output concrete instance
      * @param array           $response Render cache:clear command
+     *
+     * @return void
      */
-    public function clear(OutputInterface $output, $response)
+    public function clear(OutputInterface $output, $response): void
     {
         $output->writeln(
             sprintf(

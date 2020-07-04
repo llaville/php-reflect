@@ -54,7 +54,7 @@ class NodeProcessorAbstract implements NodeProcessor
         return $this->preConditions;
     }
 
-    protected function traverseArray(array $nodes)
+    protected function traverseArray(array $nodes): void
     {
         foreach ($nodes as &$node) {
             if (is_array($node)) {
@@ -65,7 +65,7 @@ class NodeProcessorAbstract implements NodeProcessor
         }
     }
 
-    protected function traverseNode(Node $node)
+    protected function traverseNode(Node $node): void
     {
         $node = clone $node;
 

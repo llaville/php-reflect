@@ -126,6 +126,8 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
      * Cache statistics at end of a parse process.
      *
      * @param CompleteEvent $event
+     *
+     * @return void
      */
     public function onReflectComplete(CompleteEvent $event)
     {

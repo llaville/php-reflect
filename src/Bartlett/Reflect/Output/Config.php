@@ -32,8 +32,10 @@ class Config extends OutputFormatter
      *
      * @param OutputInterface $output   Console Output concrete instance
      * @param array           $response Render config:validate command
+     *
+     * @return void
      */
-    public function validate(OutputInterface $output, $response)
+    public function validate(OutputInterface $output, $response): void
     {
         $output->writeln(
             sprintf(

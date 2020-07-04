@@ -87,9 +87,10 @@ class StructureAnalyser extends AbstractAnalyser
     }
 
     /**
+     * @param array $nodes
      * @return void
      */
-    public function afterTraverse(array $nodes)
+    public function afterTraverse(array $nodes): void
     {
         parent::afterTraverse($nodes);
 
@@ -101,9 +102,10 @@ class StructureAnalyser extends AbstractAnalyser
     }
 
     /**
+     * @param Node $node
      * @return void
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): void
     {
         parent::enterNode($node);
 
@@ -130,17 +132,17 @@ class StructureAnalyser extends AbstractAnalyser
         }
     }
 
-    protected function visitTrait(Node\Stmt\Trait_ $trait)
+    protected function visitTrait(Node\Stmt\Trait_ $trait): void
     {
         $this->metrics['traits']++;
     }
 
-    protected function visitInterface(Node\Stmt\Interface_ $interface)
+    protected function visitInterface(Node\Stmt\Interface_ $interface): void
     {
         $this->metrics['interfaces']++;
     }
 
-    protected function visitClass(Node\Stmt\Class_ $class)
+    protected function visitClass(Node\Stmt\Class_ $class): void
     {
         parent::visitClass($class);
 
@@ -181,7 +183,7 @@ class StructureAnalyser extends AbstractAnalyser
      *
      * @return void
      */
-    protected function visitMethod(Node\Stmt\ClassMethod $method)
+    protected function visitMethod(Node\Stmt\ClassMethod $method): void
     {
         if ($this->testClass) {
             if (strpos($method->name, 'test') === 0) {
@@ -215,7 +217,7 @@ class StructureAnalyser extends AbstractAnalyser
      *
      * @return void
      */
-    protected function visitFunction(Node $function)
+    protected function visitFunction(Node $function): void
     {
         $this->metrics['functions']++;
 
@@ -233,7 +235,7 @@ class StructureAnalyser extends AbstractAnalyser
      *
      * @return void
      */
-    protected function visitConstant(Node $node)
+    protected function visitConstant(Node $node): void
     {
         $this->metrics['globalConstants']++;
     }

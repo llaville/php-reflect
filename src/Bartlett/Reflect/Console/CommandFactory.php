@@ -168,7 +168,7 @@ class CommandFactory
      *
      * @return InputDefinition
      */
-    private function buildDefinition($namespace, \ReflectionMethod $method, $params, $cmdExceptions)
+    private function buildDefinition($namespace, \ReflectionMethod $method, $params, $cmdExceptions): InputDefinition
     {
         $definition = new InputDefinition();
 
@@ -362,7 +362,7 @@ class CommandFactory
      *
      * @return string
      */
-    private function dash($name)
+    private function dash($name): string
     {
         return strtolower(
             preg_replace(

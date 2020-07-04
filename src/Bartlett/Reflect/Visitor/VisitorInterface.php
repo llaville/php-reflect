@@ -16,6 +16,6 @@ namespace Bartlett\Reflect\Visitor;
  */
 interface VisitorInterface
 {
-    public function setUpBeforeVisitor();
-    public function tearDownAfterVisitor();
+    public function setUpBeforeVisitor(): void;
+    public function tearDownAfterVisitor(): void;
 }
