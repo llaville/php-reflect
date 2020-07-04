@@ -87,7 +87,7 @@ class DefaultTokenizer
                 array(
                     $tokenName,
                     $text,
-                    $line,
+                    $line ?? null,
                     $id
                 )
             );

@@ -239,7 +239,7 @@ class Application extends BaseApplication
 
         $this->getDispatcher();
 
-        parent::run($input, $output);
+        return parent::run($input, $output);
     }
 
     /**
