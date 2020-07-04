@@ -60,7 +60,6 @@ class Application extends BaseApplication
 ";
 
     private $release;
-    private $container;
     private $eventDispatcher;
 
     /**
