@@ -32,6 +32,9 @@ class ReflectionAnalyser extends AbstractAnalyser
         $this->metrics = new ReflectionCollection();
     }
 
+    /**
+     * @return void
+     */
     public function enterNode(Node $node)
     {
         parent::enterNode($node);

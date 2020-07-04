@@ -74,7 +74,14 @@ class Diagram extends Common
         );
     }
 
-    protected function getDiagram($engine, $source, $function, $argument = '')
+    /**
+     * @param string $engine
+     * @param string $source
+     * @param string $function
+     * @param string $argument
+     * @return string
+     */
+    protected function getDiagram(string $engine, string $source, string $function, string $argument = ''): string
     {
         $processors = array(
             'plantuml' => '\\Bartlett\\UmlWriter\\Processor\\PlantUMLProcessor',

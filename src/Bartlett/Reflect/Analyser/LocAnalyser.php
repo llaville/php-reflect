@@ -72,6 +72,9 @@ class LocAnalyser extends AbstractAnalyser
         );
     }
 
+    /**
+     * @return void
+     */
     public function enterNode(Node $node)
     {
         parent::enterNode($node);
@@ -92,6 +95,9 @@ class LocAnalyser extends AbstractAnalyser
         }
     }
 
+    /**
+     * @return void
+     */
     public function leaveNode(Node $node)
     {
         parent::leaveNode($node);

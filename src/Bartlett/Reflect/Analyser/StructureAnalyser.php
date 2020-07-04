@@ -86,6 +86,9 @@ class StructureAnalyser extends AbstractAnalyser
         );
     }
 
+    /**
+     * @return void
+     */
     public function afterTraverse(array $nodes)
     {
         parent::afterTraverse($nodes);
@@ -97,6 +100,9 @@ class StructureAnalyser extends AbstractAnalyser
             = count(array_unique($this->constants));
     }
 
+    /**
+     * @return void
+     */
     public function enterNode(Node $node)
     {
         parent::enterNode($node);

@@ -43,7 +43,7 @@ class DefaultTokenizer
         return $this->tokenStack;
     }
 
-    public function setTokens($tokens)
+    public function setTokens(array $tokens)
     {
         $this->tokenize($tokens);
     }
@@ -57,7 +57,10 @@ class DefaultTokenizer
         );
     }
 
-    protected function tokenize($tokens)
+    /**
+     * @param string[] $tokens
+     */
+    protected function tokenize(array $tokens)
     {
         $this->tokenStack = new \SplDoublyLinkedList;
 

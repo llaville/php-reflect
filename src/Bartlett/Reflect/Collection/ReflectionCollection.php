@@ -47,6 +47,6 @@ class ReflectionCollection extends ArrayCollection
         } elseif ($node instanceof Node\Stmt\Const_) {
             $model = new ConstantModel($node);
         }
-        parent::add($model);
+        return parent::add($model);
     }
 }

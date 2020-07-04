@@ -87,6 +87,9 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
         return strtolower(str_replace('Analyser', '', $this->getName()));
     }
 
+    /**
+     * @return void
+     */
     public function beforeTraverse(array $nodes)
     {
         $this->subject->dispatch(
@@ -100,6 +103,9 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
         );
     }
 
+    /**
+     * @return void
+     */
     public function enterNode(Node $node)
     {
         $this->subject->dispatch(
@@ -113,6 +119,9 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
         );
     }
 
+    /**
+     * @return void
+     */
     public function leaveNode(Node $node)
     {
         $this->subject->dispatch(
@@ -126,6 +135,9 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
         );
     }
 
+    /**
+     * @return void
+     */
     public function afterTraverse(array $nodes)
     {
         $this->subject->dispatch(

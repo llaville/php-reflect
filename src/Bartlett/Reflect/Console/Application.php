@@ -204,6 +204,8 @@ class Application extends BaseApplication
 
     /**
      * {@inheritDoc}
+     *
+     * @return void
      */
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {

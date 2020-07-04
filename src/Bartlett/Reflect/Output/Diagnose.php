@@ -102,7 +102,7 @@ class Diagnose extends OutputFormatter
         }
     }
 
-    protected function writeComment($output, $comment)
+    protected function writeComment(OutputInterface $output, string $comment)
     {
         $output->writeln(
             sprintf('  : <comment>%s</comment>', $comment)

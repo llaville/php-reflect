@@ -92,6 +92,9 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         }
     }
 
+    /**
+     * @return void
+     */
     public function beforeTraverse(array $nodes)
     {
         parent::beforeTraverse($nodes);
@@ -101,6 +104,9 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         }
     }
 
+    /**
+     * @return void
+     */
     public function enterNode(Node $node)
     {
         parent::enterNode($node);
@@ -124,6 +130,9 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         }
     }
 
+    /**
+     * @return void
+     */
     public function leaveNode(Node $node)
     {
         parent::leaveNode($node);
@@ -147,6 +156,9 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         }
     }
 
+    /**
+     * @return void
+     */
     public function afterTraverse(array $nodes)
     {
         parent::afterTraverse($nodes);

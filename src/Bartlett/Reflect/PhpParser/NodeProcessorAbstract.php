@@ -29,6 +29,8 @@ class NodeProcessorAbstract implements NodeProcessor
 
     /**
      * {@inheritdoc}
+     *
+     * @param callable $callback
      */
     public function push(callable $callback)
     {

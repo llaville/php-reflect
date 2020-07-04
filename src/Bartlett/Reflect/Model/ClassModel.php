@@ -321,8 +321,9 @@ class ClassModel extends AbstractModel
      *         The function does not distinguish between static and non static properties
      *         and does not take visibility modifiers into account.
      */
-    public function getDefaultProperties()
+    public function getDefaultProperties(): array
     {
+        return [];
     }
 
     /**

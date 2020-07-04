@@ -26,7 +26,7 @@ interface NodeProcessor
     /**
      * Pushes a callback on to the stack of node processors
      *
-     * @param callback $callback
+     * @param callable $callback
      *
      * @return void
      */
