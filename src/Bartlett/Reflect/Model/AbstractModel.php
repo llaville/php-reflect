@@ -47,9 +47,9 @@ abstract class AbstractModel
      *
      * @return string
      */
-    public function getDocComment()
+    public function getDocComment(): string
     {
-        return $this->node->getDocComment();
+        return (string) $this->node->getDocComment();
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class AbstractModel
      * @return int
      * @see    getEndLine()
      */
-    public function getStartLine()
+    public function getStartLine(): int
     {
         return $this->node->getAttribute('startLine');
     }
@@ -69,7 +69,7 @@ abstract class AbstractModel
      * @return int
      * @see    getStartLine()
      */
-    public function getEndLine()
+    public function getEndLine(): int
     {
         return $this->node->getAttribute('endLine');
     }
@@ -77,7 +77,7 @@ abstract class AbstractModel
     /**
      * Gets the filename of the file in which the element has been defined.
      *
-     * @return string
+     * @return string|false
      */
     public function getFileName()
     {
@@ -89,7 +89,7 @@ abstract class AbstractModel
      *
      * @return string
      */
-    public function getExtensionName()
+    public function getExtensionName(): string
     {
         return $this->extension;
     }

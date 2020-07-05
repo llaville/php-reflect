@@ -82,19 +82,17 @@ class GrowlNotifier implements NotifierInterface
     /**
      * {@inheritDoc}
      */
-    public function setMessageFormat($format)
+    public function setMessageFormat($format): void
     {
         if (is_string($format) && !empty($format)) {
             $this->format = $format;
         }
-
-        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getMessageFormat()
+    public function getMessageFormat(): string
     {
         return $this->format;
     }
@@ -102,7 +100,7 @@ class GrowlNotifier implements NotifierInterface
     /**
      * {@inheritDoc}
      */
-    public function notify(GenericEvent $event)
+    public function notify(GenericEvent $event): bool
     {
         try {
             $this->growl->register();

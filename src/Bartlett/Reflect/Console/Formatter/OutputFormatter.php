@@ -38,7 +38,7 @@ class OutputFormatter extends BaseOutputFormatter
      *
      * @return void
      */
-    protected function tableHelper(OutputInterface $output, $headers, $rows, $style = 'compact')
+    protected function tableHelper(OutputInterface $output, array $headers, array $rows, string $style = 'compact'): void
     {
         $table = new Table($output);
         $table->setStyle($style)
@@ -58,7 +58,7 @@ class OutputFormatter extends BaseOutputFormatter
      *
      * @return void
      */
-    protected function printFormattedLines(OutputInterface $output, array $lines)
+    protected function printFormattedLines(OutputInterface $output, array $lines): void
     {
         foreach ($lines as $ident => $contents) {
             list ($format, $args) = $contents;

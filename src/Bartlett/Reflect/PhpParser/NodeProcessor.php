@@ -30,14 +30,14 @@ interface NodeProcessor
      *
      * @return void
      */
-    public function push(callable $callback);
+    public function push(callable $callback): void;
 
     /**
      * Gets list of processors that will check pre-conditions.
      *
      * @return callable[]
      */
-    public function getProcessors();
+    public function getProcessors(): array;
 
     /**
      * Traverses an array of nodes.
@@ -46,5 +46,5 @@ interface NodeProcessor
      *
      * @return array list of pre-conditions found
      */
-    public function traverse(array $nodes);
+    public function traverse(array $nodes): array;
 }

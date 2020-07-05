@@ -2,6 +2,8 @@
 
 namespace Bartlett\Reflect\Tokenizer;
 
+use SplDoublyLinkedList;
+
 class DefaultTokenizer
 {
     protected $tokenStack;
@@ -37,7 +39,7 @@ class DefaultTokenizer
         '`' => 'T_BACKTICK'
     );
 
-    public function getTokens()
+    public function getTokens(): SplDoublyLinkedList
     {
         $this->tokenStack->rewind();
         return $this->tokenStack;
@@ -64,7 +66,7 @@ class DefaultTokenizer
      */
     protected function tokenize(array $tokens): void
     {
-        $this->tokenStack = new \SplDoublyLinkedList;
+        $this->tokenStack = new SplDoublyLinkedList;
 
         foreach ($tokens as $id => $token) {
             if (is_array($token)) {

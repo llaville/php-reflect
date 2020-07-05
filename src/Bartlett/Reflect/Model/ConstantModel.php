@@ -32,7 +32,7 @@ class ConstantModel extends AbstractModel
      *
      * @return string
      */
-    public function getNamespaceName()
+    public function getNamespaceName(): string
     {
         $parts = $this->node->consts[0]->namespacedName->parts;
         array_pop($parts);
@@ -44,7 +44,7 @@ class ConstantModel extends AbstractModel
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return (string) $this->node->consts[0]->namespacedName;
     }
@@ -54,7 +54,7 @@ class ConstantModel extends AbstractModel
      *
      * @return string
      */
-    public function getShortName()
+    public function getShortName(): string
     {
         return (string) $this->node->consts[0]->name;
     }
@@ -78,7 +78,7 @@ class ConstantModel extends AbstractModel
      *
      * @return bool TRUE if it's in a namespace, otherwise FALSE
      */
-    public function inNamespace()
+    public function inNamespace(): bool
     {
         return $this->node->consts[0]->namespacedName->isQualified();
     }
@@ -88,7 +88,7 @@ class ConstantModel extends AbstractModel
      *
      * @return bool TRUE if it's internal, otherwise FALSE
      */
-    public function isInternal()
+    public function isInternal(): bool
     {
         return false;
     }
@@ -99,7 +99,7 @@ class ConstantModel extends AbstractModel
      * @link http://www.php.net/manual/en/language.constants.predefined.php
      * @return bool TRUE if it's magic, otherwise FALSE
      */
-    public function isMagic()
+    public function isMagic(): bool
     {
         return false;
     }
@@ -109,7 +109,7 @@ class ConstantModel extends AbstractModel
      *
      * @return bool TRUE if it's scalar, otherwise FALSE
      */
-    public function isScalar()
+    public function isScalar(): bool
     {
         return ($this->node->consts[0]->value instanceof Node\Scalar);
     }
@@ -119,7 +119,7 @@ class ConstantModel extends AbstractModel
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $eol = "\n";
 

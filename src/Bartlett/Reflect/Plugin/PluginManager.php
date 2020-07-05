@@ -16,7 +16,9 @@ namespace Bartlett\Reflect\Plugin;
 use Bartlett\Reflect\Environment;
 use Bartlett\Reflect\Api\V3\Config;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Seld\JsonLint\ParsingException;
+
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -33,7 +35,6 @@ class PluginManager
     protected $eventDispatcher;
 
     protected $plugins = array();
-    protected $registeredPlugins = array();
 
     /**
      * Initializes plugin manager
@@ -50,8 +51,9 @@ class PluginManager
      * Loads all plugins declared in the JSON config file.
      *
      * @return void
+     * @throws ParsingException
      */
-    public function registerPlugins()
+    public function registerPlugins(): void
     {
         $jsonFile = Environment::getJsonConfigFilename();
         if (!$jsonFile) {
@@ -91,7 +93,7 @@ class PluginManager
      *
      * @return void
      */
-    public function addPlugin(PluginInterface $plugin)
+    public function addPlugin(PluginInterface $plugin): void
     {
         $this->plugins[] = $plugin;
 
@@ -107,7 +109,7 @@ class PluginManager
      *
      * @return array plugins
      */
-    public function getPlugins()
+    public function getPlugins(): array
     {
         return $this->plugins;
     }

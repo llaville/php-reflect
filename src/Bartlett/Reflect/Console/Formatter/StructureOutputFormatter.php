@@ -34,7 +34,7 @@ class StructureOutputFormatter extends OutputFormatter
      *
      * @return void
      */
-    public function __invoke(OutputInterface $output, $count)
+    public function __invoke(OutputInterface $output, array $count): void
     {
         if (is_int($count['classConstants'])
             && is_int($count['globalConstants'])

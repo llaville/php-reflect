@@ -35,8 +35,10 @@ class ParameterModel extends AbstractModel
     /**
      * Creates a new ParameterModel instance.
      *
+     * @param Node\Param $param
+     * @param int $position
      */
-    public function __construct(Node\Param $param, $position)
+    public function __construct(Node\Param $param, int $position)
     {
         parent::__construct($param);
         $this->position = $position;
@@ -47,7 +49,7 @@ class ParameterModel extends AbstractModel
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return (string) $this->node->var->name;
     }
@@ -58,7 +60,7 @@ class ParameterModel extends AbstractModel
      * @return int The position of the parameter, left to right,
      *             starting at position #0.
      */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }
@@ -84,7 +86,7 @@ class ParameterModel extends AbstractModel
      *
      * @return bool TRUE if NULL is allowed, otherwise FALSE
      */
-    public function allowsNull()
+    public function allowsNull(): bool
     {
         if (!empty($this->node->type)) {
             // with type hint, checks if NULL constant provided
@@ -104,7 +106,7 @@ class ParameterModel extends AbstractModel
      *
      * @return bool TRUE if the parameter is optional, otherwise FALSE
      */
-    public function isOptional()
+    public function isOptional(): bool
     {
         return $this->isDefaultValueAvailable();
     }
@@ -114,7 +116,7 @@ class ParameterModel extends AbstractModel
      *
      * @return bool TRUE if the parameter is passed in by reference, otherwise FALSE
      */
-    public function isPassedByReference()
+    public function isPassedByReference(): bool
     {
         return $this->node->byRef;
     }
@@ -124,7 +126,7 @@ class ParameterModel extends AbstractModel
      *
      * @return bool TRUE if the parameter is variadic, otherwise FALSE
      */
-    public function isVariadic()
+    public function isVariadic(): bool
     {
         return $this->node->variadic;
     }
@@ -134,7 +136,7 @@ class ParameterModel extends AbstractModel
      *
      * @return bool TRUE if an array is expected, FALSE otherwise.
      */
-    public function isArray()
+    public function isArray(): bool
     {
         return ((string) $this->node->type === 'array');
     }
@@ -144,7 +146,7 @@ class ParameterModel extends AbstractModel
      *
      * @return bool TRUE if the parameter is callable, otherwise FALSE
      */
-    public function isCallable()
+    public function isCallable(): bool
     {
         return ((string) $this->node->type === 'callable');
     }
@@ -154,7 +156,7 @@ class ParameterModel extends AbstractModel
      *
      * @return bool TRUE if a default value is available, otherwise FALSE
      */
-    public function isDefaultValueAvailable()
+    public function isDefaultValueAvailable(): bool
     {
         return !empty($this->node->default);
     }
@@ -185,8 +187,9 @@ class ParameterModel extends AbstractModel
      * Returns the string representation of the ParameterModel object.
      *
      * @return string
+     * @throws ModelException
      */
-    public function __toString()
+    public function __toString(): string
     {
         $eol = "\n";
 

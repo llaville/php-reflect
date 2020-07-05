@@ -6,15 +6,15 @@ use Bartlett\Reflect\Analyser\AbstractAnalyser;
 
 class FooAnalyser extends AbstractAnalyser
 {
-    public function setTokens(array $tokens)
+    public function setTokens(array $tokens): void
     {
     }
 
-    public function setCurrentFile($path)
+    public function setCurrentFile(string $path): void
     {
     }
 
-    public function getMetrics()
+    public function getMetrics(): array
     {
     }
 }

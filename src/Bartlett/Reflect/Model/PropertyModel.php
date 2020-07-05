@@ -31,8 +31,10 @@ class PropertyModel extends AbstractModel
     /**
      * Creates a new PropertyModel instance.
      *
+     * @param ClassModel $class
+     * @param Node\Stmt\Property $property
      */
-    public function __construct($class, Node\Stmt\Property $property)
+    public function __construct(ClassModel $class, Node\Stmt\Property $property)
     {
         parent::__construct($property);
         $this->declaringClass = $class;
@@ -43,7 +45,7 @@ class PropertyModel extends AbstractModel
      *
      * @return ClassModel
      */
-    public function getDeclaringClass()
+    public function getDeclaringClass(): ClassModel
     {
         return $this->declaringClass;
     }
@@ -53,9 +55,9 @@ class PropertyModel extends AbstractModel
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
-        return $this->node->props[0]->name;
+        return (string) $this->node->props[0]->name;
     }
 
     /**
@@ -77,7 +79,7 @@ class PropertyModel extends AbstractModel
      * @return bool TRUE if the property was declared at compile-time, or
      *              FALSE if it was created at run-time.
      */
-    public function isDefault()
+    public function isDefault(): bool
     {
         return !empty($this->node->props[0]->default);
     }
@@ -87,7 +89,7 @@ class PropertyModel extends AbstractModel
      *
      * @return bool  TRUE if the property is private, otherwise FALSE
      */
-    public function isPrivate()
+    public function isPrivate(): bool
     {
         return $this->node->isPrivate();
     }
@@ -97,7 +99,7 @@ class PropertyModel extends AbstractModel
      *
      * @return bool  TRUE if the property is protected, otherwise FALSE
      */
-    public function isProtected()
+    public function isProtected(): bool
     {
         return $this->node->isProtected();
     }
@@ -107,7 +109,7 @@ class PropertyModel extends AbstractModel
      *
      * @return bool  TRUE if the property is public, otherwise FALSE
      */
-    public function isPublic()
+    public function isPublic(): bool
     {
         return $this->node->isPublic();
     }
@@ -117,7 +119,7 @@ class PropertyModel extends AbstractModel
      *
      * @return bool  TRUE if the property is static, otherwise FALSE
      */
-    public function isStatic()
+    public function isStatic(): bool
     {
         return $this->node->isStatic();
     }
@@ -127,7 +129,7 @@ class PropertyModel extends AbstractModel
      *
      * @return bool
      */
-    public function isImplicitlyPublic()
+    public function isImplicitlyPublic(): bool
     {
         return $this->node->getAttribute('implicitlyPublic', false);
     }
@@ -137,7 +139,7 @@ class PropertyModel extends AbstractModel
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->isPrivate()) {
             $visibility = 'private';

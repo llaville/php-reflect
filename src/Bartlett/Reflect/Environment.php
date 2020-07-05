@@ -13,7 +13,14 @@
 
 namespace Bartlett\Reflect;
 
+use Bartlett\Reflect\Client\ClientInterface;
+
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+use Exception;
 
 /**
  * Application Environment.
@@ -57,7 +64,7 @@ class Environment
      * @return void
      * @see    getJsonConfigFilename()
      */
-    public static function setScanDir()
+    public static function setScanDir(): void
     {
         if (!getenv("BARTLETT_SCAN_DIR")) {
             $home = defined('PHP_WINDOWS_VERSION_BUILD') ? 'USERPROFILE' : 'HOME';
@@ -73,9 +80,10 @@ class Environment
     /**
      * Gets a client to interact with the API
      *
-     * @return \Bartlett\Reflect\Client\ClientInterface
+     * @return ClientInterface
+     * @throws Exception
      */
-    public static function getClient()
+    public static function getClient(): ClientInterface
     {
         $prefix = str_replace(array('.json', '.dist'), '', getenv('BARTLETTRC'));
         return self::getContainer()->get($prefix . '.client');
@@ -84,9 +92,9 @@ class Environment
     /**
      * Gets a compatible PSR-3 logger
      *
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      */
-    public static function getLogger()
+    public static function getLogger(): LoggerInterface
     {
         $prefix = str_replace(array('.json', '.dist'), '', getenv('BARTLETTRC'));
         return self::getContainer()->get($prefix . '.logger');
@@ -132,7 +140,7 @@ class Environment
         return $container;
     }
 
-    private static function getContainer()
+    private static function getContainer(): ContainerInterface
     {
         if (self::$container === null) {
             self::$container = self::createContainer();

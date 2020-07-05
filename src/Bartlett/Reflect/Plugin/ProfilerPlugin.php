@@ -20,7 +20,7 @@ use Bartlett\Reflect\Event\CompleteEvent;
 use Bartlett\Reflect\Plugin\Log\DefaultLogger;
 use Bartlett\Reflect\Util\Timer;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -67,22 +67,21 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function activate(EventDispatcherInterface $eventDispatcher)
+    public function activate(EventDispatcherInterface $eventDispatcher): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
-        $events = array(
+        return array(
             ProgressEvent::class => 'onReflectProgress',
             SuccessEvent::class  => 'onReflectSuccess',
             ErrorEvent::class    => 'onReflectError',
             CompleteEvent::class => 'onReflectComplete',
         );
-        return $events;
     }
 
     /**
@@ -92,7 +91,7 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onReflectProgress(ProgressEvent $event)
+    public function onReflectProgress(ProgressEvent $event): void
     {
         static $start = false;
 
@@ -110,7 +109,7 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onReflectSuccess(SuccessEvent $event)
+    public function onReflectSuccess(SuccessEvent $event): void
     {
         $filename = $event['file']->getPathname();
         $appEvent = $this->stopwatch->stop($filename);
@@ -129,7 +128,7 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onReflectError(ErrorEvent $event)
+    public function onReflectError(ErrorEvent $event): void
     {
         $filename = $event['file']->getPathname();
         $appEvent = $this->stopwatch->stop($filename);
@@ -152,7 +151,7 @@ class ProfilerPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onReflectComplete(CompleteEvent $event)
+    public function onReflectComplete(CompleteEvent $event): void
     {
         $appEvent = $this->stopwatch->stop($event['source']);
         $time     = $appEvent->getDuration();

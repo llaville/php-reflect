@@ -35,7 +35,7 @@ class Diagnose extends OutputFormatter
      *
      * @return void
      */
-    public function run(OutputInterface $output, $response): void
+    public function run(OutputInterface $output, array $response): void
     {
         $output->writeln('<comment>Diagnostics:</comment>');
 

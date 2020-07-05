@@ -29,7 +29,7 @@ class FunctionModel extends AbstractFunctionModel
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $eol = "\n";
         $str = '';

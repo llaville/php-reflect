@@ -54,7 +54,7 @@ class AbstractDispatcher implements DispatcherInterface
      * @return EventDispatcherInterface
      * @disabled
      */
-    public function getEventDispatcher()
+    public function getEventDispatcher(): EventDispatcherInterface
     {
         if (!$this->eventDispatcher) {
             $this->eventDispatcher = new EventDispatcher();
@@ -70,7 +70,7 @@ class AbstractDispatcher implements DispatcherInterface
      * @return object
      * @disabled
      */
-    public function dispatch(object $event)
+    public function dispatch(object $event): object
     {
         return $this->getEventDispatcher()->dispatch($event);
     }

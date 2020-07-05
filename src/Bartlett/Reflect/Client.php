@@ -13,6 +13,7 @@
 
 namespace Bartlett\Reflect;
 
+use Bartlett\Reflect\Api\BaseApi;
 use Bartlett\Reflect\Client\ClientInterface;
 use Bartlett\Reflect\Client\LocalClient;
 
@@ -37,9 +38,8 @@ class Client
      *
      * @param ClientInterface $client
      * @param string          $url
-     * @param string          $appName
      */
-    public function __construct(ClientInterface $client = null, $url = self::API_V3)
+    public function __construct(ClientInterface $client = null, string $url = self::API_V3)
     {
         $this->initializeClient($url, $client);
     }
@@ -49,10 +49,10 @@ class Client
      *
      * @param string $name Api method to perform
      *
-     * @return Api
+     * @return BaseApi
      * @throws \InvalidArgumentException
      */
-    public function api($name)
+    public function api($name): BaseApi
     {
         $classes = array(
             'Bartlett\Reflect\Api\\' => array(
@@ -109,7 +109,7 @@ class Client
      *
      * @return void
      */
-    private function initializeClient($url, ClientInterface $client = null)
+    private function initializeClient(string $url, ClientInterface $client = null): void
     {
         if ($client) {
             $this->client = $client;

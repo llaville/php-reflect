@@ -19,7 +19,7 @@ use Bartlett\Reflect\Event\CompleteEvent;
 use Bartlett\Reflect\Plugin\Notifier\NotifierInterface;
 use Bartlett\Reflect\Util\Timer;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -55,21 +55,20 @@ class NotifierPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function activate(EventDispatcherInterface $eventDispatcher)
+    public function activate(EventDispatcherInterface $eventDispatcher): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
-        $events = array(
+        return array(
             ProgressEvent::class => 'onNotification',
             ErrorEvent::class    => 'onNotification',
             CompleteEvent::class => 'onNotification',
         );
-        return $events;
     }
 
     /**
@@ -79,7 +78,7 @@ class NotifierPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onNotification(GenericEvent $event)
+    public function onNotification(GenericEvent $event): void
     {
         static $start = false;
 
@@ -122,7 +121,7 @@ class NotifierPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return array
      */
-    protected function getPlaceholders(GenericEvent $event)
+    protected function getPlaceholders(GenericEvent $event): array
     {
         return array(
             '%eventname%' => $event['eventname'],

@@ -29,9 +29,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
-
 use Symfony\Component\Stopwatch\Stopwatch;
-
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -68,7 +66,7 @@ class Application extends BaseApplication
      * @param string $appName    The name of the application
      * @param string $appVersion The version of the application
      */
-    public function __construct($appName, $appVersion)
+    public function __construct(string $appName, string $appVersion)
     {
         // disable Garbage Collector
         gc_disable();
@@ -112,6 +110,7 @@ class Application extends BaseApplication
     }
 
     /**
+     * @param EventDispatcherInterface $dispatcher
      * @return void
      */
     public function setDispatcher(EventDispatcherInterface $dispatcher): void

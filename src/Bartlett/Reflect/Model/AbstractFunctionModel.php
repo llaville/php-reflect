@@ -49,7 +49,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         if ($this->isClosure()) {
             return '{closure}';
@@ -65,7 +65,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      *
      * @return string
      */
-    public function getNamespaceName()
+    public function getNamespaceName(): string
     {
         $parts = explode('\\', $this->getName());
         array_pop($parts);
@@ -77,7 +77,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      *
      * @return string
      */
-    public function getShortName()
+    public function getShortName(): string
     {
         return (string) $this->node->name;
     }
@@ -88,7 +88,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      *
      * @return int The number of parameters
      */
-    public function getNumberOfParameters()
+    public function getNumberOfParameters(): int
     {
         $parameters = $this->getParameters();
         return count($parameters);
@@ -99,7 +99,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      *
      * @return int The number of required parameters
      */
-    public function getNumberOfRequiredParameters()
+    public function getNumberOfRequiredParameters(): int
     {
         $parameters = $this->getParameters();
         $required   = 0;
@@ -117,7 +117,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      *
      * @return array of ParameterModel
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         if ($this->parameters === null) {
             // lazy load function parameters list
@@ -136,7 +136,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      *
      * @return bool TRUE if it's in a namespace, otherwise FALSE
      */
-    public function inNamespace()
+    public function inNamespace(): bool
     {
         return $this->node->namespacedName->isQualified();
     }
@@ -146,7 +146,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      *
      * @return bool TRUE if it's a closure, otherwise FALSE
      */
-    public function isClosure()
+    public function isClosure(): bool
     {
         return $this->node instanceof Node\Expr\Closure;
     }
@@ -156,7 +156,7 @@ abstract class AbstractFunctionModel extends AbstractModel
      *
      * @return bool TRUE if it's internal, otherwise FALSE
      */
-    public function isInternal()
+    public function isInternal(): bool
     {
         return ($this->getExtensionName() !== 'user');
     }

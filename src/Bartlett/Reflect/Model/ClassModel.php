@@ -46,7 +46,7 @@ class ClassModel extends AbstractModel
      *
      * @return int
      */
-    public function getModifiers()
+    public function getModifiers(): int
     {
         return $this->node->type;
     }
@@ -56,7 +56,7 @@ class ClassModel extends AbstractModel
      *
      * @return array A numerical array with interface names as the values.
      */
-    public function getInterfaceNames()
+    public function getInterfaceNames(): array
     {
         $interfaces = array();
 
@@ -74,7 +74,7 @@ class ClassModel extends AbstractModel
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return (string) $this->node->namespacedName;
     }
@@ -84,7 +84,7 @@ class ClassModel extends AbstractModel
      *
      * @return string
      */
-    public function getNamespaceName()
+    public function getNamespaceName(): string
     {
         $parts = $this->node->namespacedName->parts;
         array_pop($parts);
@@ -117,7 +117,7 @@ class ClassModel extends AbstractModel
      *
      * @return string
      */
-    public function getShortName()
+    public function getShortName(): string
     {
         return $this->node->namespacedName->getLast();
     }
@@ -128,7 +128,7 @@ class ClassModel extends AbstractModel
      * @return array An associative array of interfaces, with keys as interface names
      *         and the array values as ClassModel objects.
      */
-    public function getInterfaces()
+    public function getInterfaces(): array
     {
         return $interfaces = array();
     }
@@ -138,7 +138,7 @@ class ClassModel extends AbstractModel
      *
      * @return array An array of constants. Constant name in key, constant value in value.
      */
-    public function getConstants()
+    public function getConstants(): array
     {
         if ($this->constants === null) {
             $prettyPrinter = new PrettyPrinter\Standard;
@@ -165,7 +165,7 @@ class ClassModel extends AbstractModel
      *
      * @return mixed constant value or FALSE if constant does not exist
      */
-    public function getConstant($name)
+    public function getConstant(string $name)
     {
         $constants = $this->getConstants();
         $value = array_key_exists($name, $constants);
@@ -182,7 +182,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if it has the constant, otherwise FALSE
      */
-    public function hasConstant($name)
+    public function hasConstant(string $name): bool
     {
         $constants = $this->getConstants();
         return array_key_exists($name, $constants);
@@ -196,7 +196,7 @@ class ClassModel extends AbstractModel
      *
      * @return array An array of MethodModel objects reflecting each method.
      */
-    public function getMethods($filter = null)
+    public function getMethods(int $filter = null): array
     {
         if ($this->methods === null) {
             // lazy load class methods list
@@ -227,7 +227,7 @@ class ClassModel extends AbstractModel
      * @return MethodModel
      * @throws ModelException if the method does not exist.
      */
-    public function getMethod($name)
+    public function getMethod(string $name): MethodModel
     {
         if ($this->hasMethod($name)) {
             return $this->methods[$name];
@@ -244,7 +244,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if it has the method, otherwise FALSE
      */
-    public function hasMethod($name)
+    public function hasMethod(string $name): bool
     {
         $this->getMethods();
         return array_key_exists($name, $this->methods);
@@ -255,7 +255,7 @@ class ClassModel extends AbstractModel
      *
      * @return array An array of static properties. Property name in key, property value in value.
      */
-    public function getStaticProperties()
+    public function getStaticProperties(): array
     {
         if ($this->staticProperties === null) {
             // lazy load class properties list
@@ -281,7 +281,7 @@ class ClassModel extends AbstractModel
      * @return mixed
      * @throws ModelException if the property does not exist or is not static
      */
-    public function getStaticPropertyValue($name)
+    public function getStaticPropertyValue(string $name)
     {
         $properties = $this->getStaticProperties();
 
@@ -298,7 +298,7 @@ class ClassModel extends AbstractModel
      *
      * @return array An array of PropertyModel objects reflecting each property.
      */
-    public function getProperties()
+    public function getProperties(): array
     {
         if ($this->properties === null) {
             // lazy load class properties list
@@ -334,7 +334,7 @@ class ClassModel extends AbstractModel
      * @return PropertyModel
      * @throws ModelException if the property does not exist.
      */
-    public function getProperty($name)
+    public function getProperty(string $name): PropertyModel
     {
         if ($this->hasProperty($name)) {
             return $this->properties[$name];
@@ -351,7 +351,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if it has the property, otherwise FALSE
      */
-    public function hasProperty($name)
+    public function hasProperty(string $name): bool
     {
         $this->getProperties();
         return array_key_exists($name, $this->properties);
@@ -362,7 +362,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if it's in a namespace, otherwise FALSE
      */
-    public function inNamespace()
+    public function inNamespace(): bool
     {
         $ns = $this->getNamespaceName();
         return !empty($ns);
@@ -373,7 +373,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if the class is abstract, otherwise FALSE
      */
-    public function isAbstract()
+    public function isAbstract(): bool
     {
         return $this->node instanceof Node\Stmt\Class_
             && $this->node->isAbstract();
@@ -384,7 +384,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if the class is an interface, otherwise FALSE
      */
-    public function isInterface()
+    public function isInterface(): bool
     {
         return $this->node instanceof Node\Stmt\Interface_;
     }
@@ -394,7 +394,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if the class is a trait, otherwise FALSE
      */
-    public function isTrait()
+    public function isTrait(): bool
     {
         return $this->node instanceof Node\Stmt\Trait_;
     }
@@ -404,7 +404,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if the class is a user-defined class, otherwise FALSE
      */
-    public function isUserDefined()
+    public function isUserDefined(): bool
     {
         return ($this->extension === 'user');
     }
@@ -414,7 +414,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if the class is iterateable, otherwise FALSE
      */
-    public function isIterateable()
+    public function isIterateable(): bool
     {
         $interfaces = $this->getInterfaceNames();
 
@@ -427,7 +427,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if the class is cloneable, FALSE otherwise.
      */
-    public function isCloneable()
+    public function isCloneable(): bool
     {
         if ($this->isTrait() || $this->isInterface() || $this->isAbstract()) {
             return false;
@@ -445,7 +445,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if the class is final, FALSE otherwise.
      */
-    public function isFinal()
+    public function isFinal(): bool
     {
         if ($this->node instanceof Node\Stmt\Class_) {
             return $this->node->isFinal();
@@ -458,7 +458,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if the class is instantiable, FALSE otherwise.
      */
-    public function isInstantiable()
+    public function isInstantiable(): bool
     {
         if ($this->isTrait() || $this->isInterface() || $this->isAbstract()) {
             return false;
@@ -480,7 +480,7 @@ class ClassModel extends AbstractModel
      *
      * @return bool TRUE if the class is a subclass, FALSE otherwise.
      */
-    public function isSubclassOf($class)
+    public function isSubclassOf(string $class): bool
     {
         return false;  // @FIXME see unit tests
 
@@ -508,7 +508,7 @@ class ClassModel extends AbstractModel
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $eol = "\n";
         $str = '';

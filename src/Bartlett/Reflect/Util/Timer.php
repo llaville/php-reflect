@@ -33,7 +33,7 @@ class Timer
      *
      * @return string
      */
-    public static function toTimeString($time)
+    public static function toTimeString(int $time): string
     {
         $times = array(
             'hour'   => 3600000,

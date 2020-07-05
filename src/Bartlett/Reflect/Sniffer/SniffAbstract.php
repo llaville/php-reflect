@@ -12,7 +12,9 @@
 namespace Bartlett\Reflect\Sniffer;
 
 use Bartlett\Reflect\Event\SniffEvent;
+use Bartlett\Reflect\Visitor\VisitorInterface;
 
+use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
 
 /**
@@ -38,7 +40,7 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
     /**
      * @return void
      */
-    public function setUpBeforeSniff()
+    public function setUpBeforeSniff(): void
     {
         $this->visitor->getSubject()->dispatch(
             new SniffEvent(
@@ -55,7 +57,7 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
     /**
      * @return void
      */
-    public function enterSniff()
+    public function enterSniff(): void
     {
         $this->visitor->getSubject()->dispatch(
             new SniffEvent(
@@ -72,7 +74,7 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
     /**
      * @return void
      */
-    public function leaveSniff()
+    public function leaveSniff(): void
     {
         $this->visitor->getSubject()->dispatch(
             new SniffEvent(
@@ -89,7 +91,7 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
     /**
      * @return void
      */
-    public function tearDownAfterSniff()
+    public function tearDownAfterSniff(): void
     {
         $this->visitor->getSubject()->dispatch(
             new SniffEvent(
@@ -104,19 +106,21 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
     }
 
     /**
+     * @param VisitorInterface $visitor
      * @return void
      */
-    public function setVisitor($visitor)
+    public function setVisitor(VisitorInterface $visitor): void
     {
         $this->visitor = $visitor;
     }
 
     /**
-     * @return (false|mixed|string)[]
+     * @param Node $node
+     * @return array
      *
      * @psalm-return array{file: false|string, line: mixed}
      */
-    protected function getCurrentSpot($node): array
+    protected function getCurrentSpot(Node $node): array
     {
         return array(
             'file'    => realpath($this->visitor->getCurrentFile()),
@@ -124,7 +128,7 @@ abstract class SniffAbstract extends NodeVisitorAbstract implements SniffInterfa
         );
     }
 
-    protected function getCurrentSeverity($version, $operator = 'lt', $severity = 'error')
+    protected function getCurrentSeverity(string $version, string $operator = 'lt', string $severity = 'error'): string
     {
         if (version_compare(PHP_VERSION, $version, $operator)) {
             return 'warning';

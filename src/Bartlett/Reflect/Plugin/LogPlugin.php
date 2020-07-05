@@ -62,14 +62,14 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function activate(EventDispatcherInterface $eventDispatcher)
+    public function activate(EventDispatcherInterface $eventDispatcher): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             ProgressEvent::class => 'onReflectProgress',
@@ -88,7 +88,7 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onReflectProgress(ProgressEvent $event)
+    public function onReflectProgress(ProgressEvent $event): void
     {
         $context = $event->getArguments();
         $this->logger->info('Parsing file "{file}" in progress.', $context);
@@ -101,7 +101,7 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onReflectSuccess(SuccessEvent $event)
+    public function onReflectSuccess(SuccessEvent $event): void
     {
         $context = $event->getArguments();
         $this->logger->info('Analyze file "{file}" successful.', $context);
@@ -114,7 +114,7 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onReflectError(ErrorEvent $event)
+    public function onReflectError(ErrorEvent $event): void
     {
         $context = $event->getArguments();
         $this->logger->error('Parser has detected an error on file "{file}". {error}', $context);
@@ -127,7 +127,7 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onReflectComplete(CompleteEvent $event)
+    public function onReflectComplete(CompleteEvent $event): void
     {
         $context = $event->getArguments();
         unset($context['extra']);
@@ -141,7 +141,7 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onAstBuild(BuildEvent $event)
+    public function onAstBuild(BuildEvent $event): void
     {
         $context = $event->getArguments();
 
@@ -162,7 +162,7 @@ class LogPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onSniff(SniffEvent $event)
+    public function onSniff(SniffEvent $event): void
     {
         $context = $event->getArguments();
 

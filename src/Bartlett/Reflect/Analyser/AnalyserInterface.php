@@ -24,23 +24,23 @@ use Bartlett\Reflect;
  */
 interface AnalyserInterface
 {
-    public function getSubject();
+    public function getSubject(): Reflect;
 
-    public function getCurrentFile();
+    public function getCurrentFile(): string;
 
-    public function getTokens();
+    public function getTokens(): array;
 
-    public function setSubject(Reflect $reflect);
+    public function setSubject(Reflect $reflect): void;
 
-    public function setTokens(array $tokens);
+    public function setTokens(array $tokens): void;
 
-    public function setCurrentFile($path);
+    public function setCurrentFile(string $path): void;
 
-    public function getMetrics();
+    public function getMetrics(): array;
 
-    public function getName();
+    public function getName(): string;
 
-    public function getNamespace();
+    public function getNamespace(): string;
 
-    public function getShortName();
+    public function getShortName(): string;
 }

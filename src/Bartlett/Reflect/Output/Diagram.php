@@ -34,7 +34,7 @@ class Diagram extends OutputFormatter
      *
      * @return void
      */
-    public function package(OutputInterface $output, $response)
+    public function package(OutputInterface $output, array $response): void
     {
         $output->writeln($response);
     }
@@ -47,7 +47,7 @@ class Diagram extends OutputFormatter
      *
      * @return void
      */
-    public function class_(OutputInterface $output, $response)
+    public function class_(OutputInterface $output, array $response): void
     {
         $output->writeln($response);
     }

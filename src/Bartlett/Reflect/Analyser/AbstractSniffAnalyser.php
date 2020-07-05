@@ -40,7 +40,7 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
         $this->metrics = array_merge($this->metrics, $values);
     }
 
-    public function inContext($id): bool
+    public function inContext(string $id): bool
     {
         if (strcasecmp($id, 'object') === 0) {
             return (null !== $this->currentObject);
@@ -93,10 +93,9 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     }
 
     /**
-     * @param array $nodes
-     * @return void
+     * {@inheritDoc}
      */
-    public function beforeTraverse(array $nodes): void
+    public function beforeTraverse(array $nodes)
     {
         parent::beforeTraverse($nodes);
 
@@ -106,10 +105,9 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     }
 
     /**
-     * @param Node $node
-     * @return void
+     * {@inheritDoc}
      */
-    public function enterNode(Node $node): void
+    public function enterNode(Node $node)
     {
         parent::enterNode($node);
 
@@ -133,10 +131,9 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     }
 
     /**
-     * @param Node $node
-     * @return void
+     * {@inheritDoc}
      */
-    public function leaveNode(Node $node): void
+    public function leaveNode(Node $node)
     {
         parent::leaveNode($node);
 
@@ -160,8 +157,7 @@ abstract class AbstractSniffAnalyser extends AbstractAnalyser implements Visitor
     }
 
     /**
-     * @param array $nodes
-     * @return void
+     * {@inheritDoc}
      */
     public function afterTraverse(array $nodes)
     {

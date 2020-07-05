@@ -29,7 +29,7 @@ class DoctrineCacheAdapter implements CacheAdapterInterface
 {
     /**
      * Instance of a Doctrine cache
-     * @var Doctrine\Common\Cache\Cache
+     * @var Cache
      */
     protected $cache;
 
@@ -37,8 +37,6 @@ class DoctrineCacheAdapter implements CacheAdapterInterface
      * Doctrine 2 cache adapter constructor.
      *
      * @param Cache $cache Doctrine cache object
-     *
-     * @return DoctrineCacheAdapter
      */
     public function __construct(Cache $cache)
     {
@@ -46,55 +44,33 @@ class DoctrineCacheAdapter implements CacheAdapterInterface
     }
 
     /**
-     * Checks if an entry exists in the cache.
-     *
-     * @param string $id      The cache id of the entry to check for.
-     * @param array  $options (optional) Array of cache adapter options
-     *
-     * @return bool TRUE if a cache entry exists for the given cache id, FALSE otherwise.
+     * {@inheritDoc}
      */
-    public function exists($id, array $options = null)
+    public function exists(string $id, array $options = null): bool
     {
         return $this->cache->contains($id);
     }
 
     /**
-     * Deletes a cache entry.
-     *
-     * @param string $id      The cache id of the entry to delete.
-     * @param array  $options (optional) Array of cache adapter options
-     *
-     * @return bool TRUE on success, FALSE on failure
+     * {@inheritDoc}
      */
-    public function delete($id, array $options = null)
+    public function delete(string $id, array $options = null): bool
     {
         return $this->cache->delete($id);
     }
 
     /**
-     * Fetches an entry from the cache.
-     *
-     * @param string $id      The cache id of the entry to fetch.
-     * @param array  $options (optional) Array of cache adapter options
-     *
-     * @return string The cached data or FALSE, if no cache entry exists for the given id.
+     * {@inheritDoc}
      */
-    public function fetch($id, array $options = null)
+    public function fetch(string $id, array $options = null)
     {
         return $this->cache->fetch($id);
     }
 
     /**
-     * Puts data into the cache.
-     *
-     * @param string $id       The cache id of the new entry to store.
-     * @param string $data     The cache entry/data
-     * @param mixed  $lifeTime (optional) Sets a specific lifetime for this cache entry
-     * @param array  $options  (optional) Array of cache adapter options
-     *
-     * @return bool TRUE if the entry was successfully stored in the cache, FALSE otherwise.
+     * {@inheritDoc}
      */
-    public function save($id, $data, $lifeTime = false, array $options = null)
+    public function save(string $id, $data, $lifeTime = false, array $options = null): bool
     {
         return $this->cache->save($id, $data, $lifeTime);
     }

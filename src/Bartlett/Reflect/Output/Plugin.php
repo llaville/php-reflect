@@ -34,7 +34,7 @@ class Plugin extends OutputFormatter
      *
      * @return void
      */
-    public function dir(OutputInterface $output, $response): void
+    public function dir(OutputInterface $output, array $response): void
     {
         if (empty($response)) {
             $output->writeln('<info>No plugin installed</info>');

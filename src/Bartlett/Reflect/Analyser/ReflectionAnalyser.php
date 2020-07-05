@@ -33,10 +33,9 @@ class ReflectionAnalyser extends AbstractAnalyser
     }
 
     /**
-     * @param Node $node
-     * @return void
+     * {@inheritDoc}
      */
-    public function enterNode(Node $node): void
+    public function enterNode(Node $node)
     {
         parent::enterNode($node);
 

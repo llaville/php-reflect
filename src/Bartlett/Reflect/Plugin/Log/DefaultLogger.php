@@ -47,7 +47,7 @@ class DefaultLogger extends AbstractLogger
      * Initialize the default log handler
      *
      * @param string $name       The logging channel
-     * @param int    $level      The minimum logging level
+     * @param string $level      The minimum logging level
      * @param mixed  $handler    Optional handler
      * @param array  $processors Optional array of processors
      */
@@ -80,7 +80,7 @@ class DefaultLogger extends AbstractLogger
      *
      * @return bool
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         $level = array_search($record['level'], self::$levels);
         return $level >= $this->level;
@@ -121,7 +121,7 @@ class DefaultLogger extends AbstractLogger
      *
      * @return void
      */
-    public function handle(array $record)
+    public function handle(array $record): void
     {
         error_log(
             sprintf(
@@ -144,7 +144,7 @@ class DefaultLogger extends AbstractLogger
      * @return array
      * @author Jordi Boggiano <j.boggiano@seld.be>
      */
-    public function interpolate(array $record)
+    public function interpolate(array $record): array
     {
         if (false === strpos($record['message'], '{')) {
             return $record;

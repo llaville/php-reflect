@@ -35,7 +35,7 @@ class Config extends OutputFormatter
      *
      * @return void
      */
-    public function validate(OutputInterface $output, $response): void
+    public function validate(OutputInterface $output, array $response): void
     {
         $output->writeln(
             sprintf(

@@ -73,7 +73,7 @@ class LocAnalyser extends AbstractAnalyser
     }
 
     /**
-     * @return void
+     * {@inheritDoc}
      */
     public function enterNode(Node $node)
     {
@@ -96,7 +96,7 @@ class LocAnalyser extends AbstractAnalyser
     }
 
     /**
-     * @return void
+     * {@inheritDoc}
      */
     public function leaveNode(Node $node)
     {
@@ -121,7 +121,7 @@ class LocAnalyser extends AbstractAnalyser
      *
      * @return void
      */
-    protected function visitClass(Node\Stmt\Class_ $class)
+    protected function visitClass(Node\Stmt\Class_ $class): void
     {
         $this->metrics['classes']++;
         $this->metrics['llocClasses'] += $this->llocClasses;
@@ -135,7 +135,7 @@ class LocAnalyser extends AbstractAnalyser
      *
      * @return void
      */
-    protected function visitMethod(Node\Stmt\ClassMethod $method)
+    protected function visitMethod(Node\Stmt\ClassMethod $method): void
     {
         $this->metrics['methods']++;
 
@@ -167,7 +167,7 @@ class LocAnalyser extends AbstractAnalyser
      *
      * @return void
      */
-    protected function visitFunction(Node $function)
+    protected function visitFunction(Node $function): void
     {
         $this->metrics['functions']++;
 
@@ -205,7 +205,7 @@ class LocAnalyser extends AbstractAnalyser
      *
      * @return array
      */
-    private function getLinesOfCode(array $nodes)
+    private function getLinesOfCode(array $nodes): array
     {
         $length = $nodes[count($nodes)-1]->getAttribute('endTokenPos')
             - $nodes[0]->getAttribute('startTokenPos')

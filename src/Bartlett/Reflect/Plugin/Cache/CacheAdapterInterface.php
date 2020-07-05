@@ -37,7 +37,7 @@ interface CacheAdapterInterface
      *
      * @return bool TRUE if a cache entry exists for the given cache id, FALSE otherwise.
      */
-    public function exists($id, array $options = null);
+    public function exists(string $id, array $options = null): bool;
 
     /**
      * Deletes a cache entry.
@@ -47,7 +47,7 @@ interface CacheAdapterInterface
      *
      * @return bool TRUE on success, FALSE on failure
      */
-    public function delete($id, array $options = null);
+    public function delete(string $id, array $options = null): bool;
 
     /**
      * Fetches an entry from the cache.
@@ -57,17 +57,17 @@ interface CacheAdapterInterface
      *
      * @return string The cached data or FALSE, if no cache entry exists for the given id.
      */
-    public function fetch($id, array $options = null);
+    public function fetch(string $id, array $options = null);
 
     /**
      * Puts data into the cache.
      *
      * @param string $id       The cache id of the new entry to store.
-     * @param string $data     The cache entry/data
+     * @param mixed  $data     The cache entry/data
      * @param mixed  $lifeTime (optional) Sets a specific lifetime for this cache entry
      * @param array  $options  (optional) Array of cache adapter options
      *
      * @return bool TRUE if the entry was successfully stored in the cache, FALSE otherwise.
      */
-    public function save($id, $data, $lifeTime = false, array $options = null);
+    public function save(string $id, $data, $lifeTime = false, array $options = null): bool;
 }

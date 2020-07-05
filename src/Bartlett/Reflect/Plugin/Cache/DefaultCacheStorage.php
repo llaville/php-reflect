@@ -54,20 +54,16 @@ class DefaultCacheStorage implements CacheStorageInterface
      * @param CacheAdapterInterface $adapter Cache adapter used to store cache data
      * @param int                   $ttl     (optional) Default cache TTL
      */
-    public function __construct($adapter, $ttl = 3600)
+    public function __construct(CacheAdapterInterface $adapter, int $ttl = 3600)
     {
         $this->cache       = $adapter;
         $this->maxlifetime = $ttl;
     }
 
     /**
-     * Checks if cache exists for a request.
-     *
-     * @param array $request Request data to check for
-     *
-     * @return bool TRUE if a response exists in cache, FALSE otherwise
+     * {@inheritDoc}
      */
-    public function exists($request)
+    public function exists(array $request): bool
     {
         // Hash a request data source into a string that returns cache metadata
         $this->key = $request['source'];
@@ -79,13 +75,9 @@ class DefaultCacheStorage implements CacheStorageInterface
     }
 
     /**
-     * Get a response from the cache for a request.
-     *
-     * @param array $request Request data to read from cache
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
-    public function fetch($request)
+    public function fetch(array $request)
     {
         if (!$this->exists($request)) {
             return;
@@ -128,13 +120,9 @@ class DefaultCacheStorage implements CacheStorageInterface
     }
 
     /**
-     * Cache a FILE parse.
-     *
-     * @param array $request Request being cached
-     *
-     * @return void
+     * {@inheritDoc}
      */
-    public function cache($request)
+    public function cache(array $request): void
     {
         $currentTime = time();
         $entries     = array();
@@ -171,13 +159,9 @@ class DefaultCacheStorage implements CacheStorageInterface
     }
 
     /**
-     * Deletes cache entries that match a request.
-     *
-     * @param array $request Request to delete from cache
-     *
-     * @return int
+     * {@inheritDoc}
      */
-    public function delete($request)
+    public function delete(array $request): int
     {
         $entriesCleared = 0;
 
@@ -197,13 +181,9 @@ class DefaultCacheStorage implements CacheStorageInterface
     }
 
     /**
-     * Purge all cache entries for a given data source.
-     *
-     * @param string $source Name that identify a data source
-     *
-     * @return int
+     * {@inheritDoc}
      */
-    public function purge($source)
+    public function purge(string $source): int
     {
         $request = array('source' => $source);
         return $this->delete($request);

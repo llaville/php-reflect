@@ -29,17 +29,17 @@ interface NotifierInterface
      *
      * @param string $format The message format with predefined place holders
      *
-     * @return self for fluent interface
+     * @return void
      * @see Bartlett\Reflect\Plugin\NotifierPlugin::getPlaceholders() for known place holders
      */
-    public function setMessageFormat($format);
+    public function setMessageFormat(string $format): void;
 
     /**
      * Gets the current message format
      *
      * @return string
      */
-    public function getMessageFormat();
+    public function getMessageFormat(): string;
 
     /**
      * Notify an important event
@@ -48,5 +48,5 @@ interface NotifierInterface
      *
      * @return bool TRUE on a successful notification, FALSE on failure
      */
-    public function notify(GenericEvent $event);
+    public function notify(GenericEvent $event): bool ;
 }

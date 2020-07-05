@@ -29,10 +29,8 @@ class NodeProcessorAbstract implements NodeProcessor
 
     /**
      * {@inheritdoc}
-     *
-     * @param callable $callback
      */
-    public function push(callable $callback)
+    public function push(callable $callback): void
     {
         array_push($this->processors, $callback);
     }
@@ -40,7 +38,7 @@ class NodeProcessorAbstract implements NodeProcessor
     /**
      * {@inheritdoc}
      */
-    public function getProcessors()
+    public function getProcessors(): array
     {
         return $this->processors;
     }
@@ -48,7 +46,7 @@ class NodeProcessorAbstract implements NodeProcessor
     /**
      * {@inheritdoc}
      */
-    public function traverse(array $nodes)
+    public function traverse(array $nodes): array
     {
         $this->traverseArray($nodes);
         return $this->preConditions;

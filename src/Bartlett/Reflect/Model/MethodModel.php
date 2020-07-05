@@ -31,8 +31,10 @@ class MethodModel extends AbstractFunctionModel
     /**
      * Creates a new MethodModel instance.
      *
+     * @param ClassModel $class
+     * @param Node\Stmt\ClassMethod $method
      */
-    public function __construct($class, Node\Stmt\ClassMethod $method)
+    public function __construct(ClassModel $class, Node\Stmt\ClassMethod $method)
     {
         parent::__construct($method);
         $this->declaringClass = $class;
@@ -43,7 +45,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return int
      */
-    public function getModifiers()
+    public function getModifiers(): int
     {
         return $this->node->type;
     }
@@ -53,7 +55,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return ClassModel
      */
-    public function getDeclaringClass()
+    public function getDeclaringClass(): ClassModel
     {
         return $this->declaringClass;
     }
@@ -63,7 +65,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return bool  TRUE if the method is abstract, otherwise FALSE
      */
-    public function isAbstract()
+    public function isAbstract(): bool
     {
         return $this->node->isAbstract();
     }
@@ -73,7 +75,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return bool  TRUE if the method is a constructor, otherwise FALSE
      */
-    public function isConstructor()
+    public function isConstructor(): bool
     {
         $name = explode('\\', $this->declaringClass->getName());
         $name = array_pop($name);
@@ -86,7 +88,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return bool  TRUE if the method is a destructor, otherwise FALSE
      */
-    public function isDestructor()
+    public function isDestructor(): bool
     {
         return $this->getShortName() === '__destruct';
     }
@@ -96,7 +98,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return bool  TRUE if the method is final, otherwise FALSE
      */
-    public function isFinal()
+    public function isFinal(): bool
     {
         return $this->node->isFinal();
     }
@@ -106,7 +108,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return bool  TRUE if the method is static, otherwise FALSE
      */
-    public function isStatic()
+    public function isStatic(): bool
     {
         return $this->node->isStatic();
     }
@@ -116,7 +118,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return bool  TRUE if the method is private, otherwise FALSE
      */
-    public function isPrivate()
+    public function isPrivate(): bool
     {
         return $this->node->isPrivate();
     }
@@ -126,7 +128,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return bool  TRUE if the method is protected, otherwise FALSE
      */
-    public function isProtected()
+    public function isProtected(): bool
     {
         return $this->node->isProtected();
     }
@@ -136,7 +138,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return bool  TRUE if the method is public, otherwise FALSE
      */
-    public function isPublic()
+    public function isPublic(): bool
     {
         return $this->node->isPublic();
     }
@@ -146,7 +148,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return bool
      */
-    public function isImplicitlyPublic()
+    public function isImplicitlyPublic(): bool
     {
         return $this->node->getAttribute('implicitlyPublic', false);
     }
@@ -156,7 +158,7 @@ class MethodModel extends AbstractFunctionModel
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->isPrivate()) {
             $visibility = 'private';

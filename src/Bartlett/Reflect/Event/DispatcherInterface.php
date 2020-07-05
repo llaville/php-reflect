@@ -14,7 +14,7 @@
 
 namespace Bartlett\Reflect\Event;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -41,9 +41,9 @@ interface DispatcherInterface
     /**
      * Get the EventDispatcher of the request
      *
-     * @return Symfony\Component\EventDispatcher\EventDispatcher
+     * @return EventDispatcherInterface
      */
-    public function getEventDispatcher();
+    public function getEventDispatcher(): EventDispatcherInterface;
 
     /**
      * Dispatches an event to all registered listeners.
@@ -52,7 +52,7 @@ interface DispatcherInterface
      *
      * @return object
      */
-    public function dispatch(object $event);
+    public function dispatch(object $event): object;
 
     /**
      * Adds an event subscriber.

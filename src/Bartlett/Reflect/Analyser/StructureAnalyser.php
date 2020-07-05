@@ -87,10 +87,9 @@ class StructureAnalyser extends AbstractAnalyser
     }
 
     /**
-     * @param array $nodes
-     * @return void
+     * {@inheritDoc}
      */
-    public function afterTraverse(array $nodes): void
+    public function afterTraverse(array $nodes)
     {
         parent::afterTraverse($nodes);
 
@@ -102,10 +101,9 @@ class StructureAnalyser extends AbstractAnalyser
     }
 
     /**
-     * @param Node $node
-     * @return void
+     * {@inheritDoc}
      */
-    public function enterNode(Node $node): void
+    public function enterNode(Node $node)
     {
         parent::enterNode($node);
 

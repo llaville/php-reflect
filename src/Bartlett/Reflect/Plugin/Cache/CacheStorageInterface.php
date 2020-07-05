@@ -31,7 +31,7 @@ interface CacheStorageInterface
      *
      * @return bool TRUE if a response exists in cache, FALSE otherwise
      */
-    public function exists($request);
+    public function exists(array $request): bool;
 
     /**
      * Get a response from the cache for a request.
@@ -40,7 +40,7 @@ interface CacheStorageInterface
      *
      * @return mixed
      */
-    public function fetch($request);
+    public function fetch(array $request);
 
     /**
      * Cache a FILE parse.
@@ -49,16 +49,16 @@ interface CacheStorageInterface
      *
      * @return void
      */
-    public function cache($request);
+    public function cache(array $request): void;
 
     /**
      * Deletes cache entries that match a request.
      *
      * @param array $request Request to delete from cache
      *
-     * @return void
+     * @return int number of entries deleted in cache
      */
-    public function delete($request);
+    public function delete(array $request): int;
 
     /**
      * Purge all cache entries for a given data source.
@@ -66,7 +66,7 @@ interface CacheStorageInterface
      * @param string $source Name that identify a data source
      *                       (see ProviderManager)
      *
-     * @return void
+     * @return int
      */
-    public function purge($source);
+    public function purge(string $source): int;
 }

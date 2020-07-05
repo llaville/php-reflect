@@ -34,7 +34,7 @@ class LocOutputFormatter extends OutputFormatter
      *
      * @return void
      */
-    public function __invoke(OutputInterface $output, $count)
+    public function __invoke(OutputInterface $output, array $count): void
     {
         $count['ncloc'] = $count['loc'] - $count['cloc'];
 

@@ -34,7 +34,7 @@ class Cache extends OutputFormatter
      *
      * @return void
      */
-    public function clear(OutputInterface $output, $response): void
+    public function clear(OutputInterface $output, array $response): void
     {
         $output->writeln(
             sprintf(

@@ -15,13 +15,16 @@ namespace Bartlett\Reflect\Plugin;
 
 use Bartlett\Reflect\Plugin\Cache\CacheStorageInterface;
 use Bartlett\Reflect\Plugin\Cache\DefaultCacheStorage;
-
 use Bartlett\Reflect\Event\ProgressEvent;
 use Bartlett\Reflect\Event\SuccessEvent;
 use Bartlett\Reflect\Event\CompleteEvent;
 
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+use InvalidArgumentException;
+use ReflectionException;
+use ReflectionClass;
 
 /**
  * Plugin that allow to cache parsing results
@@ -55,7 +58,7 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
         }
 
         if (!$cache instanceof CacheStorageInterface) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 "Cannot initialize the cache plugin.\n" .
                 'Expects an array or instance of CacheStorageInterface, and got ' .
                 gettype($cache)
@@ -72,14 +75,14 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function activate(EventDispatcherInterface $eventDispatcher)
+    public function activate(EventDispatcherInterface $eventDispatcher): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             ProgressEvent::class => 'onReflectProgress',
@@ -95,9 +98,9 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onReflectProgress(ProgressEvent $event)
+    public function onReflectProgress(ProgressEvent $event): void
     {
-        if ($response = $this->storage->fetch($event)) {
+        if ($response = $this->storage->fetch($event->getArguments())) {
             ++$this->stats[self::STATS_HITS];
             $this->hashUserData = sha1(serialize($response));
             $event['notModified'] = $response;
@@ -113,12 +116,12 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onReflectSuccess(SuccessEvent $event)
+    public function onReflectSuccess(SuccessEvent $event): void
     {
         if (sha1(serialize($event['ast'])) !== $this->hashUserData) {
             // cache need to be refresh
             ++$this->stats[self::STATS_MISSES];
-            $this->storage->cache($event);
+            $this->storage->cache($event->getArguments());
         }
     }
 
@@ -129,7 +132,7 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    public function onReflectComplete(CompleteEvent $event)
+    public function onReflectComplete(CompleteEvent $event): void
     {
         $event['extra'] = array('cache' => $this->stats);
     }
@@ -139,7 +142,7 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
      *
      * @return CacheStorageInterface
      */
-    public function getCacheStorage()
+    public function getCacheStorage(): CacheStorageInterface
     {
         return $this->storage;
     }
@@ -149,10 +152,10 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
      *
      * @param array $options Cache configuration
      *
-     * @return DefaultCacheStorage
-     * @throws \InvalidArgumentException
+     * @return CacheStorageInterface
+     * @throws InvalidArgumentException|ReflectionException
      */
-    private static function createCacheStorage($options)
+    private static function createCacheStorage(array $options): CacheStorageInterface
     {
         $options = array_merge(
             array(
@@ -166,7 +169,7 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
         );
 
         if (!isset($options['adapter'])) {
-            throw new \InvalidArgumentException('Adapter is missing');
+            throw new InvalidArgumentException('Adapter is missing');
         }
 
         $adapterClass = $options['adapter'];
@@ -176,7 +179,7 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
             $adapterClass = __NAMESPACE__ . '\Cache\\' . $adapterClass;
         }
         if (!class_exists($adapterClass)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf(
                     'Adapter "%s" cannot be loaded.',
                     $adapterClass
@@ -185,7 +188,7 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
         }
 
         if (!isset($options['backend']['class'])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf(
                     'Backend is missing for %s',
                     $adapterClass
@@ -195,14 +198,14 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
         $backendClass = $options['backend']['class'];
 
         if (!class_exists($backendClass)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf(
                     'Backend "%s" cannot be loaded.',
                     $backendClass
                 )
             );
         }
-        $rc = new \ReflectionClass($backendClass);
+        $rc = new ReflectionClass($backendClass);
 
         if (isset($options['backend']['args'])) {
             $args = self::replaceTokens($options['backend']['args']);
@@ -212,12 +215,11 @@ class CachePlugin implements PluginInterface, EventSubscriberInterface
 
         $backend      = $rc->newInstanceArgs($args);
         $cacheAdapter = new $adapterClass($backend);
-        $cache        = new DefaultCacheStorage($cacheAdapter);
 
-        return $cache;
+        return new DefaultCacheStorage($cacheAdapter);
     }
 
-    protected static function replaceTokens($args)
+    protected static function replaceTokens(array $args): array
     {
         for ($a = 0, $max = count($args); $a < $max; $a++) {
             if (!is_string($args[$a])) {

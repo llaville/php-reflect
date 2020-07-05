@@ -33,7 +33,7 @@ class LocalClient implements ClientInterface
      *
      * @param string $url Base of Api Endpoint
      */
-    public function __construct($url = 'Bartlett\Reflect\Api\V3')
+    public function __construct(string $url = 'Bartlett\Reflect\Api\V3')
     {
         $this->setNamespace($url);
     }
@@ -45,9 +45,9 @@ class LocalClient implements ClientInterface
      *
      * @return void
      */
-    public function activatePlugins($register)
+    public function activatePlugins(bool $register): void
     {
-        $this->registerPlugins = (bool) $register;
+        $this->registerPlugins = $register;
     }
 
     /**
@@ -55,9 +55,9 @@ class LocalClient implements ClientInterface
      *
      * @param string $url Base of Api Endpoint
      *
-     * @return self for a fuent interface
+     * @return self for a fluent interface
      */
-    public function setNamespace($url)
+    public function setNamespace(string $url)
     {
         $this->namespace = $url;
         return $this;
@@ -66,7 +66,7 @@ class LocalClient implements ClientInterface
     /**
      * {@inheritDoc}
      */
-    public function request($method, $url, array $params = array())
+    public function request(string $method, string $url, array $params = array())
     {
         $parts = explode('/', $url);
 
@@ -100,7 +100,7 @@ class LocalClient implements ClientInterface
      * @param EventDispatcherInterface $eventDispatcher Instance of the event
      *        dispatcher
      *
-     * @return self for a fuent interface
+     * @return self for a fluent interface
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {

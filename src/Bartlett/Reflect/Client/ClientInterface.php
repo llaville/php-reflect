@@ -29,5 +29,5 @@ interface ClientInterface
      * @param string $url
      * @param array  $params
      */
-    public function request($method, $url, array $params = array());
+    public function request(string $method, string $url, array $params = array());
 }

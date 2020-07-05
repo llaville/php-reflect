@@ -34,9 +34,9 @@ class Reflection extends OutputFormatter
      *
      * @return void
      */
-    public function class_(OutputInterface $output, $response)
+    public function class_(OutputInterface $output, array $response): void
     {
-        $output->writeln((string) $response);
+        $output->writeln((string) $response['object']);
     }
 
     /**
@@ -47,8 +47,8 @@ class Reflection extends OutputFormatter
      *
      * @return void
      */
-    public function function_(OutputInterface $output, $response)
+    public function function_(OutputInterface $output, array $response): void
     {
-        $output->writeln((string) $response);
+        $output->writeln((string) $response['object']);
     }
 }

@@ -14,6 +14,8 @@ namespace Bartlett\Reflect\Analyser;
 use Bartlett\Reflect\Environment;
 use Bartlett\Reflect\Api\V3\Config;
 
+use Seld\JsonLint\ParsingException;
+
 /**
  * Analyser manager
  *
@@ -70,8 +72,9 @@ class AnalyserManager
      * Loads all analysers declared in the JSON config file.
      *
      * @return void
+     * @throws ParsingException
      */
-    public function registerAnalysers()
+    public function registerAnalysers(): void
     {
         $jsonFile = Environment::getJsonConfigFilename();
         if (!$jsonFile) {
@@ -99,7 +102,7 @@ class AnalyserManager
      *
      * @return void
      */
-    public function addAnalyser(AnalyserInterface $analyser)
+    public function addAnalyser(AnalyserInterface $analyser): void
     {
         $this->analysers[] = $analyser;
     }
@@ -109,7 +112,7 @@ class AnalyserManager
      *
      * @return array analysers
      */
-    public function getAnalysers()
+    public function getAnalysers(): array
     {
         return $this->analysers;
     }
@@ -119,7 +122,7 @@ class AnalyserManager
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $array = array();
 

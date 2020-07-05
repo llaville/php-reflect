@@ -11,6 +11,8 @@
 
 namespace Bartlett\Reflect\Sniffer;
 
+use Bartlett\Reflect\Visitor\VisitorInterface;
+
 use PhpParser\NodeVisitor;
 
 /**
@@ -31,9 +33,9 @@ interface SniffInterface extends NodeVisitor
     // public function leaveNode(Node $node);
     // public function afterTraverse(array $nodes);
 
-    public function setUpBeforeSniff();
-    public function enterSniff();
-    public function leaveSniff();
-    public function tearDownAfterSniff();
-    public function setVisitor($visitor);
+    public function setUpBeforeSniff(): void;
+    public function enterSniff(): void;
+    public function leaveSniff(): void;
+    public function tearDownAfterSniff(): void;
+    public function setVisitor(VisitorInterface $visitor): void;
 }
