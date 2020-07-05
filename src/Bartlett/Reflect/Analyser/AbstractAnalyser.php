@@ -111,7 +111,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     }
 
     /**
-     * @return void
+     * {@inheritDoc}
      */
     public function beforeTraverse(array $nodes)
     {
@@ -127,7 +127,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     }
 
     /**
-     * @return void
+     * {@inheritDoc}
      */
     public function enterNode(Node $node)
     {
@@ -143,7 +143,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     }
 
     /**
-     * @return void
+     * {@inheritDoc}
      */
     public function leaveNode(Node $node)
     {
@@ -159,7 +159,7 @@ abstract class AbstractAnalyser implements AnalyserInterface, NodeVisitor
     }
 
     /**
-     * @return void
+     * {@inheritDoc}
      */
     public function afterTraverse(array $nodes)
     {
