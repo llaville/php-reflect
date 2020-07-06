@@ -19,7 +19,7 @@ use Bartlett\Reflect\Event\ProgressEvent;
 use Bartlett\Reflect\Event\SuccessEvent;
 use Bartlett\Reflect\Event\CompleteEvent;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use InvalidArgumentException;

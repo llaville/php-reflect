@@ -19,7 +19,7 @@ use Bartlett\Reflect\Event\CompleteEvent;
 use Bartlett\Reflect\Plugin\Notifier\NotifierInterface;
 use Bartlett\Reflect\Util\Timer;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

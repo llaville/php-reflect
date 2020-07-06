@@ -14,7 +14,7 @@
 namespace Bartlett\Reflect\Event;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -70,7 +70,7 @@ class AbstractDispatcher implements DispatcherInterface
      * @return object
      * @disabled
      */
-    public function dispatch(object $event): object
+    public function dispatch($event)
     {
         return $this->getEventDispatcher()->dispatch($event);
     }

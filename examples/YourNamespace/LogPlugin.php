@@ -4,7 +4,7 @@ namespace YourNamespace;
 
 use Bartlett\Reflect\Plugin\LogPlugin as BaseLogPlugin;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class LogPlugin extends BaseLogPlugin
 {

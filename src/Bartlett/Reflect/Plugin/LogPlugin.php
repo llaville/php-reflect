@@ -21,7 +21,7 @@ use Bartlett\Reflect\Event\BuildEvent;
 use Bartlett\Reflect\Event\SniffEvent;
 use Bartlett\Reflect\Plugin\Log\DefaultLogger;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Psr\Log\LoggerInterface;

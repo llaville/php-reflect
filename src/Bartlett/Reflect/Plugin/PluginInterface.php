@@ -13,7 +13,7 @@
 
 namespace Bartlett\Reflect\Plugin;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Interface that all plugins must implement.

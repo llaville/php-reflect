@@ -18,7 +18,7 @@ use Bartlett\Reflect\Api\V3\Config;
 
 use Seld\JsonLint\ParsingException;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
