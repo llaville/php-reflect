@@ -16,7 +16,7 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 - Drop support to PHP 5
 - Drop support to `sebastian/version` v1
 - Raise `phpdocumentor/reflection-docblock` constraint to v4 to allows only PHP 7 compatibility
-- Raise `phpdocumentor/type-resolver` constraint to v0.5 to allows only PHP 7 compatibility
+- Raise `phpdocumentor/type-resolver` constraint to v0.4 or v1.0 (on recommendation of @remicollet)
 - Raise `justinrainbow/json-schema` constraint to v5.2
 - Raise `seld/jsonlint` constraint to v1.4
 - Raise `nikic/php-parser` constraint to v4.5
