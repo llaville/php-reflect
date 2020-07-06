@@ -27,6 +27,8 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 ### Removed
 
 - Application Events class constants `Bartlett\Reflect\Events` (replaced by individual Event class. See simpler event dispatching)
+- public method `Bartlett\Reflect\Console\Application::setDispatcher` was removed and replaced by private method `Bartlett\Reflect\Console\Application::initDispatcher`
+  to avoid conflict between Symfony 4.4 and Symfony 5.x
 
 ### Fixed
 

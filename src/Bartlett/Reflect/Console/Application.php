@@ -113,7 +113,7 @@ class Application extends BaseApplication
      * @param EventDispatcherInterface $dispatcher
      * @return void
      */
-    public function setDispatcher(EventDispatcherInterface $dispatcher): void
+    private function initDispatcher(EventDispatcherInterface $dispatcher): void
     {
         $stopwatch = new Stopwatch();
 
@@ -154,13 +154,13 @@ class Application extends BaseApplication
         );
 
         $this->eventDispatcher = $dispatcher;
-        parent::setDispatcher($dispatcher);
+        $this->setDispatcher($dispatcher);
     }
 
     public function getDispatcher(): EventDispatcherInterface
     {
         if (!$this->eventDispatcher) {
-            $this->setDispatcher(new CacheAwareEventDispatcher());
+            $this->initDispatcher(new CacheAwareEventDispatcher());
         }
         return $this->eventDispatcher;
     }
