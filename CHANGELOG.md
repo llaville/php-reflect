@@ -6,6 +6,8 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 ## [Unreleased]
 
+## [4.4.0] - 2020-07-07
+
 ### Added
 
 - Event classes `Bartlett\Reflect\Event\*Event` to follow principle of simpler event dispatching
