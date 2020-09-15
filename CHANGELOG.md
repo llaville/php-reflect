@@ -6,6 +6,11 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 ## [Unreleased]
 
+## [4.4.x-dev] - 2020-09-15
+
+Project reached End-Of-Life.
+No features will be accepted. Only bug and security fixes will be proceeded.
+
 ## [4.4.0] - 2020-07-07
 
 ### Added

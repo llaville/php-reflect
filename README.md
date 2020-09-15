@@ -1,5 +1,6 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/bartlett/php-reflect)](https://packagist.org/packages/bartlett/php-reflect)
 [![Minimum PHP Version)](https://img.shields.io/packagist/php-v/bartlett/php-reflect)](https://php.net/)
+![EOL](https://img.shields.io/badge/project-end--of--life-important)
 
 # PHP Reflect
 
