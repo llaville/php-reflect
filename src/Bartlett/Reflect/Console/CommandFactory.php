@@ -307,7 +307,7 @@ class CommandFactory
             try {
                 $response = call_user_func_array(
                     array($api, $methodName),
-                    $args
+                    array_values($args)
                 );
             } catch (\Exception $e) {
                 $response = $e;
@@ -342,16 +342,16 @@ class CommandFactory
                 return;
             }
 
-            if (!method_exists($outputFormatter, $methodName)
-                || !is_callable(array($outputFormatter, $methodName))
+            $result = new $outputFormatter();
+
+            if (!method_exists($result, $methodName)
+                || !is_callable(array($result, $methodName))
                 || $output->isDebug()
             ) {
                 $output->writeln('<debug>Raw response</debug>');
                 $output->writeln(print_r($response, true), OutputInterface::OUTPUT_RAW);
                 return;
             }
-
-            $result = new $outputFormatter();
 
             if ($input->hasParameterOption('--format')) {
                  return $output->write($response, OutputInterface::OUTPUT_RAW);
