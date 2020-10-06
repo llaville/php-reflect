@@ -6,10 +6,17 @@ using the [Keep a CHANGELOG](http://keepachangelog.com) principles.
 
 ## [Unreleased]
 
-## [4.4.x-dev] - 2020-09-15
+## [4.4.x-dev]
 
-Project reached End-Of-Life.
+Project reached End-Of-Life (2020-09-15).
 No features will be accepted. Only bug and security fixes will be proceeded.
+
+## [4.4.1] - 2020-10-06
+
+### Fixed
+
+- Allows installation with PHP 8.0
+- Named parameters confusion with PHP 8 (thanks to @remicollet for his PR on CompatInfo)
 
 ## [4.4.0] - 2020-07-07
 
@@ -47,39 +54,6 @@ No features will be accepted. Only bug and security fixes will be proceeded.
 
 - Add support to Symfony 4 components (Thanks to @remicollet for his PR to solve issue GH-36)
 
-## [5.0.0-beta1] - 2019-04-13
-
-### Changed
-
-- unit tests and examples were fixed
-
-## [5.0.0-alpha3] - 2019-04-07
-
-### Changed
-
-- remove extra uml writer commands
-
-## [5.0.0-alpha2] - 2019-02-03
-
-### Changed
-
-- cache plugin feature was removed
-- filter and transform final results features were removed since version 4.3
-- diagram commands are only available on symfony console if `bartlett/umlwriter` package is installed
-- diagnose command use `zendframework/zenddiagnostics` package
-- console commands are now in `bartlett` namespace
-- use command bus as new architecture
-- remove extra/useless `Bartlett` directory level to match PSR-4
-
-## [5.0.0-alpha1] - 2019-01-20
-
-### Changed
-
-- drop support to PHP 5. Requires at least PHP 7.1 or greater
-- drop Growl notifier support
-- update PHP-Parser to 4.0 for parsing code from PHP 5.2 to 7.3 on PHP
- platform 7.0 or better
-
 ## [4.3.0] - 2018-11-25
 
 ### Changed
@@ -114,7 +88,8 @@ No features will be accepted. Only bug and security fixes will be proceeded.
 
 - introduce sniff architecture, and drop support to PHP 5.3
 
-[unreleased]: https://github.com/llaville/php-reflect/compare/4.3.1...HEAD
+[unreleased]: https://github.com/llaville/php-reflect/compare/4.4.0...HEAD
+[4.4.0]: https://github.com/llaville/php-reflect/compare/4.3.1...4.4.0
 [4.3.1]: https://github.com/llaville/php-reflect/compare/4.3.0...4.3.1
 [4.3.0]: https://github.com/llaville/php-reflect/compare/4.2.2...4.3.0
 [4.2.2]: https://github.com/llaville/php-reflect/compare/4.2.1...4.2.2
